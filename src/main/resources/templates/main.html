@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/default_layout}">
+	<div layout:fragment="content">
+		본문 영역입니다
+		<input type="text" id="a" value="gccgg">
+		<script>
+		alert($("#a").val());
+		</script>
+	</div>
+</html>

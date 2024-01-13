@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<meta charset="UTF-8">
+	<title>toy project</title>
+	<!-- 각 페이지의 script가 작성될 위치 -->
+	<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<th:block layout:fragment="common.js"></th:block>
+	<th:block layout:fragment="common.js"></th:block>
+	<!-- 각 페이지의 css가 작성될 위치 -->
+	<th:block layout:fragment="common.css"></th:block>
+</head>
+<body>
+
+	<div th:replace="~{fragments/header :: header}"></div>
+
+	<div layout:fragment="content"  ></div>
+
+	<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

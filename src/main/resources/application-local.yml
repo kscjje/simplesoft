@@ -1,0 +1,10 @@
+spring: 
+  config: 
+    activate: 
+      #프로파일 활성화시 사용할 속성을 정의 
+      on-profile: local 
+  datasource: 
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/custom?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: 220617 

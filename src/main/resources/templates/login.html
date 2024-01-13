@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<!-- Your page-specific head content for login page -->
+	<title>toy progject | 로그인 </title>
+	<style>
+		body {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			height: 100vh;
+			margin: 0;
+		}
+
+		form {
+			width: 300px;
+			padding: 20px;
+			background-color: #f4f4f4;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		}
+
+		label {
+			display: block;
+			margin-bottom: 8px;
+		}
+
+		input {
+			width: 100%;
+			padding: 8px;
+			margin-bottom: 12px;
+			box-sizing: border-box;
+		}
+
+		button {
+			background-color: #4caf50;
+			color: white;
+			padding: 10px 15px;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+	</style>
+	<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script>
+		/**
+		*	로그인 시도
+		**/
+		function fnLogin() {
+			
+		}
+	</script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<!-- Your login page-specific content -->
+		<h2>Toy Project 로그인</h2>
+		<form action="/login" method="post">
+			<!-- Your login form fields -->
+			<label for="username">아이디:</label>
+			<input type="text" id="username" name="username" autocomplete="none" required>
+			<br>
+			<label for="password">비밀번호:</label>
+			<input type="password" id="password" name="password" required>
+			<br>
+			<button type="button" onclick="fnLogin()">Login</button>
+		</form>
+	</div>
+</body>
+</html>

@@ -43,12 +43,6 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
-        <repository>
-            <id>local-lib</id>
-            <name>In Project Repo</name>
-            <url>file://${basedir}/lib</url>
-            <layout>default</layout>
-        </repository>
     </repositories>
 	
 	<dependencies>
@@ -82,9 +76,47 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
 
+		<dependency>
+			<groupId>nz.net.ultraq.thymeleaf</groupId>
+			<artifactId>thymeleaf-layout-dialect</artifactId>
+		</dependency>
+	</dependencies>
+	
+	<profiles>
+	   	<!-- local: 로컬개발 (기본 값) -->
+		<profile>
+			<id>local</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<environment>local</environment>
+			</properties>
+		</profile>
+		<!-- prd: 운영 -->
+		<profile>
+			<id>prd</id>
+			<properties>
+				<environment>prd</environment>
+			</properties>
+		</profile>
+	</profiles>
+	
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+			<resource>
+				<directory>src/main/resources-${environment}</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/*.yml</include>
+					<include>**/*.xml</include>
+				</includes>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

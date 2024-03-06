@@ -1,6 +1,47 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-    <div th:fragment="header">
-        header 영역입니다.
-    </div>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<th:block th:fragment="rebornHeaderFragment">
+	<!-- Header (s) -->
+	<header id="header" class="header-area">
+		<nav class="skip-nav">
+			<a href="#main">본문 바로가기</a>
+		</nav>
+		<div class="header-grid login"> <!-- [D] 로그인 시, header-util에 login 클래스 추가 -->
+			<nav class="gnb-area">
+				<ul class="nav-d1">
+					<li>
+						<a href="/order">주문하기</a>
+					</li>
+					<li>
+						<a href="#;">이달의 식단</a>
+					</li>
+					<li>
+						<a href="#;">이용방법</a>
+					</li>
+					<li>
+						<a href="#;">밥수니반찬</a>
+					</li>
+					<li>
+						<a href="#;">이벤트</a>
+					</li>
+					<li>
+						<a href="#;">고객센터</a>
+						<ul class="nav-d2">
+							<li>
+								<a href="#">공지사항</a>
+							</li>
+							<li>
+								<a href="#">1:1문의</a>
+							</li>
+							<li>
+								<a href="#">자주묻는질문</a>
+							</li>
+						</ul>
+					</li>
+				</ul>		
+			</nav>	
+		</div>
+	</header>
+	<!-- (e) Header -->
+	</th:block>
 </html>

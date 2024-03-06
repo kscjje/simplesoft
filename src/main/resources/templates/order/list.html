@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/default_layout}">
+	<main id="wrap" layout:fragment="content">
+		<style>
+			.tableWidth {
+				width:80%;
+				margin: auto;
+			}
+			#thHead {
+				margin-bottom: 7px;
+			}
+			table {
+				width: 100%;
+				border-collapse: collapse;
+				margin-top: 20px;
+			}
+			th, td {
+				padding: 8px;
+				text-align: center;
+			}
+			th {
+				font-weight: bold;
+			}
+			td {
+				border: 1px solid #ddd;
+				height: 60px;
+			}
+			tr {
+				width: 100%;
+				border-collapse: separate;
+				border-radius: 10px;
+			}
+			tr:hover {
+				background-color: #f5f5f5;
+			}
+		</style>
+		<div class="tableWidth">
+			<table>
+				<tbody>
+					<tr id="thHead">
+						<th>월요일</th>
+						<th>화요일</th>
+						<th>수요일</th>
+						<th>목요일</th>
+						<th>금요일</th>
+					</tr>
+			</tbody>
+		</table>
+		</div>
+		<script>
+			
+			// 오늘 날짜 객체 생성
+			var currentDate = new Date();
+			
+			// 오늘 날짜가 속한 주의 일요일을 가져오기
+			var firstSundayOfThisWeek = new Date(currentDate);
+			
+			let addHtml = "";
+			let nextDay = 1;
+			for(let i = 1; i < 6; i++){
+				addHtml +=	"<tr>";
+				for(let j = 1; j < 6; j++){
+					if( i == 1 && j == 1){
+						firstSundayOfThisWeek.setDate(currentDate.getDate() - currentDate.getDay()+j);
+					} else {
+						firstSundayOfThisWeek.setDate(firstSundayOfThisWeek.getDate()+1);
+					}
+					var month = (firstSundayOfThisWeek.getMonth() + 1).toString().padStart(2, '0'); // 월은 0부터 시작하므로 1을 더하고, 두 자리로 표시
+					var day = firstSundayOfThisWeek.getDate().toString().padStart(2, '0'); // 일을 두 자리로 표시
+					addHtml += 		"<td>";
+					addHtml += 			"<div style='margin-bottom:40px;font-weight:bold;'>" + month +"월 "+ day +"일 </div>";
+					addHtml += 			"<div>냉이된장국</div>";
+					addHtml += 		"</td>";
+					if(j == 5 ){
+						firstSundayOfThisWeek.setDate(firstSundayOfThisWeek.getDate()+2);
+					} 
+				}
+				addHtml +=	"</tr>";
+			}
+			
+			
+			addHtml += 	"</tr>";
+			$("#thHead").after(addHtml);
+		</script>
+	</main>
+</html>

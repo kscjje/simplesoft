@@ -1,0 +1,26 @@
+/* css */
+
+/* .class-list2 .item {margin: 10px 3px !important;}
+.class-area .cont-inner.type-box .class-list2 .item {margin: 10px 3px !important;} */
+
+
+.board-pager {margin-top: 50px; text-align: center; line-height: 0; font-size: 0;}
+.board-pager:first-child {margin-top: 0;}
+
+.board-pager a {display: inline-block;box-sizing: border-box;width: 44px;height: 44px;margin-left: 15px;border: solid 1px #dedede;outline: 0;background: #fff;text-align: center;line-height: 42px;font-size: 15px;font-weight: 500;color: #828282;transition: border 0.15s, background 0.15s, color 0.15s;}
+.board-pager a:first-child {margin-left: 0;}
+.board-pager a.on {border-color: #051e3e !important; background: #051e3e !important; color: #fff !important;}
+.board-pager a:hover {border-color: #818e9e; color: #051e3e;}
+
+.board-pager a.prev,
+.board-pager a.next {line-height: 0; font-size: 0;}
+.board-pager a.prev i,
+.board-pager a.next i {line-height: 42px; font-size: 14px;}
+.board-pager a.next {text-indent: 2px;}
+
+
+@media (max-width:765px) {
+    .teacher-img img {width: auto;height: 226px !important;}    
+}
+
+

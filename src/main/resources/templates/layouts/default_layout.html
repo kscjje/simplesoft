@@ -2,21 +2,29 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 	<meta charset="UTF-8">
-	<title>toy project</title>
-	<!-- 각 페이지의 script가 작성될 위치 -->
-	<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
-	<th:block layout:fragment="common.js"></th:block>
-	<th:block layout:fragment="common.js"></th:block>
-	<!-- 각 페이지의 css가 작성될 위치 -->
-	<th:block layout:fragment="common.css"></th:block>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no, user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+
+	<meta name="description" content="밥수니반찬 홈페이지">
+	<meta name="keywords" content="밥수니반찬 홈페이지">
+	<title>밥수니반찬</title>
+	<link rel="stylesheet" href="/css/app.css">
+
+	<script src="/js/jquery-3.6.0.min.js"></script>
+	<script src="/js/lib/bluebird.min.js"></script>
+	<script src="/js/lib/video.min.js"></script>
+	<script src="/js/lib/slick.min.js"></script>
+	<script src="/js/common.js"></script>
 </head>
 <body>
-
-	<div th:replace="~{fragments/header :: header}"></div>
-
-	<div layout:fragment="content"  ></div>
-
-	<div th:replace="~{fragments/footer :: footer}"></div>
-
+	<th:block th:replace="/fragments/header :: header"></th:block>	
+	<div class="container">
+		<th:block layout:fragment="content"></th:block>
+	</div>
+	<th:block th:replace="/fragments/footer :: footer"></th:block>
 </body>
 </html>

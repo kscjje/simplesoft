@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.simplesoft.mapper.MemberMapper">
+
+	<!-- 로그 등록 -->
+	<insert id="insertMember" parameterType="com.simplesoft.member.service.MemberVO">
+		/* MemberMapper.insertMember */
+		INSERT INTO MEMBER (
+			USER_ID,
+			PWD,
+			MEM_NM,
+			GENDER
+		)
+		VALUES(
+			  #{userId}
+			, #{pwd}
+			, #{memNm}
+			, #{gender}
+		);
+	</insert>
+	
+	<select id="selectMemberList" parameterType="hashMap" resultType="CamelHashMap">
+		/* MemberMapper.selectMemberList */
+		SELECT 
+			  A.USER_NO
+			, A.USER_ID
+			, A.USER_PW
+			, A.USER_NM
+			, A.USER_EMAIL
+			, A.USER_TEL
+			, A.USER_MOBILE
+			, A.ZIPCODE
+			, A.ADDRESS
+			, A.ADDRESS_DETAIL
+			, A.PW_CHANGE_DT
+			, A.LAST_LOGIN_DT
+			, A.REG_USER
+			, A.REG_DT
+			, A.UPT_USER
+			, A.UPT_DT
+		FROM USER_MST A
+		WHERE 1=1
+		<if test="userNo neq null and userNo neq ''">
+			AND USER_NO = #{userNo}
+		</if> 
+	</select>
+	
+	<select id="selectMemberDetail" parameterType="hashMap" resultType="CamelHashMap">
+		/* MemberMapper.selectMemberDetail */
+		SELECT 
+			  A.USER_NO
+			, A.USER_ID
+			, A.USER_PW
+			, A.USER_NM
+			, A.USER_EMAIL
+			, A.USER_TEL
+			, A.USER_MOBILE
+			, A.ZIPCODE
+			, A.ADDRESS
+			, A.ADDRESS_DETAIL
+			, A.PW_CHANGE_DT
+			, A.LAST_LOGIN_DT
+			, A.REG_USER
+			, A.REG_DT
+			, A.UPT_USER
+			, A.UPT_DT
+		FROM USER_MST A
+		WHERE 
+			USER_NO = #{userNo}
+	</select>
+</mapper>

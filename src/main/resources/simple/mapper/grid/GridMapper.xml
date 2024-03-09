@@ -2,20 +2,4 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.simplesoft.mapper.MemberMapper">
 
-	<!-- 로그 등록 -->
-	<insert id="insertMember" parameterType="com.simplesoft.member.service.MemberVO">
-		/* MemberMapper.insertMember */
-		INSERT INTO MEMBER (
-			USER_ID,
-			PWD,
-			MEM_NM,
-			GENDER
-		)
-		VALUES(
-			  #{userId}
-			, #{pwd}
-			, #{memNm}
-			, #{gender}
-		);
-	</insert>
 </mapper>

@@ -4,25 +4,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.simplesoft.mapper.MemberMapper;
 import com.simplesoft.member.service.MemberService;
+import com.simplesoft.menuboard.service.MenuBoardService;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Controller
 public class MainController {
-
+	private static final Logger LOGGER = LogManager.getLogger(MainController.class);
+	
 	@Autowired
 	MemberService memberService;
 	
-	@Autowired 
-	MemberMapper memberMapper;
+	@Autowired
+	MenuBoardService menuboardService;
 	
 	@GetMapping("/main")
 	public String main() {
@@ -40,15 +40,27 @@ public class MainController {
 		
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		
+		List<Map<String, Object>> resultMap = menuboardService.selectMenuBoardList(paramMap);
+		LOGGER.info(""+resultMap);
+		
+		model.addAttribute("resultMap", resultMap);
+		return "/order/list";
+	}
+	
+	@GetMapping("/cart")
+	public String cart(Model model) {
+		
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		
 		List<Map<String, Object>> resultMap = memberService.selectMemberList(paramMap);
-		log.info(""+resultMap);
+		LOGGER.info(""+resultMap);
 		
 		paramMap.put("userNo",1);
 		Map<String, Object> resultMap2 = memberService.selectMemberDetail(paramMap);
-		log.info(""+resultMap2);
+		LOGGER.info(""+resultMap2);
 		
 		model.addAttribute("resultMap", resultMap);
 		model.addAttribute("resultMap2", resultMap2);
-		return "/order/list";
+		return "/order/cart";
 	}
 }

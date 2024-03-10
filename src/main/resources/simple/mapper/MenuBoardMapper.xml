@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.simplesoft.mapper.menuboard.MenuBoardMapper">
+
+	<!-- 식단표 등록 -->
+	<insert id="insertMenuBoard" parameterType="hashMap">
+		/* MenuBoardMapper.insertMenuBoard */
+		INSERT INTO MENU_BOARD
+			(MENU_DAY, MENU_MSG, USE_YN, REG_USER, REG_DT)
+		VALUES
+			(#{menuDay}, #{menuMsg}, 'Y', 'admin', SYSDATE())
+	</insert>
+	
+	<!-- 식단표 리스트 조회 -->
+	<select id="selectMenuBoardList" parameterType="hashMap" resultType="CamelHashMap">
+		/* MenuBoardMapper.selectMenuBoardList */
+		SELECT 
+			  A.MENU_BOARD_SEQ
+			, A.MENU_DAY
+			, A.MENU_MSG
+			, A.USE_YN
+			, A.REG_USER
+			, A.REG_DT
+			, A.UPT_USER
+			, A.UPT_DT
+		FROM MENU_BOARD A
+		<!-- 오늘 날짜가 속한 주의 월요일부터 4주 후 금요일까지 -->
+		WHERE A.MENU_DAY BETWEEN DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY) 
+		AND DATE_ADD(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 4 WEEK) + INTERVAL 4 DAY
+		AND USE_YN ='Y'
+		ORDER BY A.MENU_DAY
+	</select>
+	
+	<!-- 식단표 리스트 상세조회 -->
+	<select id="selectMenuBoardDetail" parameterType="hashMap" resultType="CamelHashMap">
+		/* MenuBoardMapper.selectMenuBoardDetail */
+		SELECT 
+			  A.MENU_BOARD_SEQ
+			, A.MENU_DAY
+			, A.MENU_MSG
+			, A.USE_YN
+			, A.REG_USER
+			, A.REG_DT
+			, A.UPT_USER
+			, A.UPT_DT
+		FROM MENU_BOARD A
+		WHERE 
+			MENU_BOARD_SEQ = #{menuBoardSeq}
+	</select>
+</mapper>

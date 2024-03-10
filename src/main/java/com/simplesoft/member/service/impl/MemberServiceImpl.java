@@ -6,7 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.simplesoft.mapper.MemberMapper;
+import com.simplesoft.mapper.member.MemberMapper;
 import com.simplesoft.member.service.MemberService;
 import com.simplesoft.member.service.MemberVO;
 

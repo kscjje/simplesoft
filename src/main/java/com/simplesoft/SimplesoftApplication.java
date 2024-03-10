@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @ComponentScan({ "com.simplesoft"})
-@MapperScan({"com.simplesoft.mapper"})
 @SpringBootApplication
 public class SimplesoftApplication {
 

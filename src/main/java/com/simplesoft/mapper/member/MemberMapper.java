@@ -1,4 +1,4 @@
-package com.simplesoft.mapper;
+package com.simplesoft.mapper.member;
 
 import java.util.List;
 import java.util.Map;

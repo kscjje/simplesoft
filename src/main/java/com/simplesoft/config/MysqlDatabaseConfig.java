@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.simplesoft.util.EncryptUtils;
 import com.zaxxer.hikari.HikariDataSource;
 
 

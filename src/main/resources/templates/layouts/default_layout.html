@@ -21,10 +21,10 @@
 	<script src="/js/common.js"></script>
 </head>
 <body>
-	<th:block th:replace="/fragments/header :: header"></th:block>	
+	<th:block th:replace="~{/fragments/header :: header}"></th:block>	
 	<div class="container">
 		<th:block layout:fragment="content"></th:block>
 	</div>
-	<th:block th:replace="/fragments/footer :: footer"></th:block>
+	<th:block th:replace="~{/fragments/footer :: footer}"></th:block>
 </body>
 </html>

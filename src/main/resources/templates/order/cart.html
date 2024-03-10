@@ -13,8 +13,7 @@
 			}
 			table {
 				width: 100%;
-				border-collapse: separate;
-				border-spacing: 0 10px; /* Adjust the second value (vertical spacing) according to your preference */
+				border-collapse: collapse;
 				margin-top: 20px;
 			}
 			th, td {
@@ -26,14 +25,12 @@
 			}
 			td {
 				border: 1px solid #ddd;
-				height: 250px;
+				height: 60px;
 			}
 			tr {
 				width: 100%;
+				border-collapse: separate;
 				border-radius: 10px;
-			}
-			tr:hover {
-				background-color: #f5f5f5;
 			}
 		</style>
 		<div class="tableWidth">
@@ -54,8 +51,10 @@
 			
 			$(function(){
 				let resultMap = /*[[${resultMap}]]*/"";
+				let resultMap2 = /*[[${resultMap2}]]*/"";
 				
 				console.log(resultMap);
+				console.log(resultMap2);
 				
 				// 오늘 날짜 객체 생성
 				var currentDate = new Date();
@@ -66,10 +65,11 @@
 				let addHtml = "";
 				let nextDay = 1;
 				for(let i = 1; i < 6; i++){
+					
 					addHtml +=	"<tr>";
 					for(let j = 1; j < 6; j++){
 						if( i == 1 && j == 1){
-							firstSundayOfThisWeek.setDate(currentDate.getDate() - currentDate.getDay()+1);
+							firstSundayOfThisWeek.setDate(currentDate.getDate() - currentDate.getDay()+j);
 						} else {
 							firstSundayOfThisWeek.setDate(firstSundayOfThisWeek.getDate()+1);
 						}
@@ -86,12 +86,13 @@
 					addHtml +=	"</tr>";
 				}
 				
+				
 				addHtml += 	"</tr>";
 				$("#thHead").after(addHtml);
 			});
 			
 			fnCartSave = function (){
-				location.href='cart';
+				location.href='order/cart';
 			}
 			
 		</script>

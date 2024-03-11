@@ -5,11 +5,12 @@
 	<main id="wrap" layout:fragment="content">
 		<style>
 			.tableWidth {
-				width:80%;
+				width:60%;
 				margin: auto;
 			}
 			#thHead {
 				margin-bottom: 7px;
+				font-family:'Noto Sans KR', Sans-serif;
 			}
 			table {
 				width: 100%;
@@ -23,17 +24,35 @@
 			}
 			th {
 				font-weight: bold;
+				font-size: 18px;
 			}
 			td {
 				border: 1px solid #ddd;
 				height: 250px;
+				font-size: 14px;
 			}
-			tr {
-				width: 100%;
-				border-radius: 10px;
+			td:first-child, th:first-child {
+				border-radius: 15px 0 0 15px;
 			}
-			tr:hover {
-				background-color: #f5f5f5;
+			td:last-child, th:last-child {
+				border-radius: 0 15px 15px 0;
+			}
+			.menuboard_btn {
+				padding: 10px 32px;
+				font-size: 16px;
+				background-color: #FFF;
+				border: 1px solid #4CAF50;
+				color: #4CAF50;
+				border-radius: 20px;
+				cursor: pointer;	
+			}
+			.menuboard_btn:hover {
+				background-color: #45a049;
+				color: #FFF;
+			}
+			.menuboard_btn.active {
+				background-color: #45a049;
+				color: #FFF;
 			}
 		</style>
 		<div class="tableWidth">
@@ -53,21 +72,31 @@
 		<script th:inline="javascript">
 			
 			$(function(){
-				let resultMap = /*[[${resultMap}]]*/"";
+				let result = /*[[${resultMap}]]*/"";
 				
-				console.log(resultMap);
+				console.log(result);
 				
 				// 오늘 날짜 객체 생성
-				var currentDate = new Date();
+				const currentDate = new Date();
+				// 오늘 날짜 년도 가져오기
+				const currentYear = currentDate.getFullYear();
+				// 오늘 날짜 월 가져오기
+				const currentMonth = (currentDate.getMonth()+1).toString.length == 1 ? "0"+(currentDate.getMonth()+1) : (currentDate.getMonth()+1).toString;
+				// 오늘 날짜 일 가져오기
+				const currentDay = currentDate.getDate();
+				
+				const currentYYYYMMDD = currentYear + currentMonth + currentDay;
+				const currentMMDD = currentMonth+ + currentDay;
 				
 				// 오늘 날짜가 속한 주의 일요일을 가져오기
-				var firstSundayOfThisWeek = new Date(currentDate);
+				const firstSundayOfThisWeek = new Date(currentDate);
 				
 				let addHtml = "";
 				let nextDay = 1;
-				for(let i = 1; i < 6; i++){
+				
+				for(let i = 1; i < 6; i++){			//5주차
 					addHtml +=	"<tr>";
-					for(let j = 1; j < 6; j++){
+					for(let j = 1; j < 6; j++){		//월~금
 						if( i == 1 && j == 1){
 							firstSundayOfThisWeek.setDate(currentDate.getDate() - currentDate.getDay()+1);
 						} else {
@@ -76,24 +105,74 @@
 						var month = (firstSundayOfThisWeek.getMonth() + 1).toString().padStart(2, '0'); // 월은 0부터 시작하므로 1을 더하고, 두 자리로 표시
 						var day = firstSundayOfThisWeek.getDate().toString().padStart(2, '0'); // 일을 두 자리로 표시
 						addHtml += 		"<td>";
-						addHtml += 			"<div style='margin-bottom:40px;font-weight:bold;'>" + month +"월 "+ day +"일 </div>";
-						addHtml += 			"<div>냉이된장국</div>";
-						addHtml += 		"</td>";
+						addHtml += 			"<div style='margin-bottom:30px;font-size:16px;font-weight:bold;font-family:Noto Sans KR, Sans-serif'>" + month +"월 "+ day +"일 </div>";
+						
+						let find = false;		//식단표 데이터가 있는지 여부
+						for(let k = 0; k < result.length; k ++){
+							
+							if(find == true){
+								//이미 식단 데이터를 가져왔을 경우 다음 for문
+								continue;
+							}
+							if(result[k].menuDay.substring(4,8) == month+day){
+								if(result[k].menuMsg.split("|")){
+									let menuMsg = result[k].menuMsg.split("|");
+									for(let index = 0; index < menuMsg.length; index++) {
+										if(menuMsg[index].substring(0,1) == "!"){
+											addHtml +="<div style='margin-bottom:10px;color:red'>"+menuMsg[index].substring(1,menuMsg[index].length)+"</div>";
+										} else {
+											addHtml +="<div style='margin-bottom:10px;'>"+menuMsg[index]+"</div>";
+										}
+										if(result[k].useYn == "Y" && (index+1) == menuMsg.length && currentMMDD < month+day){
+											addHtml	+="<div style='padding-top:10px;'>";
+											addHtml +=	"<input type='button' onclick='toggleButtonClick(this)' id='"+result[k].menuDay+"' value='선택' class='menuboard_btn'>";
+											addHtml +="</div>";
+										}
+									}
+								} else {
+									addHtml +="<div style='margin-bottom:10px;'>"+result[k].menuMsg+"</div>";
+								}
+								find = true;
+							} else {
+								if(k+1 == result.length && find == false){
+									//마지막 루프까지 해당 날짜 데이터가 없을 경우 
+									addHtml +="<div'>준비 중입니다.</div>";
+								}
+							}
+						}
+						addHtml += 		"</td>";								
+						
+						
 						if(j == 5 ){
 							firstSundayOfThisWeek.setDate(firstSundayOfThisWeek.getDate()+2);
 						} 
 					}
 					addHtml +=	"</tr>";
 				}
-				
 				addHtml += 	"</tr>";
 				$("#thHead").after(addHtml);
 			});
 			
+			//장바구니 담기
 			fnCartSave = function (){
-				location.href='cart';
+				let checkList = $('[class="menuboard_btn active"]');	//선택된 식단리스트
+				let checkArray = [];	//선택된 식단 리스트에 id값을 배열로 담음
+				for(let i = 0; i < checkList.length; i++){
+					checkArray += checkList[i].id;
+					if( i+1 != checkList.length)checkArray += ",";
+				}
+				console.log(checkArray);
 			}
 			
+			//식단 선택
+			toggleButtonClick = function (btn,value){
+				btn.classList.toggle('active'); // Toggle the 'clicked' class
+				if(btn.classList.contains('active')){
+					btn.value= "선택해제";	 
+				} else {
+					btn.value="선택";
+				}
+			}
 		</script>
 	</main>
 </html>

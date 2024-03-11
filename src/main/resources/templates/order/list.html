@@ -54,6 +54,24 @@
 				background-color: #45a049;
 				color: #FFF;
 			}
+			.addToCartButton {
+				background-color: #45a049;
+				color: #fff;
+				border: none;
+				padding: 10px 20px;
+				font-size: 20px;
+				width:200px;
+				cursor: pointer;
+				border-radius: 5px;
+				transition: background-color 0.3s ease;
+			}
+			.fixed {
+				position: fixed;
+				bottom: 2%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				background-color: #f0f0f0;
+			}
 		</style>
 		<div class="tableWidth">
 			<table>
@@ -67,7 +85,9 @@
 					</tr>
 				</tbody>
 			</table>
-			<button type="button" onclick="fnCartSave()">장바구니담기</button>
+			<div class="fixed">
+				<button type="button" class="addToCartButton" style="position: sticky;top:200px;"onclick="fnCartSave()">장바구니담기</button>
+			</div>
 		</div>
 		<script th:inline="javascript">
 			
@@ -157,6 +177,10 @@
 			fnCartSave = function (){
 				let checkList = $('[class="menuboard_btn active"]');	//선택된 식단리스트
 				let checkArray = [];	//선택된 식단 리스트에 id값을 배열로 담음
+				if(checkList.length == 0 ){
+					alert("선택된 일자가 없습니다.")
+					return;
+				}
 				for(let i = 0; i < checkList.length; i++){
 					checkArray += checkList[i].id;
 					if( i+1 != checkList.length)checkArray += ",";

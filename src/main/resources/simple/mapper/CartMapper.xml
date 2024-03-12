@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.simplesoft.mapper.cart.CartMapper">
+
+	<!-- 장바구니 등록 -->
+	<insert id="insertCart" parameterType="hashMap">
+		/* CartMapper.insertCart */
+		INSERT INTO CART_MST
+			(USER_NO, USER_SESSION, MENU_BOARD_SEQ, QTY, REG_USER, REG_DT)
+		VALUES
+			(#{userNo}, #{userSession}, #{menuBoardSeq}, 1, #{regUser}, SYSDATE())
+	</insert>
+	
+	<!-- 장바구니 수량추가 -->
+	<insert id="updateCartAdd" parameterType="hashMap">
+		/* CartMapper.updateCartAdd */
+		UPDATE CART_MST SET QTY = QTY + 1 
+		WHERE 1=1
+		<choose>
+			<when test="userNo eq 0">
+				AND USER_SESSION = #{userSession}	
+			</when>
+			<otherwise>
+				AND USER_NO = #{userNo}
+			</otherwise>
+		</choose>
+		AND MENU_BOARD_SEQ = #{menuBoardSeq} 
+	</insert>
+	
+	<!-- 장바구니 리스트 조회 -->
+	<select id="selectCartList" parameterType="hashMap" resultType="CamelHashMap">
+		/* CartMapper.selectCartList */
+		SELECT 
+			  A.CART_NO
+			, A.USER_NO
+			, A.USER_SESSION
+			, A.MENU_BOARD_SEQ
+			, A.QTY
+			, A.REG_USER
+			, A.REG_DT
+		FROM CART_MST A
+		WHERE 1=1
+		<choose>
+			<when test="userNo eq 0">
+				AND USER_SESSION = #{userSession}	
+			</when>
+			<otherwise>
+				AND USER_NO = #{userNo}
+			</otherwise>
+		</choose>
+		AND MENU_BOARD_SEQ = #{menuBoardSeq} 
+	</select>
+	
+	<!-- 장바구니 리스트 상세조회 -->
+	<select id="selectCartDetail" parameterType="hashMap" resultType="CamelHashMap">
+		/* CartMapper.selectCartDetail */
+		SELECT 
+			  A.CART_NO
+			, A.USER_NO
+			, A.USER_SESSION
+			, A.MENU_BOARD_SEQ
+			, A.QTY
+			, A.REG_USER
+			, A.REG_DT
+		FROM CART_MST A
+		WHERE 
+			CART_NO = #{cartNo}
+	</select>
+</mapper>

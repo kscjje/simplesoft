@@ -35,6 +35,12 @@ public class MainController {
 		return "/main";
 	}
 	
+	/**
+	 * 주문하기
+	 * 
+	 * @param model
+	 * @return
+	 */
 	@GetMapping("/order")
 	public String order(Model model) {
 		
@@ -47,6 +53,12 @@ public class MainController {
 		return "/order/list";
 	}
 	
+	/**
+	 * 장바구니
+	 * 
+	 * @param model
+	 * @return
+	 */
 	@GetMapping("/cart")
 	public String cart(Model model) {
 		

@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MemberVO {
 	
-	private String userId = "";
+	private String userNo = "";
 	private String pwd = "";
 	private String gender = "";
 	private String memNm = "";

@@ -3,98 +3,266 @@
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{layouts/default_layout}">
 	<main id="wrap" layout:fragment="content">
-		<style>
-			.tableWidth {
-				width:80%;
-				margin: auto;
-			}
-			#thHead {
-				margin-bottom: 7px;
-			}
-			table {
-				width: 100%;
-				border-collapse: collapse;
-				margin-top: 20px;
-			}
-			th, td {
-				padding: 8px;
-				text-align: center;
-			}
-			th {
-				font-weight: bold;
-			}
-			td {
-				border: 1px solid #ddd;
-				height: 60px;
-			}
-			tr {
-				width: 100%;
-				border-collapse: separate;
-				border-radius: 10px;
-			}
-		</style>
-		<div class="tableWidth">
-			<table>
-				<tbody>
-					<tr id="thHead">
-						<th>월요일</th>
-						<th>화요일</th>
-						<th>수요일</th>
-						<th>목요일</th>
-						<th>금요일</th>
-					</tr>
-				</tbody>
-			</table>
-			<button type="button" onclick="fnCartSave()">장바구니담기</button>
+		<div>
+			<h2>장바구니</h2>
+			<div class="list-check">
+				<input class="form-check-input" type="checkbox" id="f-chk-all" checked style="cursor: pointer;">
+				<label class="form-check-label" for="f-chk-all" style="cursor: pointer;">
+					전체선택
+				</label>
+				<div style='vertical-align: middle;margin: 5px 5px;'class="vr"></div>
+				<span class="list-chk-btn" style="cursor: pointer;">
+					<a href="javascript:cartDelete()" class="text-decoration-none" style="color: #212529">선택삭제</a>
+				</span>
+			</div>
+			<hr class="border-2 opacity-50" style="color:#000">
+			<div>
+				<table class="table table-striped" style="text-align: center;" id="cartTable">
+					<tbody>
+						<tr id="thHead" style="height: 60px;vertical-align: middle;">
+							<th scope="col" width="7%">선택</th>
+							<th scope="col" width="52%">상품명</th>
+							<th scope="col" width="12%">수량</th>
+							<th scope="col" width="17%">판매가</th>
+							<th scope="col" width="12%">소계</th>
+						</tr>
+					</tbody>
+				</table>
+				<div class="container" style="text-align: center;" th:if="${cartList.size eq 0}">
+					
+					<i style="font-size: 100px;"class="bi bi-cart-x"></i><br>
+					<span style="font-size: 28px;color: gray;">장바구니에 담긴 상품이 없습니다.</span>
+					<div style="margin-top: 40px;">
+						<button type="button" onclick="location.href='/main'" style="padding:15px 90px;" class="btn btn-outline-secondary btn-lg">메인화면</button>
+						<button type="button" onclick="location.href='/order'"style="padding:15px 70px;" class="btn btn-secondary btn-lg">상품보러가기</button>
+					</div>
+				</div>
+				<div class="">
+					<table class="table table-borderless table-white" border="1" style="text-align: center;height: 100px;margin-top: 50px;font-size: 18px;";>
+						<tr style="vertical-align: middle;">
+							<td>상품금액<br><span id="r_productMoney">0</span>원</td>
+							<td><i class="bi bi-plus-circle"></i></td>
+							<td>배송비<br><span id="r_deliv"></span></td>
+							<td><i class="bi bi-dash-circle"></i></td>
+							<td>배송비 할인<br><span id="r_discount"></span></td>
+							<td>=</td>
+							<td>합계금액<br><span id="r_totalMoney">0</span>원</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
 		</div>
 		<script th:inline="javascript">
 			
+			let price = 18000;			//판매가
+			let deliveryPrice = 0;		//배송비
+			
 			$(function(){
-				let resultMap = /*[[${resultMap}]]*/"";
-				let resultMap2 = /*[[${resultMap2}]]*/"";
 				
-				console.log(resultMap);
-				console.log(resultMap2);
-				
-				// 오늘 날짜 객체 생성
-				var currentDate = new Date();
-				
-				// 오늘 날짜가 속한 주의 일요일을 가져오기
-				var firstSundayOfThisWeek = new Date(currentDate);
+				let cartList = /*[[${cartList}]]*/"";
+				let totalQty = 0;			//총수량
 				
 				let addHtml = "";
-				let nextDay = 1;
-				for(let i = 1; i < 6; i++){
-					
+				for(let i = 0; i < cartList.length; i++){
 					addHtml +=	"<tr>";
-					for(let j = 1; j < 6; j++){
-						if( i == 1 && j == 1){
-							firstSundayOfThisWeek.setDate(currentDate.getDate() - currentDate.getDay()+j);
-						} else {
-							firstSundayOfThisWeek.setDate(firstSundayOfThisWeek.getDate()+1);
-						}
-						var month = (firstSundayOfThisWeek.getMonth() + 1).toString().padStart(2, '0'); // 월은 0부터 시작하므로 1을 더하고, 두 자리로 표시
-						var day = firstSundayOfThisWeek.getDate().toString().padStart(2, '0'); // 일을 두 자리로 표시
-						addHtml += 		"<td>";
-						addHtml += 			"<div style='margin-bottom:40px;font-weight:bold;'>" + month +"월 "+ day +"일 </div>";
-						addHtml += 			"<div>냉이된장국</div>";
-						addHtml += 		"</td>";
-						if(j == 5 ){
-							firstSundayOfThisWeek.setDate(firstSundayOfThisWeek.getDate()+2);
-						} 
-					}
+					addHtml +=		"<td>";
+					addHtml +=			"<input class='form-check-input' id='flexCheckChecked"+ cartList[i].cartNo +"' type='checkbox' name='cartCheck' data='"+cartList[i].qty+"' value='"+cartList[i].cartNo+"' checked />";
+					addHtml +=			"<label class='form-check-label' for='flexCheckChecked"+ cartList[i].cartNo +"'></label>";
+					addHtml +=		"</td>";
+					addHtml +=		"<td style='text-align:left'>";
+					addHtml +=			"<div style='margin-bottom:10px;'>"+cartList[i].menuDay+"</div>";
+										totalQty += cartList[i].qty;
+										let menuMsg = cartList[i].menuMsg.split("|");
+										for(let index = 0; index < menuMsg.length; index++) {
+											if(index % 3 == 0 && index != 0) addHtml +="<br>";
+											if(menuMsg[index].substring(0,1) == "!"){
+												addHtml +="<span style='color:red;margin-right:7px;'>"+menuMsg[index].substring(1,menuMsg[index].length)+"</span>";
+											} else {
+												addHtml +="<span style='margin-right:7px;'>"+menuMsg[index]+"</span>";
+											}
+										}
+					addHtml +=		"</td>";
+					addHtml +=		"<td style='vertical-align:middle;font-size:20px'><i style='cursor:pointer'class='bi bi-dash-circle' onclick='cartQtyUpdate("+cartList[i].cartNo+",\"minus\")'></i> <span id='ui_cart_" + cartList[i].cartNo + "'>"+ cartList[i].qty +"</span> <i style='cursor:pointer'class='bi bi-plus-circle'onclick='cartQtyUpdate("+cartList[i].cartNo+",\"plus\")'></i></td>";
+					addHtml +=		"<td style='vertical-align:middle;'><span id='ui_price_"+cartList[i].cartNo+"'>" + price.toLocaleString('ko-KR')+"</span></td>";
+					addHtml +=		"<td style='vertical-align:middle;'><span id='ui_total_"+cartList[i].cartNo+"'>" + (price * cartList[i].qty).toLocaleString('ko-KR') + "</span></td>";
 					addHtml +=	"</tr>";
 				}
 				
+				/* 총 계산식 */
+				let productMoney = totalQty*price;					//상품 * 총 수량
+				$("#r_productMoney").text(productMoney.toLocaleString('ko-KR'));
 				
-				addHtml += 	"</tr>";
+				deliveryPrice = totalQty > 2 ? 0 : 6000;	//배송비 계산
+				if(deliveryPrice != 0){
+					$("#r_deliv").text(deliveryPrice.toLocaleString('ko-KR')+"원");
+					$("#r_discount").text("0원");					
+				} else {
+					$("#r_deliv").text("무료");
+					$("#r_discount").text("6,000원");
+				}
+				
+				let totalMoney = productMoney + deliveryPrice;		//상품금액 + 배송비
+				$("#r_totalMoney").text(totalMoney.toLocaleString('ko-KR'));
+				/* 총 계산식 끝
+				*/
 				$("#thHead").after(addHtml);
+				
+				$("#f-chk-all").click(function() {
+					if($("#f-chk-all").is(":checked")) {
+						$("input[name=cartCheck]").prop("checked", true);
+						$("#r_productMoney").text(($("input[name=cartCheck]:checked").length * price).toLocaleString('ko-KR'));
+						if(deliveryPrice != 0){
+							$("#r_deliv").text(deliveryPrice.toLocaleString('ko-KR')+"원");
+							$("#r_discount").text("0원");					
+						} else {
+							$("#r_deliv").text("무료");
+							$("#r_discount").text("6,000원");
+						}
+						$("#r_totalMoney").text((($("input[name=cartCheck]:checked").length * price) + deliveryPrice).toLocaleString('ko-KR'));
+					} else {
+						$("input[name=cartCheck]").prop("checked", false);
+						$("#r_productMoney").text("0".toLocaleString('ko-KR'));
+						$("#r_deliv").text(deliveryPrice.toLocaleString('ko-KR')+"원");
+						$("#r_discount").text("0원");
+						$("#r_totalMoney").text("0".toLocaleString('ko-KR'));
+					}
+				});
+				$("input[name=cartCheck]").click(function() {
+					
+					var total = $("input[name=cartCheck]").length;
+					var checked = $("input[name=cartCheck]:checked").length;
+					
+					if(total != checked) {
+						$("#f-chk-all").prop("checked", false);
+					} else {
+						$("#f-chk-all").prop("checked", true);
+					}
+					totalQty = 0;
+					$("input[name=cartCheck]:checked").each(function () {
+						let value = "#"+this.id
+						totalQty += Number($(value).attr("data"));
+					});
+					
+					$("#r_productMoney").text((totalQty * price).toLocaleString('ko-KR'));
+					deliveryPrice = totalQty > 2 ? 0 : 6000;	//배송비 계산
+					if(deliveryPrice != 0){
+						$("#r_deliv").text(deliveryPrice.toLocaleString('ko-KR')+"원");
+						$("#r_discount").text("0원");					
+					} else {
+						$("#r_deliv").text("무료");
+						$("#r_discount").text("6,000원");
+					}
+					totalMoney = (totalQty * price) + deliveryPrice;
+					$("#r_totalMoney").text(totalMoney.toLocaleString('ko-KR'));
+				});
 			});
 			
-			fnCartSave = function (){
-				location.href='order/cart';
+			//수량 변경
+			cartQtyUpdate = function(index,gubun){
+				
+				let cnt = $("#ui_cart_"+index).text();
+				let count = 0;
+				
+				if(gubun == "plus"){
+					count = Number(cnt) + 1;
+				} else {
+					if(cnt <= 1){
+						alert("최소 1개 이상 구매 가능 합니다.");
+						return;
+					}
+					count = Number(cnt) - 1;
+				}
+				$.ajax({
+			        url: "/rest/cart/qty/update",
+			        type: "POST",
+			        dataType: "json",
+			        data: {
+			        	cartNo	: index,
+			        	gubun	: gubun
+			        },
+			        success: function (result) {
+			        	if(result.responseCode == "SUCCESS"){
+							if(result.data.resultCode == "SUCCESS"){
+								$("#ui_cart_"+index).text(count);
+								$("#flexCheckChecked"+index).attr("data",count);
+								$("#ui_total_"+index).text((price * count).toLocaleString('ko-KR'));
+								
+								let totalQty = 0;
+								$("input[name=cartCheck]:checked").each(function () {
+									let value = "#"+this.id
+									totalQty += Number($(value).attr("data"));
+								});
+								
+								$("#r_productMoney").text((totalQty * price).toLocaleString('ko-KR'));
+								deliveryPrice = totalQty > 2 ? 0 : 6000;	//배송비 계산
+								if(deliveryPrice != 0){
+									$("#r_deliv").text(deliveryPrice.toLocaleString('ko-KR')+"원");
+									$("#r_discount").text("0원");					
+								} else {
+									$("#r_deliv").text("무료");
+									$("#r_discount").text("6,000원");
+								}
+								totalMoney = (totalQty * price) + deliveryPrice;
+								$("#r_totalMoney").text(totalMoney.toLocaleString('ko-KR'));
+							} else if(result.data.resultCode == "NoData"){
+								alert("수량을 변경할 리스트가 없습니다.");
+								location.reload();
+								return;		
+							}
+						}
+			        },
+			        error: function (e) {
+			            console.log("ERROR : ", e);
+			            alert("수량 변경에 실패했습니다.");
+			        }
+			    });
 			}
 			
+			//선택삭제
+			cartDelete = function(){
+				let checkArray = "";
+				var checked = $("input[name=cartCheck]:checked").length;
+				
+				if(checked < 1){
+					alert("선택하신 상품이 없습니다.");
+					return;
+				} else {
+					if(!confirm("선택하신 상품을 삭제하시겠습니까?")) return;
+				}
+				$('input:checkbox[name=cartCheck]').each(function (index) {
+					if($(this).is(":checked")==true){
+						checkArray += $(this).val()+",";
+					}
+				});
+				if(checkArray.substring(checkArray.length-1, checkArray.length) == ","){
+					checkArray = checkArray.substring(0,checkArray.length-1);
+				}
+				
+				$.ajax({
+			        url: "/rest/cart/delete",
+			        type: "POST",
+			        dataType: "json",
+			        data: {
+			        	checkArray	: checkArray
+			        },
+			        success: function (result) {
+			        	if(result.responseCode == "SUCCESS"){
+							if(result.data.resultCode == "SUCCESS"){
+								alert("삭제되었습니다.")
+							} else if(result.data.resultCode == "NoData"){
+								alert("삭제할 리스트가 없습니다.");
+							}
+							location.reload();
+							return;		
+						}
+			        },
+			        error: function (e) {
+			            console.log("ERROR : ", e);
+			            alert("장바구니 리스트 삭제에 실패했습니다.");
+			        }
+			    });
+			}
 		</script>
 	</main>
 </html>

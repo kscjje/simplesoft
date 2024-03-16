@@ -1,47 +1,70 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-	<th:block th:fragment="rebornHeaderFragment">
-	<!-- Header (s) -->
-	<header id="header" class="header-area">
-		<nav class="skip-nav">
-			<a href="#main">본문 바로가기</a>
-		</nav>
-		<div class="header-grid login"> <!-- [D] 로그인 시, header-util에 login 클래스 추가 -->
-			<nav class="gnb-area">
-				<ul class="nav-d1">
-					<li>
-						<a href="/order">주문하기</a>
-					</li>
-					<li>
-						<a href="#;">이달의 식단</a>
-					</li>
-					<li>
-						<a href="#;">이용방법</a>
-					</li>
-					<li>
-						<a href="#;">밥수니반찬</a>
-					</li>
-					<li>
-						<a href="#;">이벤트</a>
-					</li>
-					<li>
-						<a href="#;">고객센터</a>
-						<ul class="nav-d2">
-							<li>
-								<a href="#">공지사항</a>
-							</li>
-							<li>
-								<a href="#">1:1문의</a>
-							</li>
-							<li>
-								<a href="#">자주묻는질문</a>
-							</li>
+	<th:block th:fragment="header">
+		<!-- Header (s) -->
+		<header id="header" class="top-nav">
+			<div class="header-bar-bn">
+				<div class="header-bar-bn-bg">
+					<div class="confix1200">
+						<p>상단고정탑배너</p>
+					</div>
+				</div>
+			</div>
+			<div class="header">
+				<!--2번 파트-->
+				<div class="location">
+					<div class="location_inner">
+						<ul>
+							<li><a href="#">멤버쉽기능/로그인</a></li>
+							<li><a href="#">회원가입</a></li>
+							<li><a href="#">마이페이지</a></li>
+							<li><a href="/cart">장바구니</a></li>
+							<li><a href="#">비회원주문조회</a></li>
 						</ul>
-					</li>
-				</ul>		
-			</nav>	
-		</div>
-	</header>
+					</div>
+				</div>
+				<!--3번파트 시작-->
+				<div class="top_align">
+					<div id="logo">
+						<a class="logo href="#>
+							<img src="http://via.placeholder.com/350x150?text=BABSUNI" alt="밥수니반찬로고">
+						</a>
+					</div>
+				</div>
+			</div>
+			<!--4번 메뉴바 구현-->
+			<nav>
+			  |
+			  <section>
+			    <a href="#">BRAND</a>
+			  </section>
+			  |
+			  <section>
+			    <a href="#">VISUAL</a>
+			  </section>
+			  |
+			  <section>
+			    <a href="#">STYLE</a>
+			  </section>
+			  |
+			  <section>
+			    <a href="#">MEDIA</a>
+			  </section>
+			  |
+			  <section>
+			    <a href="#">NEWS</a>
+			  </section>
+			  |
+			  <section>
+			    <a href="#">STORE</a>
+			  </section>
+			  |
+			  <section>
+			    <a href="#">CUSTOMER</a>
+			  </section>
+			  |
+			</nav>
+		</header>
 	<!-- (e) Header -->
 	</th:block>
 </html>

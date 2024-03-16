@@ -32,10 +32,11 @@ public class RestMainController {
 	 * 장바구니 담기
 	 * @param paramMap
 	 * @param model
+	 * @param session
 	 * @return
 	 */
 	@PostMapping("/cart/save")
-	public BasicResponse cart(@RequestParam Map<String, Object> paramMap, Model model,HttpSession session) {
+	public BasicResponse cartSave(@RequestParam Map<String, Object> paramMap, Model model,HttpSession session) {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		
@@ -52,6 +53,71 @@ public class RestMainController {
 		cartService.insertCart(paramMap);
 		
 		result.put("resultCode", "SUCCESS");
+		return new CommonResponse<Map<String, Object>>(result);
+	}
+	
+	/**
+	 * 장바구니 수량 수정
+	 * @param paramMap
+	 * @param model
+	 * @param session
+	 * @return
+	 */
+	@PostMapping("/cart/qty/update")
+	public BasicResponse cartQtyUpdate(@RequestParam Map<String, Object> paramMap, Model model,HttpSession session) {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		Map<String, Object> cartDetail = new HashMap<String, Object>();
+		
+		MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
+		if(loginInfo != null) {
+			paramMap.put("userSession", "");
+			paramMap.put("userNo", loginInfo.getUserNo());
+		} else {
+			paramMap.put("userSession", session.getId());
+			paramMap.put("userNo", 0);
+		}
+		cartDetail = cartService.selectCartDetail(paramMap);
+		log.info("cartDetail:"+cartDetail);
+		if(cartDetail != null) {
+			int suc = cartService.updateCartQty(paramMap);
+			if(suc > 0) {
+				result.put("resultCode", "SUCCESS");
+			}
+		} else {
+			result.put("resultCode", "NoData");
+		}
+		
+		return new CommonResponse<Map<String, Object>>(result);
+	}
+	/**
+	 * 장바구니 삭제
+	 * @param paramMap
+	 * @param model
+	 * @param session
+	 * @return
+	 */
+	@PostMapping("/cart/delete")
+	public BasicResponse cartDelete(@RequestParam Map<String, Object> paramMap, Model model,HttpSession session) {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
+		if(loginInfo != null) {
+			paramMap.put("userSession", "");
+			paramMap.put("userNo", loginInfo.getUserNo());
+		} else {
+			paramMap.put("userSession", session.getId());
+			paramMap.put("userNo", 0);
+		}
+		String[] arrCartNo = ((String)paramMap.get("checkArray")).split(",");
+		paramMap.put("arrCartNo", arrCartNo);
+		
+		int suc = cartService.deleteCart(paramMap);
+		if(suc > 0) {
+			result.put("resultCode", "SUCCESS");
+		}
+		
 		return new CommonResponse<Map<String, Object>>(result);
 	}
 }

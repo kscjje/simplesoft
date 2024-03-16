@@ -5,7 +5,7 @@
 	<main id="wrap" layout:fragment="content">
 		<style>
 			.tableWidth {
-				width:60%;
+				width:100%;
 				margin: auto;
 			}
 			#thHead {
@@ -28,8 +28,11 @@
 			}
 			td {
 				border: 1px solid #ddd;
-				height: 250px;
+				width:236px;
 				font-size: 14px;
+			}
+			tr td{
+				height:314px;
 			}
 			td:first-child, th:first-child {
 				border-radius: 15px 0 0 15px;
@@ -124,12 +127,12 @@
 						}
 						var month = (firstSundayOfThisWeek.getMonth() + 1).toString().padStart(2, '0'); // 월은 0부터 시작하므로 1을 더하고, 두 자리로 표시
 						var day = firstSundayOfThisWeek.getDate().toString().padStart(2, '0'); // 일을 두 자리로 표시
+						
 						addHtml += 		"<td>";
 						addHtml += 			"<div style='margin-bottom:30px;font-size:16px;font-weight:bold;font-family:Noto Sans KR, Sans-serif'>" + month +"월 "+ day +"일 </div>";
 						
 						let find = false;		//식단표 데이터가 있는지 여부
 						for(let k = 0; k < result.length; k ++){
-							
 							if(find == true){
 								//이미 식단 데이터를 가져왔을 경우 다음 for문
 								continue;
@@ -156,7 +159,7 @@
 							} else {
 								if(k+1 == result.length && find == false){
 									//마지막 루프까지 해당 날짜 데이터가 없을 경우 
-									addHtml +="<div'>준비 중입니다.</div>";
+									addHtml +="<div style='margin-bottom:10px;'>준비 중입니다.</div>";
 								}
 							}
 						}
@@ -175,7 +178,7 @@
 			
 			//장바구니 담기
 			fnCartSave = function (){
-				let checkList = $('[class="menuboard_btn active"]');	//선택된 식단리스트
+				let checkList = $('[class="menuboard_btn active"]');	//선택된 식단리스트 요소
 				let checkArray = [];	//선택된 식단 리스트에 id값을 배열로 담음
 				if(checkList.length == 0 ){
 					alert("선택된 일자가 없습니다.")

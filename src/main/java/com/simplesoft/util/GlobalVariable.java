@@ -8,5 +8,5 @@ package com.simplesoft.util;
  */
 public class GlobalVariable {
 	
-	static final String AA = "AA";
+	public static final String REDIRECT_LOGIN 	= "/common/login";
 }

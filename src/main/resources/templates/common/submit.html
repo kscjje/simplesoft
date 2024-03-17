@@ -1,0 +1,28 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<script src="/js/jquery-3.6.0.min.js"></script>
+<!-- <c:if test="${not empty PARAM_MESSAGE}">
+	<c:set var="PARAM_MESSAGE">${fn:replace(PARAM_MESSAGE, '"', '\\"')}</c:set>
+	<script type="text/javascript">
+		alert("<c:out value='${PARAM_MESSAGE}'/>");
+	</script>
+</c:if> -->
+</head>
+<body>ffff
+<form name="redirectForm" id="redirectForm" method="get" target="_top">
+	<th:if test="${not empty PARAM_MAP}">
+		<th:block th:each="entry, status : ${PARAM_MAP}">
+			<th:if="${not empty entry.value}">
+				<input type="hidden" th:name="${entry.key}" th:value="${entry.value}">
+			</th:if>
+		</th:block>
+	</th:if>
+</form>
+<script type="text/javascript">
+	
+	var frm = document.redirectForm;
+	frm.action = /*[[${returnUrl}]]*/ "";
+	frm.submit();
+</script>
+</body>
+</html>

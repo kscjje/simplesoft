@@ -43,13 +43,14 @@
 			cursor: pointer;
 		}
 	</style>
-	<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
-	<script>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script th:inline="javascript">
 		/**
 		*	로그인 시도
 		**/
 		function fnLogin() {
-			
+			let returnUrl = /*[[${returnUrl}]]*/ "";
+			console.log(returnUrl);
 		}
 	</script>
 </head>

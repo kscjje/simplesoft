@@ -37,7 +37,7 @@
 						<button type="button" onclick="location.href='/order'"style="padding:15px 70px;" class="btn btn-secondary btn-lg">상품보러가기</button>
 					</div>
 				</div>
-				<div class="">
+				<div>
 					<table class="table table-borderless table-white" border="1" style="text-align: center;height: 100px;margin-top: 50px;font-size: 18px;";>
 						<tr style="vertical-align: middle;">
 							<td>상품금액<br><span id="r_productMoney">0</span>원</td>
@@ -50,6 +50,13 @@
 						</tr>
 					</table>
 				</div>
+				<div style="text-align:center;margin-top: 40px;" th:if="${cartList.size gt 0}">
+					<button type="button" onclick="$('#hiddenForm').submit();" style="font-size: 20px; width:400px;padding:15px 15px;"class="btn btn-outline-success">주문하기</button>
+				</div>
+				<form id="hiddenForm" style="display: none;" method="post" action="/payReg">
+					<input type="text" name="cartArray">
+					<input type="text" name="hi">
+				</form>
 			</div>
 		</div>
 		</div>
@@ -101,8 +108,8 @@
 					$("#r_deliv").text("무료");
 					$("#r_discount").text("6,000원");
 				}
-				
 				let totalMoney = productMoney + deliveryPrice;		//상품금액 + 배송비
+				if(productMoney == 0 ) totalMoney = 0;
 				$("#r_totalMoney").text(totalMoney.toLocaleString('ko-KR'));
 				/* 총 계산식 끝
 				*/
@@ -208,7 +215,7 @@
 							} else if(result.data.resultCode == "NoData"){
 								alert("수량을 변경할 리스트가 없습니다.");
 								location.reload();
-								return;		
+								return;
 							}
 						}
 			        },
@@ -254,7 +261,7 @@
 								alert("삭제할 리스트가 없습니다.");
 							}
 							location.reload();
-							return;		
+							return;
 						}
 			        },
 			        error: function (e) {

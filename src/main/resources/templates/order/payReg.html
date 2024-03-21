@@ -3,13 +3,8 @@
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{layouts/default_layout}">
 	<main id="wrap" layout:fragment="content">
-		<style>
-			.h2 {
-				margin-bottom: 30px;
-			}
-		</style>
 		<div>
-			<h2 class="h2">장바구니</h2>
+			<h2>주문서 작성</h2>
 			<div class="list-check">
 				<input class="form-check-input" type="checkbox" id="f-chk-all" checked style="cursor: pointer;">
 				<label class="form-check-label" for="f-chk-all" style="cursor: pointer;">
@@ -60,6 +55,7 @@
 				</div>
 				<form id="hiddenForm" style="display: none;" method="post" action="/payReg">
 					<input type="text" name="cartArray">
+					<input type="text" name="hi">
 				</form>
 			</div>
 		</div>

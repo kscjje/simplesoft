@@ -19,7 +19,8 @@ import com.simplesoft.cart.service.CartService;
 import com.simplesoft.member.service.MemberService;
 import com.simplesoft.member.service.MemberVO;
 import com.simplesoft.menuboard.service.MenuBoardService;
-import com.simplesoft.util.GlobalVariable;
+import com.simplesoft.order.service.OrderService;
+import com.simplesoft.order.service.OrderVO;
 import com.simplesoft.util.RequestConvertUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,14 +39,16 @@ public class MainController {
 	@Autowired
 	CartService cartService;
 	
+	@Autowired
+	OrderService orderService;
+	
 	@GetMapping("/main")
 	public String main() {
 		return "/main";
 	}
 	@GetMapping("/login")
-	public String login(@RequestParam Map<String, Object> paramMap, Model model) {
+	public String login(@RequestParam Map<String, Object> paramMap, Model model ) {
 		model.addAttribute("returnUrl", paramMap.get("returnUrl"));
-		model.addAttribute("c", "c");
 		return "/login";
 	}
 	
@@ -103,22 +106,19 @@ public class MainController {
 	@PostMapping("/payReg")
 	public String payReg(HttpServletRequest request, Model model, HttpSession session) throws UnsupportedEncodingException {
 		
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("g","g");
 		String returnUrl = request.getRequestURI().toString();
 		
 		MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
+		OrderVO orderVO = new OrderVO();
+		orderService.insertOrderMst(orderVO);
 		if(loginInfo != null) {
-			paramMap.put("userSession", "");
-			paramMap.put("userNo", loginInfo.getUserNo());
 		} else {
 			returnUrl += RequestConvertUtil.convertMapToParam(request.getParameterMap());
+//			Map<String, Object> paramMap = new HashMap<String, Object>();
+//			model.addAttribute("PARAM_MAP", paramMap);
 			model.addAttribute("returnUrl", returnUrl);
-			model.addAttribute("PARAM_MAP", paramMap);
-			return GlobalVariable.REDIRECT_LOGIN;
+//			return GlobalVariable.REDIRECT_LOGIN;
 		}
-//		cartList = cartService.selectCartList(paramMap);		
-//		model.addAttribute("cartList", cartList);
-		return "/order/cart";
+		return "/order/payReg";
 	}
 }

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.simplesoft.mapper.order.OrderMapper">
+
+	<!-- 주문번호 생성 -->
+	<insert id="insertOrderMst" parameterType="com.simplesoft.order.service.OrderVO">
+		/* OrderMapper.insertOrderMst */
+		<selectKey keyProperty="orderNo" resultType="String" order="BEFORE"> 
+			SELECT FN_CREATE_ORDER_NO() AS ORDER_NO
+		</selectKey>
+		INSERT INTO ORDER_MST
+			(
+					ORDER_NO
+				,	USER_NO
+				,	ORDER_STATUS
+				,	USER_SESSION
+				,	ORDER_PAY_TYPE
+				,	TOTAL_PRODUCT_AMT
+				,	TOTAL_DIS_AMT
+				,	MARKETING_AGREE_FG
+				,	REG_USER
+				,	REG_DT
+			)
+		VALUES(
+					#{orderNo}
+				,	#{userNo}
+				,	#{orderStatus}
+				,	#{userSession}
+				,	#{orderPayType}
+				,	#{totalProductAmt}
+				,	#{totalDisAmt}
+				,	#{marketingAgreeFg}
+				,	#{userNo}
+				,	NOW()
+		)
+	</insert>
+	
+</mapper>

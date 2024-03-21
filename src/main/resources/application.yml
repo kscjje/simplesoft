@@ -5,3 +5,4 @@ server:
   port:  8080
 mybatis: 
   mapper-locations: classpath:simple/mapper/grid/GridMapper.xml
+  

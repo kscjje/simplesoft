@@ -5,6 +5,20 @@
 	<div class="container-sm">
 		<main class="content-wrapper" layout:fragment="content" style="padding: 10px;">
 			<style>
+				@media only screen and (max-width: 540px) {
+					.custom{
+						font-size: 8px !important;
+					}
+					.fs-5, .fs-3 {
+						font-size: 8px !important;
+					}
+					input[type="text"],
+					input[type="password"] {
+						height: 30px;
+						width:50% !important;
+						font-size: 8px;
+					}
+				}
 				@media only screen and (min-width: 992px) {
 					.col-lg-3 {
 						flex: 0 0 auto;
@@ -16,53 +30,112 @@
 						flex: 0 0 auto;
 						width: 65%;
 					}
+					input[type="text"],
+					input[type="password"] {
+						width:25% !important;
+					}
 				}
 			</style>
-			<div class="row justify-content-center" style="text-align: center;">
-					<h2 class="mb-5"><i class="bi bi-clipboard2-data"></i> 주문서 작성</h2>
-					<div class="col-lg-3">
-						<div class="row">
-        					<div class="col">
-								<h6 class="mb-3 fw-bold text-start">1.주문식단</h6>
-								<table class="table text-center">
-									<thead class="table-dark">
-										<tr class="text-center">
-											<th scope="col" width="32%">상품명</th>
-											<th scope="col" width="17%">총수량</th>
-											<th scope="col" width="17%">판매가</th>
-											<th scope="col" width="12%">소계</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr th:each="rs,rsStat : ${order.productList}">
-											<td style="text-align:left">
-												<div class="fw-bold" style="margin-bottom:10px;" th:text="${#temporals.createDate(rs.menuDay, 'yyyyMMdd')} + ' (' + ${#temporals.dayOfWeekName(#temporals.createDate(rs.menuDay, 'yyyyMMdd'))} + ')'"></div>
-												<th:block th:each="msg,msgStat : ${#strings.setSplit(rs.menuMsg,'|')}">
-													<th:block th:if="${#strings.substring(msg,0,1) == '!'}">
-														<span style="color:red;margin-right:7px;" th:text="${#strings.substring(msg,1)}"></span>
-													</th:block>
-													<th:block th:if="${#strings.substring(msg,0,1) != '!'}">
-														<span style="margin-right:7px;" th:text="${msg}"></span>
-													</th:block>
-													<th:block th:if="${msgStat.count % 3 == 0}"><br></th:block>
+			<div class="row justify-content-center custom" style="text-align: center;">
+				<h2 class="mb-5"><i class="bi bi-clipboard2-data"></i> 주문서 작성</h2>
+				<div class="col-lg-3">
+					<div class="row">
+    					<div class="col">
+							<h6 class="mb-3 fw-bold text-start">1.주문식단</h6>
+							<table class="table text-center">
+								<thead class="table-dark">
+									<tr class="text-center">
+										<th scope="col" width="32%">상품명</th>
+										<th scope="col" width="17%">총수량</th>
+										<th scope="col" width="17%">판매가</th>
+										<th scope="col" width="12%">소계</th>
+										<th scope="col" width="16%">배송비</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="rs,rsStat : ${order.productList}">
+										<td style="text-align:left">
+											<div class="fw-bold" style="margin-bottom:10px;" th:text="${#temporals.createDate(rs.menuDay, 'yyyyMMdd')} + ' (' + ${#temporals.dayOfWeekName(#temporals.createDate(rs.menuDay, 'yyyyMMdd'))} + ')'"></div>
+											<th:block th:each="msg,msgStat : ${#strings.setSplit(rs.menuMsg,'|')}">
+												<th:block th:if="${#strings.substring(msg,0,1) == '!'}">
+													<span style="color:red;margin-right:7px;" th:text="${#strings.substring(msg,1)}"></span>
 												</th:block>
+												<th:block th:if="${#strings.substring(msg,0,1) != '!'}">
+													<span style="margin-right:7px;" th:text="${msg}"></span>
+												</th:block>
+												<th:block th:if="${msgStat.count % 3 == 0}"><br></th:block>
+											</th:block>
+										</td>
+										<td class="fs-5" style="vertical-align:middle;">
+											<span th:text="${rs.orderQty}"></span>
+										</td>
+										<td class="fs-5" style="vertical-align:middle;">
+											<span th:text="${#numbers.formatInteger(18000,3,'COMMA')}"></span>
+										</td>
+										<td class="fs-5" style="vertical-align:middle;">
+											<span th:text="${#numbers.formatInteger(rs.payAmt,3,'COMMA')}"></span>
+										</td>
+										<td th:if="${rsStat.first == true}" th:rowspan="${order.productList.size}" class="fs-5" style="vertical-align:middle;">
+											<span th:text="${order.totalProductAmt/18000 >= 3 ? '무료' : #numbers.formatInteger(order.totalDelyAmt,3,'COMMA')}"></span>
+										</td>
+									</tr>
+									<tr class="h-50" style="vertical-align: middle;">
+										<td></td>
+										<td colspan="2"class="fw-bold">총 주문금액</td>
+										<td colspan="2"class="fw-bold fs-3"th:text="${#numbers.formatInteger(order.totalProductAmt+order.totalDelyAmt,3,'COMMA')}+'원'"></td>
+									</tr>
+								</tbody>
+							</table>
+    					</div>
+    					<div class="mt-4">
+							<h6 class="mb-3 fw-bold text-start">2.주문하시는 분</h6>
+							<hr>
+							<th:block th:if="${#strings.isEmpty(session.loginInfo)}">
+								<!-- 비회원 주문정보 -->
+								<form>
+									<table class="table table-borderless" style="vertical-align: middle;">
+										<tr>
+											<td class="text-start" style="width:18%">
+												<label for="t_name" class="form-label"><font color="red">* </font>이름</label>
 											</td>
-											<td style="vertical-align:middle;font-size:20px">
-												<span id="ui_cart_31" th:text="${rs.orderQty}"></span>
-											</td>
-											<td style="vertical-align:middle;">
-												<span id="ui_price_31" th:text="${#numbers.formatInteger(18000,3,'COMMA')}"></span>
-											</td>
-											<td style="vertical-align:middle;">
-												<span id="ui_price_31" th:text="${#numbers.formatInteger(rs.payAmt,3,'COMMA')}"></span>
+											<td>
+												<input type="text" id="t_name" class="form-control w-50">
 											</td>
 										</tr>
-									</tbody>
-								</table>
-        					</div>
-        				<div>
-					</div>
+										<tr>
+											<td class="text-start">
+												<label for="t_pass" class="form-label"><font color="red">* </font>비밀번호</label>
+											</td>
+											<td>
+												<input type="password" id="t_pass" class="form-control w-50" placeholder="영,숫자 3~20자 (주문서 조회시 필요)">
+											</td>
+										</tr>
+										<tr>
+											<td class="text-start">
+												<label for="t_tel" class="form-label">&nbsp; 전화번호</label>
+											</td>
+											<td>
+												<input type="text" id="t_tel" class="form-control w-50 phoneNumber">
+											</td>
+										</tr>
+										<tr>
+											<td class="text-start">
+												<label for="t_phone" class="form-label"><font color="red">* </font>휴대번호</label>
+											</td>
+											<td>
+												<input type="text" id="t_phone" class="form-control w-50 phoneNumber">
+											</td>
+										</tr>
+									</table>
+								</form>
+							</th:block>
+							<th:block th:if="${not #strings.isEmpty(session.loginInfo)}">
+								<!-- 회원 주문정보 -->
+							</th:block>
+						</div>
+    				<div>
 				</div>
+			</div>
 			
 			
 			

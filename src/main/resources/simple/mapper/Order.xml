@@ -23,6 +23,7 @@
 				,	ORDER_PAY_TYPE
 				,	TOTAL_PRODUCT_AMT
 				,	TOTAL_DIS_AMT
+				,	TOTAL_DELY_AMT
 				,	MARKETING_AGREE_FG
 				,	REG_USER
 				,	REG_DT
@@ -35,6 +36,7 @@
 				,	'1'
 				,	#{totalProductAmt}
 				,	#{totalDisAmt}
+				,	#{totalDelyAmt}
 				,	'Y'
 				,	#{userNo}
 				,	NOW()

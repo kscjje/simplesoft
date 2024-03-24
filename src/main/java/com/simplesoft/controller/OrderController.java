@@ -150,7 +150,6 @@ public class OrderController {
 				opVo.setUsedPoint(opVo.getPayAmt() / 100);
 				productList.add(opVo);
 			}
-			
 			deliveryPrice = totalQty >= 3 ? 0 : GlobalVariable.DELY_AMT;
 			orderVO.setTotalProductAmt(totalPrice);
 			orderVO.setTotalDisAmt(0);
@@ -206,7 +205,6 @@ public class OrderController {
 		vo.setOrderNo(orderNo);
 		vo.setUserNo(userNo);
 		vo.setOrderStatus(GlobalVariable.ORDER_STATUS_APPLY);
-		System.out.println(vo.toString());
 		OrderVO order = orderService.selectOrderApplyInfo(vo);
 		if (order == null) {
 			model.addAttribute("PARAM_MESSAGE", "주문 상품 정보가 없습니다.\n다시 진행해 주세요.");

@@ -165,5 +165,6 @@
 				#{item}
 			</foreach>
 		</if>
+		ORDER BY B.MENU_DAY
 	</select>
 </mapper>

@@ -3,8 +3,6 @@ package com.simplesoft.mapper.cart;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import com.simplesoft.config.MysqlConnMapper;
 
 @MysqlConnMapper
@@ -15,4 +13,5 @@ public interface CartMapper {
 	public List<Map<String, Object>> selectCartList(Map<String, Object> paramMap);
 	public Map<String, Object> selectCartDetail(Map<String, Object> paramMap);
 	public int deleteCart(Map<String, Object> paramMap);
+	public List<Map<String, Object>> selectOrderCartShop(Map<String, Object> paramMap);
 }

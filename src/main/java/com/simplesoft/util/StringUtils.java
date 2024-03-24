@@ -5,6 +5,9 @@ import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -12,11 +15,14 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.springframework.stereotype.Component;
+
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 일반 Utils
  */
+@Component("StringUtils")
 public class StringUtils {
 	
 	/**
@@ -989,5 +995,15 @@ public class StringUtils {
             }
         }
         return formatNum;
+    }
+    public static String convertToDate(String dateString) {
+        // Parse the input date string into a LocalDate object
+        LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ISO_DATE);
+
+        // Get the day of the week from the LocalDate object
+        DayOfWeek dayOfWeek = date.getDayOfWeek();
+
+        // Return the day of the week as a string
+        return dayOfWeek.toString();
     }
 }

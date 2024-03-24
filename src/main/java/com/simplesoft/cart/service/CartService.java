@@ -13,4 +13,5 @@ public interface CartService {
 	public int updateCartQty(Map<String, Object> paramMap);
 	public int deleteCart(Map<String, Object> paramMap);
 	public Map<String, Object> selectCartDetail(Map<String, Object> paramMap);
+	public List<Map<String, Object>> selectOrderCartShop(Map<String, Object> paramMap);
 }

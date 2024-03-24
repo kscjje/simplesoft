@@ -3,23 +3,23 @@
 	<th:block th:fragment="header">
 		<!-- Header (s) -->
 		<header id="header" class="top-nav">
-			<div class="header-bar-bn">
-				<div class="header-bar-bn-bg">
-					<div class="confix1200">
-						<p>상단고정탑배너</p>
-					</div>
-				</div>
-			</div>
-			<div class="header">
+			<div class="">
 				<!--2번 파트-->
 				<div class="location">
 					<div class="location_inner">
 						<ul>
-							<li><a href="#">멤버쉽기능/로그인</a></li>
-							<li><a href="#">회원가입</a></li>
-							<li><a href="#">마이페이지</a></li>
-							<li><a href="/cart">장바구니</a></li>
-							<li><a href="#">비회원주문조회</a></li>
+							<th:block th:if="${#strings.isEmpty(session.loginInfo)}">
+								<li><a href="/login">멤버쉽기능/로그인</a></li>
+								<li><a href="#">회원가입</a></li>
+								<li><a href="#">마이페이지</a></li>
+								<li><a href="/cart">장바구니</a></li>
+								<li><a href="#">비회원주문조회</a></li>
+							</th:block>
+							<th:block th:if="${not #strings.isEmpty(session.loginInfo)}">
+								<li><a href="/logout">로그아웃</a></li>
+								<li><a href="#">마이페이지</a></li>
+								<li><a href="/cart">장바구니</a></li>
+							</th:block>
 						</ul>
 					</div>
 				</div>
@@ -32,38 +32,6 @@
 					</div>
 				</div>
 			</div>
-			<!--4번 메뉴바 구현-->
-			<nav>
-			  |
-			  <section>
-			    <a href="#">BRAND</a>
-			  </section>
-			  |
-			  <section>
-			    <a href="#">VISUAL</a>
-			  </section>
-			  |
-			  <section>
-			    <a href="#">STYLE</a>
-			  </section>
-			  |
-			  <section>
-			    <a href="#">MEDIA</a>
-			  </section>
-			  |
-			  <section>
-			    <a href="#">NEWS</a>
-			  </section>
-			  |
-			  <section>
-			    <a href="#">STORE</a>
-			  </section>
-			  |
-			  <section>
-			    <a href="#">CUSTOMER</a>
-			  </section>
-			  |
-			</nav>
 		</header>
 	<!-- (e) Header -->
 	</th:block>

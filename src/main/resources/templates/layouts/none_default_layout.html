@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no, user-scalable=no">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<meta name="mobile-web-app-capable" content="yes">
@@ -20,7 +20,7 @@
 	<script src="/js/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-	<th:block th:replace="~{/fragments/header :: header}"></th:block>	
+	<th:block th:replace="~{/fragments/none_header :: header}"></th:block>	
 	<th:block layout:fragment="content"></th:block>
 	<th:block th:replace="~{/fragments/footer :: footer}"></th:block>
 </body>

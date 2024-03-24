@@ -13,7 +13,7 @@ import com.simplesoft.mapper.cart.CartMapper;
 public class CartServiceImpl implements CartService {
 	
 	@Autowired
-	CartMapper CartMapper;
+	CartMapper cartMapper;
 	
 	@Override
 	public void insertCart(Map<String, Object> paramMap) {
@@ -26,28 +26,32 @@ public class CartServiceImpl implements CartService {
 			if (selectCartList(paramMap).size() > 0) {
 				//이미 장바구니에 있다면 수량 +1
 				System.out.println(paramMap);
-				CartMapper.updateCartAdd(paramMap);
+				cartMapper.updateCartAdd(paramMap);
 			} else {
 				System.out.println(paramMap);
-				CartMapper.insertCart(paramMap);
+				cartMapper.insertCart(paramMap);
 			}
 		}
 	}
 	
 	@Override
 	public Map<String, Object> selectCartDetail(Map<String, Object> paramMap){
-		return CartMapper.selectCartDetail(paramMap);
+		return cartMapper.selectCartDetail(paramMap);
 	}
 	@Override
 	public List<Map<String, Object>> selectCartList(Map<String, Object> paramMap){
-		return CartMapper.selectCartList(paramMap);
+		return cartMapper.selectCartList(paramMap);
+	}
+	@Override
+	public List<Map<String, Object>> selectOrderCartShop(Map<String, Object> paramMap){
+		return cartMapper.selectOrderCartShop(paramMap);
 	}
 	@Override
 	public int updateCartQty(Map<String, Object> paramMap) {
-		return CartMapper.updateCartQty(paramMap);
+		return cartMapper.updateCartQty(paramMap);
 	}
 	@Override
 	public int deleteCart(Map<String, Object> paramMap) {
-		return CartMapper.deleteCart(paramMap);
+		return cartMapper.deleteCart(paramMap);
 	}
 }

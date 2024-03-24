@@ -22,7 +22,7 @@
 			</div>
 			<hr class="border-2 opacity-50" style="color:#000">
 			<div>
-				<table class="table table-striped" style="text-align: center;" id="cartTable">
+				<table class="table table-striped text-center" id="cartTable">
 					<tbody>
 						<tr id="thHead" style="height: 60px;vertical-align: middle;">
 							<th scope="col" width="7%">선택</th>
@@ -33,7 +33,7 @@
 						</tr>
 					</tbody>
 				</table>
-				<div class="container" style="text-align: center;" th:if="${cartList.size eq 0}">
+				<div class="container text-center" th:if="${cartList.size eq 0}">
 					
 					<i style="font-size: 100px;"class="bi bi-cart-x"></i><br>
 					<span style="font-size: 28px;color: gray;">장바구니에 담긴 상품이 없습니다.</span>
@@ -43,7 +43,7 @@
 					</div>
 				</div>
 				<div>
-					<table class="table table-borderless table-white" border="1" style="text-align: center;height: 100px;margin-top: 50px;font-size: 18px;";>
+					<table class="table table-borderless table-white text-center" border="1" style="height: 100px;margin-top: 50px;font-size: 18px;";>
 						<tr style="vertical-align: middle;">
 							<td>상품금액<br><span id="r_productMoney">0</span>원</td>
 							<td><i class="bi bi-plus-circle"></i></td>
@@ -55,11 +55,11 @@
 						</tr>
 					</table>
 				</div>
-				<div style="text-align:center;margin-top: 40px;" th:if="${cartList.size gt 0}">
-					<button type="button" onclick="$('#hiddenForm').submit();" style="font-size: 20px; width:400px;padding:15px 15px;"class="btn btn-outline-success">주문하기</button>
+				<div class="text-center" style="margin-top: 40px;" th:if="${cartList.size gt 0}">
+					<button type="button" onclick="cartOrder()" style="font-size: 20px; width:400px;padding:15px 15px;"class="btn btn-outline-success">주문하기</button>
 				</div>
 				<form id="hiddenForm" style="display: none;" method="post" action="/payReg">
-					<input type="text" name="cartArray">
+					<input type="text" id="cartArray" name="cartArray">
 				</form>
 			</div>
 		</div>
@@ -78,10 +78,10 @@
 				for(let i = 0; i < cartList.length; i++){
 					addHtml +=	"<tr>";
 					addHtml +=		"<td>";
-					addHtml +=			"<input class='form-check-input' id='flexCheckChecked"+ cartList[i].cartNo +"' type='checkbox' name='cartCheck' data='"+cartList[i].qty+"' value='"+cartList[i].cartNo+"' checked />";
-					addHtml +=			"<label class='form-check-label' for='flexCheckChecked"+ cartList[i].cartNo +"'></label>";
+					addHtml +=			"<input class='form-check-input' id='"+ cartList[i].cartNo +"' type='checkbox' name='cartCheck' data='"+cartList[i].qty+"' value='"+cartList[i].cartNo+"' checked />";
+					addHtml +=			"<label class='form-check-label' for='"+ cartList[i].cartNo +"'></label>";
 					addHtml +=		"</td>";
-					addHtml +=		"<td style='text-align:left'>";
+					addHtml +=		"<td class='text-start'>";
 					addHtml +=			"<div style='margin-bottom:10px;'>"+cartList[i].menuDay+"</div>";
 										totalQty += cartList[i].qty;
 										let menuMsg = cartList[i].menuMsg.split("|");
@@ -115,8 +115,8 @@
 				let totalMoney = productMoney + deliveryPrice;		//상품금액 + 배송비
 				if(productMoney == 0 ) totalMoney = 0;
 				$("#r_totalMoney").text(totalMoney.toLocaleString('ko-KR'));
-				/* 총 계산식 끝
-				*/
+				/* 총 계산식 끝*/
+				
 				$("#thHead").after(addHtml);
 				
 				$("#f-chk-all").click(function() {
@@ -196,7 +196,7 @@
 			        	if(result.responseCode == "SUCCESS"){
 							if(result.data.resultCode == "SUCCESS"){
 								$("#ui_cart_"+index).text(count);
-								$("#flexCheckChecked"+index).attr("data",count);
+								$("#"+index).attr("data",count);
 								$("#ui_total_"+index).text((price * count).toLocaleString('ko-KR'));
 								
 								let totalQty = 0;
@@ -274,6 +274,23 @@
 			        }
 			    });
 			}
+			
+			//주문하기
+			cartOrder = function(){
+					
+				let checkList = $("input[name=cartCheck]:checked");	//선택된 식단리스트 요소
+				let checkArray = [];	//선택된 식단 리스트에 id값을 배열로 담음
+				if(checkList.length == 0 ){
+					alert("상품을 선택해주세요.")
+					return;
+				}
+				for(let i = 0; i < checkList.length; i++){
+					checkArray += checkList[i].id;
+					if( i+1 != checkList.length)checkArray += ",";
+				}
+				$("#cartArray").val(checkArray);
+				$('#hiddenForm').submit();
+			} 
 		</script>
 	</main>
 </html>

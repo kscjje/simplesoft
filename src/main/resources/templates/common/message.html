@@ -9,13 +9,5 @@
 </script>
 </head>
 <body>
-<form name="redirectForm" id="redirectForm" action="/login" method="get" target="_top">
-	<input type="hidden" name="returnUrl" th:value="${returnUrl}" />
-	<input type="hidden" name="type" th:value="${type}" />
-</form>
-<script type="text/javascript">
-	var frm = document.redirectForm;
-	frm.submit();
-</script>
 </body>
 </html>

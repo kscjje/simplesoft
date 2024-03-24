@@ -1,73 +1,152 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<head>
-	<!-- Your page-specific head content for login page -->
-	<title>toy progject | 로그인 </title>
-	<style>
-		body {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			height: 100vh;
-			margin: 0;
-		}
-
-		form {
-			width: 300px;
-			padding: 20px;
-			background-color: #f4f4f4;
-			border: 1px solid #ccc;
-			border-radius: 5px;
-			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-		}
-
-		label {
-			display: block;
-			margin-bottom: 8px;
-		}
-
-		input {
-			width: 100%;
-			padding: 8px;
-			margin-bottom: 12px;
-			box-sizing: border-box;
-		}
-
-		button {
-			background-color: #4caf50;
-			color: white;
-			padding: 10px 15px;
-			border: none;
-			border-radius: 5px;
-			cursor: pointer;
-		}
-	</style>
-	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-	<script th:inline="javascript">
-		/**
-		*	로그인 시도
-		**/
-		function fnLogin() {
-			let returnUrl = /*[[${returnUrl}]]*/ "";
-			console.log(returnUrl);
-		}
-	</script>
-</head>
-<body>
-	<div layout:fragment="content">
-		<!-- Your login page-specific content -->
-		<h2>Toy Project 로그인</h2>
-		<form action="/login" method="post">
-			<!-- Your login form fields -->
-			<label for="username">아이디:</label>
-			<input type="text" id="username" name="username" autocomplete="none" required>
-			<br>
-			<label for="password">비밀번호:</label>
-			<input type="password" id="password" name="password" required>
-			<br>
-			<button type="button" onclick="fnLogin()">Login</button>
-		</form>
+<html xmlns:th="http//www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorate="~{layouts/default_layout}">
+	<div class="container-sm">
+		<main class="content-wrapper" layout:fragment="content" style="padding: 10px;">
+			<style>
+				@media only screen and (min-width: 992px) {
+					.col-lg-3 {
+						flex: 0 0 auto;
+						width: 50%;
+					}
+				}
+				@media only screen and (min-width: 1600px) {
+					.col-lg-3 {
+						flex: 0 0 auto;
+						width: 25%;
+					}
+				}
+			</style>
+			<div class="row justify-content-center text-center">
+				<div class="col-lg-3">
+					<div class="login-container">
+						<h2 class="mb-4">로그인</h2>
+						<form action="#" method="post" id="loginForm">
+							<div class="form-group" style="margin-bottom: 12px;">
+								<input type="text" class="form-control" style="background-color: #f6f6f6; height: 60px;" name="userId" id="userId" placeholder="아이디를 입력하세요" required>
+							</div>
+							<div class="form-group" style="margin-bottom: 18px;">
+								<input type="password" class="form-control" style="background-color: #f6f6f6; height: 60px;" name="userPw" id="userPw" placeholder="비밀번호를 입력하세요" required>
+							</div>
+							<div class="form-group" style="margin-bottom: 18px;">
+								<button type="button" class="btn btn-dark btn-block" style="width:100%;height: 60px;font-weight: bold;font-size: 20px;" onclick="fnLogin()">로그인</button>
+							</div>
+							<div class="form-group d-flex justify-content-between align-items-center">
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" name="flexCheckChecked" id="flexCheckChecked1">
+									<label class="form-check-label" for="flexCheckChecked1" style="font-size: 14px;cursor: pointer;">아이디 저장</label>
+								</div>
+								<div class="text-right">
+									<a href="" class="mr-2" style="text-decoration: none;color: #191919;font-size: 14px;">아이디찾기</a><span style="font-size: 13px;"> |</span>
+									<a href="" class="mr-2" style="text-decoration: none;color: #212529;font-size: 14px;">비밀번호 찾기</a><span style="font-size: 13px;"> |</span>
+									<a href="" style="text-decoration: none;color: #212529;font-size: 14px;">회원가입</a>
+								</div>
+							</div>
+						</form>
+					</div>
+					<th:block th:if="${type eq 'noneMember'}">
+						<div class="login-container" style="margin-top:30px">
+							<h2 class="mb-1">비회원 구매</h2>
+							<form action="#" method="post" id="loginForm">
+								<div class="input-group">
+									<div class="form-control text-start">
+										<p class="small lh-1">1. 개인정보의 수집∙이용 목적</p>
+										<p class="small lh-1">- 구매한 물품의 배송/설치 등 고객과 체결한 계약의 이행</p>
+										<p class="small lh-1">- 상품 구매 관련 문의사항과 반품·환불 등 민원사항의 상담 및 처리</p>
+										<p class="small lh-1">- 상품 구매 관련 고지사항, 주문/배송정보 안내</p>
+										<p class="small lh-1">2. 수집하는 개인정보의 항목</p>
+										<p class="small lh-1">(필수) 주문 고객명, 받는 고객명, 배송주소, 배송연락처, 결제수단 정보 (신용카드, 계좌번호 등 결제수단에 따름)</p>
+										<p class="small lh-1">(선택) 이메일, 추가 연락처</p>
+										<p class="small lh-1">3. 개인정보 보유 이용 기간</p>
+										<p class="small lh-1">- 상품 주문 및 배송 완료 후 5년간 보유합니다.</p>
+										<p class="small lh-lg">- 법령에 따라 보유하여야 하는 기간은 홈페이지 하단의 ‘개인정보 처리방침’을 참고하시기 바랍니다.</p>
+										<p class="small lh-lg">고객님께서는 위와 같은 개인정보 수집에 동의를 거부하실 수 있습니다. 다만, 필수항목 동의 거부시 서비스 이용이 제한되며, 선택 항목에 동의를 거부하시는 경우 서비스 제공은 가능하나, 배송정보의 추가 안내 등이 제한될 수 있습니다.</p>
+									</div>
+								</div>
+								<div class="form-group d-flex justify-content-between align-items-center" style="margin-bottom: 18px;">
+									<div class="form-check">
+										<input class="form-check-input" type="checkbox" id="agree1">
+										<label class="form-check-label" for="agree1" style="font-size: 14px;cursor: pointer;">[필수] 비회원 개인정보 수집 · 이용 동의</label>
+									</div>
+								</div>
+								<div class="form-group" style="margin-bottom: 18px;">
+<!--									<button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal" style="width:100%;height: 60px;font-weight: bold;font-size: 20px;">비회원 주문</button>-->
+									<button type="button" class="btn btn-outline-dark"style="width:100%;height: 60px;font-weight: bold;font-size: 20px;"onclick="noneOrder()">비회원 주문</button>
+								</div>
+							</form>
+						</div>
+					</th:block>
+				</div>
+			</div>
+		
+			<script th:inline="javascript">
+				/**
+				*	로그인 시도
+				**/
+				fnLogin = function(){
+					let userId = $('#userId').val();
+					let userPw = $('#userPw').val();
+					
+					if(userId == ""){
+						alert("아이디를 입력해 주세요.");
+						$('#userId').focus();
+						return;
+					} else if(userPw == ""){
+						alert("비밀번호를 입력해 주세요.")
+						$('#userPw').focus();
+						return;
+					}
+					let loginInfo = {
+						userId :  userId,
+						userPw : userPw
+					}
+					let returnUrl = /*[[${returnUrl}]]*/ "";
+					
+					$.ajax({
+						url : "/login/loginAjax",
+						type : "POST",
+						dataType : "json",
+						data : loginInfo,
+						success : function(data) {
+							if(data.RESULT == "SUCCESS"){
+								location.href = returnUrl == null ? "/main" : returnUrl;
+							} else{
+								alert("아이디와 비밀번호가 일치하지 않습니다.");
+								$('#userPw').val("");
+							}
+						}, error : function(request, status, error) {
+							alert("에러코드: " + request.status + "\n메시지: " + request.responseText);
+						}
+					});
+				}
+				noneOrder = function(){
+					if(!$("#agree1").is(":checked")){
+						alert("[비회원 개인정보 수집 · 이용 동의]에 동의해주세요.");
+						return;
+					}
+					let returnUrl = /*[[${returnUrl}]]*/ "";
+					location.href = returnUrl + "&noneMember=Y";
+				}
+			</script>
+			<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">비회원 주문</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<p>Modal body text goes here.</p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary">Save changes</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
 	</div>
 </body>
 </html>

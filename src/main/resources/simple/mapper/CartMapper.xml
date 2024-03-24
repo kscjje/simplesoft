@@ -127,4 +127,43 @@
 			#{item}
 		</foreach>
 	</delete>
+	<!-- 결제할 장바구니 조회 -->
+	<select id="selectOrderCartShop" parameterType="hashMap" resultType="CamelHashMap">
+		/*CartMapper.selectOrderCartShop*/
+		SELECT
+			  A.CART_NO
+			, A.USER_NO
+			, A.USER_SESSION
+			, A.MENU_BOARD_SEQ
+			, A.QTY
+			, A.REG_USER
+			, A.REG_DT
+			, CONCAT(DATE_FORMAT(B.MENU_DAY,'%Y-%m-%d'),' (',
+				CASE DAYOFWEEK(B.MENU_DAY) 
+				WHEN '2' THEN '월'
+				WHEN '3' THEN '화'
+				WHEN '4' THEN '수'
+				WHEN '5' THEN '목'
+				WHEN '6' THEN '금'
+				END
+			,')') MENU_DAY
+			, B.MENU_MSG
+		FROM CART_MST A
+		INNER JOIN MENU_BOARD B on A.MENU_BOARD_SEQ = B.MENU_BOARD_SEQ
+		WHERE 1=1
+		<choose>
+			<when test="userNo eq 0">
+				AND A.USER_SESSION = #{userSession}	
+			</when>
+			<otherwise>
+				AND A.USER_NO = #{userNo}
+			</otherwise>
+		</choose>
+		<if test="cartList neq null and cartList.length > 0">
+			AND A.CART_NO IN
+			<foreach collection="cartList" item="item" index="index" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+		</if>
+	</select>
 </mapper>

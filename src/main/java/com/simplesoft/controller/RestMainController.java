@@ -43,7 +43,7 @@ public class RestMainController {
 		MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
 		if(loginInfo != null) {
 			paramMap.put("userSession", "");
-			paramMap.put("regUser", loginInfo.getMemNm());
+			paramMap.put("regUser", loginInfo.getUserId());
 			paramMap.put("userNo", loginInfo.getUserNo());
 		} else {
 			paramMap.put("userSession", session.getId());
@@ -78,7 +78,6 @@ public class RestMainController {
 			paramMap.put("userNo", 0);
 		}
 		cartDetail = cartService.selectCartDetail(paramMap);
-		log.info("cartDetail:"+cartDetail);
 		if(cartDetail != null) {
 			int suc = cartService.updateCartQty(paramMap);
 			if(suc > 0) {

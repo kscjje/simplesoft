@@ -7,5 +7,5 @@ public interface MemberService {
 	
 	public int insertMember(MemberVO memberVO);
 	public List<Map<String, Object>> selectMemberList(Map<String, Object> paraMap);
-	public Map<String, Object> selectMemberDetail(Map<String, Object> paraMap);
+	public MemberVO selectMemberDetail(MemberVO vo);
 }

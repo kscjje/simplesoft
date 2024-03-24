@@ -22,8 +22,8 @@ public class MemberServiceImpl implements MemberService{
 		return memberMapper.insertMember(memberVO);
 	}
 	@Override
-	public Map<String, Object> selectMemberDetail(Map<String, Object> paraMap){
-		return memberMapper.selectMemberDetail(paraMap);
+	public MemberVO selectMemberDetail(MemberVO vo){
+		return memberMapper.selectMemberDetail(vo);
 	}
 	@Override
 	public List<Map<String, Object>> selectMemberList(Map<String, Object> paraMap){

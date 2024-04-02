@@ -106,10 +106,10 @@
 				// 오늘 날짜 월 가져오기
 				const currentMonth = (currentDate.getMonth()+1).toString.length == 1 ? "0"+(currentDate.getMonth()+1) : (currentDate.getMonth()+1).toString;
 				// 오늘 날짜 일 가져오기
-				const currentDay = currentDate.getDate();
+				const currentDay = 	(currentDate.getDate()+1).toString.length == 1 ? "0"+(currentDate.getDate()+1) : (currentDate.getDate()+1).toString;
 				
 				const currentYYYYMMDD = currentYear + currentMonth + currentDay;
-				const currentMMDD = currentMonth+ + currentDay;
+				const currentMMDD = currentMonth + currentDay;
 				
 				// 오늘 날짜가 속한 주의 일요일을 가져오기
 				const firstSundayOfThisWeek = new Date(currentDate);
@@ -146,6 +146,7 @@
 										} else {
 											addHtml +="<div style='margin-bottom:10px;'>"+menuMsg[index]+"</div>";
 										}
+										debugger;
 										if(result[k].useYn == "Y" && (index+1) == menuMsg.length && currentMMDD < month+day){
 											addHtml	+="<div style='padding-top:10px;'>";
 											addHtml +=	"<input type='button' onclick='toggleButtonClick(this)' id='"+result[k].menuBoardSeq+"' value='선택' class='menuboard_btn'>";

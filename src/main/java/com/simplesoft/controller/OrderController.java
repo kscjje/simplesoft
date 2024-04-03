@@ -99,6 +99,7 @@ public class OrderController {
 		MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
 		OrderVO orderVO = new OrderVO();
 		String userNm = "";
+		
 		if(loginInfo != null) {
 			paramMap.put("userNo", loginInfo.getUserNo());
 			userNm = loginInfo.getUserNm();
@@ -110,6 +111,7 @@ public class OrderController {
 				userNm = "비회원";
 				session.setAttribute("noneMember", session.getId());
 			} else {
+				//비회원 로그인 확인하기 
 				String returnUrl = request.getRequestURI().toString();
 				returnUrl += RequestConvertUtil.convertMapToParam(request.getParameterMap());
 				model.addAttribute("type", "noneMember");

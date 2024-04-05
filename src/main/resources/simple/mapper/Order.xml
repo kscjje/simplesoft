@@ -84,6 +84,9 @@
 		WHERE USER_NO = #{userNo}
 		AND ORDER_NO = #{orderNo}
 		AND ORDER_STATUS = #{orderStatus}
+		<if test="userNo == '0'">
+			AND USER_SESSION = #{userSession}
+		</if>
 	</select>
 	
 	<!-- 주문 신청 정보 -->	

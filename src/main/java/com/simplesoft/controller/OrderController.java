@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.groovy.parser.antlr4.util.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,10 +25,11 @@ import com.simplesoft.util.RequestConvertUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 public class OrderController {
-	private static final Logger log = LogManager.getLogger(OrderController.class);
 	
 	@Autowired
 	MenuBoardService menuboardService;
@@ -53,7 +52,6 @@ public class OrderController {
 		
 		List<Map<String, Object>> resultMap = menuboardService.selectMenuBoardList(paramMap);
 		log.info(""+resultMap);
-		
 		model.addAttribute("resultMap", resultMap);
 		return "/order/list";
 	}
@@ -199,6 +197,7 @@ public class OrderController {
 		} else {
 			if(session.getAttribute("noneMember") != null) {
 				//비회원일경우
+				vo.setUserSession((String)session.getAttribute("noneMember"));
 			} else {
 				model.addAttribute("returnUrl", "/cart");
 				return GlobalVariable.REDIRECT_SUBMIT;
@@ -213,7 +212,6 @@ public class OrderController {
 			model.addAttribute("returnUrl", "/cart");
 			return GlobalVariable.REDIRECT_SUBMIT;
 		} else {
-			System.out.println();
 			model.addAttribute("orderNo", orderNo);
 			model.addAttribute("order", order);
 		}

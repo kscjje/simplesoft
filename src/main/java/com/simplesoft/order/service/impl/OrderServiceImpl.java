@@ -37,5 +37,8 @@ public class OrderServiceImpl implements OrderService{
 	public OrderVO selectOrderApplyInfo(OrderVO vo) {
 		return orderMapper.selectOrderApplyInfo(vo);
 	}
+	public int updateOrderApplyInfo(OrderVO vo) {
+		return orderMapper.updateOrderApplyInfo(vo);
+	}
 	
 }

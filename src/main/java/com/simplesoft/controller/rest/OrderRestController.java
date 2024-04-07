@@ -1,4 +1,4 @@
-package com.simplesoft.controller;
+package com.simplesoft.controller.rest;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,7 +38,6 @@ public class OrderRestController {
 	public BasicResponse order(Model model, HttpSession session, @ModelAttribute("orderVO") OrderVO vo) {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
-		System.out.println(vo);
 		int userNo = 0;
 		String userNm = "";
 		
@@ -62,12 +61,12 @@ public class OrderRestController {
 		vo.setOrderStatus(GlobalVariable.ORDER_STATUS_APPLY); 								//주문상태-주문접수
 		
 		OrderVO order = orderService.selectOrderApplyInfo(vo);
-		System.out.println(order);
 		if (order == null) {
 			result.put("resultCode", "9999");
 			result.put("resultMsg", "주문정보가 없습니다.");
 			result.put("retunUrl","/cart");
 		} else {
+			orderService.updateOrderApplyInfo(vo);
 			result.put("resultCode", "SUCCESS");
 		}
 		return new CommonResponse<Map<String, Object>>(result);

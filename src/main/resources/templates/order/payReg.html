@@ -221,10 +221,10 @@
 	    					<div class="mt-4">
 								<h6 class="mb-3 fw-bold text-start">3.받으시는 분</h6>
 								<hr>
-								<th:block th:if="${#strings.isEmpty(session.loginInfo)}">
-									<!-- 비회원 주문정보 -->
-									<form>
-										<table class="table table-borderless align-middle">
+								<!-- 비회원 주문정보 -->
+								<form>
+									<table class="table table-borderless align-middle">
+										<th:block th:if="${not #strings.isEmpty(session.loginInfo)}">
 											<tr>
 												<td class="text-start text-light-emphasis" style="width:18%">
 													<label for="r_tel" class="form-label">&nbsp; 배송지선택</label>
@@ -236,103 +236,130 @@
 													</div>
 												</td>
 											</tr>
+										</th:block>
+										<th:block th:if="${#strings.isEmpty(session.loginInfo)}">
 											<tr>
-												<td class="text-start text-light-emphasis">
-													<label for="r_name" class="form-label"><font color="red">* </font>이름</label>
+												<td class="text-start text-light-emphasis" style="width:18%">
+													<label for="r_tel" class="form-label">&nbsp; 배송지선택</label>
 												</td>
 												<td>
-													<input type="text" id="r_name" name="receiveName" class="form-control w-50 input25">
-												</td>
-											</tr>
-											<tr>
-												<td class="text-start text-light-emphasis">
-													<label for="r_tel" class="form-label">&nbsp; 전화번호</label>
-												</td>
-												<td>
-													<input type="text" id="r_tel" name="receiveTel" class="form-control w-50 phoneNumber input25">
-												</td>
-											</tr>
-											<tr>
-												<td class="text-start text-light-emphasis">
-													<label for="r_phone" class="form-label"><font color="red">* </font>핸드폰</label>
-												</td>
-												<td>
-													<input type="text" id="r_phone" name="receivePhone" class="form-control w-50 phoneNumber input25" maxlength="13">
-												</td>
-											</tr>
-											<tr>
-												<td class="text-start text-light-emphasis">
-													<label for="r_address" class="form-label"><font color="red">* </font>주소</label>
-												</td>
-												<td>
-													<button type="button" class="btn btn-sm btn-outline-secondary float-start me-1 btn25"  onclick="execDaumPostcode2();">주소검색</button>
-													<input type="text" id="r_postNum" name="receivePostNum" readonly="readonly" class="form-control form-control-sm w-25 input25" placeholder="우편번호"/>
-													<div id="wrap2" style="display:none;border:1px solid;width:100%;height:300px;margin:5px 0;position:relative">
-														<img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode2()" alt="접기 버튼">
-													</div>
-													<input type="text" id="r_addr" name="receiveAddr" class="form-control form-control-sm w-75 mt-1 input50" placeholder="기본주소" readonly />
-													<input type="text" id="r_addrDetail" name="receiveAddrDetail" class="form-control form-control-sm w-75 mt-1 input50" placeholder="상세주소" autocomplete="off"/>
-												</td>
-											</tr>
-											<tr>
-												<td class="text-start text-light-emphasis">
-													<label for="r_address" class="form-label"><font color="red">* </font>배송유형</label>
-												</td>
-												<td>
-													<div class="form-check float-start me-3">
-														<input class="form-check-input" type="radio" name="delivKind" id="radio1">
-														<label class="form-check-label" for="radio1">
-															당일배송(안산)
-														</label>
-													</div>
 													<div class="form-check float-start">
-														<input class="form-check-input" type="radio" name="delivKind" id="radio2">
-														<label class="form-check-label" for="radio2">
-															우체국 택배(안산 외)
-														</label>
+														<input class="form-check-input" type="checkbox" id="check1">
+														<label class="form-check-label input25 font-sm" for="check1" style="display:contents; cursor: pointer;">주문자와 동일</label>
 													</div>
 												</td>
 											</tr>
-											<tr>
-												<td class="text-start text-light-emphasis">
-													<label for="r_commonPwd" class="form-label">&nbsp; 공동현관 비밀번호</label>
-												</td>
-												<td>
-													<input type="text" id="commonPwd" name="commonPwd" class="form-control form-control-sm w-75 mt-1 input50" placeholder="비밀번호 입력 예시: 종버튼 + 1234" maxlength="50"/>
-												</td>
-											</tr>
-											<tr>
-												<td class="text-start text-light-emphasis">
-													<label for="r_bigo" class="form-label">&nbsp; 전하실 말씀</label>
-												</td>
-												<td>
-													<div class="input-group">
-														<textarea class="form-control" id="r_bigo" name="bigo" style="resize: none;"placeholder="배송 시에 찾기 어려운 곳이나 기타 사항이 있는 경우 원활한 배송을 위해 기입해 주시기 바랍니다 :)"></textarea>
-													</div>
-												</td>
-											</tr>
-										</table>
-									</form>
-								</th:block>
-								<th:block th:if="${not #strings.isEmpty(session.loginInfo)}">
-									<!-- 회원 주문정보 -->
-								</th:block>
+										</th:block>
+										<tr>
+											<td class="text-start text-light-emphasis">
+												<label for="r_name" class="form-label"><font color="red">* </font>이름</label>
+											</td>
+											<td>
+												<input type="text" id="r_name" name="receiveName" class="form-control w-50 input25">
+											</td>
+										</tr>
+										<tr>
+											<td class="text-start text-light-emphasis">
+												<label for="r_tel" class="form-label">&nbsp; 전화번호</label>
+											</td>
+											<td>
+												<input type="text" id="r_tel" name="receiveTel" class="form-control w-50 phoneNumber input25">
+											</td>
+										</tr>
+										<tr>
+											<td class="text-start text-light-emphasis">
+												<label for="r_phone" class="form-label"><font color="red">* </font>핸드폰</label>
+											</td>
+											<td>
+												<input type="text" id="r_phone" name="receivePhone" class="form-control w-50 phoneNumber input25" maxlength="13">
+											</td>
+										</tr>
+										<tr>
+											<td class="text-start text-light-emphasis">
+												<label for="r_address" class="form-label"><font color="red">* </font>주소</label>
+											</td>
+											<td>
+												<button type="button" class="btn btn-sm btn-outline-secondary float-start me-1 btn25"  onclick="execDaumPostcode2();">주소검색</button>
+												<input type="text" id="r_postNum" name="receivePostNum" readonly="readonly" class="form-control form-control-sm w-25 input25" placeholder="우편번호"/>
+												<div id="wrap2" style="display:none;border:1px solid;width:100%;height:300px;margin:5px 0;position:relative">
+													<img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode2()" alt="접기 버튼">
+												</div>
+												<input type="text" id="r_addr" name="receiveAddr" class="form-control form-control-sm w-75 mt-1 input50" placeholder="기본주소" readonly />
+												<input type="text" id="r_addrDetail" name="receiveAddrDetail" class="form-control form-control-sm w-75 mt-1 input50" placeholder="상세주소" autocomplete="off"/>
+											</td>
+										</tr>
+										<tr>
+											<td class="text-start text-light-emphasis">
+												<label for="r_address" class="form-label"><font color="red">* </font>배송유형</label>
+											</td>
+											<td>
+												<div class="form-check float-start me-3">
+													<input class="form-check-input" type="radio" name="delivKind" id="radio1">
+													<label class="form-check-label" for="radio1">
+														당일배송(안산)
+													</label>
+												</div>
+												<div class="form-check float-start">
+													<input class="form-check-input" type="radio" name="delivKind" id="radio2">
+													<label class="form-check-label" for="radio2">
+														우체국 택배(안산 외)
+													</label>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td class="text-start text-light-emphasis">
+												<label for="r_commonPwd" class="form-label">&nbsp; 공동현관 비밀번호</label>
+											</td>
+											<td>
+												<input type="text" id="commonPwd" name="commonPwd" class="form-control form-control-sm w-75 mt-1 input50" placeholder="비밀번호 입력 예시: 종버튼 + 1234" maxlength="50"/>
+											</td>
+										</tr>
+										<tr>
+											<td class="text-start text-light-emphasis">
+												<label for="r_bigo" class="form-label">&nbsp; 전하실 말씀</label>
+											</td>
+											<td>
+												<div class="input-group">
+													<textarea class="form-control" id="r_bigo" name="bigo" style="resize: none;"placeholder="배송 시에 찾기 어려운 곳이나 기타 사항이 있는 경우 원활한 배송을 위해 기입해 주시기 바랍니다 :)"></textarea>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</form>
 							</div>
 							<div class="d-grid gap-2 d-md-block">
 								<button class="btn btn-primary btn-lg" type="button" onclick="fnSubmit()">주문하기</button>
-								<button class="btn btn-primary btn-lg" type="button">취소</button>
+								<button class="btn btn-primary btn-lg" type="button" onclick='$("#modalPay").trigger("click");'>취소</button>
 							</div>
 						</form>
-						<div class="wrapper">
-							<div class="box_section" style="padding: 40px 30px 50px 30px; margin-top: 30px; margin-bottom: 50px">
-								<!-- 결제 UI -->
-								<div id="payment-method"></div>
-								<!-- 이용약관 UI -->
-								<div id="agreement"></div>
-								<!-- 결제하기 버튼 -->
-								<button class="button" id="payment-button" style="margin-top: 30px">결제하기</button>
+						<button type="button" style="display:none;" class="btn btn-primary" id="modalPay" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></button>
+						
+						<!-- Modal -->
+						<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+							<div class="modal-dialog modal-lg">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h1 class="modal-title fs-5" id="staticBackdropLabel">결제하기</h1>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<div class="modal-body">
+										<div class="wrapper">
+											<!-- 결제 UI -->
+											<div id="payment-method"></div>
+											<!-- 이용약관 UI -->
+											<div id="agreement"></div>
+											<!-- 결제하기 버튼 -->
+											<div class="btn-group">
+												<button type="button" class="btn btn-primary" id="payment-request-button">결제하기</button>
+												<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
+						
     				<div> 
 				</div>
 			</div>
@@ -520,7 +547,7 @@
 				
 				
 				const coupon = document.getElementById("coupon-box");
-				const button = document.getElementById("payment-button");
+				const button = document.getElementById("payment-request-button");
 				
 				const orderId = /*[[${orderNo}]]*/"";
 				const totalProductAmt = /*[[${order.totalProductAmt}]]*/0;
@@ -556,6 +583,7 @@
 */
 				let phone = "";
 				button.addEventListener("click", function () {
+					
 					phone = $("#o_phone").val().replaceAll("-","");
 					// 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요. 
 					// 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.  
@@ -571,6 +599,7 @@
 				});
 				//주문하기
 				fnSubmit = function(){
+					
 					const pattern = /^[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*$/;
 					const scriptTag = /[~^&()|<>?]/;
 					const emailPattern = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-za-z0-9\-]+/;
@@ -646,11 +675,6 @@
 						setTimeout( function(){ $("#o_email2").focus(); }, 1 );
 						return;
 					}
-					if(!delivKind){
-						alert("배송 유형을 선택해 주세요.");
-						setTimeout( function(){ $("#radio1").focus(); }, 1 );
-						return;
-					}
 					
 					if(r_name.replaceAll(" ", "") == ""){
 						alert("받으시는 분 이름을 입력해 주세요.");
@@ -685,6 +709,11 @@
 						setTimeout( function(){ $("#r_addrDetail").focus(); }, 1 );
 						return;
 					}
+					if(!delivKind){
+						alert("배송 유형을 선택해 주세요.");
+						setTimeout( function(){ $("#radio1").focus(); }, 1 );
+						return;
+					}
 					
 					let orderVO = $("#orderForm").serializeObject();
 					orderVO.orderNo = /*[[${orderNo}]]*/""; 
@@ -698,7 +727,7 @@
 							console.log(result);
 							if(result.responseCode == "SUCCESS"){
 								if(result.data.resultCode == "SUCCESS"){
-									alert("결제 완료하였습니다.");
+									$("#modalPay").trigger("click");
 								} else {
 									alert("오류:"+result.data.resultMsg);
 									if(result.data.returnUrl != ""){

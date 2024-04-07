@@ -9,4 +9,5 @@ public interface OrderMapper {
 	public int insertOrderMst(OrderVO vo);
 	public int insertOrderProduct(OrderProductVO vo);
 	public OrderVO selectOrderApplyInfo(OrderVO vo);
+	public int updateOrderApplyInfo(OrderVO vo);
 }

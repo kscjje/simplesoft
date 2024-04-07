@@ -1,4 +1,4 @@
-package com.simplesoft.controller;
+package com.simplesoft.controller.rest;
 
 import java.util.HashMap;
 import java.util.Map;

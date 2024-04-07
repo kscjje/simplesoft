@@ -13,6 +13,7 @@ import java.util.Map;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,9 +21,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.simplesoft.payments.service.PaymentsService;
+
 @Controller
 public class PaymentsController {
 
+	@Autowired
+	PaymentsService paymentsService;
+	
 	@RequestMapping(value = "/confirm")
 
 	public ResponseEntity<JSONObject> confirmPayment(@RequestBody String jsonBody) throws Exception {
@@ -72,6 +78,8 @@ public class PaymentsController {
 	        JSONObject jsonObject = (JSONObject) parser.parse(reader);
 	        responseStream.close();
 
+	        paymentsService.getPayResult(jsonObject);
+	        
 	        return ResponseEntity.status(code).body(jsonObject);
 	}
 	/**
@@ -84,8 +92,9 @@ public class PaymentsController {
 	public String success(Model model,@RequestParam Map<String, Object> paramMap) {
 		
 //		Map<String, Object> paramMap = new HashMap<String, Object>();
-		System.out.println("HI:"+paramMap);
-		
+		System.out.println("success:"+paramMap);
+		int i = paymentsService.insertPayments(paramMap);
+		System.out.println(i);
 		return "/payments/success";
 	}
 	
@@ -99,7 +108,7 @@ public class PaymentsController {
 	public String fail(Model model,@RequestParam Map<String, Object> paramMap) {
 		
 //		Map<String, Object> paramMap = new HashMap<String, Object>();
-		System.out.println("HI:"+paramMap);
+		System.out.println("fail:"+paramMap);
 		
 		return "/payments/fail";
 	}

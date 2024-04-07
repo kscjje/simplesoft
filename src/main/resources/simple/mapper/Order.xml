@@ -78,6 +78,22 @@
 			, TOTAL_DIS_AMT
 			, TOTAL_DELY_AMT
 			, MARKETING_AGREE_FG
+			, ORDER_NAME
+			, ORDER_PWD
+			, ORDER_TEL
+			, ORDER_PHONE
+			, ORDER_POST_NUM
+			, ORDER_ADDR
+			, ORDER_ADDR_DETAIL
+			, ORDER_EMAIL
+			, RECEIVE_NAME
+			, RECEIVE_TEL
+			, RECEIVE_PHONE
+			, RECEIVE_POST_NUM
+			, RECEIVE_ADDR
+			, RECEIVE_ADDR_DETAIL
+			, COMMON_PWD
+			, BIGO
 			, REG_USER
 			, REG_DT
 		FROM ORDER_MST
@@ -108,4 +124,34 @@
 		FROM ORDER_PRODUCT
 		WHERE ORDER_NO = #{orderNo}
 	</select>
+	
+	<!-- 주문 정보 업데이트 -->
+	<update id="updateOrderApplyInfo" parameterType="com.simplesoft.order.service.OrderVO">
+		/* OrderMapper.updateOrderApplyInfo */
+		UPDATE ORDER_MST SET
+			  ORDER_NAME		= #{orderName}
+			, ORDER_PWD			= #{orderPwd}	
+			, ORDER_TEL			= #{orderTel}
+			, ORDER_PHONE		= #{orderPhone}
+			, ORDER_POST_NUM	= #{orderPostNum}
+			, ORDER_ADDR		= #{orderAddr}
+			, ORDER_ADDR_DETAIL	= #{orderAddrDetail}
+			, ORDER_EMAIL		= #{orderEmail}
+			, RECEIVE_NAME		= #{receiveName}
+			, RECEIVE_TEL		= #{receiveTel}
+			, RECEIVE_PHONE		= #{receivePhone}
+			, RECEIVE_POST_NUM	= #{receivePostNum}
+			, RECEIVE_ADDR		= #{receiveAddr}
+			, RECEIVE_ADDR_DETAIL = #{receiveAddrDetail}
+			, COMMON_PWD		= #{commonPwd}
+			, BIGO				= #{bigo}
+			, UPT_USER			= #{userNo}
+			, UPT_DT			= SYSDATE()
+		WHERE USER_NO = #{userNo}
+		AND ORDER_NO = #{orderNo}
+		AND ORDER_STATUS = #{orderStatus}
+		<if test="userNo == '0'">
+			AND USER_SESSION = #{userSession}
+		</if>
+	</update>
 </mapper>

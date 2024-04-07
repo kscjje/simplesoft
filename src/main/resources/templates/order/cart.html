@@ -106,7 +106,11 @@
 				
 				deliveryPrice = totalQty > 2 ? 0 : 6000;	//배송비 계산
 				if(deliveryPrice != 0){
-					$("#r_deliv").text(deliveryPrice.toLocaleString('ko-KR')+"원");
+					if(totalQty == 0){
+						$("#r_deliv").text("0원");	
+					} else {
+						$("#r_deliv").text(deliveryPrice.toLocaleString('ko-KR')+"원");
+					}
 					$("#r_discount").text("0원");					
 				} else {
 					$("#r_deliv").text("무료");

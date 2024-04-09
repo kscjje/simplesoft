@@ -2,24 +2,9 @@
 <html xmlns:th="http//www.thymeleaf.org"
 		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 		layout:decorate="~{layouts/default_layout}">
-	<div class="container-sm">
 		<main class="content-wrapper" layout:fragment="content" style="padding: 10px;">
-			<style>
-				@media only screen and (min-width: 992px) {
-					.col-lg-3 {
-						flex: 0 0 auto;
-						width: 50%;
-					}
-				}
-				@media only screen and (min-width: 1600px) {
-					.col-lg-3 {
-						flex: 0 0 auto;
-						width: 25%;
-					}
-				}
-			</style>
 			<div class="row justify-content-center text-center">
-				<div class="col-lg-3">
+				<div class="col-lg-4">
 					<div class="login-container">
 						<h2 class="mb-4">로그인</h2>
 						<form action="#" method="post" id="loginForm">
@@ -135,6 +120,5 @@
 				}
 			</script>
 		</main>
-	</div>
 </body>
 </html>

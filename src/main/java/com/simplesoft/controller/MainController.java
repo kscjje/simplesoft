@@ -2,8 +2,6 @@ package com.simplesoft.controller;
 
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,9 +13,11 @@ import com.simplesoft.member.service.MemberService;
 import com.simplesoft.menuboard.service.MenuBoardService;
 import com.simplesoft.order.service.OrderService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
+@Slf4j
 public class MainController {
-	private static final Logger log = LogManager.getLogger(MainController.class);
 	
 	@Autowired
 	MemberService memberService;

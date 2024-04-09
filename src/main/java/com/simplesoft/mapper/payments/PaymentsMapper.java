@@ -1,10 +1,11 @@
 package com.simplesoft.mapper.payments;
 
-import java.util.Map;
-
 import com.simplesoft.config.MysqlConnMapper;
+import com.simplesoft.payments.service.PaymentsVO;
 
 @MysqlConnMapper
 public interface PaymentsMapper {
-	public int insertPayments(Map<String, Object> paramMap);
+	public int insertPayments(PaymentsVO vo);
+	public PaymentsVO selectPaymentsDetail(PaymentsVO vo);
+	public int updatePayments(PaymentsVO vo);
 }

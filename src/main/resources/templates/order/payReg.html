@@ -2,576 +2,584 @@
 <html xmlns:th="http//www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/default_layout}">
-	
-	
-	<div class="container-sm">
-		<main class="content-wrapper" layout:fragment="content" style="padding: 10px;">
-			<script src="https://js.tosspayments.com/v1/payment-widget"></script>
-			<style>
-				@media only screen and (max-width: 540px) {
-					.custom{
-						font-size: 8px !important;
-					}
-					.fs-5, .fs-3 {
-						font-size: 8px !important;
-					}
-					.input15 {
-						height: 30px;
-						width:20% !important;
-						font-size: 8px;
-					}
-					.input25 {
-						height: 30px;
-						width:50% !important;
-						font-size: 8px;
-					}
-					.input50 {
-						height: 30px;
-						width:75% !important;
-						font-size: 8px;
-					}
-					.btn25 {
-						height: 30px;
-						width:25% !important;
-						font-size: 8px;
-					}
-					.font-sm {
-						font-size: 8px;
-					}
+	<main class="content-wrapper" layout:fragment="content" style="padding: 10px;">
+		<script src="https://js.tosspayments.com/v1/payment-widget"></script>
+		<style>
+			@media only screen and (max-width: 575px) {
+				.custom{
+					font-size: 8px !important;
 				}
-				@media only screen and (min-width: 541px) {
-					.custom{
-						font-size: 10px !important;
-					}
-					.col-lg-3 {
-						flex: 0 0 auto;
-						width: 80%;
-					}
-					.font-sm {
-						font-size: 10px;
-					}
+				.fs-5, .fs-3 {
+					font-size: 8px !important;
 				}
-				@media only screen and (min-width: 992px) {
-					.custom{
-						font-size: 12px !important;
-					}
-					.col-lg-3 {
-						flex: 0 0 auto;
-						width: 80%;
-					}
-					.font-sm {
-						font-size: 12px;
-					}
+				.input15 {
+					height: 30px;
+					width:20% !important;
+					font-size: 8px;
 				}
-				@media only screen and (min-width: 1600px) {
-					.custom{
-						font-size: 16px !important;
-					}
-					.col-lg-3 {
-						flex: 0 0 auto;
-						width: 65%;
-					}
-					.input25 {
-						width:25% !important;
-					}
-					.input50{
-						width:50% !important;
-					}
-					.font-sm {
-						font-size: 14px;
-					}
+				.input25 {
+					height: 30px;
+					width:50% !important;
+					font-size: 8px;
 				}
-			</style>
-			<div class="row justify-content-center custom" style="text-align: center;">
-				<h2 class="mb-5"><i class="bi bi-clipboard2-data"></i> 주문서 작성</h2>
-				<div class="col-lg-3">
-					<div class="row">
-    					<div class="col">
-							<h6 class="mb-3 fw-bold text-start">1.주문식단</h6>
-							<table class="table text-center">
-								<thead class="table-dark">
-									<tr class="text-center">
-										<th scope="col" width="32%">상품명</th>
-										<th scope="col" width="17%">총수량</th>
-										<th scope="col" width="17%">판매가</th>
-										<th scope="col" width="12%">소계</th>
-										<th scope="col" width="16%">배송비</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr th:each="rs,rsStat : ${order.productList}">
-										<td style="text-align:left">
-											<div class="fw-bold" style="margin-bottom:10px;" th:text="${#temporals.createDate(rs.menuDay, 'yyyyMMdd')} + ' (' + ${#temporals.dayOfWeekName(#temporals.createDate(rs.menuDay, 'yyyyMMdd'))} + ')'"></div>
-											<th:block th:each="msg,msgStat : ${#strings.setSplit(rs.menuMsg,'|')}">
-												<th:block th:if="${#strings.substring(msg,0,1) == '!'}">
-													<span style="color:red;margin-right:7px;" th:text="${#strings.substring(msg,1)}"></span>
-												</th:block>
-												<th:block th:if="${#strings.substring(msg,0,1) != '!'}">
-													<span style="margin-right:7px;" th:text="${msg}"></span>
-												</th:block>
-												<th:block th:if="${msgStat.count % 3 == 0}"><br></th:block>
+				.input50 {
+					height: 30px;
+					width:75% !important;
+					font-size: 8px;
+				}
+				.btn25 {
+					height: 30px;
+					width:25% !important;
+					font-size: 8px;
+				}
+				.font-sm {
+					font-size: 8px;
+				}
+			}
+			@media only screen and (min-width: 576px) {
+				.custom{
+					font-size: 10px !important;
+				}
+				.col-lg-3 {
+					flex: 0 0 auto;
+				}
+				.font-sm {
+					font-size: 10px;
+				}
+			}
+			@media only screen and (min-width: 768px) {
+				.custom{
+					font-size: 10px !important;
+				}
+				.col-lg-3 {
+					flex: 0 0 auto;
+					width: 80%;
+				}
+				.font-sm {
+					font-size: 10px;
+				}
+			}
+			@media only screen and (min-width: 992px) {
+				.custom{
+					font-size: 12px !important;
+				}
+				.col-lg-3 {
+					flex: 0 0 auto;
+					width: 80%;
+				}
+				.font-sm {
+					font-size: 12px;
+				}
+			}
+			@media only screen and (min-width: 1600px) {
+				.custom{
+					font-size: 16px !important;
+				}
+				.col-lg-3 {
+					flex: 0 0 auto;
+					width: 80%;
+				}
+				.input25 {
+					width:25% !important;
+				}
+				.input50{
+					width:50% !important;
+				}
+				.font-sm {
+					font-size: 14px;
+				}
+			}
+		</style>
+		<div class="row justify-content-center custom" style="text-align: center;">
+			<h2 class="mb-5"><i class="bi bi-clipboard2-data"></i> 주문서 작성</h2>
+			<div class="col-lg-3">
+				<div class="row">
+					<div class="col">
+						<h6 class="mb-3 fw-bold text-start">1.주문식단</h6>
+						<table class="table text-center">
+							<thead class="table-dark">
+								<tr class="text-center">
+									<th scope="col">상품명</th>
+									<th scope="col" width="17%">총수량</th>
+									<th scope="col" width="17%">판매가</th>
+									<th scope="col" width="12%">소계</th>
+									<th scope="col" width="16%">배송비</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="rs,rsStat : ${order.productList}">
+									<td style="text-align:left">
+										<div class="fw-bold" style="margin-bottom:10px;" th:text="${#temporals.createDate(rs.menuDay, 'yyyyMMdd')} + ' (' + ${#temporals.dayOfWeekName(#temporals.createDate(rs.menuDay, 'yyyyMMdd'))} + ')'"></div>
+										<th:block th:each="msg,msgStat : ${#strings.setSplit(rs.menuMsg,'|')}">
+											<th:block th:if="${#strings.substring(msg,0,1) == '!'}">
+												<span style="color:red;margin-right:7px;" th:text="${#strings.substring(msg,1)}"></span>
 											</th:block>
+											<th:block th:if="${#strings.substring(msg,0,1) != '!'}">
+												<span style="margin-right:7px;" th:text="${msg}"></span>
+											</th:block>
+											<th:block th:if="${msgStat.count % 3 == 0}"><br></th:block>
+										</th:block>
+									</td>
+									<td class="fs-5 align-middle">
+										<span th:text="${rs.orderQty}"></span>
+									</td>
+									<td class="fs-5 align-middle">
+										<span th:text="${#numbers.formatInteger(18000,3,'COMMA')}"></span>
+									</td>
+									<td class="fs-5 align-middle">
+										<span th:text="${#numbers.formatInteger(rs.payAmt,3,'COMMA')}"></span>
+									</td>
+									<td th:if="${rsStat.first == true}" th:rowspan="${order.productList.size}" class="fs-5 align-middle">
+										<span th:text="${order.totalProductAmt/18000 >= 3 ? '무료' : #numbers.formatInteger(order.totalDelyAmt,3,'COMMA')}"></span>
+									</td>
+								</tr>
+								<tr class="h-50 align-middle">
+									<td></td>
+									<td colspan="2"class="fw-bold">총 주문금액</td>
+									<td colspan="2"class="fw-bold fs-3"th:text="${#numbers.formatInteger(order.totalProductAmt+order.totalDelyAmt,3,'COMMA')}+'원'"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<form id="orderForm" method="post">
+    					<div class="mt-4">
+							<h6 class="mb-3 fw-bold text-start">2.주문하시는 분 <a href="javascript:test()">테스트작성</a></h6>
+							<hr>
+								<!-- 비회원 주문정보 -->
+								<table class="table table-borderless align-middle">
+									<tr>
+										<td class="text-start text-light-emphasis" style="width:18%">
+											<label for="o_name" class="form-label"><font color="red">* </font>이름</label>
 										</td>
-										<td class="fs-5 align-middle">
-											<span th:text="${rs.orderQty}"></span>
-										</td>
-										<td class="fs-5 align-middle">
-											<span th:text="${#numbers.formatInteger(18000,3,'COMMA')}"></span>
-										</td>
-										<td class="fs-5 align-middle">
-											<span th:text="${#numbers.formatInteger(rs.payAmt,3,'COMMA')}"></span>
-										</td>
-										<td th:if="${rsStat.first == true}" th:rowspan="${order.productList.size}" class="fs-5 align-middle">
-											<span th:text="${order.totalProductAmt/18000 >= 3 ? '무료' : #numbers.formatInteger(order.totalDelyAmt,3,'COMMA')}"></span>
+										<td>
+											<input type="text" id="o_name" name="orderName" maxlength="10" class="form-control w-50 input25">
 										</td>
 									</tr>
-									<tr class="h-50 align-middle">
-										<td></td>
-										<td colspan="2"class="fw-bold">총 주문금액</td>
-										<td colspan="2"class="fw-bold fs-3"th:text="${#numbers.formatInteger(order.totalProductAmt+order.totalDelyAmt,3,'COMMA')}+'원'"></td>
+									<th:block th:if="${#strings.isEmpty(session.loginInfo)}">
+										<tr>
+											<td class="text-start text-light-emphasis">
+												<label for="o_pass" class="form-label"><font color="red">* </font>비밀번호</label>
+											</td>
+											<td>
+												<input type="password" id="o_pass" name="orderPwd" maxlength="20" class="form-control w-50 input25" style="font-size:12px !important;" placeholder="영,숫자 3~20자 (주문서 조회시 필요)">
+											</td>
+										</tr>
+									</th:block>
+									<tr>
+										<td class="text-start text-light-emphasis">
+											<label for="o_tel" class="form-label">&nbsp; 전화번호</label>
+										</td>
+										<td>
+											<input type="text" id="o_tel" name="orderTel" class="form-control w-50 phoneNumber input25">
+										</td>
 									</tr>
-								</tbody>
-							</table>
-    					</div>
-    					<form id="orderForm" method="post">
-	    					<div class="mt-4">
-								<h6 class="mb-3 fw-bold text-start">2.주문하시는 분</h6>
-								<hr>
-									<!-- 비회원 주문정보 -->
-									<table class="table table-borderless align-middle">
+									<tr>
+										<td class="text-start text-light-emphasis">
+											<label for="o_phone" class="form-label"><font color="red">* </font>핸드폰</label>
+										</td>
+										<td>
+											<input type="text" id="o_phone" name="orderPhone" class="form-control w-50 phoneNumber input25" maxlength="13">
+										</td>
+									</tr>
+									<tr>
+										<td class="text-start text-light-emphasis">
+											<label for="o_address" class="form-label"><font color="red">* </font>주소</label>
+										</td>
+										<td>
+											<button type="button" class="btn btn-sm btn-outline-secondary float-start me-1 btn25"  onclick="execDaumPostcode();">주소검색</button>
+											<input type="text" id="o_postNum" name="orderPostNum" readonly="readonly" class="form-control form-control-sm w-25 input25" placeholder="우편번호"/>
+											<div id="wrap" style="display:none;border:1px solid;width:100%;height:300px;margin:5px 0;position:relative">
+												<img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()" alt="접기 버튼">
+											</div>
+											<input type="text" id="o_addr" name="orderAddr" class="form-control form-control-sm w-75 mt-1 input50" placeholder="기본주소" readonly />
+											<input type="text" id="o_addrDetail" name="orderAddrDetail" class="form-control form-control-sm w-75 mt-1 input50" placeholder="상세주소" autocomplete="off"/>
+										</td>
+									</tr>
+									<tr>
+										<td class="text-start text-light-emphasis">
+											<label for="o_email" class="form-label"><font color="red">* </font>이메일</label>
+										</td>
+										<td>
+											<div style="display:flex;">
+												<input type="text" id="o_email" class="form-control w-25 input25">
+												<span class="me-1 ms-1 mt-1">@</span>
+												<input type="text" id="o_email2" class="form-control w-25 input25 me-1">
+												<select class="form-select w-25 input25" onchange="res(this.value)">
+													<option value="">직접입력</option>
+													<option value="naver.com">naver.com</option>
+													<option value="hanmail.net">hanmail.net</option>
+													<option value="nate.com">nate.com</option>
+													<option value="paran.com">paran.com</option>
+													<option value="empal.com">empal.com</option>
+													<option value="hotmail.com">hotmail.com</option>
+													<option value="gmail.com">gmail.com</option>
+													<option value="dreamwiz.com">dreamwiz.com</option>
+													<option value="lycos.co.kr">lycos.co.kr</option>
+													<option value="yahoo.co.kr">yahoo.co.kr</option>
+													<option value="korea.com">korea.com</option>
+													<option value="hanmir.com">hanmir.com</option>
+												</select>
+												<input type="text" id="od_email" name="orderEmail" style="display:none;">
+											</div>
+										</td>
+									</tr>
+								</table>
+							</th:block>
+						</div>
+    					<div class="mt-4">
+							<h6 class="mb-3 fw-bold text-start">3.받으시는 분</h6>
+							<hr>
+							<!-- 비회원 주문정보 -->
+							<form>
+								<table class="table table-borderless align-middle">
+									<th:block th:if="${not #strings.isEmpty(session.loginInfo)}">
 										<tr>
 											<td class="text-start text-light-emphasis" style="width:18%">
-												<label for="o_name" class="form-label"><font color="red">* </font>이름</label>
+												<label for="r_tel" class="form-label">&nbsp; 배송지선택</label>
 											</td>
 											<td>
-												<input type="text" id="o_name" name="orderName" maxlength="10" class="form-control w-50 input25">
-											</td>
-										</tr>
-										<th:block th:if="${#strings.isEmpty(session.loginInfo)}">
-											<tr>
-												<td class="text-start text-light-emphasis">
-													<label for="o_pass" class="form-label"><font color="red">* </font>비밀번호</label>
-												</td>
-												<td>
-													<input type="password" id="o_pass" name="orderPwd" maxlength="20" class="form-control w-50 input25" style="font-size:12px !important;" placeholder="영,숫자 3~20자 (주문서 조회시 필요)">
-												</td>
-											</tr>
-										</th:block>
-										<tr>
-											<td class="text-start text-light-emphasis">
-												<label for="o_tel" class="form-label">&nbsp; 전화번호</label>
-											</td>
-											<td>
-												<input type="text" id="o_tel" name="orderTel" class="form-control w-50 phoneNumber input25">
-											</td>
-										</tr>
-										<tr>
-											<td class="text-start text-light-emphasis">
-												<label for="o_phone" class="form-label"><font color="red">* </font>핸드폰</label>
-											</td>
-											<td>
-												<input type="text" id="o_phone" name="orderPhone" class="form-control w-50 phoneNumber input25" maxlength="13">
-											</td>
-										</tr>
-										<tr>
-											<td class="text-start text-light-emphasis">
-												<label for="o_address" class="form-label"><font color="red">* </font>주소</label>
-											</td>
-											<td>
-												<button type="button" class="btn btn-sm btn-outline-secondary float-start me-1 btn25"  onclick="execDaumPostcode();">주소검색</button>
-												<input type="text" id="o_postNum" name="orderPostNum" readonly="readonly" class="form-control form-control-sm w-25 input25" placeholder="우편번호"/>
-												<div id="wrap" style="display:none;border:1px solid;width:100%;height:300px;margin:5px 0;position:relative">
-													<img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()" alt="접기 버튼">
-												</div>
-												<input type="text" id="o_addr" name="orderAddr" class="form-control form-control-sm w-75 mt-1 input50" placeholder="기본주소" readonly />
-												<input type="text" id="o_addrDetail" name="orderAddrDetail" class="form-control form-control-sm w-75 mt-1 input50" placeholder="상세주소" autocomplete="off"/>
-											</td>
-										</tr>
-										<tr>
-											<td class="text-start text-light-emphasis">
-												<label for="o_email" class="form-label"><font color="red">* </font>이메일</label>
-											</td>
-											<td>
-												<div style="display:flex;">
-													<input type="text" id="o_email" class="form-control w-25 input25">
-													<span class="me-1 ms-1 mt-1">@</span>
-													<input type="text" id="o_email2" class="form-control w-25 input25 me-1">
-													<select class="form-select w-25 input25" onchange="res(this.value)">
-														<option value="">직접입력</option>
-														<option value="naver.com">naver.com</option>
-														<option value="hanmail.net">hanmail.net</option>
-														<option value="nate.com">nate.com</option>
-														<option value="paran.com">paran.com</option>
-														<option value="empal.com">empal.com</option>
-														<option value="hotmail.com">hotmail.com</option>
-														<option value="gmail.com">gmail.com</option>
-														<option value="dreamwiz.com">dreamwiz.com</option>
-														<option value="lycos.co.kr">lycos.co.kr</option>
-														<option value="yahoo.co.kr">yahoo.co.kr</option>
-														<option value="korea.com">korea.com</option>
-														<option value="hanmir.com">hanmir.com</option>
-													</select>
-													<input type="text" id="od_email" name="orderEmail" style="display:none;">
-												</div>
-											</td>
-										</tr>
-									</table>
-								</th:block>
-							</div>
-	    					<div class="mt-4">
-								<h6 class="mb-3 fw-bold text-start">3.받으시는 분</h6>
-								<hr>
-								<!-- 비회원 주문정보 -->
-								<form>
-									<table class="table table-borderless align-middle">
-										<th:block th:if="${not #strings.isEmpty(session.loginInfo)}">
-											<tr>
-												<td class="text-start text-light-emphasis" style="width:18%">
-													<label for="r_tel" class="form-label">&nbsp; 배송지선택</label>
-												</td>
-												<td>
-													<div class="form-check float-start">
-														<input class="form-check-input" type="checkbox" id="check1">
-														<label class="form-check-label input25 font-sm" for="check1" style="display:contents; cursor: pointer;">주문자와 동일</label>
-													</div>
-												</td>
-											</tr>
-										</th:block>
-										<th:block th:if="${#strings.isEmpty(session.loginInfo)}">
-											<tr>
-												<td class="text-start text-light-emphasis" style="width:18%">
-													<label for="r_tel" class="form-label">&nbsp; 배송지선택</label>
-												</td>
-												<td>
-													<div class="form-check float-start">
-														<input class="form-check-input" type="checkbox" id="check1">
-														<label class="form-check-label input25 font-sm" for="check1" style="display:contents; cursor: pointer;">주문자와 동일</label>
-													</div>
-												</td>
-											</tr>
-										</th:block>
-										<tr>
-											<td class="text-start text-light-emphasis">
-												<label for="r_name" class="form-label"><font color="red">* </font>이름</label>
-											</td>
-											<td>
-												<input type="text" id="r_name" name="receiveName" class="form-control w-50 input25">
-											</td>
-										</tr>
-										<tr>
-											<td class="text-start text-light-emphasis">
-												<label for="r_tel" class="form-label">&nbsp; 전화번호</label>
-											</td>
-											<td>
-												<input type="text" id="r_tel" name="receiveTel" class="form-control w-50 phoneNumber input25">
-											</td>
-										</tr>
-										<tr>
-											<td class="text-start text-light-emphasis">
-												<label for="r_phone" class="form-label"><font color="red">* </font>핸드폰</label>
-											</td>
-											<td>
-												<input type="text" id="r_phone" name="receivePhone" class="form-control w-50 phoneNumber input25" maxlength="13">
-											</td>
-										</tr>
-										<tr>
-											<td class="text-start text-light-emphasis">
-												<label for="r_address" class="form-label"><font color="red">* </font>주소</label>
-											</td>
-											<td>
-												<button type="button" class="btn btn-sm btn-outline-secondary float-start me-1 btn25"  onclick="execDaumPostcode2();">주소검색</button>
-												<input type="text" id="r_postNum" name="receivePostNum" readonly="readonly" class="form-control form-control-sm w-25 input25" placeholder="우편번호"/>
-												<div id="wrap2" style="display:none;border:1px solid;width:100%;height:300px;margin:5px 0;position:relative">
-													<img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode2()" alt="접기 버튼">
-												</div>
-												<input type="text" id="r_addr" name="receiveAddr" class="form-control form-control-sm w-75 mt-1 input50" placeholder="기본주소" readonly />
-												<input type="text" id="r_addrDetail" name="receiveAddrDetail" class="form-control form-control-sm w-75 mt-1 input50" placeholder="상세주소" autocomplete="off"/>
-											</td>
-										</tr>
-										<tr>
-											<td class="text-start text-light-emphasis">
-												<label for="r_address" class="form-label"><font color="red">* </font>배송유형</label>
-											</td>
-											<td>
-												<div class="form-check float-start me-3">
-													<input class="form-check-input" type="radio" name="delivKind" id="radio1">
-													<label class="form-check-label" for="radio1">
-														당일배송(안산)
-													</label>
-												</div>
 												<div class="form-check float-start">
-													<input class="form-check-input" type="radio" name="delivKind" id="radio2">
-													<label class="form-check-label" for="radio2">
-														우체국 택배(안산 외)
-													</label>
+													<input class="form-check-input" type="checkbox" id="check1">
+													<label class="form-check-label input25 font-sm" for="check1" style="display:contents; cursor: pointer;">주문자와 동일</label>
 												</div>
 											</td>
 										</tr>
+									</th:block>
+									<th:block th:if="${#strings.isEmpty(session.loginInfo)}">
 										<tr>
-											<td class="text-start text-light-emphasis">
-												<label for="r_commonPwd" class="form-label">&nbsp; 공동현관 비밀번호</label>
+											<td class="text-start text-light-emphasis" style="width:18%">
+												<label for="r_tel" class="form-label">&nbsp; 배송지선택</label>
 											</td>
 											<td>
-												<input type="text" id="commonPwd" name="commonPwd" class="form-control form-control-sm w-75 mt-1 input50" placeholder="비밀번호 입력 예시: 종버튼 + 1234" maxlength="50"/>
-											</td>
-										</tr>
-										<tr>
-											<td class="text-start text-light-emphasis">
-												<label for="r_bigo" class="form-label">&nbsp; 전하실 말씀</label>
-											</td>
-											<td>
-												<div class="input-group">
-													<textarea class="form-control" id="r_bigo" name="bigo" style="resize: none;"placeholder="배송 시에 찾기 어려운 곳이나 기타 사항이 있는 경우 원활한 배송을 위해 기입해 주시기 바랍니다 :)"></textarea>
+												<div class="form-check float-start">
+													<input class="form-check-input" type="checkbox" id="check1">
+													<label class="form-check-label input25 font-sm" for="check1" style="display:contents; cursor: pointer;">주문자와 동일</label>
 												</div>
 											</td>
 										</tr>
-									</table>
-								</form>
-							</div>
-							<div class="d-grid gap-2 d-md-block">
-								<button class="btn btn-primary btn-lg" type="button" onclick="fnSubmit()">주문하기</button>
-								<button class="btn btn-primary btn-lg" type="button" onclick='$("#modalPay").trigger("click");'>취소</button>
-							</div>
-						</form>
-						<button type="button" style="display:none;" class="btn btn-primary" id="modalPay" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></button>
-						
-						<!-- Modal -->
-						<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-							<div class="modal-dialog modal-lg">
-								<div class="modal-content">
-									<div class="modal-header">
-										<h1 class="modal-title fs-5" id="staticBackdropLabel">결제하기</h1>
-										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-									</div>
-									<div class="modal-body">
-										<div class="wrapper">
-											<!-- 결제 UI -->
-											<div id="payment-method"></div>
-											<!-- 이용약관 UI -->
-											<div id="agreement"></div>
-											<!-- 결제하기 버튼 -->
-											<div class="btn-group">
-												<button type="button" class="btn btn-primary" id="payment-request-button">결제하기</button>
-												<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+									</th:block>
+									<tr>
+										<td class="text-start text-light-emphasis">
+											<label for="r_name" class="form-label"><font color="red">* </font>이름</label>
+										</td>
+										<td>
+											<input type="text" id="r_name" name="receiveName" class="form-control w-50 input25">
+										</td>
+									</tr>
+									<tr>
+										<td class="text-start text-light-emphasis">
+											<label for="r_tel" class="form-label">&nbsp; 전화번호</label>
+										</td>
+										<td>
+											<input type="text" id="r_tel" name="receiveTel" class="form-control w-50 phoneNumber input25">
+										</td>
+									</tr>
+									<tr>
+										<td class="text-start text-light-emphasis">
+											<label for="r_phone" class="form-label"><font color="red">* </font>핸드폰</label>
+										</td>
+										<td>
+											<input type="text" id="r_phone" name="receivePhone" class="form-control w-50 phoneNumber input25" maxlength="13">
+										</td>
+									</tr>
+									<tr>
+										<td class="text-start text-light-emphasis">
+											<label for="r_address" class="form-label"><font color="red">* </font>주소</label>
+										</td>
+										<td>
+											<button type="button" class="btn btn-sm btn-outline-secondary float-start me-1 btn25"  onclick="execDaumPostcode2();">주소검색</button>
+											<input type="text" id="r_postNum" name="receivePostNum" readonly="readonly" class="form-control form-control-sm w-25 input25" placeholder="우편번호"/>
+											<div id="wrap2" style="display:none;border:1px solid;width:100%;height:300px;margin:5px 0;position:relative">
+												<img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode2()" alt="접기 버튼">
 											</div>
+											<input type="text" id="r_addr" name="receiveAddr" class="form-control form-control-sm w-75 mt-1 input50" placeholder="기본주소" readonly />
+											<input type="text" id="r_addrDetail" name="receiveAddrDetail" class="form-control form-control-sm w-75 mt-1 input50" placeholder="상세주소" autocomplete="off"/>
+										</td>
+									</tr>
+									<tr>
+										<td class="text-start text-light-emphasis">
+											<label for="r_address" class="form-label"><font color="red">* </font>배송유형</label>
+										</td>
+										<td>
+											<div class="form-check float-start me-3">
+												<input class="form-check-input" type="radio" name="delivKind" id="radio1">
+												<label class="form-check-label" for="radio1">
+													당일배송(안산)
+												</label>
+											</div>
+											<div class="form-check float-start">
+												<input class="form-check-input" type="radio" name="delivKind" id="radio2">
+												<label class="form-check-label" for="radio2">
+													우체국 택배(안산 외)
+												</label>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td class="text-start text-light-emphasis">
+											<label for="r_commonPwd" class="form-label">&nbsp; 공동현관 비밀번호</label>
+										</td>
+										<td>
+											<input type="text" id="commonPwd" name="commonPwd" class="form-control form-control-sm w-75 mt-1 input50" placeholder="비밀번호 입력 예시: 종버튼 + 1234" maxlength="50"/>
+										</td>
+									</tr>
+									<tr>
+										<td class="text-start text-light-emphasis">
+											<label for="r_bigo" class="form-label">&nbsp; 전하실 말씀</label>
+										</td>
+										<td>
+											<div class="input-group">
+												<textarea class="form-control input50" id="r_bigo" name="bigo" style="resize: none;"placeholder="배송 시에 찾기 어려운 곳이나 기타 사항이 있는 경우 원활한 배송을 위해 기입해 주시기 바랍니다 :)"></textarea>
+											</div>
+										</td>
+									</tr>
+								</table>
+							</form>
+						</div>
+						<div class="text-center">
+							<button class="btn btn-outline-primary btn-lg ms-1 btn25" type="button" onclick="fnSubmit()">주문하기</button>
+							<button class="btn btn-outline-danger btn-lg ms-1 btn25" type="button" onclick='$("#modalPay").trigger("click");'>취소</button>
+						</div>
+					</form>
+					<button type="button" style="display:none;" class="btn btn-primary" id="modalPay" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></button>
+					
+					<!-- Modal -->
+					<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h1 class="modal-title fs-5" id="staticBackdropLabel">결제하기</h1>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<div class="wrapper">
+										<!-- 결제 UI -->
+										<div id="payment-method"></div>
+										<!-- 이용약관 UI -->
+										<div id="agreement"></div>
+										<!-- 결제하기 버튼 -->
+										<div class="btn-group">
+											<button type="button" class="btn btn-primary" id="payment-request-button">결제하기</button>
+											<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-						
-    				<div> 
-				</div>
-			</div>
-			<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-			<script th:inline="javascript">
-				
-				// 우편번호 찾기 찾기 화면을 넣을 element
-			    var element_wrap = document.getElementById('wrap');
-			    var element_wrap2 = document.getElementById('wrap2');
-				
-			    function foldDaumPostcode() {
-			        // iframe을 넣은 element를 안보이게 한다.
-			        element_wrap.style.display = 'none';
-			    }
-			    function foldDaumPostcode2() {
-			        // iframe을 넣은 element를 안보이게 한다.
-			        element_wrap2.style.display = 'none';
-			    }
-				
-			 	// 우편번호 찾기
-				function execDaumPostcode(){
-					if(typeof daum === 'undefined'){
-					    alert("다음 우편번호 postcode.v2.js 파일이 로드되지 않았습니다.");
-					    return false;
-					}
-			 		
-					// 현재 scroll 위치를 저장해놓는다.
-			        var currentScroll = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
-			        new daum.Postcode({
-			            oncomplete: function(data) {
-			                // 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-	
-			                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
-			                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-			                var addr = ''; // 주소 변수
-			                var extraAddr = ''; // 참고항목 변수
-	
-			                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-			                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
-			                    addr = data.roadAddress;
-			                } else { // 사용자가 지번 주소를 선택했을 경우(J)
-			                    addr = data.jibunAddress;
-			                }
-	
-			                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
-			                if(data.userSelectedType === 'R'){
-			                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
-			                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-			                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
-			                        extraAddr += data.bname;
-			                    }
-			                    // 건물명이 있고, 공동주택일 경우 추가한다.
-			                    if(data.buildingName !== '' && data.apartment === 'Y'){
-			                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-			                    }
-			                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-			                    if(extraAddr !== ''){
-			                        extraAddr = ' (' + extraAddr + ')';
-			                    }
-			                    // 조합된 참고항목을 해당 필드에 넣는다.
-			                    // document.getElementById("sample3_extraAddress").value = extraAddr;
-			                
-			                } else {
-			                    // document.getElementById("sample3_extraAddress").value = '';
-			                }
-	
-			                // 우편번호와 주소 정보를 해당 필드에 넣는다.
-			                document.getElementById('o_postNum').value = data.zonecode;
-			                document.getElementById("o_addr").value = addr;
-	
-			                // iframe을 넣은 element를 안보이게 한다.
-			                // (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않는다.)
-			                element_wrap.style.display = 'none';
-	
-			                // 우편번호 찾기 화면이 보이기 이전으로 scroll 위치를 되돌린다.
-			                document.body.scrollTop = currentScroll;
-			            },
-			            // 우편번호 찾기 화면 크기가 조정되었을때 실행할 코드를 작성하는 부분. iframe을 넣은 element의 높이값을 조정한다.
-			            onresize : function(size) {
-			                element_wrap.style.height = size.height+'px';
-			            },
-			            width : '100%',
-			            height : '100%'
-			        }).embed(element_wrap);
-	
-			        // iframe을 넣은 element를 보이게 한다.
-			        element_wrap.style.display = 'block';				
-				}
-			 	// 우편번호 찾기
-				function execDaumPostcode2(){
-					if(typeof daum === 'undefined'){
-					    alert("다음 우편번호 postcode.v2.js 파일이 로드되지 않았습니다.");
-					    return false;
-					}
-			 		
-					// 현재 scroll 위치를 저장해놓는다.
-			        var currentScroll = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
-			        new daum.Postcode({
-			            oncomplete: function(data) {
-			                // 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-	
-			                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
-			                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-			                var addr = ''; // 주소 변수
-			                var extraAddr = ''; // 참고항목 변수
-	
-			                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-			                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
-			                    addr = data.roadAddress;
-			                } else { // 사용자가 지번 주소를 선택했을 경우(J)
-			                    addr = data.jibunAddress;
-			                }
-	
-			                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
-			                if(data.userSelectedType === 'R'){
-			                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
-			                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-			                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
-			                        extraAddr += data.bname;
-			                    }
-			                    // 건물명이 있고, 공동주택일 경우 추가한다.
-			                    if(data.buildingName !== '' && data.apartment === 'Y'){
-			                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-			                    }
-			                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-			                    if(extraAddr !== ''){
-			                        extraAddr = ' (' + extraAddr + ')';
-			                    }
-			                    // 조합된 참고항목을 해당 필드에 넣는다.
-			                    // document.getElementById("sample3_extraAddress").value = extraAddr;
-			                
-			                } else {
-			                    // document.getElementById("sample3_extraAddress").value = '';
-			                }
-	
-			                // 우편번호와 주소 정보를 해당 필드에 넣는다.
-			                document.getElementById('r_postNum').value = data.zonecode;
-			                document.getElementById("r_addr").value = addr;
-	
-			                // iframe을 넣은 element를 안보이게 한다.
-			                // (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않는다.)
-			                element_wrap2.style.display = 'none';
-	
-			                // 우편번호 찾기 화면이 보이기 이전으로 scroll 위치를 되돌린다.
-			                document.body.scrollTop = currentScroll;
-			            },
-			            // 우편번호 찾기 화면 크기가 조정되었을때 실행할 코드를 작성하는 부분. iframe을 넣은 element의 높이값을 조정한다.
-			            onresize : function(size) {
-			                element_wrap2.style.height = size.height+'px';
-			            },
-			            width : '100%',
-			            height : '100%'
-			        }).embed(element_wrap2);
-	
-			        // iframe을 넣은 element를 보이게 한다.
-			        element_wrap2.style.display = 'block';				
-				}
-				
-				//이메일 직접입력 셀렉트박스
-				function res(r){
-					if(r ==""){
-						$("#o_email2").attr("readonly",false);
-					} else {
-						$("#o_email2").attr("readonly",true);
-					}
-					document.getElementById("o_email2").value=r;
-				
-					var email1=document.getElementById("o_email").value;
-					var email2=document.getElementById("o_email2").value;
+					</div>
 					
-					document.getElementById("od_email").value=email1+"@"+email2;
+				<div> 
+			</div>
+		</div>
+		<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+		<script th:inline="javascript">
+			
+			// 우편번호 찾기 찾기 화면을 넣을 element
+		    var element_wrap = document.getElementById('wrap');
+		    var element_wrap2 = document.getElementById('wrap2');
+			
+		    function foldDaumPostcode() {
+		        // iframe을 넣은 element를 안보이게 한다.
+		        element_wrap.style.display = 'none';
+		    }
+		    function foldDaumPostcode2() {
+		        // iframe을 넣은 element를 안보이게 한다.
+		        element_wrap2.style.display = 'none';
+		    }
+			
+		 	// 우편번호 찾기
+			function execDaumPostcode(){
+				if(typeof daum === 'undefined'){
+				    alert("다음 우편번호 postcode.v2.js 파일이 로드되지 않았습니다.");
+				    return false;
 				}
-				//주문자와 동일
-				$("#check1").click(function(){
-					let checked = $("#check1").is(":checked");
-					if(checked){
-						$("#r_name").val($("#o_name").val());
-						$("#r_tel").val($("#o_tel").val());
-						$("#r_phone").val($("#o_phone").val());
-						$("#r_postNum").val($("#o_postNum").val());
-						$("#r_addr").val($("#o_addr").val());
-						$("#r_addrDetail").val($("#o_addrDetail").val());
-					}
-				});
+		 		
+				// 현재 scroll 위치를 저장해놓는다.
+		        var currentScroll = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
+		        new daum.Postcode({
+		            oncomplete: function(data) {
+		                // 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+		                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+		                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+		                var addr = ''; // 주소 변수
+		                var extraAddr = ''; // 참고항목 변수
+
+		                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+		                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+		                    addr = data.roadAddress;
+		                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+		                    addr = data.jibunAddress;
+		                }
+
+		                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+		                if(data.userSelectedType === 'R'){
+		                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+		                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+		                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+		                        extraAddr += data.bname;
+		                    }
+		                    // 건물명이 있고, 공동주택일 경우 추가한다.
+		                    if(data.buildingName !== '' && data.apartment === 'Y'){
+		                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+		                    }
+		                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+		                    if(extraAddr !== ''){
+		                        extraAddr = ' (' + extraAddr + ')';
+		                    }
+		                    // 조합된 참고항목을 해당 필드에 넣는다.
+		                    // document.getElementById("sample3_extraAddress").value = extraAddr;
+		                
+		                } else {
+		                    // document.getElementById("sample3_extraAddress").value = '';
+		                }
+
+		                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+		                document.getElementById('o_postNum').value = data.zonecode;
+		                document.getElementById("o_addr").value = addr;
+
+		                // iframe을 넣은 element를 안보이게 한다.
+		                // (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않는다.)
+		                element_wrap.style.display = 'none';
+
+		                // 우편번호 찾기 화면이 보이기 이전으로 scroll 위치를 되돌린다.
+		                document.body.scrollTop = currentScroll;
+		            },
+		            // 우편번호 찾기 화면 크기가 조정되었을때 실행할 코드를 작성하는 부분. iframe을 넣은 element의 높이값을 조정한다.
+		            onresize : function(size) {
+		                element_wrap.style.height = size.height+'px';
+		            },
+		            width : '100%',
+		            height : '100%'
+		        }).embed(element_wrap);
+
+		        // iframe을 넣은 element를 보이게 한다.
+		        element_wrap.style.display = 'block';				
+			}
+		 	// 우편번호 찾기
+			function execDaumPostcode2(){
+				if(typeof daum === 'undefined'){
+				    alert("다음 우편번호 postcode.v2.js 파일이 로드되지 않았습니다.");
+				    return false;
+				}
+		 		
+				// 현재 scroll 위치를 저장해놓는다.
+		        var currentScroll = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
+		        new daum.Postcode({
+		            oncomplete: function(data) {
+		                // 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+		                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+		                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+		                var addr = ''; // 주소 변수
+		                var extraAddr = ''; // 참고항목 변수
+
+		                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+		                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+		                    addr = data.roadAddress;
+		                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+		                    addr = data.jibunAddress;
+		                }
+
+		                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+		                if(data.userSelectedType === 'R'){
+		                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+		                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+		                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+		                        extraAddr += data.bname;
+		                    }
+		                    // 건물명이 있고, 공동주택일 경우 추가한다.
+		                    if(data.buildingName !== '' && data.apartment === 'Y'){
+		                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+		                    }
+		                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+		                    if(extraAddr !== ''){
+		                        extraAddr = ' (' + extraAddr + ')';
+		                    }
+		                    // 조합된 참고항목을 해당 필드에 넣는다.
+		                    // document.getElementById("sample3_extraAddress").value = extraAddr;
+		                
+		                } else {
+		                    // document.getElementById("sample3_extraAddress").value = '';
+		                }
+
+		                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+		                document.getElementById('r_postNum').value = data.zonecode;
+		                document.getElementById("r_addr").value = addr;
+
+		                // iframe을 넣은 element를 안보이게 한다.
+		                // (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않는다.)
+		                element_wrap2.style.display = 'none';
+
+		                // 우편번호 찾기 화면이 보이기 이전으로 scroll 위치를 되돌린다.
+		                document.body.scrollTop = currentScroll;
+		            },
+		            // 우편번호 찾기 화면 크기가 조정되었을때 실행할 코드를 작성하는 부분. iframe을 넣은 element의 높이값을 조정한다.
+		            onresize : function(size) {
+		                element_wrap2.style.height = size.height+'px';
+		            },
+		            width : '100%',
+		            height : '100%'
+		        }).embed(element_wrap2);
+
+		        // iframe을 넣은 element를 보이게 한다.
+		        element_wrap2.style.display = 'block';				
+			}
+			
+			//이메일 직접입력 셀렉트박스
+			function res(r){
+				if(r ==""){
+					$("#o_email2").attr("readonly",false);
+				} else {
+					$("#o_email2").attr("readonly",true);
+				}
+				document.getElementById("o_email2").value=r;
+			
+				var email1=document.getElementById("o_email").value;
+				var email2=document.getElementById("o_email2").value;
 				
+				document.getElementById("od_email").value=email1+"@"+email2;
+			}
+			//주문자와 동일
+			$("#check1").click(function(){
+				let checked = $("#check1").is(":checked");
+				if(checked){
+					$("#r_name").val($("#o_name").val());
+					$("#r_tel").val($("#o_tel").val());
+					$("#r_phone").val($("#o_phone").val());
+					$("#r_postNum").val($("#o_postNum").val());
+					$("#r_addr").val($("#o_addr").val());
+					$("#r_addrDetail").val($("#o_addrDetail").val());
+				}
+			});
+			
+			
+			const coupon = document.getElementById("coupon-box");
+			const button = document.getElementById("payment-request-button");
+			
+			const orderId = /*[[${orderNo}]]*/"";
+			const totalProductAmt = /*[[${order.totalProductAmt}]]*/0;
+			const totalDelyAmt = /*[[${order.totalDelyAmt}]]*/0;
+			const amount = totalProductAmt + totalDelyAmt;
 				
-				const coupon = document.getElementById("coupon-box");
-				const button = document.getElementById("payment-request-button");
-				
-				const orderId = /*[[${orderNo}]]*/"";
-				const totalProductAmt = /*[[${order.totalProductAmt}]]*/0;
-				const totalDelyAmt = /*[[${order.totalDelyAmt}]]*/0;
-				const amount = totalProductAmt + totalDelyAmt;
-				
-				// 구매자의 고유 아이디를 불러와서 customerKey로 설정하세요.
-				// 이메일・전화번호와 같이 유추가 가능한 값은 안전하지 않습니다.
-				const widgetClientKey = "test_ck_4Gv6LjeKD8aAJ6La9L48wYxAdXy1";
-				const generateRandomString = () => window.btoa(Math.random()).slice(0, 20);
-				const customerKey = generateRandomString();
+			// 구매자의 고유 아이디를 불러와서 customerKey로 설정하세요.
+			// 이메일・전화번호와 같이 유추가 가능한 값은 안전하지 않습니다.
+			const widgetClientKey = "test_ck_4Gv6LjeKD8aAJ6La9L48wYxAdXy1";
+			const generateRandomString = () => window.btoa(Math.random()).slice(0, 20);
+			const customerKey = generateRandomString();
 //				const paymentWidget = PaymentWidget(widgetClientKey, customerKey); // 회원 결제
-				const paymentWidget = PaymentWidget(widgetClientKey, PaymentWidget.ANONYMOUS) // 비회원 결제
-				
-				const paymentMethodWidget = paymentWidget.renderPaymentMethods(
-					"#payment-method",
-					{ value: amount },
-					{ variantKey: "DEFAULT" }
-				);
-		
-				paymentWidget.renderAgreement(
-					"#agreement", 
-					{ variantKey: "AGREEMENT" }
-				);
+			const paymentWidget = PaymentWidget(widgetClientKey, PaymentWidget.ANONYMOUS) // 비회원 결제
+			
+			const paymentMethodWidget = paymentWidget.renderPaymentMethods(
+				"#payment-method",
+				{ value: amount },
+				{ variantKey: "DEFAULT" }
+			);
+	
+			paymentWidget.renderAgreement(
+				"#agreement", 
+				{ variantKey: "AGREEMENT" }
+			);
 /*	
 				coupon.addEventListener("change", function () {
 					if (coupon.checked) {
@@ -581,174 +589,189 @@
 					}
 				});
 */
-				let phone = "";
-				button.addEventListener("click", function () {
-					
-					phone = $("#o_phone").val().replaceAll("-","");
-					// 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요. 
-					// 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.  
-					paymentWidget.requestPayment({
-						orderId: orderId,
-						orderName: "토스 티셔츠 외 2건",
-						successUrl: window.location.origin + "/success",
-						failUrl: window.location.origin + "/fail",
-						customerEmail: $("#od_email").val(),
-						customerName: $("#o_name").val(),
-						customerMobilePhone: phone,
-					});
+			let phone = "";
+			button.addEventListener("click", function () {
+				
+				phone = $("#o_phone").val().replaceAll("-","");
+				"토스 티셔츠 외 2건",
+				// 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요. 
+				// 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.  
+				paymentWidget.requestPayment({
+					orderId: orderId,
+					orderName: "토스 티셔츠 외 2건",
+					successUrl: window.location.origin + "/success",
+					failUrl: window.location.origin + "/fail",
+					customerEmail: $("#od_email").val(),
+					customerName: $("#o_name").val(),
+					customerMobilePhone: phone,
 				});
-				//주문하기
-				fnSubmit = function(){
-					
-					const pattern = /^[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*$/;
-					const scriptTag = /[~^&()|<>?]/;
-					const emailPattern = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-za-z0-9\-]+/;
-					
-					let o_name		= $("#o_name").val();
-					let o_pass		= $("#o_pass").val();
-					let o_phone		= $("#o_phone").val();
-					let o_postNum	= $("#o_postNum").val();
-					let o_addr		= $("#o_addr").val();
-					let o_addrDetail= $("#o_addrDetail").val();
-					let o_email		= $("#o_email").val();
-					let o_email2	= $("#o_email2").val();
-					
-					let delivKind	= $('input[name=delivKind]').is(":checked");
-					let r_name		= $("#r_name").val();
-					let r_phone		= $("#r_phone").val();
-					let r_postNum	= $("#r_postNum").val();
-					let r_addr		= $("#r_addr").val();
-					let r_addrDetail= $("#r_addrDetail").val();
-					
-					if(o_name.replaceAll(" ", "") == ""){
-						alert("주문하시는 분 이름을 입력해 주세요.");
-						setTimeout( function(){ $("#o_name").focus(); }, 1 );
-						return;
-					} else if(!pattern.test(o_name) == true){
-						alert("공백 혹은 특수문자가 입력되었습니다.");
-						setTimeout( function(){ $("#o_name").focus(); }, 1 );
-						return;
-					}
-					if(o_pass.replaceAll(" ", "") == ""){
-						alert("비밀번호를 입력해 주세요.");
-						setTimeout( function(){ $("#o_pass").focus(); }, 1 );
-						return;
-					} else if(!pattern.test(o_pass) == true){
-						alert("공백 혹은 특수문자가 입력되었습니다.");
-						setTimeout( function(){ $("#o_pass").focus(); }, 1 );
-						return;
-					} else if(o_pass.length < 3){
-						alert("세 자리 이상 입력해 주세요.");
-						setTimeout( function(){ $("#o_pass").focus(); }, 1 );
-						return;
-					}
-					if(o_phone.replaceAll(" ", "") == ""){
-						alert("핸드폰번호를 입력해 주세요.");
-						setTimeout( function(){ $("#o_phone").focus(); }, 1 );
-						return;
-					}
-					if(o_postNum.replaceAll(" ", "") == ""){
-						alert("주소 검색을 해주세요.");
-						setTimeout( function(){ $("#o_postNum").focus(); }, 1 );
-						return;
-					} else if(!pattern.test(o_postNum) == true){
-						alert("공백 혹은 특수문자가 입력되었습니다.");
-						setTimeout( function(){ $("#o_postNum").focus(); }, 1 );
-						return;
-					}
-					if(o_addr.replaceAll(" ", "") == ""){
-						alert("주소 검색을 해주세요.");
-						setTimeout( function(){ $("#o_addr").focus(); }, 1 );
-						return;
-					}
-					if(o_addrDetail.replaceAll(" ", "") == ""){
-						alert("상세 주소를 입력해 주세요.");
-						setTimeout( function(){ $("#o_addrDetail").focus(); }, 1 );
-						return;
-					}
-					if(o_email.replaceAll(" ", "") == ""){
-						alert("이메일을 입력해 주세요.");
-						setTimeout( function(){ $("#o_email").focus(); }, 1 );
-						return;
-					} else if(o_email2.replaceAll(" ", "") == ""){
-						alert("이메일을 입력해 주세요.");
-						setTimeout( function(){ $("#o_email2").focus(); }, 1 );
-						return;
-					}
-					
-					if(r_name.replaceAll(" ", "") == ""){
-						alert("받으시는 분 이름을 입력해 주세요.");
-						setTimeout( function(){ $("#r_name").focus(); }, 1 );
-						return;
-					} else if(!pattern.test(r_name) == true){
-						alert("공백 혹은 특수문자가 입력되었습니다.");
-						setTimeout( function(){ $("#r_name").focus(); }, 1 );
-						return;
-					}
-					if(r_phone.replaceAll(" ", "") == ""){
-						alert("핸드폰번호를 입력해 주세요.");
-						setTimeout( function(){ $("#r_phone").focus(); }, 1 );
-						return;
-					}
-					if(r_postNum.replaceAll(" ", "") == ""){
-						alert("주소 검색을 해주세요.");
-						setTimeout( function(){ $("#r_postNum").focus(); }, 1 );
-						return;
-					} else if(!pattern.test(r_postNum) == true){
-						alert("공백 혹은 특수문자가 입력되었습니다.");
-						setTimeout( function(){ $("#r_postNum").focus(); }, 1 );
-						return;
-					}
-					if(r_addr.replaceAll(" ", "") == ""){
-						alert("주소 검색을 해주세요.");
-						setTimeout( function(){ $("#r_addr").focus(); }, 1 );
-						return;
-					}
-					if(r_addrDetail.replaceAll(" ", "") == ""){
-						alert("상세 주소를 입력해 주세요.");
-						setTimeout( function(){ $("#r_addrDetail").focus(); }, 1 );
-						return;
-					}
-					if(!delivKind){
-						alert("배송 유형을 선택해 주세요.");
-						setTimeout( function(){ $("#radio1").focus(); }, 1 );
-						return;
-					}
-					
-					let orderVO = $("#orderForm").serializeObject();
-					orderVO.orderNo = /*[[${orderNo}]]*/""; 
-					
-					$.ajax({
-						url: "/rest/order/orderPayment",
-						type: "POST",
-						dataType: "json",
-						data: 	orderVO,
-						success: function (result) {
-							console.log(result);
-							if(result.responseCode == "SUCCESS"){
-								if(result.data.resultCode == "SUCCESS"){
-									$("#modalPay").trigger("click");
-								} else {
-									alert("오류:"+result.data.resultMsg);
-									if(result.data.returnUrl != ""){
-										location.href = result.data.returnUrl;
-									}
-								}
-							} else {
-								alert("API 통신 실패");
-					        }
-						},
-						error: function (e) {
-							console.log("ERROR : ", e);
-							alert("장바구니 리스트 삭제에 실패했습니다.");
-						}
-					});
+			});
+			//주문하기
+			fnSubmit = function(){
+				
+				const pattern = /^[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*$/;
+				const scriptTag = /[~^&()|<>?]/;
+				const emailPattern = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-za-z0-9\-]+/;
+				
+				let o_name		= $("#o_name").val();
+				let o_pass		= $("#o_pass").val();
+				let o_phone		= $("#o_phone").val();
+				let o_postNum	= $("#o_postNum").val();
+				let o_addr		= $("#o_addr").val();
+				let o_addrDetail= $("#o_addrDetail").val();
+				let o_email		= $("#o_email").val();
+				let o_email2	= $("#o_email2").val();
+				
+				let delivKind	= $('input[name=delivKind]').is(":checked");
+				let r_name		= $("#r_name").val();
+				let r_phone		= $("#r_phone").val();
+				let r_postNum	= $("#r_postNum").val();
+				let r_addr		= $("#r_addr").val();
+				let r_addrDetail= $("#r_addrDetail").val();
+				
+				if(o_name.replaceAll(" ", "") == ""){
+					alert("주문하시는 분 이름을 입력해 주세요.");
+					setTimeout( function(){ $("#o_name").focus(); }, 1 );
+					return;
+				} else if(!pattern.test(o_name) == true){
+					alert("공백 혹은 특수문자가 입력되었습니다.");
+					setTimeout( function(){ $("#o_name").focus(); }, 1 );
+					return;
+				}
+				if(o_pass.replaceAll(" ", "") == ""){
+					alert("비밀번호를 입력해 주세요.");
+					setTimeout( function(){ $("#o_pass").focus(); }, 1 );
+					return;
+				} else if(!pattern.test(o_pass) == true){
+					alert("공백 혹은 특수문자가 입력되었습니다.");
+					setTimeout( function(){ $("#o_pass").focus(); }, 1 );
+					return;
+				} else if(o_pass.length < 3){
+					alert("세 자리 이상 입력해 주세요.");
+					setTimeout( function(){ $("#o_pass").focus(); }, 1 );
+					return;
+				}
+				if(o_phone.replaceAll(" ", "") == ""){
+					alert("핸드폰번호를 입력해 주세요.");
+					setTimeout( function(){ $("#o_phone").focus(); }, 1 );
+					return;
+				}
+				if(o_postNum.replaceAll(" ", "") == ""){
+					alert("주소 검색을 해주세요.");
+					setTimeout( function(){ $("#o_postNum").focus(); }, 1 );
+					return;
+				} else if(!pattern.test(o_postNum) == true){
+					alert("공백 혹은 특수문자가 입력되었습니다.");
+					setTimeout( function(){ $("#o_postNum").focus(); }, 1 );
+					return;
+				}
+				if(o_addr.replaceAll(" ", "") == ""){
+					alert("주소 검색을 해주세요.");
+					setTimeout( function(){ $("#o_addr").focus(); }, 1 );
+					return;
+				}
+				if(o_addrDetail.replaceAll(" ", "") == ""){
+					alert("상세 주소를 입력해 주세요.");
+					setTimeout( function(){ $("#o_addrDetail").focus(); }, 1 );
+					return;
+				}
+				if(o_email.replaceAll(" ", "") == ""){
+					alert("이메일을 입력해 주세요.");
+					setTimeout( function(){ $("#o_email").focus(); }, 1 );
+					return;
+				} else if(o_email2.replaceAll(" ", "") == ""){
+					alert("이메일을 입력해 주세요.");
+					setTimeout( function(){ $("#o_email2").focus(); }, 1 );
+					return;
 				}
 				
-				$(document).on("keyup", ".phoneNumber", function() { 
-					$(this).val( $(this).val().replace(/[^0-9]/g, "").replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/,"$1-$2-$3").replace("--", "-") ); 
+				if(r_name.replaceAll(" ", "") == ""){
+					alert("받으시는 분 이름을 입력해 주세요.");
+					setTimeout( function(){ $("#r_name").focus(); }, 1 );
+					return;
+				} else if(!pattern.test(r_name) == true){
+					alert("공백 혹은 특수문자가 입력되었습니다.");
+					setTimeout( function(){ $("#r_name").focus(); }, 1 );
+					return;
+				}
+				if(r_phone.replaceAll(" ", "") == ""){
+					alert("핸드폰번호를 입력해 주세요.");
+					setTimeout( function(){ $("#r_phone").focus(); }, 1 );
+					return;
+				}
+				if(r_postNum.replaceAll(" ", "") == ""){
+					alert("주소 검색을 해주세요.");
+					setTimeout( function(){ $("#r_postNum").focus(); }, 1 );
+					return;
+				} else if(!pattern.test(r_postNum) == true){
+					alert("공백 혹은 특수문자가 입력되었습니다.");
+					setTimeout( function(){ $("#r_postNum").focus(); }, 1 );
+					return;
+				}
+				if(r_addr.replaceAll(" ", "") == ""){
+					alert("주소 검색을 해주세요.");
+					setTimeout( function(){ $("#r_addr").focus(); }, 1 );
+					return;
+				}
+				if(r_addrDetail.replaceAll(" ", "") == ""){
+					alert("상세 주소를 입력해 주세요.");
+					setTimeout( function(){ $("#r_addrDetail").focus(); }, 1 );
+					return;
+				}
+				if(!delivKind){
+					alert("배송 유형을 선택해 주세요.");
+					setTimeout( function(){ $("#radio1").focus(); }, 1 );
+					return;
+				}
+				
+				let orderVO = $("#orderForm").serializeObject();
+				orderVO.orderNo = /*[[${orderNo}]]*/""; 
+				
+				$.ajax({
+					url: "/rest/order/orderPayment",
+					type: "POST",
+					dataType: "json",
+					data: 	orderVO,
+					success: function (result) {
+						console.log(result);
+						if(result.responseCode == "SUCCESS"){
+							if(result.data.resultCode == "SUCCESS"){
+								$("#modalPay").trigger("click");
+							} else {
+								alert("오류:"+result.data.resultMsg);
+								if(result.data.returnUrl != ""){
+									location.href = result.data.returnUrl;
+								}
+							}
+						} else {
+							alert("API 통신 실패");
+				        }
+					},
+					error: function (e) {
+						console.log("ERROR : ", e);
+						alert("장바구니 리스트 삭제에 실패했습니다.");
+					}
 				});
-			</script>
-		</main>
-	</div>
+			}
+			
+			$(document).on("keyup", ".phoneNumber", function() { 
+				$(this).val( $(this).val().replace(/[^0-9]/g, "").replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/,"$1-$2-$3").replace("--", "-") ); 
+			});
+			
+			test = function(){
+				$("#o_name").val("김영철");
+				$("#o_pass").val("2424");
+				$("#o_phone").val("010-5054-6365");
+				
+				$("#o_postNum").val("13480");
+				$("#o_addr").val("경기 성남시 분당구 대왕판교로 477");
+				$("#o_addrDetail").val("상세주소");
+				
+				$("#o_email").val("kscjje");
+				$("#o_email2").val("naver.com");
+				
+				$("#radio1").prop("checked",true);
+			}
+		</script>
+	</main>
 </html>

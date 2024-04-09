@@ -3,7 +3,7 @@
 <mapper namespace="com.simplesoft.mapper.payments.PaymentsMapper">
 
 	<!-- 결제정보 생성 -->
-	<insert id="insertPayments" parameterType="hashMap">
+	<insert id="insertPayments" parameterType="com.simplesoft.payments.service.PaymentsVO">
 		/* PaymentsMapper.insertPayments */
 		INSERT INTO PAYMENTS
 			(
@@ -21,5 +21,51 @@
 				,	NOW()
 		)
 	</insert>
+	
+	<!-- 결제정보 상세조회 -->
+	<select id="selectPaymentsDetail" parameterType="com.simplesoft.payments.service.PaymentsVO" resultType="com.simplesoft.payments.service.PaymentsVO">
+		/* PaymentsMapper.selectPaymentsDetail */
+		SELECT
+			  PAYMENTS_NO
+			, PAYMENT_TYPE
+			, ORDER_ID
+			, PAYMENT_KEY
+			, AMOUNT
+			, REG_DT
+		FROM PAYMENTS A
+		WHERE 1=1
+		AND PAYMENT_TYPE	= #{paymentType}
+		AND ORDER_ID 		= #{orderId}
+		AND PAYMENT_KEY		= #{paymentKey}
+	</select>
+	
+	<!-- 결제정보 생성 -->
+	<update id="updatePayments" parameterType="com.simplesoft.payments.service.PaymentsVO">
+		/* PaymentsMapper.updatePayments */
+		UPDATE PAYMENTS SET
+		 
+		  PAY_METHOD			= #{method}
+		, ORDER_NAME			= #{orderName}
+		, BALANCE_AMOUNT		= #{balanceAmount}
+		, STATUS				= #{status}
+		, REQUESTED_AT			= #{requestedAt}
+		, APPROVED_AT			= #{approvedAt}
+		, USE_ESCROW			= #{useEscrow}
+		, EASY_PAY				= #{easyPay}
+		, TOTAL_AMOUNT			= #{totalAmount}
+		, LAST_TRANSACTION_KEY	= #{lastTransactionKey}
+		, SUPPLIED_AMOUNT		= #{suppliedAmount}
+		, VAT					= #{vat}
+		, TAX_FREE_AMOUNT		= #{taxFreeAmount}
+		, TAX_EXEMPTION_AMOUNT	= #{taxExemptionAmount}
+		, IS_PARTIAL_CANCELABLE	= #{isPartialCancelable}
+		, RECEIPT_URL			= #{receipt}
+		, COUNTRY				= #{country}
+		, FAIL_INFO				= #{failure}
+		, CASH_RECEIPT_INFO		= #{cashReceipt}
+		, CASH_RECEIPT_INFO_FAIL= #{cashReceipts}
+		
+		WHERE PAYMENT_KEY = #{paymentKey}
+	</update>
 	
 </mapper>

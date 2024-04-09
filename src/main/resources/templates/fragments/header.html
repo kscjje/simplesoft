@@ -2,35 +2,55 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 	<th:block th:fragment="header">
 		<!-- Header (s) -->
-		<header id="header" class="top-nav">
-			<div class="">
-				<!--2번 파트-->
-				<div class="location">
-					<div class="location_inner">
-						<ul>
-							<th:block th:if="${#strings.isEmpty(session.loginInfo)}">
-								<li><a href="/login">멤버쉽기능/로그인</a></li>
-								<li><a href="#">회원가입</a></li>
-								<li><a href="#">마이페이지</a></li>
-								<li><a href="/cart">장바구니</a></li>
-								<li><a href="#">비회원주문조회</a></li>
-							</th:block>
-							<th:block th:if="${not #strings.isEmpty(session.loginInfo)}">
-								<li><a href="/logout">로그아웃</a></li>
-								<li><a href="#">마이페이지</a></li>
-								<li><a href="/cart">장바구니</a></li>
-							</th:block>
-						</ul>
-					</div>
+		<header id="header" class="top-nav mb-5 header">
+			<!--2번 파트-->
+			<div class="location">
+				<div class="location_inner">
+					<ul>
+						<th:block th:if="${#strings.isEmpty(session.loginInfo)}">
+							<li><a href="/login">로그인</a></li>
+							<li><a href="#">회원가입</a></li>
+							<li><a href="#">마이페이지</a></li>
+							<li><a href="/cart">장바구니</a></li>
+							<li><a href="#">비회원주문조회</a></li>
+						</th:block>
+						<th:block th:if="${not #strings.isEmpty(session.loginInfo)}">
+							<li><a href="/logout">로그아웃</a></li>
+							<li><a href="#">마이페이지</a></li>
+							<li><a href="/cart">장바구니</a></li>
+						</th:block>
+					</ul>
 				</div>
-				<!--3번파트 시작-->
-				<div class="top_align">
-					<div id="logo">
-						<a class="logo" href="#">
-							<img src="/image/logo.jpg" style="width:130px;" class="img-fluid" alt="밥수니반찬로고">
+			</div>
+			<!--3번파트 시작-->
+			<div class="top_align">
+				<div id="logo">
+					<a class="logo" href="#">
+						<img src="/image/logo.jpg" style="height:36px" alt="밥수니반찬로고">
+					</a>
+				</div>
+			</div>
+			<div id="submenu" class="submenu">
+				<ul class="nav justify-content-center">
+					<li class="nav-item">
+						<a href="/order" class="nav-link">주문하기</a>
+					</li>
+					<li class="nav-item">
+						<a href="#" class="nav-link">이달의 식단</a>
+					</li>
+					<li class="nav-item">
+						<a href="#" class="nav-link">이용방법
 						</a>
-					</div>
-				</div>
+					<li class="nav-item">
+						<a href="#" class="nav-link">밥수니반찬</a>
+					</li>
+					<li class="nav-item">
+						<a href="#" class="nav-link">이벤트</a>
+					</li>
+					<li class="nav-item">
+						<a href="#" class="nav-link">고객센터</a>
+					</li>
+				</ul>
 			</div>
 		</header>
 	<!-- (e) Header -->

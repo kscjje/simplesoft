@@ -25,10 +25,8 @@ public class CartServiceImpl implements CartService {
 			paramMap.put("menuBoardSeq", arrMenuBoardSeq[i]);
 			if (selectCartList(paramMap).size() > 0) {
 				//이미 장바구니에 있다면 수량 +1
-				System.out.println(paramMap);
 				cartMapper.updateCartAdd(paramMap);
 			} else {
-				System.out.println(paramMap);
 				cartMapper.insertCart(paramMap);
 			}
 		}

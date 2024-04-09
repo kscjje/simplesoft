@@ -154,4 +154,13 @@
 			AND USER_SESSION = #{userSession}
 		</if>
 	</update>
+	
+	<!-- 결제 전 금액 확인-->	
+	<select id="selectOrderPayConfirm" parameterType="String" resultType="Integer">
+		/* OrderMapper.selectOrderPayConfirm */
+		SELECT
+			  TOTAL_PRODUCT_AMT +  TOTAL_DELY_AMT AS totalMoney  
+		FROM ORDER_MST
+		WHERE ORDER_NO = #{orderId}
+	</select>
 </mapper>

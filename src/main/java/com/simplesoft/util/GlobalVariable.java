@@ -18,4 +18,12 @@ public class GlobalVariable {
 	
 	public static final String ORDER_STATUS_APPLY 		= "1000";	//주문접수
 	public static final String ORDER_STATUS_COMPLETE 	= "0000";	//주문완료
+	
+	//ADMIN PORTAL 서버 LOG 감시 설정 이메일 관련 코드
+	public static final String LOG_RESULT_CODE_SUCCESS = "20000200"; 					//성공
+    public static final String LOG_RESULT_CODE_MAIL_TO_ADDRESS_ERROR = "51000401"; 		//받는사람 메일이 잘못됨
+    public static final String LOG_RESULT_CODE_MAIL_FROM_ADDRESS_ERROR = "51000402"; 	//보내는사람 메일이 잘못됨
+    public static final String LOG_RESULT_CODE_MAIL_SERVER_AUTH_FAIL = "51000403"; 		//메일서버 접근 권한이 없음
+    public static final String LOG_RESULT_CODE_MAIL_SERVER_NOTFOUND = "51000404"; 		//메일서버(HOST)를 찾을수 없음
+    public static final String LOG_RESULT_CODE_MAIL_SERVER_ERROR = "51000500"; 			//서버오류 발생으로 발송 실패
 }

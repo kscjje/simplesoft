@@ -1,5 +1,6 @@
 package com.simplesoft.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,9 @@ import com.simplesoft.cart.service.CartService;
 import com.simplesoft.member.service.MemberService;
 import com.simplesoft.menuboard.service.MenuBoardService;
 import com.simplesoft.order.service.OrderService;
+import com.simplesoft.util.MailTemplateSender;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -32,7 +35,10 @@ public class MainController {
 	OrderService orderService;
 	
 	@GetMapping("/main")
-	public String main() {
+	public String main(Model model,HttpServletRequest request) {
+		Map<String,Object> result = new HashMap<String,Object>();
+		model.addAttribute("orderId", "202404090001");
+		
 		return "/main";
 	}
 	@GetMapping("/login")

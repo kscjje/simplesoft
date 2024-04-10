@@ -25,11 +25,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.simplesoft.mapper.order.OrderMapper;
+import com.simplesoft.order.service.OrderVO;
 import com.simplesoft.payments.service.PaymentsService;
 import com.simplesoft.payments.service.PaymentsVO;
 import com.simplesoft.reponse.BasicResponse;
 import com.simplesoft.reponse.CommonResponse;
 import com.simplesoft.util.GlobalVariable;
+import com.simplesoft.util.MailTemplateSender;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class PaymentsController {
@@ -42,7 +46,7 @@ public class PaymentsController {
 	
 	@ResponseBody
 	@PostMapping(value = "/confirm")
-	public BasicResponse confirmPayment(@RequestBody String jsonBody) throws Exception {
+	public BasicResponse confirmPayment(HttpServletRequest request, @RequestBody String jsonBody) throws Exception {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		
@@ -94,7 +98,9 @@ public class PaymentsController {
 		JSONObject jsonObject = (JSONObject) parser.parse(reader);
 		responseStream.close();
 
-		paymentsService.getPayResult(jsonObject);
+		//결제 성공 비지니스
+		paymentsService.getPayResult(request, jsonObject);
+		
 		result.put("resultCode", "SUCCESS");
 		return new CommonResponse<Map<String, Object>>(result);
 	}

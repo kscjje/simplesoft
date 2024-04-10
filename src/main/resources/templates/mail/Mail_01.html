@@ -1,8 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http//www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{layouts/default_layout}">
-	<main class="content-wrapper" layout:fragment="content" style="padding: 10px;">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<title>메일 폼</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+
+<body>
 		<table cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#ddd;">
 			<tbody>
 				<tr>
@@ -25,10 +29,9 @@
 												</tr>
 												<tr>
 													<td style="padding-bottom:14px; font-size:16px; line-height:24px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#191919; word-wrap:break-word; word-break:keep-all;">
-														<strong>안녕하세요. [[${userNm}]] 고객님</strong><br /><br />
+														<strong>안녕하세요. [[${orderName}]] 고객님</strong><br /><br />
 														구매가 정상적으로 완료되었습니다.<br />
-														고객님께서는 BS ON Rental에서 아래와 같은 상품을 주문하셨습니다.<br />
-														저희 BS ON을 이용해주셔서 진심으로 감사드립니다.
+														저희 밥수니반찬을 이용해주셔서 진심으로 감사드립니다.
 													</td>
 												</tr>
 											</tbody>
@@ -50,7 +53,7 @@
 														주문자
 													</td>
 													<td width="80%" style="padding:19px 0 7px; font-size:14px; line-height:22px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#191919;">
-														<strong>[[아이디]]([[이름]])</strong>
+														<strong>[[${orderName}]]</strong>
 													</td>
 												</tr>
 												<tr>
@@ -58,7 +61,7 @@
 														주문번호
 													</td>
 													<td style="padding:8px 0 7px; font-size:14px; line-height:22px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#22b8ff;">
-														<strong>주문번호</strong>
+														<strong>[[${orderNo}]]</strong>
 													</td>
 												</tr>
 												<tr>
@@ -66,97 +69,12 @@
 														주문일자
 													</td>
 													<td style="border-bottom:1px solid #ccc; padding:8px 0 21px; font-size:14px; line-height:22px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#191919;">
-														<strong>2021.10.11 22:41:09</strong>
+														<strong>[[${orderDt}]]</strong>
 													</td>
 												</tr>
 											</tbody>
 										</table>
 										<!-- // (e) 주문내역 안내 -->
-		
-										<!-- 주문상품정보 (s) // -->
-										<table cellpadding="0" cellspacing="0" border="0" width="690" align="center" style="border-collapse:collapse; font-family:'맑은 고딕','Malgun Gothic', arial; background-color:#fff; margin:0 auto; width:690px;" bgcolor="#fff">
-											<tbody>
-												<tr>
-													<td style="padding:37px 0 27px; font-size:20px; line-height:28px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#191919;"><strong>주문상품정보</strong></td>
-													<td align="right" style="padding:33px 0 22px; font-size:14px; line-height:22px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#191919;">구매일시 : </td>
-												</tr>
-											</tbody>
-										</table>
-										<table cellpadding="0" cellspacing="0" border="0" width="690" align="center" style="border-collapse:collapse; font-family:'맑은 고딕','Malgun Gothic', arial; background-color:#fff; margin:0 auto; width:690px; border-top:1px solid #191919;" bgcolor="#fff">
-											<tbody>
-												<tr>
-													<td colspan="2" style="border-bottom:1px solid #ccc; padding:21px 0 24px; font-size:14px; line-height:22px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#666666;">
-													</td>
-												</tr>
-												<tr>
-													<td width="50%" style="padding:17px 0 7px; font-size:14px; line-height:22px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#666666;">
-														수량
-													</td>
-													<td width="50%" align="right" style="padding:17px 0 7px; font-size:14px; line-height:22px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#191919;">
-														<strong>1</strong>
-													</td>
-												</tr>
-												<tr>
-													<td style="padding:8px 0 7px; font-size:14px; line-height:22px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#666666;">
-														월 렌탈료
-													</td>
-													<td align="right" style="padding:8px 0 7px; font-size:14px; line-height:22px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#191919;">
-													</td>
-												</tr>
-												<tr>
-													<td style="border-bottom:1px solid #ccc; padding:8px 0 21px; font-size:14px; line-height:22px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#666666;">
-														총 렌탈료
-													</td>
-													<td align="right" style="border-bottom:1px solid #ccc; padding:8px 0 21px; font-size:14px; line-height:22px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#191919;">
-													</td>
-												</tr>
-											</tbody>
-										</table>								
-										<!-- // (e) 주문상품정보 -->
-		
-										<!-- 결제정보 (s) // -->
-										<table cellpadding="0" cellspacing="0" border="0" width="690" align="center" style="border-collapse:collapse; font-family:'맑은 고딕','Malgun Gothic', arial; background-color:#fff; margin:0 auto; width:690px;" bgcolor="#fff">
-											<tbody>
-												<tr>
-													<td style="padding:37px 0 27px; font-size:20px; line-height:28px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#191919;"><strong>결제정보</strong></td>
-												</tr>
-											</tbody>
-										</table>
-										<table cellpadding="0" cellspacing="0" border="0" width="690" align="center" style="border-collapse:collapse; font-family:'맑은 고딕','Malgun Gothic', arial; background-color:#fff; margin:0 auto; width:690px; border-top:1px solid #191919;" bgcolor="#fff">
-											<tbody>
-												<tr>
-													<td width="20%" valign="top" style="padding:19px 0 7px; font-size:14px; line-height:22px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#666666;">
-														총 렌탈료
-													</td>
-													<td width="80%" align="right" style="padding:19px 0 7px; font-size:14px; line-height:22px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#191919;">
-													</td>
-												</tr>										
-												<tr>
-													<td valign="top" style="padding:8px 0 7px; font-size:14px; line-height:22px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#666666;">
-														배송 및 설치비
-													</td>
-													<td align="right" style="padding:8px 0 7px; font-size:14px; line-height:22px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#191919;">
-													</td>
-												</tr>										
-												<tr>
-													<td valign="top" style="padding:8px 0 7px; font-size:14px; line-height:22px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#666666;">
-														월 렌탈료
-													</td>
-													<td align="right" style="padding:8px 0 7px; font-size:14px; line-height:22px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#22b8ff;">
-													</td>
-												</tr>
-												<tr>
-													<td valign="top" style="border-bottom:1px solid #ccc; padding:8px 0 21px; font-size:14px; line-height:22px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#666666;">
-														결제수단
-													</td>
-													<td align="right" style="border-bottom:1px solid #ccc; padding:8px 0 21px; font-size:14px; line-height:22px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#191919;">
-														<strong>
-														</strong>
-													</td>
-												</tr>
-											</tbody>
-										</table>
-										<!-- // (e) 결제정보 -->
 		
 										<!-- 받는분 고객정보 (s) // -->
 										<table cellpadding="0" cellspacing="0" border="0" width="690" align="center" style="border-collapse:collapse; font-family:'맑은 고딕','Malgun Gothic', arial; background-color:#fff; margin:0 auto; width:690px;" bgcolor="#fff">
@@ -173,6 +91,7 @@
 														이름
 													</td>
 													<td width="80%" style="padding:19px 0 7px; font-size:14px; line-height:22px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#191919;">
+														[[${receiveName}]]
 													</td>
 												</tr>
 												<tr>
@@ -180,6 +99,7 @@
 														주소
 													</td>
 													<td style="padding:8px 0 7px; font-size:14px; line-height:22px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#191919;">
+														[[${receivePostNum}]] [[${receiveAddr}]] [[${receiveAddrDetail}]]
 													</td>
 												</tr>
 												<tr>
@@ -187,13 +107,7 @@
 														휴대폰 번호
 													</td>
 													<td style="padding:8px 0 7px; font-size:14px; line-height:22px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#191919;">
-													</td>
-												</tr>
-												<tr>
-													<td valign="top" style="padding:8px 0 7px; font-size:14px; line-height:22px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#666666;">
-														추가 연락처
-													</td>
-													<td style="padding:8px 0 7px; font-size:14px; line-height:22px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#191919;">
+														[[${receivePhone}]]
 													</td>
 												</tr>
 												<tr>
@@ -201,6 +115,7 @@
 														배송 메시지
 													</td>
 													<td style="border-bottom:1px solid #ccc; padding:8px 0 21px; font-size:14px; line-height:22px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#191919;">
+														[[${bigo}]]
 													</td>
 												</tr>
 											</tbody>
@@ -216,7 +131,7 @@
 									<td style="padding:50px 0; background-color:#191919;">
 										<table cellpadding="0" cellspacing="0" border="0" width="690" align="center" style="border-collapse:collapse; font-family:'맑은 고딕','Malgun Gothic', arial; margin:0 auto; width:690px;">
 											<tbody>
-												<tr>
+												<!--<tr>
 													<td style="font-size:12px; line-height:20px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#fff;">
 														(주)비에스온<br>
 														대표이사 : 이강진<br>
@@ -227,7 +142,7 @@
 														개인정보관리책임자 : 류정희 <a href="mailto:info@bs-on.com" style="color:#fff;">info@bs-on.com</a><br>
 														채용문의 : <a href="mailto:recruit@bs-on.com" style="color:#fff;">recruit@bs-on.com</a>
 													</td>
-												</tr>
+												</tr>-->
 												<tr>
 													<td style="padding:30px 0 0; font-size:12px; line-height:20px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#999;">본 메일은 발신전용 메일이며 문의에 대한 회신이 되지 않습니다.</td>
 												</tr>
@@ -242,5 +157,5 @@
 				</tr>
 			</tbody>
 		</table>
-	</main>
+	</body>
 </html>

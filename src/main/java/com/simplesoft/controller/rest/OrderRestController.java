@@ -15,6 +15,7 @@ import com.simplesoft.order.service.OrderService;
 import com.simplesoft.order.service.OrderVO;
 import com.simplesoft.reponse.BasicResponse;
 import com.simplesoft.reponse.CommonResponse;
+import com.simplesoft.util.EncryptUtils;
 import com.simplesoft.util.GlobalVariable;
 
 import jakarta.servlet.http.HttpSession;
@@ -53,6 +54,7 @@ public class OrderRestController {
 			} else {
 				result.put("resultCode", "9999");
 				result.put("resultMsg", "비회원정보가 없습니다.");
+				result.put("retunUrl","/cart");
 				return new CommonResponse<Map<String, Object>>(result);
 			}
 		}
@@ -66,8 +68,24 @@ public class OrderRestController {
 			result.put("resultMsg", "주문정보가 없습니다.");
 			result.put("retunUrl","/cart");
 		} else {
-			orderService.updateOrderApplyInfo(vo);
-			result.put("resultCode", "SUCCESS");
+			try {
+				vo.setOrderPhone(EncryptUtils.AES256_Encrypt(vo.getOrderPhone()));
+				vo.setReceivePhone(EncryptUtils.AES256_Encrypt(vo.getReceivePhone()));
+				if(!"".equals(vo.getOrderTel()) && vo.getOrderTel() != null){
+					vo.setOrderTel(EncryptUtils.AES256_Encrypt(vo.getOrderTel()));
+				}
+				if(!"".equals(vo.getReceiveTel()) && vo.getReceiveTel() != null){
+					vo.setReceiveTel(EncryptUtils.AES256_Encrypt(vo.getReceiveTel()));
+				}
+				vo.setOrderPwd(EncryptUtils.AES256_Encrypt(vo.getOrderPwd()));
+				orderService.updateOrderApplyInfo(vo);
+				result.put("resultCode", "SUCCESS");
+			}catch(Exception e) {
+				e.printStackTrace();
+				result.put("resultCode", "9999");
+				result.put("resultMsg", "오류가 발생하였습니다.");
+				result.put("retunUrl","/cart");
+			}
 		}
 		return new CommonResponse<Map<String, Object>>(result);
 	}

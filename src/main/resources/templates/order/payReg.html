@@ -685,6 +685,8 @@
 					return;
 				}
 				
+				$("#od_email").val(o_email+"@"+o_email2);
+				
 				if(r_name.replaceAll(" ", "") == ""){
 					alert("받으시는 분 이름을 입력해 주세요.");
 					setTimeout( function(){ $("#r_name").focus(); }, 1 );

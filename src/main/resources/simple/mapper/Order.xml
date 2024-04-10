@@ -97,9 +97,13 @@
 			, REG_USER
 			, REG_DT
 		FROM ORDER_MST
-		WHERE USER_NO = #{userNo}
-		AND ORDER_NO = #{orderNo}
-		AND ORDER_STATUS = #{orderStatus}
+		WHERE ORDER_NO = #{orderNo}
+		<if test="userNo neq null and userNo neq ''">
+			AND	USER_NO = #{userNo}
+		</if> 
+		<if test="orderStatus neq null and orderStatus neq ''">
+			AND	ORDER_STATUS = #{orderStatus}
+		</if>
 		<if test="userNo == '0'">
 			AND USER_SESSION = #{userSession}
 		</if>
@@ -147,6 +151,8 @@
 			, BIGO				= #{bigo}
 			, UPT_USER			= #{userNo}
 			, UPT_DT			= SYSDATE()
+			
+			, ORDER_STATUS		= '0000' 
 		WHERE USER_NO = #{userNo}
 		AND ORDER_NO = #{orderNo}
 		AND ORDER_STATUS = #{orderStatus}

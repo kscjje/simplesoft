@@ -52,7 +52,6 @@ public class OrderController {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		
 		List<Map<String, Object>> resultMap = menuboardService.selectMenuBoardList(paramMap);
-		log.info(""+resultMap);
 		model.addAttribute("resultMap", resultMap);
 		return "/order/list";
 	}

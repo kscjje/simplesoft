@@ -135,6 +135,7 @@ html, body {
     line-height: 30px;
 	color:#8b8b8b;
 	font-weight:normal;
+	text-decoration-line:none;
 }
 
 .logo>img {

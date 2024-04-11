@@ -26,8 +26,10 @@ public class MailSender {
 	private static final Logger logger =  LoggerFactory.getLogger(MailSender.class);
 	
 	private static String FROM = "kscjje@naver.com";
-	private static String FROMNAME  = "BSON";
+//	private static String FROM = "babsooni0423@naver.com";
+	private static String FROMNAME  = "밥수니반찬";
 	private static String SMTP_USERNAME = "kscjje@naver.com";
+//	private static String SMTP_USERNAME = "babsooni0423@naver.com";
 	private static String SMTP_PASSWORD="2BY1ZJNDU36R";
 	private static String HOST = "smtp.naver.com";
 	private static String PORT = "587";

@@ -1,6 +1,8 @@
 package com.simplesoft.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.simplesoft.cart.service.CartService;
 import com.simplesoft.member.service.MemberVO;
@@ -27,7 +28,6 @@ import com.simplesoft.util.RequestConvertUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
-
 @Slf4j
 @Controller
 public class OrderController {
@@ -140,6 +140,12 @@ public class OrderController {
 			orderVO.setRegUser(userNm);
 			
 			for(Map<String, Object> map : cartShopList) {
+				String menuDay = String.valueOf(map.get("menuDay")).split(" ")[0];
+				if(!timeCheck(menuDay)) {
+					model.addAttribute("PARAM_MESSAGE", "주문가능한 시간이 지난 일자가 선택되어있습니다.");
+					model.addAttribute("returnUrl", "/cart");
+					return GlobalVariable.REDIRECT_SUBMIT;
+				}
 				totalPrice += GlobalVariable.PRODUCT_AMT * Integer.parseInt("null".equals(String.valueOf(map.get("qty"))) ? "0" : String.valueOf(map.get("qty")));
 				totalQty += Integer.parseInt("null".equals(String.valueOf(map.get("qty"))) ? "0" : String.valueOf(map.get("qty")));
 				
@@ -169,7 +175,7 @@ public class OrderController {
 				return GlobalVariable.REDIRECT_SUBMIT;
 			} else {
 				//구매상품정보가없음.
-				model.addAttribute("PARAM_MESSAGE", "상품정보가 없습니다.<br>계속 오류 발생시 고객센터에 문의 하여 주십시오");
+				model.addAttribute("PARAM_MESSAGE", "상품정보가 없습니다.<br>계속 오류 발생시 고객센터에 문의 하여 주십시오.");
 				return GlobalVariable.REDIRECT_BACK;
 			}
 		} else {
@@ -216,5 +222,22 @@ public class OrderController {
 			model.addAttribute("order", order);
 		}
 		return "/order/payReg";
+	}
+	
+	private boolean timeCheck(String dateString) {
+		
+		boolean result = true;
+		
+		LocalDateTime dateToCheck = LocalDateTime.parse(dateString + "T18:00:00");
+		LocalDateTime currentDate = LocalDateTime.now();
+		
+		if (dateToCheck.isEqual(currentDate)) {
+			LocalTime timeToCheck = dateToCheck.toLocalTime();
+			if (timeToCheck.isAfter(LocalTime.of(18, 0))) {
+				//18시 이후
+				result = false;
+			}
+		}
+		return result;
 	}
 }

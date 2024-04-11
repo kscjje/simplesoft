@@ -3,7 +3,65 @@
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{layouts/default_layout}">
 	  <main class="content-wrapper" layout:fragment="content">
-		<style>
+		  <style>
+			@media only screen and (max-width: 991px) {
+				#thHead th{
+					font-size: 12px !important;
+				}
+				.fs-6 {
+					font-size: 12px !important;
+				}
+				tr div {
+					font-size: 12px !important;
+				}
+				tr div .menuboard_btn {
+					padding: 8px 24px;
+					font-size: 12px;
+				}
+			}
+			@media only screen and (max-width: 767px) {
+				#thHead th{
+					font-size: 10px !important;
+				}
+				.fs-6 {
+					font-size: 10px !important;
+				}
+				tr div {
+					font-size: 10px !important;
+				}
+				tr div .menuboard_btn {
+					padding: 6px 20px;
+					font-size: 10px;
+				}
+				.fixed .addToCartButton {
+					padding: 10px 12px;
+					font-size: 16px;
+					width:180px;
+				}
+			}
+			@media only screen and (max-width: 500px) {
+				#thHead th{
+					font-size: 7px !important;
+				}
+				.fs-6 {
+					font-size: 7px !important;
+				}
+				tr div {
+					font-size: 7px !important;
+				}
+				tr div .menuboard_btn {
+					padding: 6px 14px;
+					font-size: 7px;
+				}
+				.tableWidth tr td{
+					height:184px;
+				}
+				.fixed .addToCartButton {
+					padding: 8px 10px;
+					font-size: 10px;
+					width:100px;
+				}
+			}
 			.tableWidth {
 				width:100%;
 				margin: auto;
@@ -33,6 +91,9 @@
 			}
 			tr td{
 				height:314px;
+			}
+			td div:nth-child(2){
+				margin-top:30px;
 			}
 			td:first-child, th:first-child {
 				border-radius: 15px 0 0 15px;
@@ -97,20 +158,20 @@
 			$(function(){
 				let result = /*[[${resultMap}]]*/"";
 				
-				console.log(result);
-				
 				// 오늘 날짜 객체 생성
 				const currentDate = new Date();
 				// 오늘 날짜 년도 가져오기
 				const currentYear = currentDate.getFullYear();
 				// 오늘 날짜 월 가져오기
-				const currentMonth = (currentDate.getMonth()+1).toString.length == 1 ? "0"+(currentDate.getMonth()+1) : (currentDate.getMonth()+1).toString;
+				const currentMonth = (currentDate.getMonth()+1) < 10 ? "0"+(currentDate.getMonth()+1) : (currentDate.getMonth()+1);
 				// 오늘 날짜 일 가져오기
-				const currentDay = 	(currentDate.getDate()+1).toString.length == 1 ? "0"+(currentDate.getDate()+1) : (currentDate.getDate()+1).toString;
+				const currentDay = 	(currentDate.getDate()+1) < 10 ? "0"+(currentDate.getDate()+1) : (currentDate.getDate()+1);
 				
+				var currentHour = currentDate.getHours();
+				var currentMinute = currentDate.getMinutes();
+
 				const currentYYYYMMDD = currentYear + currentMonth + currentDay;
 				const currentMMDD = currentMonth + currentDay;
-				
 				// 오늘 날짜가 속한 주의 일요일을 가져오기
 				const firstSundayOfThisWeek = new Date(currentDate);
 				
@@ -128,8 +189,8 @@
 						var month = (firstSundayOfThisWeek.getMonth() + 1).toString().padStart(2, '0'); // 월은 0부터 시작하므로 1을 더하고, 두 자리로 표시
 						var day = firstSundayOfThisWeek.getDate().toString().padStart(2, '0'); // 일을 두 자리로 표시
 						
-						addHtml += 		"<td>";
-						addHtml += 			"<div style='margin-bottom:30px;font-size:16px;font-weight:bold;font-family:Noto Sans KR, Sans-serif'>" + month +"월 "+ day +"일 </div>";
+						addHtml += 		"<td style='position: relative;'>";
+						addHtml += 			"<div class='fw-bold fs-6 mt-3' style='position: absolute;top: 0;left: 50%;transform: translateX(-50%);font-family:Noto Sans KR, Sans-serif'>" + month +"월 "+ day +"일 </div>";
 						
 						let find = false;		//식단표 데이터가 있는지 여부
 						for(let k = 0; k < result.length; k ++){
@@ -142,18 +203,19 @@
 									let menuMsg = result[k].menuMsg.split("|");
 									for(let index = 0; index < menuMsg.length; index++) {
 										if(menuMsg[index].substring(0,1) == "!"){
-											addHtml +="<div style='margin-bottom:10px;color:red'>"+menuMsg[index].substring(1,menuMsg[index].length)+"</div>";
+											addHtml +="<div class='mb-1' style='color:red'>"+menuMsg[index].substring(1,menuMsg[index].length)+"</div>";
 										} else {
-											addHtml +="<div style='margin-bottom:10px;'>"+menuMsg[index]+"</div>";
+											addHtml +="<div class='mb-1'>"+menuMsg[index]+"</div>";
 										}
-										if(result[k].useYn == "Y" && (index+1) == menuMsg.length && currentMMDD < month+day){
+										if(result[k].useYn == "Y" && (index+1) == menuMsg.length && (currentMMDD < month+day || currentMMDD == month+day && !(currentHour > 18 || (currentHour === 18 && currentMinute >= 0)))){
+											
 											addHtml	+="<div style='padding-top:10px;'>";
 											addHtml +=	"<input type='button' onclick='toggleButtonClick(this)' id='"+result[k].menuBoardSeq+"' value='선택' class='menuboard_btn'>";
 											addHtml +="</div>";
 										}
 									}
 								} else {
-									addHtml +="<div style='margin-bottom:10px;'>"+result[k].menuMsg+"</div>";
+									addHtml +="<div class='mb-1'>"+result[k].menuMsg+"</div>";
 								}
 								find = true;
 							} else {

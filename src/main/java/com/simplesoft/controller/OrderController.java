@@ -1,6 +1,7 @@
 package com.simplesoft.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.simplesoft.cart.service.CartService;
@@ -103,7 +105,8 @@ public class OrderController {
 			userNm = loginInfo.getUserNm();
 		} else {
 			String noneMember = request.getParameter("noneMember");
-			if(!StringUtils.isEmpty(noneMember) && "Y".equals(noneMember)) {
+			String sessionNone = (String)session.getAttribute("noneMember");
+			if((!StringUtils.isEmpty(noneMember) && "Y".equals(noneMember)) || null != sessionNone) {
 				paramMap.put("userSession", session.getId());
 				paramMap.put("userNo", 0);
 				userNm = "비회원";
@@ -129,6 +132,7 @@ public class OrderController {
 		List<Map<String, Object>> cartShopList = cartService.selectOrderCartShop(paramMap);		//장바구니 상품이 판매가능한 상품인지 조회
 		List<OrderProductVO> productList = new ArrayList<OrderProductVO>();
 		
+		//주문정보에서 상품리스트 수 만큼 저장
 		if(cartShopList.size() > 0 ) {
 			int totalPrice = 0;		//총상품금액
 			int totalQty = 0;		//총상품개수
@@ -142,7 +146,7 @@ public class OrderController {
 			for(Map<String, Object> map : cartShopList) {
 				String menuDay = String.valueOf(map.get("menuDay")).split(" ")[0];
 				if(!timeCheck(menuDay)) {
-					model.addAttribute("PARAM_MESSAGE", "주문가능한 시간이 지난 일자가 선택되어있습니다.");
+					model.addAttribute("PARAM_MESSAGE", "주문 가능한 시간이 지난 일자가 선택되어 있습니다.");
 					model.addAttribute("returnUrl", "/cart");
 					return GlobalVariable.REDIRECT_SUBMIT;
 				}
@@ -179,7 +183,7 @@ public class OrderController {
 				return GlobalVariable.REDIRECT_BACK;
 			}
 		} else {
-			//model.addAttribute("PARAM_MESSAGE", "주문 가능한 상품이 없습니다.");
+			model.addAttribute("PARAM_MESSAGE", "주문 가능한 상품이 없습니다.");
 			model.addAttribute("returnUrl", "/cart");
 			return GlobalVariable.REDIRECT_SUBMIT;
 		}
@@ -192,12 +196,13 @@ public class OrderController {
 	 * @param session
 	 * @return
 	 */
-	@RequestMapping("/{orderNo}/orderSheet")
+	@PostMapping("/{orderNo}/orderSheet")
 	public String orderSheet(@PathVariable("orderNo") String orderNo, HttpServletRequest request, Model model, HttpSession session){
 		
 		MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
 		OrderVO vo = new OrderVO();
 		int userNo = 0;
+		
 		if(loginInfo != null) {
 			userNo = loginInfo.getUserNo();
 		} else {
@@ -218,6 +223,14 @@ public class OrderController {
 			model.addAttribute("returnUrl", "/cart");
 			return GlobalVariable.REDIRECT_SUBMIT;
 		} else {
+			for(OrderProductVO a : order.getProductList()) {
+				String menuDay = String.valueOf(a.getMenuDay()).length() == 8 ? String.valueOf(a.getMenuDay()).substring(0,4)+"-"+String.valueOf(a.getMenuDay()).substring(4,6)+"-"+String.valueOf(a.getMenuDay()).substring(6,8) : "null";
+				if(!timeCheck(menuDay) && !"null".equals(menuDay)) {
+					model.addAttribute("PARAM_MESSAGE", "주문 가능한 시간이 지난 일자가 선택되어 있습니다.");
+					model.addAttribute("returnUrl", "/cart");
+					return GlobalVariable.REDIRECT_SUBMIT;
+				}
+			}
 			model.addAttribute("orderNo", orderNo);
 			model.addAttribute("order", order);
 		}
@@ -229,10 +242,13 @@ public class OrderController {
 		boolean result = true;
 		
 		LocalDateTime dateToCheck = LocalDateTime.parse(dateString + "T18:00:00");
-		LocalDateTime currentDate = LocalDateTime.now();
+		LocalDateTime currentDateTime = LocalDateTime.now();
 		
-		if (dateToCheck.isEqual(currentDate)) {
-			LocalTime timeToCheck = dateToCheck.toLocalTime();
+		LocalDate dateToCheckDate	= dateToCheck.toLocalDate();
+		LocalDate currentDate		= currentDateTime.toLocalDate();
+		
+		if(dateToCheckDate.isEqual(currentDate)) {
+			LocalTime timeToCheck = currentDateTime.toLocalTime();
 			if (timeToCheck.isAfter(LocalTime.of(18, 0))) {
 				//18시 이후
 				result = false;

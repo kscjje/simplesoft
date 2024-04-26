@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.063" y1="0.83" x2="0.97" y2="0.228" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#fcc659"/>
+      <stop offset="0.197" stop-color="#f46c37"/>
+      <stop offset="0.409" stop-color="#db2b70"/>
+      <stop offset="0.64" stop-color="#b82892"/>
+      <stop offset="0.833" stop-color="#7e3eb9"/>
+      <stop offset="0.978" stop-color="#3c5be2"/>
+      <stop offset="1"/>
+    </linearGradient>
+  </defs>
+  <g id="icon_insta" transform="translate(-1424 -427)">
+    <circle id="container" cx="16" cy="16" r="16" transform="translate(1424 427)" fill="url(#linear-gradient)"/>
+    <g id="instagram" transform="translate(1431 434)">
+      <path id="패스_352" data-name="패스 352" d="M15.7,3.7a1.055,1.055,0,1,0,1.055,1.055A1.055,1.055,0,0,0,15.7,3.7" transform="translate(-1.937 -0.49)" fill="#fff"/>
+      <path id="패스_353" data-name="패스 353" d="M9.781,12.535A2.839,2.839,0,1,1,12.62,9.7a2.842,2.842,0,0,1-2.838,2.839m0-7.272A4.433,4.433,0,1,0,14.214,9.7,4.438,4.438,0,0,0,9.781,5.263" transform="translate(-0.707 -0.696)" fill="#fff"/>
+      <path id="패스_354" data-name="패스 354" d="M5.406,1.693A3.717,3.717,0,0,0,1.694,5.406v7.187a3.717,3.717,0,0,0,3.712,3.713h7.187a3.717,3.717,0,0,0,3.713-3.713V5.406a3.717,3.717,0,0,0-3.713-3.713ZM12.593,18H5.406A5.413,5.413,0,0,1,0,12.593V5.406A5.413,5.413,0,0,1,5.406,0h7.187A5.413,5.413,0,0,1,18,5.406v7.187A5.413,5.413,0,0,1,12.593,18" fill="#fff"/>
+    </g>
+  </g>
+</svg>

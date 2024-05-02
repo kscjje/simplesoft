@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org">
+	<head>
+		<title>밥수니반찬 관리자 페이지</title>
+		<link rel="stylesheet" href="/css/style.css">
+		<link rel="stylesheet" href="/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/css/font.css">
+		<link rel="stylesheet" href="/css/bootstrap-icons.min.css">
+		<script src="/js/jquery-3.6.0.min.js"></script>
+		<script src="/js/bootstrap.bundle.min.js"></script>
+		<script src="/js/jquery.blockUI.min.js"></script>
+		<script src="/js/blockCommon.js"></script>
+		<script src="/js/jQuery.serializeObject.min.js"></script>
+		<style>
+			.header>a>img {
+				width: 200px;
+				height: 70px;
+				position: relative;
+				top: 20%;
+			}
+			.admlogin {
+				font-family:'NotoSans';
+				font-weight:600;
+			}
+		</style>
+	</head>
+		<body style="background-color:#f0f2f6;">
+			<div class="text-center">
+				<div class="col-lg-3 alert" style="background-color: #fff; border:1px solid #e1e1e1;display:inline-block; margin-top: 8%; padding: 60px;">
+					<div class="header" style="background-color: #FFF;vertical-align:middle"><a href="/main"><img src="/image/logo.jpg" alt="밥수니반찬헤더로고"></a></div>
+					<span class="admlogin text-secondary">administrator LOGIN</span>
+					<form method="post" id="loginForm" style="border-top:1px solid #e1e1e1;" class="mt-3 pt-3">
+						<div class="form-group" style="margin-bottom: 12px;">
+							<input type="text" class="form-control" style="background-color: #f6f6f6; height: 50px;" name="userId" id="userId" placeholder="아이디" required onkeypress="enterKey()" autocomplete="off">
+						</div>
+						<div class="form-group" style="margin-bottom: 18px;">
+							<input type="password" class="form-control" style="background-color: #f6f6f6; height: 50px;" name="userPw" id="userPw" placeholder="비밀번호" required onkeypress="enterKey()">
+						</div>
+						<div class="form-group" style="margin-bottom: 18px;">
+							<button type="button" class="btn btn-dark btn-block" style="width:100%;height: 60px;font-weight: bold;font-size: 20px;" onclick="fnLogin()">로그인</button>
+						</div>
+						<div class="form-group align-items-center">
+							<div class="text-center">
+								<a href="#" style="text-decoration: none;color: #191919;font-size: 14px;">아이디찾기</a></span>
+								<a href="#" style="text-decoration: none;color: #191919;font-size: 14px;">비밀번호 초기화</a></span>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		
+			<script th:inline="javascript">
+				/**
+				*	로그인 시도
+				**/
+				fnLogin = function(){
+					let userId = $('#userId').val();
+					let userPw = $('#userPw').val();
+					
+					if(userId == ""){
+						alert("아이디를 입력해 주세요.");
+						$('#userId').focus();
+						return;
+					} else if(userPw == ""){
+						alert("비밀번호를 입력해 주세요.")
+						$('#userPw').focus();
+						return;
+					}
+					let loginInfo = {
+						userId :  userId,
+						userPw : userPw
+					}
+					let returnUrl = /*[[${returnUrl}]]*/ "";
+					
+					$.ajax({
+						url : "/login/loginAjax",
+						type : "POST",
+						dataType : "json",
+						data : loginInfo,
+						success : function(data) {
+							if(data.RESULT == "SUCCESS"){
+								location.href = returnUrl == null ? "/main" : returnUrl;
+							} else{
+								alert("아이디와 비밀번호가 일치하지 않습니다.");
+								$('#userPw').val("");
+							}
+						}, error : function(request, status, error) {
+							alert("에러코드: " + request.status + "\n메시지: " + request.responseText);
+						}
+					});
+				}
+				noneOrder = function(){
+					if(!$("#agree1").is(":checked")){
+						alert("[비회원 개인정보 수집 · 이용 동의]에 동의해주세요.");
+						return;
+					}
+					let returnUrl = /*[[${returnUrl}]]*/ "";
+					location.href = returnUrl + "&noneMember=Y";
+				}
+				enterKey = function(type){
+					if (window.event.keyCode == 13) {
+						fnLogin();
+					}
+				}
+			</script>
+		<body>
+</html>

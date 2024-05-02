@@ -19,9 +19,9 @@ a,ul,li{
 * {margin: 0; padding: 0;}
         body {background-color: #fffde7;}
         .header {width: 100%; height: 170px;}
-        .banner {width: 100%; height: 450px; background-color: palegoldenrod;}
-        .contents {overflow:hidden; width: 100%; background-color: palevioletred;}
-        .contents > div {width: 29%; margin: 2.1%; float: left; height: 250px; background-color: #ff9800; border-radius: 5px;}
+        .swiper {width: 100%; height: 450px; background-color: palegoldenrod;}
+        .contents {overflow:hidden; width: 100%; border: 1px solid lightgray;}
+        .contents >div {width: 29%; margin: 2.1%; float: left; height: 250px; }
         .footer {clear: both; width: 100%; height: 170px; background-color: blue;}
 
 
@@ -36,6 +36,16 @@ a,ul,li{
         }
 
         /*header_menu시작*/
+#header_menu{
+    font-weight: bold;
+    position: fixed;
+    top: 0;
+    /* width: 100% */
+    left: 0;
+    right: 0;
+}
+
+
 #header_menu ul {
 list-style: none; padding-left: 0px; float: right; margin-top: 5px;
 }
@@ -53,10 +63,23 @@ list-style: none; padding-left: 0px; float: right; margin-top: 5px;
   .header_logo>a>img {
     position: absolute; width: 200px; height: 70px; top:11%; left: 50%; transform: translate(-50%, -50%);
   }
+/*슬라이드시작*/
+.swiper {
+    width: 100%;
+    height: 100%;
+  }
+  .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+
 /*contents 시작*/
-.contents > div:nth-child(1) {background: image(); }
-
-
+.contents > div {
+    text-align: center;
+}
 
 /*header_main_menu -boot*/
 /*header_footer시작*/
@@ -87,3 +110,5 @@ list-style: none; padding-left: 0px; float: right; margin-top: 5px;
     text-decoration: none;
     color: inherit;
 }
+
+

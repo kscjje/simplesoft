@@ -3,11 +3,44 @@
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{layouts/default_layout}">
 	<main class="content-wrapper" layout:fragment="content">
-        <div class="banner"></div>
-        <div class="contents">
-            <div><a href="#"><img src="image/con1.jpg" alt="컨텐츠1img"></a></div>
-            <div><a href="#"><img src="image/con2.jpg" alt="컨텐츠2img"></a></div>
-            <div><a href="#"><img src="image/con3.jpg" alt="컨텐츠3img"></a></div>
-        </div>
+		<div class="swiper">
+			<!-- Additional required wrapper -->
+			<div class="swiper-wrapper">
+				<!-- Slides -->
+				<div class="swiper-slide"><img src="image/slide1.png" alt=""></div>
+				<div class="swiper-slide"><img src="image/img2.jpg" alt=""></div>
+				<div class="swiper-slide"><img src="image/img3.jpg" alt=""></div>
+			</div>
+			<!-- If we need pagination -->
+			<div class="swiper-pagination"></div>
+			
+			<!-- If we need navigation buttons -->
+			<div class="swiper-button-prev"></div>
+			<div class="swiper-button-next"></div>
+		</div>
+		<div class="contents mt-4">
+			<div><a href="#"><img src="image/con1.jpg" alt="이달의 식단 확인하기"></a></div>
+			<div><a href="/order"><img src="image/con2.jpg" alt="주문하기"></a></div>
+			<div><a href="#"><img src="image/con3.jpg" alt="주문내역 확인하기"></a></div>
+		</div>
+		<script>
+			const swiper = new Swiper('.swiper', {
+			// Optional parameters
+			direction: 'horizontal',
+			loop: true,
+		  
+			// If we need pagination
+			pagination: {
+			  el: '.swiper-pagination',
+			},
+		  
+			// Navigation arrows
+			navigation: {
+			  nextEl: '.swiper-button-next',
+			  prevEl: '.swiper-button-prev',
+			},
+		  })
+			
+		</script>
 	</main>
 </html>

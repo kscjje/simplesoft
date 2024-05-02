@@ -54,19 +54,23 @@ public class OrderRestController {
 			} else {
 				result.put("resultCode", "9999");
 				result.put("resultMsg", "비회원정보가 없습니다.");
-				result.put("retunUrl","/cart");
+				result.put("returnUrl","/cart");
 				return new CommonResponse<Map<String, Object>>(result);
 			}
 		}
 		vo.setRegUser(userNm);
 		vo.setUserNo(userNo);
-		vo.setOrderStatus(GlobalVariable.ORDER_STATUS_APPLY); 								//주문상태-주문접수
+//		vo.setOrderStatus(GlobalVariable.ORDER_STATUS_APPLY); 								//주문상태-주문접수
 		
 		OrderVO order = orderService.selectOrderApplyInfo(vo);
 		if (order == null) {
 			result.put("resultCode", "9999");
 			result.put("resultMsg", "주문정보가 없습니다.");
-			result.put("retunUrl","/cart");
+			result.put("returnUrl","/cart");
+		} else if ("0000".equals(order.getOrderStatus())) {
+			result.put("resultCode", "9999");
+			result.put("resultMsg", "이미 결제 완료된 주문입니다.");
+			result.put("returnUrl","/cart");
 		} else {
 			try {
 				vo.setOrderPhone(EncryptUtils.AES256_Encrypt(vo.getOrderPhone()));
@@ -84,7 +88,7 @@ public class OrderRestController {
 				e.printStackTrace();
 				result.put("resultCode", "9999");
 				result.put("resultMsg", "오류가 발생하였습니다.");
-				result.put("retunUrl","/cart");
+				result.put("returnUrl","/cart");
 			}
 		}
 		return new CommonResponse<Map<String, Object>>(result);

@@ -3,7 +3,7 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/default_layout}">
 	<main class="content-wrapper" layout:fragment="content" style="padding: 10px;">
-		<script src="https://js.tosspayments.com/v1/payment-widget"></script>
+		<!--<script src="https://js.tosspayments.com/v1/payment-widget"></script>-->
 		<style>
 			@media only screen and (max-width: 575px) {
 				.custom{
@@ -564,11 +564,11 @@
 				
 			// 구매자의 고유 아이디를 불러와서 customerKey로 설정하세요.
 			// 이메일・전화번호와 같이 유추가 가능한 값은 안전하지 않습니다.
-			const widgetClientKey = "test_ck_4Gv6LjeKD8aAJ6La9L48wYxAdXy1";
+			const widgetClientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
 			const generateRandomString = () => window.btoa(Math.random()).slice(0, 20);
 			const customerKey = generateRandomString();
 //				const paymentWidget = PaymentWidget(widgetClientKey, customerKey); // 회원 결제
-			const paymentWidget = PaymentWidget(widgetClientKey, PaymentWidget.ANONYMOUS) // 비회원 결제
+			/*const paymentWidget = PaymentWidget(widgetClientKey, PaymentWidget.ANONYMOUS) // 비회원 결제
 			
 			const paymentMethodWidget = paymentWidget.renderPaymentMethods(
 				"#payment-method",
@@ -588,7 +588,6 @@
 						paymentMethodWidget.updateAmount(amount);
 					}
 				});
-*/
 			let phone = "";
 			button.addEventListener("click", function () {
 				
@@ -605,7 +604,7 @@
 					customerName: $("#o_name").val(),
 					customerMobilePhone: phone,
 				});
-			});
+			});*/
 			//주문하기
 			fnSubmit = function(){
 				
@@ -740,7 +739,7 @@
 							if(result.data.resultCode == "SUCCESS"){
 								$("#modalPay").trigger("click");
 							} else {
-								alert("오류:"+result.data.resultMsg);
+								alert(result.data.resultMsg);
 								if(result.data.returnUrl != ""){
 									location.href = result.data.returnUrl;
 								}

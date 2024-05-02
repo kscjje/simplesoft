@@ -241,7 +241,7 @@ public class OrderController {
 		
 		boolean result = true;
 		
-		LocalDateTime dateToCheck = LocalDateTime.parse(dateString + "T18:00:00");
+		LocalDateTime dateToCheck = LocalDateTime.parse(dateString + "T16:00:00");
 		LocalDateTime currentDateTime = LocalDateTime.now();
 		
 		LocalDate dateToCheckDate	= dateToCheck.toLocalDate();

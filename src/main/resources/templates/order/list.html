@@ -152,9 +152,7 @@
 					</tr>
 				</tbody>
 			</table>
-			<div class="fixed">
-				<button type="button" class="addToCartButton" style="position: sticky;top:200px;"onclick="fnCartSave()">장바구니담기</button>
-			</div>
+			<div class="fixed"></div>
 		</div>
 		<script th:inline="javascript">
 			
@@ -242,6 +240,7 @@
 				}
 				addHtml += 	"</tr>";
 				$("#thHead").after(addHtml);
+				$(".fixed").html('<button type="button" class="addToCartButton" style="position: sticky;top:200px;"onclick="fnCartSave()">장바구니담기</button>');
 			});
 			
 			//장바구니 담기

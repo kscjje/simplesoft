@@ -8,6 +8,8 @@ a,ul,li{
 	list-style: none; 
 	text-decoration: none; 
 	color: rgb(0, 0, 64);
+	font-family:'NotoSans';
+	font-weight:600;
 }
 .nav-item2>a{
 	list-style: none; 

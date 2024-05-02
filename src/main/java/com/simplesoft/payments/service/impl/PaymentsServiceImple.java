@@ -6,8 +6,6 @@ import java.util.Map;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.simplesoft.mapper.cart.CartMapper;
@@ -17,7 +15,6 @@ import com.simplesoft.order.service.OrderVO;
 import com.simplesoft.payments.service.PaymentsService;
 import com.simplesoft.payments.service.PaymentsVO;
 import com.simplesoft.util.EncryptUtils;
-import com.simplesoft.util.GlobalVariable;
 import com.simplesoft.util.MailTemplateSender;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,8 +36,10 @@ public class PaymentsServiceImple implements PaymentsService{
     private MailTemplateSender mailTemplateSender;
 	
 	//결제정보 저장 후 장바구니 내역 삭제
-	public String getPayResult(HttpServletRequest request, JSONObject param) {
-		
+	@Override
+	public void getPayResult(HttpServletRequest request, JSONObject param) {
+		System.out.println("결제 정보");
+		System.out.println(param);
 		ObjectMapper mapper = new ObjectMapper();
 		
 		try {
@@ -69,7 +68,7 @@ public class PaymentsServiceImple implements PaymentsService{
 					break;
 			}
 			paymentsMapper.updatePayments(vo);
-			
+
 			// 주문완료 메일 전송
 			OrderVO order = new OrderVO();
 			order.setOrderNo((String)param.get("orderId"));
@@ -97,8 +96,6 @@ public class PaymentsServiceImple implements PaymentsService{
 		String[] arrCartNo = String.valueOf(session.getAttribute("cartList")).split(",");
 		paramMap.put("arrCartNo", arrCartNo);
 		cartMapper.deleteCart(paramMap);
-		
-		return "";
 	}
 	@Override
 	public int insertPayments(PaymentsVO vo) {

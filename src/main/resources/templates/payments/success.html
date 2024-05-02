@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http//www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{layouts/default_layout}">
+	  layout:decorate="~{layouts/none_default_layout}">
 	 <main class="content-wrapper" layout:fragment="content" style="padding: 10px;">
 		<script>
 			// 쿼리 파라미터 값이 결제 요청할 때 보낸 데이터와 동일한지 반드시 확인하세요.
@@ -17,7 +17,8 @@
 					orderId: orderId,
 					amount: amount,
 				};
-				
+									
+				$.showMask();
 				$.ajax({
 					url: "/confirm",
 					type: "POST",
@@ -25,10 +26,11 @@
 					contentType : "application/json",
 					data: JSON.stringify(requestData),
 					success: function (result) {
-						$("#orderId").text(orderId);
-						$("#showDisplay").show();
+						$.hideMask();
+						location.href="/complete?orderId="+orderId;
 					},
 					error: function (e) {
+						$.hideMask();
 						window.location.href = `/fail?message=${e.responseJSON.message}&code=${e.responseJSON.code}`;
 					}
 				});
@@ -36,20 +38,5 @@
 			
 			confirm();
 		</script>
-		<div class="row justify-content-center custom" style="text-align: center; display:none;" id="showDisplay">
-			<div class="col-lg-3">
-				<h2 class="mb-3 text-success-emphasis">결제 완료</h2>
-				<div class="alert alert-primary align-items-center mt-4 mb-4" role="alert">
-					<small class="fw-bold">
-						고객님의 소중한 주문 접수가 <br>완료되었습니다.<br>
-						주문내역은 기입해주신 연락처로<br>
-						문자 발송될 예정입니다.<br>
-						감사합니다:)<br><br>
-						주문번호: <span id="orderId"></span>
-					</small>
-				</div>
-				<a href="#" class="btn btn-outline-primary" role="button">주문내역 확인하기</a>
-			</div>
-		</div>
 	</main>
 </html>

@@ -25,13 +25,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.simplesoft.mapper.order.OrderMapper;
-import com.simplesoft.order.service.OrderVO;
 import com.simplesoft.payments.service.PaymentsService;
 import com.simplesoft.payments.service.PaymentsVO;
 import com.simplesoft.reponse.BasicResponse;
 import com.simplesoft.reponse.CommonResponse;
 import com.simplesoft.util.GlobalVariable;
-import com.simplesoft.util.MailTemplateSender;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -104,6 +102,7 @@ public class PaymentsController {
 		result.put("resultCode", "SUCCESS");
 		return new CommonResponse<Map<String, Object>>(result);
 	}
+	
 	/**
 	 * 주문하기
 	 * 
@@ -150,7 +149,7 @@ public class PaymentsController {
 	}
 	
 	/**
-	 * 주문하기
+	 * 실패
 	 * 
 	 * @param model
 	 * @return
@@ -162,5 +161,20 @@ public class PaymentsController {
 		System.out.println("fail:"+paramMap);
 		
 		return "/payments/fail";
+	}
+	
+	/**
+	 * 주문완료 페이지
+	 * 
+	 * @param model
+	 * @param orderId
+	 * @return
+	 */
+	@GetMapping("/complete")
+	public String success(Model model,
+			@RequestParam String orderId) {
+		
+		model.addAttribute("orderId", orderId);
+		return "/order/complete";
 	}
 }

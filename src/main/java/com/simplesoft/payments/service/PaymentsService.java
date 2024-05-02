@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public interface PaymentsService {
 	
-	public String getPayResult(HttpServletRequest request, JSONObject param);
+	public void getPayResult(HttpServletRequest request, JSONObject param);
 	public int insertPayments(PaymentsVO vo);
 	public PaymentsVO selectPaymentsDetail(PaymentsVO vo);
 }

@@ -67,19 +67,19 @@
 						return;
 					}
 					let loginInfo = {
-						userId :  userId,
-						userPw : userPw
+						managerId :  userId,
+						managerPw : userPw
 					}
 					let returnUrl = /*[[${returnUrl}]]*/ "";
 					
 					$.ajax({
-						url : "/login/loginAjax",
+						url : "/rest/adm/login/loginAjax",
 						type : "POST",
 						dataType : "json",
 						data : loginInfo,
-						success : function(data) {
-							if(data.RESULT == "SUCCESS"){
-								location.href = returnUrl == null ? "/main" : returnUrl;
+						success : function(result) {
+							if(result.data.RESULT == "SUCCESS"){
+								location.href = returnUrl == null ? "/adm/main" : returnUrl;
 							} else{
 								alert("아이디와 비밀번호가 일치하지 않습니다.");
 								$('#userPw').val("");
@@ -88,14 +88,6 @@
 							alert("에러코드: " + request.status + "\n메시지: " + request.responseText);
 						}
 					});
-				}
-				noneOrder = function(){
-					if(!$("#agree1").is(":checked")){
-						alert("[비회원 개인정보 수집 · 이용 동의]에 동의해주세요.");
-						return;
-					}
-					let returnUrl = /*[[${returnUrl}]]*/ "";
-					location.href = returnUrl + "&noneMember=Y";
 				}
 				enterKey = function(type){
 					if (window.event.keyCode == 13) {

@@ -9,11 +9,13 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.simplesoft.member.service.MemberService;
+import com.simplesoft.manager.service.ManagerService;
+import com.simplesoft.manager.service.ManagerVO;
 import com.simplesoft.member.service.MemberVO;
+import com.simplesoft.reponse.BasicResponse;
+import com.simplesoft.reponse.CommonResponse;
 import com.simplesoft.util.EncryptUtils;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AdminRestController {
 	
 	@Autowired
-	MemberService memberService;
+	ManagerService managerService;
 	
 	/**
 	 * 관리자 로그인 처리
@@ -37,25 +39,25 @@ public class AdminRestController {
 	 * @throws NoSuchAlgorithmException 
 	 */
 	@PostMapping(value = "/login/loginAjax")
-	public @ResponseBody Map<String, Object> loginAjax(HttpServletRequest request,
-			@ModelAttribute(value = "paramVO") MemberVO paramVO, ModelMap model, HttpSession session) throws NoSuchAlgorithmException {
-		log.debug("로그인 시도 AJAX");
-		MemberVO memDetail = memberService.selectMemberDetail(paramVO);
+	public BasicResponse loginAjax(HttpServletRequest request, ModelMap model, HttpSession session,@ModelAttribute("managerVO") ManagerVO paramVO) throws NoSuchAlgorithmException {
+		log.info("관리자 로그인 시도 AJAX");
+		
+		ManagerVO managerDetail = managerService.selectManagerDetail(paramVO);
 		Map<String, Object> returnData = new HashMap<String, Object>();
-		String userPassword = paramVO.getUserPw();
-		if (memDetail == null) {
+		String userPassword = paramVO.getManagerPw();
+		if (managerDetail == null) {
 			returnData.put("RESULT", "FAIL");
 			returnData.put("PARAM_MESSAGE", "일치하는 ID가 없습니다.");
 		} else {
-			if (EncryptUtils.SHA512_Encrypt(userPassword).equals(memDetail.getUserPw())) {
+			if (EncryptUtils.SHA512_Encrypt(userPassword).equals(managerDetail.getManagerPw())) {
 				returnData.put("RESULT", "SUCCESS");
-				returnData.put("mberId", memDetail.getUserId());
-				session.setAttribute("loginInfo",memDetail);
+				returnData.put("managerId", managerDetail.getManagerId());
+				session.setAttribute("adminLoginInfo",managerDetail);
 			} else {
 				returnData.put("RESULT", "FAIL");
 				returnData.put("PARAM_MESSAGE", "비밀번호가 일치하지 않습니다.");
 			}
 		}
-		return returnData;
+		return new CommonResponse<Map<String, Object>>(returnData);
 	}
 }

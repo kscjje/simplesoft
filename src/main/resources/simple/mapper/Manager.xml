@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.simplesoft.mapper.manager.ManagerMapper">
+	<select id="selectManagerDetail" parameterType="com.simplesoft.manager.service.ManagerVO" resultType="com.simplesoft.manager.service.ManagerVO">
+		/* ManagerMapper.selectManagerDetail */
+		SELECT 
+			  A.MANAGER_NO
+			, A.MANAGER_ID
+			, A.MANAGER_PW
+			, A.MANAGER_STATUS
+			, A.MANAGER_STATUS_DT
+			, A.LOGIN_FAIL_CNT
+			, A.LOGIN_LAST_DT
+			, A.PW_CHANGE_DT
+			, A.PW_TEMP_DT
+			, A.REG_USER
+			, A.REG_DT
+		FROM MANAGER_MST A
+		WHERE 1=1
+		AND A.MANAGER_ID = #{managerId}
+		AND MANAGER_STATUS = '0000'
+	</select>
+</mapper>

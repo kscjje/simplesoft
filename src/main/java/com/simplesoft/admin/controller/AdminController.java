@@ -1,5 +1,6 @@
 package com.simplesoft.admin.controller;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,6 +9,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.simplesoft.manager.service.ManagerVO;
+import com.simplesoft.util.GlobalVariable;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -22,12 +28,9 @@ public class AdminController {
 	 * @return
 	 */
 	@GetMapping("/login")
-	public String adminLogin(Model model) {
+	public String adminLogin(HttpServletRequest request, Model model) {
 		
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-		
-//		List<Map<String, Object>> resultMap = menuboardService.selectMenuBoardList(paramMap);
-//		model.addAttribute("resultMap", resultMap);
+		request.getSession().invalidate();
 		return "/admin/login";
 	}
 	
@@ -36,14 +39,18 @@ public class AdminController {
 	 * 
 	 * @param model
 	 * @return
+	 * @throws NoSuchAlgorithmException 
 	 */
 	@GetMapping("/main")
-	public String adminMain(Model model) {
+	public String adminMain(Model model,HttpSession session) throws NoSuchAlgorithmException {
 		
 		Map<String, Object> paramMap = new HashMap<String, Object>();
+		ManagerVO loginVO = (ManagerVO)session.getAttribute("adminLoginInfo");
 		
-//		List<Map<String, Object>> resultMap = menuboardService.selectMenuBoardList(paramMap);
-//		model.addAttribute("resultMap", resultMap);
+		if(loginVO == null) {
+			model.addAttribute("returnUrl", "/adm/login");
+			return GlobalVariable.REDIRECT_SUBMIT;
+		}
 		return "/admin/main";
 	}
 }

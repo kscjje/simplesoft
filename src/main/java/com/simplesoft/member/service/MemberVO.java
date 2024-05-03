@@ -23,8 +23,8 @@ public class MemberVO {
 	private String zipcode;
 	private String address;
 	private String addressDetail;
-	private Date pw_change_dt;
-	private Date last_login_dt;
+	private Date pwChangeDt;
+	private Date lasLoginDt;
 	private String regUser;
-	private Date reg_dt;
+	private Date regDt;
 }

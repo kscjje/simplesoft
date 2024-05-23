@@ -132,7 +132,6 @@ public class OrderController {
 		paramMap.put("cartList", cartList);
 		List<Map<String, Object>> cartShopList = cartService.selectOrderCartShop(paramMap);		//장바구니 상품이 판매가능한 상품인지 조회
 		List<OrderProductVO> productList = new ArrayList<OrderProductVO>();
-		
 		//주문정보에서 상품리스트 수 만큼 저장
 		if(cartShopList.size() > 0 ) {
 			int totalPrice = 0;		//총상품금액
@@ -219,6 +218,7 @@ public class OrderController {
 		vo.setUserNo(userNo);
 		vo.setOrderStatus(GlobalVariable.ORDER_STATUS_APPLY);
 		OrderVO order = orderService.selectOrderApplyInfo(vo);
+		System.out.println(order);
 		if (order == null) {
 			model.addAttribute("PARAM_MESSAGE", "주문 상품 정보가 없습니다.\n다시 진행해 주세요.");
 			model.addAttribute("returnUrl", "/cart");

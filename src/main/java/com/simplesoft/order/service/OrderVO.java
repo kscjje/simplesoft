@@ -3,6 +3,8 @@ package com.simplesoft.order.service;
 import java.util.Date;
 import java.util.List;
 
+import com.simplesoft.common.dao.CommonVO;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +16,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class OrderVO {
+public class OrderVO extends CommonVO{
 	private String orderNo;				//주문번호
 	private int userNo;					//회원번호
 	private String orderStatus;			//주문상태

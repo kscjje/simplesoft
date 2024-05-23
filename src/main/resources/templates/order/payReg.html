@@ -3,7 +3,7 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/default_layout}">
 	<main class="content-wrapper" layout:fragment="content" style="padding: 10px;">
-		<!--<script src="https://js.tosspayments.com/v1/payment-widget"></script>-->
+		<script src="https://js.tosspayments.com/v1/payment-widget"></script>
 		<style>
 			@media only screen and (max-width: 575px) {
 				.custom{
@@ -568,7 +568,7 @@
 			const generateRandomString = () => window.btoa(Math.random()).slice(0, 20);
 			const customerKey = generateRandomString();
 //				const paymentWidget = PaymentWidget(widgetClientKey, customerKey); // 회원 결제
-			/*const paymentWidget = PaymentWidget(widgetClientKey, PaymentWidget.ANONYMOUS) // 비회원 결제
+			const paymentWidget = PaymentWidget(widgetClientKey, PaymentWidget.ANONYMOUS) // 비회원 결제
 			
 			const paymentMethodWidget = paymentWidget.renderPaymentMethods(
 				"#payment-method",
@@ -580,14 +580,7 @@
 				"#agreement", 
 				{ variantKey: "AGREEMENT" }
 			);
-/*	
-				coupon.addEventListener("change", function () {
-					if (coupon.checked) {
-						paymentMethodWidget.updateAmount(amount - 5000);
-					} else {
-						paymentMethodWidget.updateAmount(amount);
-					}
-				});
+
 			let phone = "";
 			button.addEventListener("click", function () {
 				
@@ -604,7 +597,7 @@
 					customerName: $("#o_name").val(),
 					customerMobilePhone: phone,
 				});
-			});*/
+			});
 			//주문하기
 			fnSubmit = function(){
 				

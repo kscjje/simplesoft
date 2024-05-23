@@ -82,6 +82,7 @@ public class OrderRestController {
 					vo.setReceiveTel(EncryptUtils.AES256_Encrypt(vo.getReceiveTel()));
 				}
 				vo.setOrderPwd(EncryptUtils.AES256_Encrypt(vo.getOrderPwd()));
+				vo.setOrderStatus(GlobalVariable.ORDER_STATUS_APPLY); 								//주문상태-주문접수
 				orderService.updateOrderApplyInfo(vo);
 				result.put("resultCode", "SUCCESS");
 			}catch(Exception e) {

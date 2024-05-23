@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.simplesoft.mapper.admOrder.AdmOrderMapper">
+
+	<!-- 주문내역 정보 -->	
+	<resultMap id="orderShopApplyResult" type="com.simplesoft.order.service.OrderVO">
+		<id property="orderNo" column="ORDER_NO"/>
+	  	<collection property="productList" column="ORDER_NO" javaType="java.util.ArrayList" ofType="com.simplesoft.order.service.OrderProductVO" select="getOrderProductInfo"/>
+	</resultMap>
+
+	<!-- 주문 신청 정보 -->	
+	<select id="selectOrderApplyList" parameterType="com.simplesoft.order.service.OrderVO" resultMap="orderShopApplyResult">
+		/* AdmOrderMapper.selectOrderApplyList */
+		SELECT 
+			T.*
+		FROM 
+			(
+				SELECT 
+					ROW_NUMBER() OVER ( ORDER BY A.REG_DT DESC) rowNum
+					,  A.ORDER_NO
+					, A.USER_NO
+					, A.ORDER_STATUS
+					, A.USER_SESSION
+					, A.ORDER_PAY_TYPE
+					, A.TOTAL_PRODUCT_AMT
+					, A.TOTAL_DIS_AMT
+					, A.TOTAL_DELY_AMT
+					, A.MARKETING_AGREE_FG
+					, A.ORDER_NAME
+					, A.ORDER_PWD
+					, A.ORDER_TEL
+					, A.ORDER_PHONE
+					, A.ORDER_POST_NUM
+					, A.ORDER_ADDR
+					, A.ORDER_ADDR_DETAIL
+					, A.ORDER_EMAIL
+					, A.RECEIVE_NAME
+					, A.RECEIVE_TEL
+					, A.RECEIVE_PHONE
+					, A.RECEIVE_POST_NUM
+					, A.RECEIVE_ADDR
+					, A.RECEIVE_ADDR_DETAIL
+					, A.COMMON_PWD
+					, A.BIGO
+					, A.REG_USER
+					, A.REG_DT
+					FROM ORDER_MST A
+			) T
+ 		WHERE T.rowNum BETWEEN #{startPage} AND #{endPage}
+	</select>
+	
+	<!-- 주문 신청 정보 -->	
+	<select id="getOrderProductInfo" parameterType="com.simplesoft.order.service.OrderProductVO" resultType="com.simplesoft.order.service.OrderProductVO">
+		/* OrderMapper.getOrderProductInfo */
+		SELECT
+			  ORDER_PRODUCT_NO
+			, ORDER_NO
+			, ORDER_QTY
+			, MENU_BOARD_SEQ
+			, MENU_DAY
+			, MENU_MSG
+			, PAY_AMT
+			, DELIVERY_TYPE
+			, USED_POINT
+			, CONFIRM_DT
+			, REG_USER
+			, REG_DT
+		FROM ORDER_PRODUCT
+		WHERE ORDER_NO = #{orderNo}
+	</select>
+</mapper>

@@ -29,6 +29,15 @@
 				padding-left: 10px;
 				width:140px;
 			}
+			.inputSelect {
+				border: 1px solid #c5c5c5;
+				background: #fff;
+				color: #444;
+				border-radius: 0;
+				height: 32px;
+				padding-left: 5px;
+				width:140px;
+			}
 			.search > div > .spanTitle {
 				display:inline-block;
 				width:80px;
@@ -51,73 +60,184 @@
 				background-color: #787878;
 				color: #FFF;
 			}
+			.btn_search {
+				min-width: 60px;
+				line-height: 30px;
+				height: 32px;
+				padding: 0 9px;
+				border: 1px solid #787878;
+				background: #787878;
+				color: #FFF;
+			}
+			.cursor-pointer {
+				cursor: pointer;
+			}
+			.btn_excel {
+				min-width: 60px;
+				line-height: 30px;
+				height: 32px;
+				padding: 0 9px;
+				border: 1px solid #000;
+				background: #000;
+				color: #FFF;
+				font-size: 15px;
+			}
+			.table {
+				font-size: 13px;
+				border: 1px solid #c5c5c5;
+			}
 		</style>
         <div class="contents" style="height: 100%;">
 			<div class="ms-5 me-4">
 				<div class="title"><h1><i class="bi bi-check-lg me-2"></i>주문 내역</h1></div>
 				<div class="search">
-					<div class="mb-1">
-						<span class="mb-1 spanTitle"><i class="bi bi-dot me-1"></i>기간</span>
+					<div class="mb-2">
+						<span class="mb-1 spanTitle" data-toggle="tooltip" data-placement="top" title="주문 일시 기준"><i class="bi bi-dot me-1"></i>기간</span>
 						<span class="ms-4">
-							<input type="text" style="cursor: pointer;" class="inputText date datepicker" placeholder="YYYY-MM-DD" readonly><i class="bi bi-calendar i_calendar me-2" onclick="$('.date').datepicker('show');"></i>
+							<input type="text" id="startDate" class="inputText datepicker cursor-pointer" placeholder="YYYY-MM-DD" title="시작기간" readonly><i class="bi bi-calendar i_calendar me-2" onclick="$('#startDate').datepicker('show');"></i>
 							~ 
-							<input type="text" class="inputText date2 ms-2" placeholder="YYYY-MM-DD" readonly><i class="bi bi-calendar i_calendar" onclick="$('.date2').datepicker('show');"></i>
-							<input type="button" class="btn_date" value="오늘">
-							<input type="button" class="btn_date" value="7일">
-							<input type="button" class="btn_date" value="1개월">
-							<input type="button" class="btn_date" value="3개월">
-							<input type="button" class="btn_date" value="전체">
+							<input type="text" id="endDate" class="inputText ms-2 cursor-pointer" placeholder="YYYY-MM-DD" title="종료기간" readonly><i class="bi bi-calendar i_calendar" onclick="$('#endDate').datepicker('show');"></i>
+							<input type="button" class="btn_date" id="0" value="오늘">
+							<input type="button" class="btn_date" id="1" value="7일">
+							<input type="button" class="btn_date" id="2" value="1개월">
+							<input type="button" class="btn_date" id="3" value="3개월">
+							<input type="button" class="btn_date" id="4" value="전체">
 						</span>
 					</div>
-					<div class="mb-1">
+					<div class="mb-2">
 						<span class="mb-1 spanTitle"><i class="bi bi-dot me-1"></i>주문상태</span>
-						<span class="ms-4"><input type="text" class="inputText"></span>
+						<span class="ms-4">
+							<select id="orderStatus" class="inputSelect" title="주문상태">
+								<option value="">선택</option>
+								<option value="1000">주문접수</option>
+								<option value="0000">주문완료</option>
+								<option value="0001">주문취소</option>
+							</select>
+						</span>
 					</div>
-					<div class="mb-1">
-						<span class="mb-1 spanTitle"><i class="bi bi-dot me-1"></i>주문번호</span>
-						<span class="ms-4"><input type="text" class="inputText"></span>
+					<div class="mb-2">
+						<span class="mb-1 spanTitle"><i class="bi bi-dot me-1"></i>검색</span>
+						<span class="ms-4">
+							<select id="searchOption" class="inputSelect" title="검색조건">
+								<option value="">선택</option>
+								<option value="1">주문자명</option>
+								<option value="2">주문번호</option>
+							</select>
+							<span class="ms-4">
+								<input type="text" id="searchText" class="inputText" placeholder="검색어를 입력해주세요." title="검색명" maxlength="20" style="width: 265px;">
+								<button type="button" id="ui_search_btn" class="btn_search ms-1">검색</button>
+								<button type="button" id="ui_reset_btn" class="btn_search ms-1">초기화</button>
+							</span>
+						</span>
 					</div>
-					<div class="mb-1">
-						<span class="mb-1 spanTitle"><i class="bi bi-dot me-1"></i>주문자명</span>
-						<span class="ms-4"><input type="text" class="inputText"></span>
-					</div>
+					<form name="hiddenForm" style="display:none;">
+						<input type="hidden" id="hiddenStartDate">
+						<input type="hidden" id="hiddenEndDate">
+						<input type="hidden" id="hiddenOrderStatus">
+						<input type="hidden" id="hiddenSearchOption">
+						<input type="hidden" id="hiddenSearchText">
+					</form>
+				</div>
+				
+				<div class="list-header mt-4">
+					<span class="mt-4 spanTitle"><i class="bi bi-dot me-1"></i>총 : <strong>	0</strong> 건</span>
+					<span style="float: right;"><button type="button" id="ui_excel_btn" class="btn_excel ms-1">엑셀다운</button></span>
+				</div>
+				<div class="list mt-4">
+					<table class="table text-center table-bordered">
+						<thead>
+							<tr>
+								<th style="width:10%">상세</th>
+								<th>주문상태</th>
+								<th>주문번호</th>
+								<th>상품명</th>
+								<th>상품명</th>
+								<th>주문일시</th>
+								<th>주문자명</th>
+							</tr>
+						</thead>
+						
+						<tbody class="">
+							<tr>
+								<td>상세버튼</td>
+								<td>상세버튼</td>
+								<td>상세버튼</td>
+								<td>상세버튼</td>
+								<td>상세버튼</td>
+								<td>상세버튼</td>
+								<td>상세버튼</td>
+							</tr>
+							<tr>
+								<td>상세버튼</td>
+								<td>상세버튼</td>
+								<td>상세버튼</td>
+								<td>상세버튼</td>
+								<td>상세버튼</td>
+								<td>상세버튼</td>
+								<td>상세버튼</td>
+							</tr>
+							<tr>
+								<td>상세버튼</td>
+								<td>상세버튼</td>
+								<td>상세버튼</td>
+								<td>상세버튼</td>
+								<td>상세버튼</td>
+								<td>상세버튼</td>
+								<td>상세버튼</td>
+							</tr>
+						</tbody>
+					</table>
+					
 				</div>
 			</div>
         </div>
 		<script>
-			$('.date').datepicker({
-				format: 'yyyy-mm-dd', //데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
-				endDate: '+0d', //달력에서 선택 할 수 있는 가장 느린 날짜. 이후로 선택 불가 ( d : 일 m : 달 y : 년 w : 주)
-				autoclose: true, //사용자가 날짜를 클릭하면 자동 캘린더가 닫히는 옵션
-				templates: {
-					leftArrow: '&laquo;',
-					rightArrow: '&raquo;',
-				}, //다음달 이전달로 넘어가는 화살표 모양 커스텀 마이징
-				showWeekDays: true, // 위에 요일 보여주는 옵션 기본값 : true
-				todayHighlight: true, //오늘 날짜에 하이라이팅 기능 기본값 :false
-				toggleActive: true, //이미 선택된 날짜 선택하면 기본값 : false인경우 그대로 유지 true인 경우 날짜 삭제
-				weekStart: 0, //달력 시작 요일 선택하는 것 기본값은 0인 일요일
-				language: 'ko', //달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
-			}).on('changeDate', function (e) {
-				console.log(e);
-			});
-			$('.date2').datepicker({
-				format: 'yyyy-mm-dd', //데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
-				endDate: '+0d', //달력에서 선택 할 수 있는 가장 느린 날짜. 이후로 선택 불가 ( d : 일 m : 달 y : 년 w : 주)
-				autoclose: true, //사용자가 날짜를 클릭하면 자동 캘린더가 닫히는 옵션
-				templates: {
-					leftArrow: '&laquo;',
-					rightArrow: '&raquo;',
-				}, //다음달 이전달로 넘어가는 화살표 모양 커스텀 마이징
-				showWeekDays: true, // 위에 요일 보여주는 옵션 기본값 : true
-				todayHighlight: true, //오늘 날짜에 하이라이팅 기능 기본값 :false
-				toggleActive: true, //이미 선택된 날짜 선택하면 기본값 : false인경우 그대로 유지 true인 경우 날짜 삭제
-				weekStart: 0, //달력 시작 요일 선택하는 것 기본값은 0인 일요일
-				language: 'ko', //달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
-			}).on('changeDate', function (e) {
-				console.log(e);
-			});
 			$(document).ready(function() {
+				
+				$('#startDate').datepicker({
+					format: 'yyyy-mm-dd', //데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
+					endDate: '+0d', //달력에서 선택 할 수 있는 가장 느린 날짜. 이후로 선택 불가 ( d : 일 m : 달 y : 년 w : 주)
+					autoclose: true, //사용자가 날짜를 클릭하면 자동 캘린더가 닫히는 옵션
+					templates: {
+						leftArrow: '&laquo;',
+						rightArrow: '&raquo;',
+					}, //다음달 이전달로 넘어가는 화살표 모양 커스텀 마이징
+					showWeekDays: true, // 위에 요일 보여주는 옵션 기본값 : true
+					todayHighlight: true, //오늘 날짜에 하이라이팅 기능 기본값 :false
+					toggleActive: true, //이미 선택된 날짜 선택하면 기본값 : false인경우 그대로 유지 true인 경우 날짜 삭제
+					weekStart: 0, //달력 시작 요일 선택하는 것 기본값은 0인 일요일
+					buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif", //버튼 이미지 경로
+					buttonImageOnly: true, //버튼 이미지만 깔끔하게 보이게함
+					language: 'ko', //달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
+				}).on('changeDate', function (e) {
+					var startDate = e.date;
+					$('#endDate').datepicker('setStartDate', startDate);
+				});
+				
+				$('#endDate').datepicker({
+					format: 'yyyy-mm-dd', //데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
+					startDate: '-2d',
+					endDate: '+0d', //달력에서 선택 할 수 있는 가장 느린 날짜. 이후로 선택 불가 ( d : 일 m : 달 y : 년 w : 주)
+					autoclose: true, //사용자가 날짜를 클릭하면 자동 캘린더가 닫히는 옵션
+					templates: {
+						leftArrow: '&laquo;',
+						rightArrow: '&raquo;',
+					}, //다음달 이전달로 넘어가는 화살표 모양 커스텀 마이징
+					showWeekDays: true, // 위에 요일 보여주는 옵션 기본값 : true
+					todayHighlight: true, //오늘 날짜에 하이라이팅 기능 기본값 :false
+					toggleActive: true, //이미 선택된 날짜 선택하면 기본값 : false인경우 그대로 유지 true인 경우 날짜 삭제
+					weekStart: 0, //달력 시작 요일 선택하는 것 기본값은 0인 일요일
+					buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif", //버튼 이미지 경로
+					buttonImageOnly: true, //버튼 이미지만 깔끔하게 보이게함
+					language: 'ko', //달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
+				}).on('changeDate', function (e) {
+					var endDate = e.date;
+					$('#startDate').datepicker('setEndDate', endDate);
+				});
+				
+				//툴팁 이펙트 효과
+				$('[data-toggle="tooltip"]').tooltip();
+				
 				// 버튼 클릭 이벤트 처리
 				$('.btn_date').click(function() {
 					// 대상 요소에 btn_active 클래스가 있는지 확인
@@ -129,7 +249,101 @@
 						$(".btn_date").removeClass('btn_active'); // 클래스 제거
 			            $(this).addClass('btn_active'); // 클래스 추가
 			        }
+					
+					let rangeDate = $(this).attr("id");
+					switch(rangeDate){
+						case "0":
+							//오늘
+							$('#startDate').datepicker('setDate','today');
+							$('#endDate').datepicker('setDate','today');
+							break;
+						case "1":
+							//7일
+							$('#startDate').datepicker('setDate','-7D');
+							$('#endDate').datepicker('setDate','today');
+							break; 
+						case "2":
+							//1개월
+							$('#startDate').datepicker('setDate','-1M');
+							$('#endDate').datepicker('setDate','today');
+							break; 
+						case "3":
+							//3개월
+							$('#startDate').datepicker('setDate','-3M');
+							$('#endDate').datepicker('setDate','today');
+							break;
+						default :
+							$('#startDate').datepicker('setDate',null);
+							$('#endDate').datepicker('setDate',null);
+							break;	
+					}
 			    });
+				
+				
+				//초기화버튼
+				$("#ui_reset_btn").on("click", function() {
+					
+					$('#startDate').datepicker('setDate',null);	//시작기간
+					$('#endDate').datepicker('setDate',null);	//종료기간
+					
+					$("#orderStatus").val("");					//주문상태
+					$("#searchOption").val("");					//검색종류
+					$("#searchText").val("");					//검색어
+					
+					$(".btn_date").removeClass('btn_active');	//기간 버튼
+				});
+				
+				//검색버튼
+				$("#ui_search_btn").on("click", function() {
+					
+					let startDate	= $("#startDate").val();
+					let endDate		= $("#endDate").val();
+					let orderStatus = $("#orderStatus").val();
+					let searchOption= $("#searchOption").val();
+					let searchText	= $("#searchText").val();
+					
+					let pageSize	= $("#pageSize").val();
+					
+					let startPage	= 1;
+					let endPage		= startPage * pageSize;
+					
+					let formData = {
+						startDate	: startDate,
+						endDate		: endDate,
+						startPage	: startPage,
+						endPage		: endPage,
+						orderStatus : orderStatus,
+						searchOption: searchOption,
+						searchText	: searchText,
+						pageSize	: pageSize
+					}
+					
+					$("#hiddenStartDate").val(startDate);
+					$("#hiddenEndDate").val(endDate);
+					$("#hiddenOrderStatus").val(orderStatus);
+					$("#hiddenSearchOption").val(searchOption);
+					$("#hiddenSearchText").val(searchText);
+					
+					/*if(page == 1){
+						startPage = page;
+					}else{
+						startPage = ((page-1)*pageSize) + 1;
+					}
+					
+					$.ajax({
+						url : "/rest/adm/login/loginAjax",
+						type : "POST",
+						dataType : "json",
+						data : formData,
+						success : function(result) {
+							
+						}, error : function(request, status, error) {
+							alert("에러코드: " + request.status + "\n메시지: " + request.responseText);
+						}
+					});
+*/
+					
+				});
 			});
 		</script>
 	</main>

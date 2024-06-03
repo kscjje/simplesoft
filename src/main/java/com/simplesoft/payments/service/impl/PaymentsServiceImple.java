@@ -44,24 +44,37 @@ public class PaymentsServiceImple implements PaymentsService{
 		
 		try {
 			PaymentsVO vo = mapper.readValue(param.toString(), PaymentsVO.class);
+			System.out.println("vo@:"+vo);
 			vo.setReceipt(vo.getReceipt().toString());
 			switch ((String)param.get("method")) {
+				//String으로 변환하여 담기
 				case "카드":
-					
+					if(vo.getCard() != null) {
+						vo.setCard(vo.getCard().toString());
+					}
 					break;
 				case "가상계좌":
-					
+					if(vo.getVirtualAccount() != null) {
+						vo.setVirtualAccount(vo.getVirtualAccount().toString());
+					}
 					break;
 				case "간편결제":
 					if(vo.getEasyPay() != null) {
 						vo.setEasyPay(vo.getEasyPay().toString());
 					}
+					if(vo.getCard() != null) {
+						vo.setCard(vo.getCard().toString());
+					}
 					break;
 				case "휴대폰":
-					
+					if(vo.getMobilePhone() != null) {
+						vo.setMobilePhone(vo.getMobilePhone().toString());
+					}
 					break;
 				case "계좌이체":
-					
+					if(vo.getTransfer() != null) {
+						vo.setTransfer(vo.getTransfer().toString());
+					}
 					break;
 				default:
 					System.out.println("지원하지 않는 결제수단입니다.");
@@ -84,7 +97,7 @@ public class PaymentsServiceImple implements PaymentsService{
 				mailMap.put("receiveAddr", order.getReceiveAddr());
 				mailMap.put("receiveAddrDetail", order.getReceiveAddrDetail());
 				mailMap.put("bigo", order.getBigo());
-				mailTemplateSender.orderCompleteMail(request, mailMap);
+				//mailTemplateSender.orderCompleteMail(request, mailMap);
 			}
 		} catch(Exception e) {
 			e.printStackTrace();

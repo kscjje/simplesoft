@@ -52,6 +52,10 @@
 		, APPROVED_AT			= #{approvedAt}
 		, USE_ESCROW			= #{useEscrow}
 		, EASY_PAY				= #{easyPay}
+		, MOBILE_PHONE 			= #{mobilePhone}
+		, CARD 					= #{card}
+		, VIRTUAL_ACCOUNT		= #{virtualAccount}
+		, TRANSFER				= #{transfer}
 		, TOTAL_AMOUNT			= #{totalAmount}
 		, LAST_TRANSACTION_KEY	= #{lastTransactionKey}
 		, SUPPLIED_AMOUNT		= #{suppliedAmount}

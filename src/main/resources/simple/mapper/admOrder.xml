@@ -16,8 +16,7 @@
 		FROM 
 			(
 				SELECT 
-					ROW_NUMBER() OVER ( ORDER BY A.REG_DT DESC) rowNum
-					,  A.ORDER_NO
+					  A.ORDER_NO
 					, A.USER_NO
 					, A.ORDER_STATUS
 					, A.USER_SESSION
@@ -41,12 +40,84 @@
 					, A.RECEIVE_ADDR
 					, A.RECEIVE_ADDR_DETAIL
 					, A.COMMON_PWD
+					, DATE_FORMAT(A.ORDER_PAY_DT,'%Y-%m-%d %H:%i:%s') AS ORDER_PAY_DT
 					, A.BIGO
 					, A.REG_USER
 					, A.REG_DT
-					FROM ORDER_MST A
+				FROM ORDER_MST A
+				WHERE A.ORDER_STATUS != '1000'
+				<if test="startDate neq null and startDate neq '' and endDate neq null and endDate neq ''">
+					AND DATE_FORMAT(A.ORDER_PAY_DT,'%Y-%m-%d') BETWEEN #{startDate} AND #{endDate}
+				</if>
+				<if test="orderStatus neq null and orderStatus neq ''">
+					AND A.ORDER_STATUS = ${orderStatus}
+				</if>
+				<if test="searchOption neq null and searchOption neq ''">
+					<if test="searchOption == 1">
+						AND A.ORDER_NAME LIKE CONCAT('%',#{searchText},'%')
+					</if>
+					<if test="searchOption == 2">
+						AND A.ORDER_NAME = #{searchText}
+					</if>
+				</if>
 			) T
- 		WHERE T.rowNum BETWEEN #{startPage} AND #{endPage}
+		ORDER BY T.REG_DT DESC
+		LIMIT #{startPage}, #{endPage}
+	</select>
+	<!-- 주문 신청 정보 -->	
+	<select id="selectOrderApplyListCount" parameterType="com.simplesoft.order.service.OrderVO" resultType="int">
+		/* AdmOrderMapper.selectOrderApplyListCount */
+		SELECT 
+			COUNT(*) as totalCount
+		FROM 
+			(
+				SELECT 
+					  A.ORDER_NO
+					, A.USER_NO
+					, A.ORDER_STATUS
+					, A.USER_SESSION
+					, A.ORDER_PAY_TYPE
+					, A.TOTAL_PRODUCT_AMT
+					, A.TOTAL_DIS_AMT
+					, A.TOTAL_DELY_AMT
+					, A.MARKETING_AGREE_FG
+					, A.ORDER_NAME
+					, A.ORDER_PWD
+					, A.ORDER_TEL
+					, A.ORDER_PHONE
+					, A.ORDER_POST_NUM
+					, A.ORDER_ADDR
+					, A.ORDER_ADDR_DETAIL
+					, A.ORDER_EMAIL
+					, A.RECEIVE_NAME
+					, A.RECEIVE_TEL
+					, A.RECEIVE_PHONE
+					, A.RECEIVE_POST_NUM
+					, A.RECEIVE_ADDR
+					, A.RECEIVE_ADDR_DETAIL
+					, A.COMMON_PWD
+					, DATE_FORMAT(A.ORDER_PAY_DT,'%Y-%m-%d %H:%i:%s') AS ORDER_PAY_DT
+					, A.BIGO
+					, A.REG_USER
+					, A.REG_DT
+				FROM ORDER_MST A
+				WHERE A.ORDER_STATUS != '1000'
+				<if test="startDate neq null and startDate neq '' and endDate neq null and endDate neq ''">
+					AND DATE_FORMAT(A.ORDER_PAY_DT,'%Y-%m-%d') BETWEEN #{startDate} AND #{endDate}
+				</if>
+				<if test="orderStatus neq null and orderStatus neq ''">
+					AND A.ORDER_STATUS = ${orderStatus}
+				</if>
+				<if test="searchOption neq null and searchOption neq ''">
+					<if test="searchOption == 1">
+						AND A.ORDER_NAME LIKE CONCAT('%',#{searchText},'%')
+					</if>
+					<if test="searchOption == 2">
+						AND A.ORDER_NAME = #{searchText}
+					</if>
+				</if>
+			) T
+		ORDER BY T.REG_DT DESC
 	</select>
 	
 	<!-- 주문 신청 정보 -->	

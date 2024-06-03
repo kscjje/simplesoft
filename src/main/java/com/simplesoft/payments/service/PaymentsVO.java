@@ -49,10 +49,10 @@ public class PaymentsVO {
 	private int taxExemptionAmount;
 	private ArrayList<CancelsVO> cancels;
 	private Boolean isPartialCancelable;
-	private CardVO card;
-	private VirtualAccountVO virtualAccount;
+	private Object card;
+	private Object virtualAccount;
 	private String secret;
-	private MobilePhoneVO mobilePhone;
+	private Object mobilePhone;
 	private Object giftCertificate;
 	private Object transfer;
 	private Object receipt;

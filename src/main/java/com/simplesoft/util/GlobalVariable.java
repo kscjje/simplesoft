@@ -9,15 +9,16 @@ package com.simplesoft.util;
 public class GlobalVariable {
 	
 	public static final int PRODUCT_AMT = 18000;					//상품금액(고정)
-	public static final int DELY_AMT = 6000;						//배송비(고정)
+	public static final int DELY_AMT = 2000;						//배송비(고정)
 	
 	public static final String REDIRECT_LOGIN 	= "/common/login";
 	public static final String REDIRECT_MESSAGE	= "/common/message";
 	public static final String REDIRECT_BACK	= "/common/back";
 	public static final String REDIRECT_SUBMIT	= "/common/submit";
 	
-	public static final String ORDER_STATUS_APPLY 		= "1000";	//주문접수
+	public static final String ORDER_STATUS_WAIT 		= "1000";	//주문대기
 	public static final String ORDER_STATUS_COMPLETE 	= "0000";	//주문완료
+	public static final String ORDER_STATUS_CANCEL	 	= "0001";	//주문취소
 	
 	//ADMIN PORTAL 서버 LOG 감시 설정 이메일 관련 코드
 	public static final String LOG_RESULT_CODE_SUCCESS = "20000200"; 					//성공

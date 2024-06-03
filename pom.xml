@@ -80,6 +80,11 @@
 			<artifactId>thymeleaf-layout-dialect</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-java8time</artifactId>
+			<version>3.0.4.RELEASE</version>
+		</dependency>
+		<dependency>
     		<groupId>mysql</groupId>
     		<artifactId>mysql-connector-java</artifactId>
     		<version>8.0.33</version>
@@ -140,15 +145,16 @@
 	</profiles>
 	
 	<build>
+		<finalName>ROOT</finalName>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
 			</resource>
 			<resource>
-				<directory>src/main/resources-${environment}</directory>
+				<directory>resources-${environment}</directory>
 				<filtering>true</filtering>
 				<includes>
-					<include>**/*.yml</include>
+					<include>**/*.properties</include>
 					<include>**/*.xml</include>
 				</includes>
 			</resource>

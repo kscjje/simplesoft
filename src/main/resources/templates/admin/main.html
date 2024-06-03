@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http//www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  xmlns:thym="http://www.thymeleaf.org/extras/java8time"
 	  layout:decorate="~{layouts/admin_layout}">
-	<main layout:fragment="content" style="width:100%;min-height: 788px;">
+	  <main layout:fragment="content">
 		<style>
 			.title {
 				padding: 30px 40px 20px 0px;
@@ -86,265 +87,110 @@
 				font-size: 13px;
 				border: 1px solid #c5c5c5;
 			}
+			tr, td {
+				border: none; /* Remove borders */
+			}
+			.ar {
+				text-align: center;
+			}
 		</style>
-        <div class="contents" style="height: 100%;">
+		<div class="contents" style="height: 100%;">
 			<div class="ms-5 me-4">
-				<div class="title"><h1><i class="bi bi-check-lg me-2"></i>주문 내역</h1></div>
-				<div class="search">
-					<div class="mb-2">
-						<span class="mb-1 spanTitle" data-toggle="tooltip" data-placement="top" title="주문 일시 기준"><i class="bi bi-dot me-1"></i>기간</span>
-						<span class="ms-4">
-							<input type="text" id="startDate" class="inputText datepicker cursor-pointer" placeholder="YYYY-MM-DD" title="시작기간" readonly><i class="bi bi-calendar i_calendar me-2" onclick="$('#startDate').datepicker('show');"></i>
-							~ 
-							<input type="text" id="endDate" class="inputText ms-2 cursor-pointer" placeholder="YYYY-MM-DD" title="종료기간" readonly><i class="bi bi-calendar i_calendar" onclick="$('#endDate').datepicker('show');"></i>
-							<input type="button" class="btn_date" id="0" value="오늘">
-							<input type="button" class="btn_date" id="1" value="7일">
-							<input type="button" class="btn_date" id="2" value="1개월">
-							<input type="button" class="btn_date" id="3" value="3개월">
-							<input type="button" class="btn_date" id="4" value="전체">
-						</span>
+				<div class="title"><h1><i class="bi bi-check-lg me-2"></i>대시보드</h1></div>
+				<div class="mt-3">
+					<span class="mt-3 spanTitle"><i class="bi bi-dot me-1"></i>주문/배송/클레임 건수</span>
+				</div>
+				<div style="display: flex;">
+					<div class="mt-3 me-3" style="width:50%;">
+						<table class="table text-start table-bordered" style="height:190px;">
+							<colgroup><col><col style="width:100px;"></colgroup>
+							<thead>
+								<tr>
+									<th scope="col" style="text-align: center; background-color: #f5f5f5;"colspan="2">주문/배송</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>신규주문</td>
+									<td class="ar"><a href="/admin/orderManage">0</a> 건</td>
+								</tr>
+								<tr>
+									<td>입금대기</td>
+									<td class="ar">0 건</td>
+								</tr>
+								<tr>
+									<td>결제완료</td>
+									<td class="ar">0 건</td>
+								</tr>
+								<tr>
+									<td>배송완료</td>
+									<td class="ar">0 건</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
-					<div class="mb-2">
-						<span class="mb-1 spanTitle"><i class="bi bi-dot me-1"></i>주문상태</span>
-						<span class="ms-4">
-							<select id="orderStatus" class="inputSelect" title="주문상태">
-								<option value="">선택</option>
-								<option value="1000">주문접수</option>
-								<option value="0000">주문완료</option>
-								<option value="0001">주문취소</option>
-							</select>
-						</span>
+					<div class="mt-3" style="width:50%;">
+						<table class="table text-start table-bordered" style="height:190px;">
+							<colgroup><col><col style="width:100px;"></colgroup>
+							<thead>
+								<tr>
+									<th scope="col" style="text-align: center; background-color: #f5f5f5;"colspan="2">클레임</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>취소신청</td>
+									<td class="ar">0 건</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
-					<div class="mb-2">
-						<span class="mb-1 spanTitle"><i class="bi bi-dot me-1"></i>검색</span>
-						<span class="ms-4">
-							<select id="searchOption" class="inputSelect" title="검색조건">
-								<option value="">선택</option>
-								<option value="1">주문자명</option>
-								<option value="2">주문번호</option>
-							</select>
-							<span class="ms-4">
-								<input type="text" id="searchText" class="inputText" placeholder="검색어를 입력해주세요." title="검색명" maxlength="20" style="width: 265px;">
-								<button type="button" id="ui_search_btn" class="btn_search ms-1">검색</button>
-								<button type="button" id="ui_reset_btn" class="btn_search ms-1">초기화</button>
-							</span>
-						</span>
-					</div>
-					<form name="hiddenForm" style="display:none;">
-						<input type="hidden" id="hiddenStartDate">
-						<input type="hidden" id="hiddenEndDate">
-						<input type="hidden" id="hiddenOrderStatus">
-						<input type="hidden" id="hiddenSearchOption">
-						<input type="hidden" id="hiddenSearchText">
-					</form>
 				</div>
 				
-				<div class="list-header mt-4">
-					<span class="mt-4 spanTitle"><i class="bi bi-dot me-1"></i>총 : <strong>	0</strong> 건</span>
-					<span style="float: right;"><button type="button" id="ui_excel_btn" class="btn_excel ms-1">엑셀다운</button></span>
+				<div class="mt-3">
+					<span class="mt-3 spanTitle"><i class="bi bi-dot me-1"></i>배송건수</span>
 				</div>
-				<div class="list mt-4">
-					<table class="table text-center table-bordered">
-						<thead>
-							<tr>
-								<th style="width:10%">상세</th>
-								<th>주문상태</th>
-								<th>주문번호</th>
-								<th>상품명</th>
-								<th>상품명</th>
-								<th>주문일시</th>
-								<th>주문자명</th>
-							</tr>
-						</thead>
-						
-						<tbody class="">
-							<tr>
-								<td>상세버튼</td>
-								<td>상세버튼</td>
-								<td>상세버튼</td>
-								<td>상세버튼</td>
-								<td>상세버튼</td>
-								<td>상세버튼</td>
-								<td>상세버튼</td>
-							</tr>
-							<tr>
-								<td>상세버튼</td>
-								<td>상세버튼</td>
-								<td>상세버튼</td>
-								<td>상세버튼</td>
-								<td>상세버튼</td>
-								<td>상세버튼</td>
-								<td>상세버튼</td>
-							</tr>
-							<tr>
-								<td>상세버튼</td>
-								<td>상세버튼</td>
-								<td>상세버튼</td>
-								<td>상세버튼</td>
-								<td>상세버튼</td>
-								<td>상세버튼</td>
-								<td>상세버튼</td>
-							</tr>
-						</tbody>
-					</table>
-					
+				<div style="display: flex;">
+					<div class="mt-3 me-3" style="width:50%;">
+						<table class="table text-start table-bordered">
+							<colgroup><col><col style="width:100px;"></colgroup>
+							<thead>
+								<tr>
+									<th scope="col" style="text-align: center; background-color: #f5f5f5;"colspan="2">금일 배송 건수</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>금일배송</td>
+									<td class="ar">0 건</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="mt-3" style="width:50%;">
+						<table class="table text-start table-bordered">
+							<colgroup><col><col style="width:100px;"></colgroup>
+							<thead>
+								<tr>
+									<th scope="col" style="text-align: center; background-color: #f5f5f5;"colspan="2">익일 배송 건수</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>익일배송</td>
+									<td class="ar">0 건</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
         </div>
 		<script>
 			$(document).ready(function() {
 				
-				$('#startDate').datepicker({
-					format: 'yyyy-mm-dd', //데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
-					endDate: '+0d', //달력에서 선택 할 수 있는 가장 느린 날짜. 이후로 선택 불가 ( d : 일 m : 달 y : 년 w : 주)
-					autoclose: true, //사용자가 날짜를 클릭하면 자동 캘린더가 닫히는 옵션
-					templates: {
-						leftArrow: '&laquo;',
-						rightArrow: '&raquo;',
-					}, //다음달 이전달로 넘어가는 화살표 모양 커스텀 마이징
-					showWeekDays: true, // 위에 요일 보여주는 옵션 기본값 : true
-					todayHighlight: true, //오늘 날짜에 하이라이팅 기능 기본값 :false
-					toggleActive: true, //이미 선택된 날짜 선택하면 기본값 : false인경우 그대로 유지 true인 경우 날짜 삭제
-					weekStart: 0, //달력 시작 요일 선택하는 것 기본값은 0인 일요일
-					buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif", //버튼 이미지 경로
-					buttonImageOnly: true, //버튼 이미지만 깔끔하게 보이게함
-					language: 'ko', //달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
-				}).on('changeDate', function (e) {
-					var startDate = e.date;
-					$('#endDate').datepicker('setStartDate', startDate);
-				});
-				
-				$('#endDate').datepicker({
-					format: 'yyyy-mm-dd', //데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
-					startDate: '-2d',
-					endDate: '+0d', //달력에서 선택 할 수 있는 가장 느린 날짜. 이후로 선택 불가 ( d : 일 m : 달 y : 년 w : 주)
-					autoclose: true, //사용자가 날짜를 클릭하면 자동 캘린더가 닫히는 옵션
-					templates: {
-						leftArrow: '&laquo;',
-						rightArrow: '&raquo;',
-					}, //다음달 이전달로 넘어가는 화살표 모양 커스텀 마이징
-					showWeekDays: true, // 위에 요일 보여주는 옵션 기본값 : true
-					todayHighlight: true, //오늘 날짜에 하이라이팅 기능 기본값 :false
-					toggleActive: true, //이미 선택된 날짜 선택하면 기본값 : false인경우 그대로 유지 true인 경우 날짜 삭제
-					weekStart: 0, //달력 시작 요일 선택하는 것 기본값은 0인 일요일
-					buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif", //버튼 이미지 경로
-					buttonImageOnly: true, //버튼 이미지만 깔끔하게 보이게함
-					language: 'ko', //달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
-				}).on('changeDate', function (e) {
-					var endDate = e.date;
-					$('#startDate').datepicker('setEndDate', endDate);
-				});
-				
-				//툴팁 이펙트 효과
-				$('[data-toggle="tooltip"]').tooltip();
-				
-				// 버튼 클릭 이벤트 처리
-				$('.btn_date').click(function() {
-					// 대상 요소에 btn_active 클래스가 있는지 확인
-					var hasClass = $(this).hasClass('btn_active');
-			
-					// btn_active 클래스가 있으면 제거, 없으면 추가
-			        if (hasClass) $(this).removeClass('btn_active'); // 클래스 제거
-			        else {
-						$(".btn_date").removeClass('btn_active'); // 클래스 제거
-			            $(this).addClass('btn_active'); // 클래스 추가
-			        }
-					
-					let rangeDate = $(this).attr("id");
-					switch(rangeDate){
-						case "0":
-							//오늘
-							$('#startDate').datepicker('setDate','today');
-							$('#endDate').datepicker('setDate','today');
-							break;
-						case "1":
-							//7일
-							$('#startDate').datepicker('setDate','-7D');
-							$('#endDate').datepicker('setDate','today');
-							break; 
-						case "2":
-							//1개월
-							$('#startDate').datepicker('setDate','-1M');
-							$('#endDate').datepicker('setDate','today');
-							break; 
-						case "3":
-							//3개월
-							$('#startDate').datepicker('setDate','-3M');
-							$('#endDate').datepicker('setDate','today');
-							break;
-						default :
-							$('#startDate').datepicker('setDate',null);
-							$('#endDate').datepicker('setDate',null);
-							break;	
-					}
-			    });
-				
-				
-				//초기화버튼
-				$("#ui_reset_btn").on("click", function() {
-					
-					$('#startDate').datepicker('setDate',null);	//시작기간
-					$('#endDate').datepicker('setDate',null);	//종료기간
-					
-					$("#orderStatus").val("");					//주문상태
-					$("#searchOption").val("");					//검색종류
-					$("#searchText").val("");					//검색어
-					
-					$(".btn_date").removeClass('btn_active');	//기간 버튼
-				});
-				
-				//검색버튼
-				$("#ui_search_btn").on("click", function() {
-					
-					let startDate	= $("#startDate").val();
-					let endDate		= $("#endDate").val();
-					let orderStatus = $("#orderStatus").val();
-					let searchOption= $("#searchOption").val();
-					let searchText	= $("#searchText").val();
-					
-					let pageSize	= $("#pageSize").val();
-					
-					let startPage	= 1;
-					let endPage		= startPage * pageSize;
-					
-					let formData = {
-						startDate	: startDate,
-						endDate		: endDate,
-						startPage	: startPage,
-						endPage		: endPage,
-						orderStatus : orderStatus,
-						searchOption: searchOption,
-						searchText	: searchText,
-						pageSize	: pageSize
-					}
-					
-					$("#hiddenStartDate").val(startDate);
-					$("#hiddenEndDate").val(endDate);
-					$("#hiddenOrderStatus").val(orderStatus);
-					$("#hiddenSearchOption").val(searchOption);
-					$("#hiddenSearchText").val(searchText);
-					
-					/*if(page == 1){
-						startPage = page;
-					}else{
-						startPage = ((page-1)*pageSize) + 1;
-					}
-					
-					$.ajax({
-						url : "/rest/adm/login/loginAjax",
-						type : "POST",
-						dataType : "json",
-						data : formData,
-						success : function(result) {
-							
-						}, error : function(request, status, error) {
-							alert("에러코드: " + request.status + "\n메시지: " + request.responseText);
-						}
-					});
-*/
-					
-				});
 			});
+			
 		</script>
 	</main>
 </html>

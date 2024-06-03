@@ -20,4 +20,9 @@ public class AdmOrderServiceImpl implements AdmOrderService{
 	public List<OrderVO> selectOrderApplyList(OrderVO vo) {
 		return admOrderMapper.selectOrderApplyList(vo);
 	}
+	//주문신청정보 카운트 
+	@Override
+	public int selectOrderApplyListCount(OrderVO vo) {
+		return admOrderMapper.selectOrderApplyListCount(vo);
+	}
 }

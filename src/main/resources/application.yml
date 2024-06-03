@@ -1,8 +1,0 @@
-spring:
-  profiles: 
-    active: local		#profiles \ubbf8\uc124\uc815 \uc2dc \ub514\ud3f4\ud2b8\ub85c prd
-server:
-  port:  8641
-mybatis: 
-  mapper-locations: classpath:simple/mapper/grid/GridMapper.xml
-  

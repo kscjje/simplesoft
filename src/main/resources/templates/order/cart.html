@@ -216,7 +216,7 @@
 				let productMoney = totalQty*price;					//상품 * 총 수량
 				$("#r_productMoney").text(productMoney.toLocaleString('ko-KR'));
 				
-				deliveryPrice = totalQty > 2 ? 0 : 6000;	//배송비 계산
+				deliveryPrice = totalQty > 2 ? 0 : 2000;	//배송비 계산
 				if(totalQty == 0 ) deliveryPrice = 0;
 				if(deliveryPrice != 0){
 					if(totalQty == 0){
@@ -227,7 +227,7 @@
 					$("#r_discount").text("0원");					
 				} else {
 					$("#r_deliv").text("무료");
-					$("#r_discount").text("6,000원");
+					$("#r_discount").text("2,000원");
 				}
 				let totalMoney = productMoney + deliveryPrice;		//상품금액 + 배송비
 				if(productMoney == 0 ) totalMoney = 0;
@@ -237,53 +237,27 @@
 				$("#thHead").after(addHtml);
 				
 				$("#f-chk-all").click(function() {
-					
 					if($("#f-chk-all").is(":checked")) {
 						$("input[name=cartCheck]").prop("checked", true);
-						$("#r_productMoney").text(($("input[name=cartCheck]:checked").length * price).toLocaleString('ko-KR'));
-						$("#r_totalMoney").text((($("input[name=cartCheck]:checked").length * price) + deliveryPrice).toLocaleString('ko-KR'));
-						if(totalQty == 0){
-							$("#r_deliv").text("무료");
-						} else {
-							$("#r_deliv").text(deliveryPrice.toLocaleString('ko-KR')+"원");
-						}
 					} else {
 						$("input[name=cartCheck]").prop("checked", false);
-						$("#r_productMoney").text("0".toLocaleString('ko-KR'));
-						$("#r_discount").text("0원");
-						$("#r_totalMoney").text("0".toLocaleString('ko-KR'));
-						$("#r_deliv").text("무료");
 					}
+					priceCalculate();
 				});
 				$("input[name=cartCheck]").click(function() {
 					
-					var total = $("input[name=cartCheck]").length;
+					var listTotal = $("input[name=cartCheck]").length;
 					var checked = $("input[name=cartCheck]:checked").length;
 					
-					if(total != checked) {
+					if(listTotal != checked) {
 						$("#f-chk-all").prop("checked", false);
 					} else {
 						$("#f-chk-all").prop("checked", true);
 					}
-					totalQty = 0;
-					$("input[name=cartCheck]:checked").each(function () {
-						let value = "#"+this.id
-						totalQty += Number($(value).attr("data"));
-					});
-					
-					$("#r_productMoney").text((totalQty * price).toLocaleString('ko-KR'));
-					deliveryPrice = totalQty > 2 ? 0 : 6000;	//배송비 계산
-					if(deliveryPrice != 0){
-						$("#r_deliv").text(deliveryPrice.toLocaleString('ko-KR')+"원");
-						$("#r_discount").text("0원");					
-					} else {
-						$("#r_deliv").text("무료");
-						$("#r_discount").text("6,000원");
-					}
-					totalMoney = (totalQty * price) + deliveryPrice;
-					if(totalQty == 0 ) totalMoney = 0;
-					$("#r_totalMoney").text(totalMoney.toLocaleString('ko-KR'));
+					priceCalculate();
 				});
+				
+				
 			});
 			
 			//수량 변경
@@ -316,23 +290,7 @@
 								$("#"+index).attr("data",count);
 								$("#ui_total_"+index).text((price * count).toLocaleString('ko-KR'));
 								
-								let totalQty = 0;
-								$("input[name=cartCheck]:checked").each(function () {
-									let value = "#"+this.id
-									totalQty += Number($(value).attr("data"));
-								});
-								
-								$("#r_productMoney").text((totalQty * price).toLocaleString('ko-KR'));
-								deliveryPrice = totalQty > 2 ? 0 : 6000;	//배송비 계산
-								if(deliveryPrice != 0){
-									$("#r_deliv").text(deliveryPrice.toLocaleString('ko-KR')+"원");
-									$("#r_discount").text("0원");					
-								} else {
-									$("#r_deliv").text("무료");
-									$("#r_discount").text("6,000원");
-								}
-								totalMoney = (totalQty * price) + deliveryPrice;
-								$("#r_totalMoney").text(totalMoney.toLocaleString('ko-KR'));
+								priceCalculate();
 							} else if(result.data.resultCode == "NoData"){
 								alert("수량을 변경할 리스트가 없습니다.");
 								location.reload();
@@ -407,7 +365,36 @@
 				}
 				$("#cartArray").val(checkArray);
 				$('#hiddenForm').submit();
-			} 
+			}
+			
+			
+			//계산식
+			priceCalculate = function (){
+				
+				totalQty = 0;
+				
+				$("input[name=cartCheck]:checked").each(function () {
+					let value = "#"+this.id
+					totalQty += Number($(value).attr("data"));
+				});
+				$("#r_productMoney").text((totalQty * price).toLocaleString('ko-KR'));
+				deliveryPrice = totalQty > 2 ? 0 : 2000;	//배송비 계산
+				
+				if(deliveryPrice != 0  && totalQty != 0){
+					$("#r_deliv").text(deliveryPrice.toLocaleString('ko-KR')+"원");
+					$("#r_discount").text("0원");					
+				} else {
+					$("#r_deliv").text("무료");
+					if(totalQty == 0){
+						$("#r_discount").text("0원");
+					} else {
+						$("#r_discount").text("2,000원");
+					}
+				}
+				totalMoney = (totalQty * price) + deliveryPrice;
+				if(totalQty == 0 ) totalMoney = 0;
+				$("#r_totalMoney").text(totalMoney.toLocaleString('ko-KR'));
+			}
 		</script>
 	</main>
 </html>

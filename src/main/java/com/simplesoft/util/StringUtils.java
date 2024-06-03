@@ -1006,4 +1006,11 @@ public class StringUtils {
         // Return the day of the week as a string
         return dayOfWeek.toString();
     }
+    
+    public static String formatDate(String dateStr) {
+    	DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+    	DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    	LocalDate date = LocalDate.parse(dateStr, inputFormatter);
+    	return date.format(outputFormatter);
+    }
 }

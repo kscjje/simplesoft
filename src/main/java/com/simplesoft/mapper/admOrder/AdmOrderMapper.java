@@ -8,4 +8,5 @@ import com.simplesoft.order.service.OrderVO;
 @MysqlConnMapper
 public interface AdmOrderMapper {
 	public List<OrderVO> selectOrderApplyList(OrderVO vo);
+	public int selectOrderApplyListCount(OrderVO vo);
 }

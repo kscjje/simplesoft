@@ -8,9 +8,9 @@
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="mobile-web-app-capable" content="yes">
 	<meta name="format-detection" content="telephone=no">
-	<meta name="description" content="밥수니반찬 관리자 홈페이지">
-	<meta name="keywords" content="밥수니반찬 관리자 홈페이지">
-	<title>밥수니반찬 관리자 홈페이지</title>
+	<meta name="description" content="밥수니반찬 관리자 페이지">
+	<meta name="keywords" content="밥수니반찬 관리자 페이지">
+	<title>밥수니반찬 관리자 페이지</title>
 	<link rel="stylesheet" href="/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/css/font.css">
 	<link rel="stylesheet" href="/css/bootstrap-icons.min.css">
@@ -27,7 +27,9 @@
 	<th:block th:replace="~{/fragments/adminHeader :: header}"></th:block>
 	<div style="display: flex;">
 		<th:block th:replace="~{/fragments/adminSidebar :: lnb}"></th:block>
-		<th:block layout:fragment="content"></th:block>
+		<div style="width:100%">
+			<th:block layout:fragment="content"></th:block>
+		</div>
 	</div>
 </body>
 </html>

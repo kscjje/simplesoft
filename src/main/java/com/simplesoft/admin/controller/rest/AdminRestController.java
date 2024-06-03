@@ -1,4 +1,4 @@
-package com.simplesoft.admin.controller;
+package com.simplesoft.admin.controller.rest;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.simplesoft.manager.service.ManagerService;
 import com.simplesoft.manager.service.ManagerVO;
-import com.simplesoft.member.service.MemberVO;
 import com.simplesoft.reponse.BasicResponse;
 import com.simplesoft.reponse.CommonResponse;
 import com.simplesoft.util.EncryptUtils;
@@ -24,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/rest/adm")
+@RequestMapping(value = "/admin/rest")
 public class AdminRestController {
 	
 	@Autowired

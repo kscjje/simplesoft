@@ -6,4 +6,5 @@ import com.simplesoft.order.service.OrderVO;
 
 public interface AdmOrderService {
 	public List<OrderVO> selectOrderApplyList(OrderVO vo);
+	public int selectOrderApplyListCount(OrderVO vo);
 }

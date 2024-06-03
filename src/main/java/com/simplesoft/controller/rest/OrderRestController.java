@@ -60,7 +60,7 @@ public class OrderRestController {
 		}
 		vo.setRegUser(userNm);
 		vo.setUserNo(userNo);
-//		vo.setOrderStatus(GlobalVariable.ORDER_STATUS_APPLY); 								//주문상태-주문접수
+//		vo.setOrderStatus(GlobalVariable.ORDER_STATUS_WAIT); 								//주문상태-주문대기
 		
 		OrderVO order = orderService.selectOrderApplyInfo(vo);
 		if (order == null) {
@@ -82,7 +82,7 @@ public class OrderRestController {
 					vo.setReceiveTel(EncryptUtils.AES256_Encrypt(vo.getReceiveTel()));
 				}
 				vo.setOrderPwd(EncryptUtils.AES256_Encrypt(vo.getOrderPwd()));
-				vo.setOrderStatus(GlobalVariable.ORDER_STATUS_APPLY); 								//주문상태-주문접수
+				vo.setOrderStatus(GlobalVariable.ORDER_STATUS_WAIT); 								//주문상태-주문대기 (조건)
 				orderService.updateOrderApplyInfo(vo);
 				result.put("resultCode", "SUCCESS");
 			}catch(Exception e) {

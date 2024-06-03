@@ -7,45 +7,26 @@
 				font-weight:300;
 				font-size: 16px;
 			}
-				
-			
 		</style>
 		<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;height: 100%;">
-			<a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+			<a href="/admin/main" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
 				<span class="fs-4 ms-4"><i class="bi bi-house-door"></i> 사이트 관리</span>
 			</a>
 			<hr>
 			<ul class="nav nav-pills flex-column mb-auto">
 				<li class="nav-item">
-					<a href="#" class="nav-link text-white">주문관리</a>
+					<a href="/admin/orderManage" class="nav-link text-white">주문자 리스트</a>
 				</li>
 				<li class="nav-item">
-					<a href="#" class="nav-link text-white">식단관리</a>
+					<a href="/admin/main" class="nav-link text-white">식단수정</a>
 				</li>
 				<li class="nav-item">
 					<a href="#" class="nav-link text-white">회원관리</a>
-				</li>
-				<li class="nav-item">
-<!--					<a href="#" class="nav-link text-white"><svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>Orders</a>-->
-					<a href="#" class="nav-link text-white">Orders</a>
-				</li>
-				<li class="nav-item">
-					<a href="#" class="nav-link text-white">Products</a>
-				</li>
-				<li class="nav-item">
-					<a href="#" class="nav-link text-white">svg>Customers</a>
 				</li>
 			</ul>
 			<hr>
 		</div>
 		<script>
-			const links = document.querySelectorAll('.nav-link');
-			links.forEach(link => {
-				link.addEventListener('click', function() {
-					links.forEach(l => l.classList.remove('active')); // 모든 링크에서 active 클래스 제거
-					this.classList.add('active'); // 클릭된 링크에 active 클래스 추가
-				});
-			});
 		</script>
 	</div>
 </html>

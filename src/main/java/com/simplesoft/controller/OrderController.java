@@ -138,7 +138,7 @@ public class OrderController {
 			int totalQty = 0;		//총상품개수
 			int deliveryPrice = 0;	//배송비
 			
-			orderVO.setOrderStatus(GlobalVariable.ORDER_STATUS_APPLY);
+			orderVO.setOrderStatus(GlobalVariable.ORDER_STATUS_WAIT);
 			orderVO.setUserNo(Integer.parseInt("null".equals(String.valueOf(paramMap.get("userNo"))) ? "0" : String.valueOf(paramMap.get("userNo"))));
 			orderVO.setUserSession(orderVO.getUserNo() == 0 ? (String)paramMap.get("userSession") : "");
 			orderVO.setRegUser(userNm);
@@ -216,7 +216,7 @@ public class OrderController {
 		}
 		vo.setOrderNo(orderNo);
 		vo.setUserNo(userNo);
-		vo.setOrderStatus(GlobalVariable.ORDER_STATUS_APPLY);
+		vo.setOrderStatus(GlobalVariable.ORDER_STATUS_WAIT);
 		OrderVO order = orderService.selectOrderApplyInfo(vo);
 		System.out.println(order);
 		if (order == null) {

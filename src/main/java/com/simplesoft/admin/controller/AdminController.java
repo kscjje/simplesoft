@@ -57,6 +57,8 @@ public class AdminController {
 			model.addAttribute("returnUrl", "/admin/login");
 			return GlobalVariable.REDIRECT_SUBMIT;
 		}
+		//건수가져오기
+		
 		return "/admin/main";
 	}
 	

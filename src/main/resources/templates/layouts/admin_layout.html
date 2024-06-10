@@ -2,8 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no, user-scalable=yes">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="mobile-web-app-capable" content="yes">
@@ -22,12 +22,18 @@
 	<script src="/js/jQuery.serializeObject.min.js"></script>
 	<script src="/js/bootstrap-datepicker.min.js"></script>
 	<script src="/js/bootstrap-datepicker.ko.min.js"></script>
+	<style>
+		html,body {
+			height: 100%;
+		}
+	</style>
 </head>
+
 <body>
 	<th:block th:replace="~{/fragments/adminHeader :: header}"></th:block>
-	<div style="display: flex;">
+	<div style="display: flex; height: 100%;width: 100%;">
 		<th:block th:replace="~{/fragments/adminSidebar :: lnb}"></th:block>
-		<div style="width:100%">
+		<div style="width:100%;">
 			<th:block layout:fragment="content"></th:block>
 		</div>
 	</div>

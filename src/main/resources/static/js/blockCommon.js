@@ -5,7 +5,7 @@ $.showMask = function(msg){
 		message: (msg == "" || msg == undefined) ? "<img src='image/loading.png' alt=''>" : msg,
         css: {
         	 border: 'none',
-             padding: '15px',
+             padding: '100px 0px 0px 250px',
              backgroundColor: "rgba(255, 255, 255, 0)",
              '-webkit-border-radius': '10px',
              '-moz-border-radius': '10px',

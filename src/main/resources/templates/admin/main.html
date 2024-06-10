@@ -6,20 +6,20 @@
 	  <main layout:fragment="content">
 		<style>
 			.title {
-				padding: 30px 40px 20px 0px;
+				padding: 15px 0px 0px 0px;
 			}
 			.title > h1{
-				font-size: 24px;
+				font-size: 12px;
 			}
 			.search {
 				padding: 15px; 
 				background-color: #fafafa; 
 				border-top:1px solid #e1e1e1;
 				border-bottom:1px solid #e1e1e1;
-				font-size: 14px;
+				font-size: 9px;
 			}
-			.search > p > i{
-				font-size: 18px;
+			p > i{
+				font-size: 10px;
 			}
 			.inputText {
 				border: 1px solid #c5c5c5;
@@ -39,9 +39,8 @@
 				padding-left: 5px;
 				width:140px;
 			}
-			.search > div > .spanTitle {
-				display:inline-block;
-				width:80px;
+			div > .spanTitle {
+				font-size: 9px;
 			}
 			.i_calendar {
 				background-color: #fff;
@@ -81,28 +80,285 @@
 				border: 1px solid #000;
 				background: #000;
 				color: #FFF;
-				font-size: 15px;
+				font-size: 9px;
 			}
 			.table {
-				font-size: 13px;
+				font-size: 8px;
 				border: 1px solid #c5c5c5;
 			}
 			tr, td {
 				border: none; /* Remove borders */
+				width: 160px;
 			}
 			.ar {
-				text-align: center;
+				text-align: right;
+			}
+			@media screen and (min-width:576px) {
+				/* 스마트폰 가로 */
+				.title {
+					padding: 30px 40px 20px 0px;
+				}
+				.title > h1{
+					font-size: 24px;
+				}
+				p > i{
+					font-size: 18px;
+				}
+				.inputText {
+					border: 1px solid #c5c5c5;
+					background: #fff;
+					color: #444;
+					border-radius: 0;
+					height: 32px;
+					padding-left: 10px;
+					width:140px;
+				}
+				.inputSelect {
+					border: 1px solid #c5c5c5;
+					background: #fff;
+					color: #444;
+					border-radius: 0;
+					height: 32px;
+					padding-left: 5px;
+					width:140px;
+				}
+				div > .spanTitle {
+					display:inline-block;
+					width:240px;
+					font-size: 16px;
+				}
+				.i_calendar {
+					background-color: #fff;
+					border:1px solid rgb(192, 192, 192);
+					border-left: 0px;
+					padding:6px;
+					cursor: pointer;
+				}
+				.btn_date {
+					margin-left: 7px;
+					background-color: #fff;
+					border:1px solid rgb(192, 192, 192);
+					padding:5px 15px 5px 15px;
+					width:65px;
+				}
+				.btn_active {
+					background-color: #787878;
+					color: #FFF;
+				}
+				.btn_search {
+					min-width: 60px;
+					line-height: 30px;
+					height: 32px;
+					padding: 0 9px;
+					border: 1px solid #787878;
+					background: #787878;
+					color: #FFF;
+				}
+				.cursor-pointer {
+					cursor: pointer;
+				}
+				.btn_excel {
+					min-width: 60px;
+					line-height: 30px;
+					height: 32px;
+					padding: 0 9px;
+					border: 1px solid #000;
+					background: #000;
+					color: #FFF;
+					font-size: 15px;
+				}
+				.table {
+					font-size: 13px;
+					border: 1px solid #c5c5c5;
+				}
+				tr, td {
+					border: none; /* Remove borders */
+				}
+				.ar {
+					text-align: right;
+				}
+			}
+			
+			@media screen and (min-width:768px) {
+				/* 타블렛 */
+				.title {
+					padding: 30px 40px 20px 0px;
+				}
+				.title > h1{
+					font-size: 24px;
+				}
+				p > i{
+					font-size: 18px;
+				}
+				.inputText {
+					border: 1px solid #c5c5c5;
+					background: #fff;
+					color: #444;
+					border-radius: 0;
+					height: 32px;
+					padding-left: 10px;
+					width:140px;
+				}
+				.inputSelect {
+					border: 1px solid #c5c5c5;
+					background: #fff;
+					color: #444;
+					border-radius: 0;
+					height: 32px;
+					padding-left: 5px;
+					width:140px;
+				}
+				div > .spanTitle {
+					display:inline-block;
+					width:220px;
+					font-size: 16px;
+				}
+				.i_calendar {
+					background-color: #fff;
+					border:1px solid rgb(192, 192, 192);
+					border-left: 0px;
+					padding:6px;
+					cursor: pointer;
+				}
+				.btn_date {
+					margin-left: 7px;
+					background-color: #fff;
+					border:1px solid rgb(192, 192, 192);
+					padding:5px 15px 5px 15px;
+					width:65px;
+				}
+				.btn_active {
+					background-color: #787878;
+					color: #FFF;
+				}
+				.btn_search {
+					min-width: 60px;
+					line-height: 30px;
+					height: 32px;
+					padding: 0 9px;
+					border: 1px solid #787878;
+					background: #787878;
+					color: #FFF;
+				}
+				.cursor-pointer {
+					cursor: pointer;
+				}
+				.btn_excel {
+					min-width: 60px;
+					line-height: 30px;
+					height: 32px;
+					padding: 0 9px;
+					border: 1px solid #000;
+					background: #000;
+					color: #FFF;
+					font-size: 15px;
+				}
+				.table {
+					font-size: 13px;
+					border: 1px solid #c5c5c5;
+				}
+				tr, td {
+					border: none; /* Remove borders */
+				}
+				.ar {
+					text-align: right;
+				}
+			}
+			@media screen and (min-width:992px) {
+				/* 데스크탑 */
+				.title {
+					padding: 30px 40px 20px 0px;
+				}
+				.title > h1{
+					font-size: 24px;
+				}
+				p > i{
+					font-size: 18px;
+				}
+				.inputText {
+					border: 1px solid #c5c5c5;
+					background: #fff;
+					color: #444;
+					border-radius: 0;
+					height: 32px;
+					padding-left: 10px;
+					width:140px;
+				}
+				.inputSelect {
+					border: 1px solid #c5c5c5;
+					background: #fff;
+					color: #444;
+					border-radius: 0;
+					height: 32px;
+					padding-left: 5px;
+					width:140px;
+				}
+				div > .spanTitle {
+					display:inline-block;
+					width:240px;
+					font-size: 16px;
+				}
+				.i_calendar {
+					background-color: #fff;
+					border:1px solid rgb(192, 192, 192);
+					border-left: 0px;
+					padding:6px;
+					cursor: pointer;
+				}
+				.btn_date {
+					margin-left: 7px;
+					background-color: #fff;
+					border:1px solid rgb(192, 192, 192);
+					padding:5px 15px 5px 15px;
+					width:65px;
+				}
+				.btn_active {
+					background-color: #787878;
+					color: #FFF;
+				}
+				.btn_search {
+					min-width: 60px;
+					line-height: 30px;
+					height: 32px;
+					padding: 0 9px;
+					border: 1px solid #787878;
+					background: #787878;
+					color: #FFF;
+				}
+				.cursor-pointer {
+					cursor: pointer;
+				}
+				.btn_excel {
+					min-width: 60px;
+					line-height: 30px;
+					height: 32px;
+					padding: 0 9px;
+					border: 1px solid #000;
+					background: #000;
+					color: #FFF;
+					font-size: 15px;
+				}
+				.table {
+					font-size: 13px;
+					border: 1px solid #c5c5c5;
+				}
+				tr, td {
+					border: none; /* Remove borders */
+				}
+				.ar {
+					text-align: right;
+				}
 			}
 		</style>
-		<div class="contents" style="height: 100%;">
-			<div class="ms-5 me-4">
+		<div class="" style="height: 100%; width: 100%;">
+			<div class="ms-4 me-4">
 				<div class="title"><h1><i class="bi bi-check-lg me-2"></i>대시보드</h1></div>
 				<div class="mt-3">
 					<span class="mt-3 spanTitle"><i class="bi bi-dot me-1"></i>주문/배송/클레임 건수</span>
 				</div>
 				<div style="display: flex;">
 					<div class="mt-3 me-3" style="width:50%;">
-						<table class="table text-start table-bordered" style="height:190px;">
+						<table class="table text-start" style="height:190px;">
 							<colgroup><col><col style="width:100px;"></colgroup>
 							<thead>
 								<tr>
@@ -112,7 +368,7 @@
 							<tbody>
 								<tr>
 									<td>신규주문</td>
-									<td class="ar"><a href="/admin/orderManage">0</a> 건</td>
+									<td class="ar"><a href="/admin/orderManage" style="text-decoration: none;">0</a> 건</td>
 								</tr>
 								<tr>
 									<td>입금대기</td>
@@ -130,7 +386,7 @@
 						</table>
 					</div>
 					<div class="mt-3" style="width:50%;">
-						<table class="table text-start table-bordered" style="height:190px;">
+						<table class="table text-start" style="height:190px;">
 							<colgroup><col><col style="width:100px;"></colgroup>
 							<thead>
 								<tr>
@@ -152,7 +408,7 @@
 				</div>
 				<div style="display: flex;">
 					<div class="mt-3 me-3" style="width:50%;">
-						<table class="table text-start table-bordered">
+						<table class="table text-start">
 							<colgroup><col><col style="width:100px;"></colgroup>
 							<thead>
 								<tr>
@@ -168,7 +424,7 @@
 						</table>
 					</div>
 					<div class="mt-3" style="width:50%;">
-						<table class="table text-start table-bordered">
+						<table class="table text-start">
 							<colgroup><col><col style="width:100px;"></colgroup>
 							<thead>
 								<tr>
@@ -186,11 +442,5 @@
 				</div>
 			</div>
         </div>
-		<script>
-			$(document).ready(function() {
-				
-			});
-			
-		</script>
 	</main>
 </html>

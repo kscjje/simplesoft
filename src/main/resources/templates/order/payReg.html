@@ -188,7 +188,7 @@
 										<td>
 											<button type="button" class="btn btn-sm btn-outline-secondary float-start me-1 btn25"  onclick="execDaumPostcode();">주소검색</button>
 											<input type="text" id="o_postNum" name="orderPostNum" readonly="readonly" class="form-control form-control-sm w-25 input25" placeholder="우편번호"/>
-											<div id="wrap" style="display:none;border:1px solid;width:100%;height:300px;margin:5px 0;position:relative">
+											<div id="wrap3" style="display:none;border:1px solid;width:100%;height:300px;margin:5px 0;position:relative">
 												<img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()" alt="접기 버튼">
 											</div>
 											<input type="text" id="o_addr" name="orderAddr" class="form-control form-control-sm w-75 mt-1 input50" placeholder="기본주소" readonly />
@@ -375,7 +375,7 @@
 		<script th:inline="javascript">
 			
 			// 우편번호 찾기 찾기 화면을 넣을 element
-		    var element_wrap = document.getElementById('wrap');
+		    var element_wrap = document.getElementById('wrap3');
 		    var element_wrap2 = document.getElementById('wrap2');
 			
 		    function foldDaumPostcode() {

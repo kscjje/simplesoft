@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.simplesoft.mapper.order.OrderMapper;
+import com.simplesoft.order.service.OrderService;
+import com.simplesoft.order.service.OrderVO;
 import com.simplesoft.payments.service.PaymentsService;
 import com.simplesoft.payments.service.PaymentsVO;
 import com.simplesoft.reponse.BasicResponse;
@@ -41,6 +43,9 @@ public class PaymentsController {
 	
 	@Autowired 
 	OrderMapper orderMapper;
+	
+	@Autowired
+	OrderService orderService;
 	
 	@ResponseBody
 	@PostMapping(value = "/confirm")
@@ -123,6 +128,10 @@ public class PaymentsController {
 		vo.setPaymentType(paymentType);
 		vo.setAmount(amount);
 		
+		System.out.println(paymentType);
+		System.out.println(orderId);
+		System.out.println(paymentKey);
+		System.out.println(amount);
 		//중복 결제 키 여부 조회
 		if(paymentsService.selectPaymentsDetail(vo) == null) {
 			//요청한 금액과 실결제 해야할 금액이 같은지 확인
@@ -130,6 +139,10 @@ public class PaymentsController {
 			if(totalMoney == amount) {
 				//결제 키 저장
 				if(paymentsService.insertPayments(vo) > 0) {
+					OrderVO orderVO = new OrderVO();
+					orderVO.setOrderStatus(GlobalVariable.ORDER_STATUS_WAIT); 								//주문상태-주문대기 (조건)
+					orderVO.setOrderNo(orderId);
+					orderService.updateOrderStatusComplete(orderVO);
 					return "/payments/success";
 				} else {
 					model.addAttribute("PARAM_MESSAGE", "결제 중 오류가 발생하였습니다.");

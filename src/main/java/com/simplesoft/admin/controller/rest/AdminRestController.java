@@ -49,6 +49,7 @@ public class AdminRestController {
 			returnData.put("PARAM_MESSAGE", "일치하는 ID가 없습니다.");
 		} else {
 			if (EncryptUtils.SHA512_Encrypt(userPassword).equals(managerDetail.getManagerPw())) {
+				
 				returnData.put("RESULT", "SUCCESS");
 				returnData.put("managerId", managerDetail.getManagerId());
 				session.setAttribute("adminLoginInfo",managerDetail);

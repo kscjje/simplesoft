@@ -358,7 +358,7 @@
 				</div>
 				<div style="display: flex;">
 					<div class="mt-3 me-3" style="width:50%;">
-						<table class="table text-start" style="height:190px;">
+						<table class="table text-start">
 							<colgroup><col><col style="width:100px;"></colgroup>
 							<thead>
 								<tr>
@@ -367,26 +367,18 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td>신규주문</td>
-									<td class="ar"><a href="/admin/orderManage" style="text-decoration: none;">0</a> 건</td>
+									<td><span title="신규주문">신규주문</span></td>
+									<td class="ar"><a href="/admin/orderManage" style="text-decoration: none;color: #000;" data-bs-toggle="tooltip" data-bs-placement="top" title="주문자리스트 페이지의 금일 주문자 명단을 보여줌">0</a> 건</td>
 								</tr>
 								<tr>
-									<td>입금대기</td>
-									<td class="ar">0 건</td>
-								</tr>
-								<tr>
-									<td>결제완료</td>
-									<td class="ar">0 건</td>
-								</tr>
-								<tr>
-									<td>배송완료</td>
-									<td class="ar">0 건</td>
+									<td><span title="결제대기">결제대기</span></td>
+									<td class="ar"><a href="/admin/orderManage" style="text-decoration: none;color: #000;" data-bs-toggle="tooltip" data-bs-placement="left" title="주문자리스트 페이지의 계좌이체 신청한 주문자 명단을 보여줌">0</a> 건</td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
 					<div class="mt-3" style="width:50%;">
-						<table class="table text-start" style="height:190px;">
+						<table class="table text-start">
 							<colgroup><col><col style="width:100px;"></colgroup>
 							<thead>
 								<tr>
@@ -395,7 +387,11 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td>취소신청</td>
+									<td>취소요청</td>
+									<td class="ar">0 건</td>
+								</tr>
+								<tr>
+									<td>취소완료</td>
 									<td class="ar">0 건</td>
 								</tr>
 							</tbody>
@@ -418,7 +414,7 @@
 							<tbody>
 								<tr>
 									<td>금일배송</td>
-									<td class="ar">0 건</td>
+									<td class="ar"><a href="/admin/orderManage" style="text-decoration: none;color: #000;" data-bs-toggle="tooltip" data-bs-placement="top" title="금일 배송건수 관련된 배송 리스트 페이지 보여줌">0</a> 건</td>
 								</tr>
 							</tbody>
 						</table>
@@ -434,7 +430,7 @@
 							<tbody>
 								<tr>
 									<td>익일배송</td>
-									<td class="ar">0 건</td>
+									<td class="ar"><a href="/admin/orderManage" style="text-decoration: none;color: #000;" data-bs-toggle="tooltip" data-bs-placement="top" title="익일 배송건수 관련된 배송 리스트 페이지 보여줌">0</a> 건</td>
 								</tr>
 							</tbody>
 						</table>
@@ -442,5 +438,11 @@
 				</div>
 			</div>
         </div>
+		<script>
+			$(document).ready(function() {
+			//툴팁 이펙트 효과
+				$('[data-bs-toggle="tooltip"]').tooltip();
+			});
+		</script>
 	</main>
 </html>

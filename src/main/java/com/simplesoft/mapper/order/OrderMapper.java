@@ -11,4 +11,5 @@ public interface OrderMapper {
 	public OrderVO selectOrderApplyInfo(OrderVO vo);
 	public int updateOrderApplyInfo(OrderVO vo);
 	public int selectOrderPayConfirm(String orderId);
+	public int updateOrderStatusComplete(OrderVO vo);
 }

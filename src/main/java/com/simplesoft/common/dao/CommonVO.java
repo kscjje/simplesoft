@@ -8,7 +8,6 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @ToString
 public class CommonVO {
@@ -19,4 +18,16 @@ public class CommonVO {
 	private String orderStatus;		//주문상태
 	private String searchOption;	//검색종류
 	private String searchText;		//검색내용
+	
+	public CommonVO(String startDate, String endDate, int startPage, int endPage, String orderStatus,
+			String searchOption, String searchText) {
+		super();
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.startPage = startPage;
+		this.endPage = endPage;
+		this.orderStatus = orderStatus;
+		this.searchOption = searchOption;
+		this.searchText = searchText;
+	}
 }

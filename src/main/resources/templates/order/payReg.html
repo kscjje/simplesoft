@@ -141,7 +141,7 @@
 							</tbody>
 						</table>
 					</div>
-					<form id="orderForm" method="post">
+					<form id="orderForm" method="post" onsubmit="return false;">
     					<div class="mt-4">
 							<h6 class="mb-3 fw-bold text-start">2.주문하시는 분 <a href="javascript:test()">테스트작성</a></h6>
 							<hr>
@@ -209,15 +209,7 @@
 													<option value="naver.com">naver.com</option>
 													<option value="hanmail.net">hanmail.net</option>
 													<option value="nate.com">nate.com</option>
-													<option value="paran.com">paran.com</option>
-													<option value="empal.com">empal.com</option>
-													<option value="hotmail.com">hotmail.com</option>
 													<option value="gmail.com">gmail.com</option>
-													<option value="dreamwiz.com">dreamwiz.com</option>
-													<option value="lycos.co.kr">lycos.co.kr</option>
-													<option value="yahoo.co.kr">yahoo.co.kr</option>
-													<option value="korea.com">korea.com</option>
-													<option value="hanmir.com">hanmir.com</option>
 												</select>
 												<input type="text" id="od_email" name="orderEmail" style="display:none;">
 											</div>
@@ -230,115 +222,113 @@
 							<h6 class="mb-3 fw-bold text-start">3.받으시는 분</h6>
 							<hr>
 							<!-- 비회원 주문정보 -->
-							<form>
-								<table class="table table-borderless align-middle">
-									<th:block th:if="${not #strings.isEmpty(session.loginInfo)}">
-										<tr>
-											<td class="text-start text-light-emphasis" style="width:18%">
-												<label for="r_tel" class="form-label">&nbsp; 배송지선택</label>
-											</td>
-											<td>
-												<div class="form-check float-start">
-													<input class="form-check-input" type="checkbox" id="check1">
-													<label class="form-check-label input25 font-sm" for="check1" style="display:contents; cursor: pointer;">주문자와 동일</label>
-												</div>
-											</td>
-										</tr>
-									</th:block>
-									<th:block th:if="${#strings.isEmpty(session.loginInfo)}">
-										<tr>
-											<td class="text-start text-light-emphasis" style="width:18%">
-												<label for="r_tel" class="form-label">&nbsp; 배송지선택</label>
-											</td>
-											<td>
-												<div class="form-check float-start">
-													<input class="form-check-input" type="checkbox" id="check1">
-													<label class="form-check-label input25 font-sm" for="check1" style="display:contents; cursor: pointer;">주문자와 동일</label>
-												</div>
-											</td>
-										</tr>
-									</th:block>
+							<table class="table table-borderless align-middle">
+								<th:block th:if="${not #strings.isEmpty(session.loginInfo)}">
 									<tr>
-										<td class="text-start text-light-emphasis">
-											<label for="r_name" class="form-label"><font color="red">* </font>이름</label>
+										<td class="text-start text-light-emphasis" style="width:18%">
+											<label for="r_tel" class="form-label">&nbsp; 배송지선택</label>
 										</td>
 										<td>
-											<input type="text" id="r_name" name="receiveName" class="form-control w-50 input25">
-										</td>
-									</tr>
-									<tr>
-										<td class="text-start text-light-emphasis">
-											<label for="r_tel" class="form-label">&nbsp; 전화번호</label>
-										</td>
-										<td>
-											<input type="text" id="r_tel" name="receiveTel" class="form-control w-50 phoneNumber input25">
-										</td>
-									</tr>
-									<tr>
-										<td class="text-start text-light-emphasis">
-											<label for="r_phone" class="form-label"><font color="red">* </font>핸드폰</label>
-										</td>
-										<td>
-											<input type="text" id="r_phone" name="receivePhone" class="form-control w-50 phoneNumber input25" maxlength="13">
-										</td>
-									</tr>
-									<tr>
-										<td class="text-start text-light-emphasis">
-											<label for="r_address" class="form-label"><font color="red">* </font>주소</label>
-										</td>
-										<td>
-											<button type="button" class="btn btn-sm btn-outline-secondary float-start me-1 btn25"  onclick="execDaumPostcode2();">주소검색</button>
-											<input type="text" id="r_postNum" name="receivePostNum" readonly="readonly" class="form-control form-control-sm w-25 input25" placeholder="우편번호"/>
-											<div id="wrap2" style="display:none;border:1px solid;width:100%;height:300px;margin:5px 0;position:relative">
-												<img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode2()" alt="접기 버튼">
-											</div>
-											<input type="text" id="r_addr" name="receiveAddr" class="form-control form-control-sm w-75 mt-1 input50" placeholder="기본주소" readonly />
-											<input type="text" id="r_addrDetail" name="receiveAddrDetail" class="form-control form-control-sm w-75 mt-1 input50" placeholder="상세주소" autocomplete="off"/>
-										</td>
-									</tr>
-									<tr>
-										<td class="text-start text-light-emphasis">
-											<label for="r_address" class="form-label"><font color="red">* </font>배송유형</label>
-										</td>
-										<td>
-											<div class="form-check float-start me-3">
-												<input class="form-check-input" type="radio" name="delivKind" id="radio1">
-												<label class="form-check-label" for="radio1">
-													당일배송(안산)
-												</label>
-											</div>
 											<div class="form-check float-start">
-												<input class="form-check-input" type="radio" name="delivKind" id="radio2">
-												<label class="form-check-label" for="radio2">
-													우체국 택배(안산 외)
-												</label>
+												<input class="form-check-input" type="checkbox" id="check1">
+												<label class="form-check-label input25 font-sm" for="check1" style="display:contents; cursor: pointer;">주문자와 동일</label>
 											</div>
 										</td>
 									</tr>
+								</th:block>
+								<th:block th:if="${#strings.isEmpty(session.loginInfo)}">
 									<tr>
-										<td class="text-start text-light-emphasis">
-											<label for="r_commonPwd" class="form-label">&nbsp; 공동현관 비밀번호</label>
+										<td class="text-start text-light-emphasis" style="width:18%">
+											<label for="r_tel" class="form-label">&nbsp; 배송지선택</label>
 										</td>
 										<td>
-											<input type="text" id="commonPwd" name="commonPwd" class="form-control form-control-sm w-75 mt-1 input50" placeholder="비밀번호 입력 예시: 종버튼 + 1234" maxlength="50"/>
-										</td>
-									</tr>
-									<tr>
-										<td class="text-start text-light-emphasis">
-											<label for="r_bigo" class="form-label">&nbsp; 전하실 말씀</label>
-										</td>
-										<td>
-											<div class="input-group">
-												<textarea class="form-control input50" id="r_bigo" name="bigo" style="resize: none;"placeholder="배송 시에 찾기 어려운 곳이나 기타 사항이 있는 경우 원활한 배송을 위해 기입해 주시기 바랍니다 :)"></textarea>
+											<div class="form-check float-start">
+												<input class="form-check-input" type="checkbox" id="check1">
+												<label class="form-check-label input25 font-sm" for="check1" style="display:contents; cursor: pointer;">주문자와 동일</label>
 											</div>
 										</td>
 									</tr>
-								</table>
-							</form>
+								</th:block>
+								<tr>
+									<td class="text-start text-light-emphasis">
+										<label for="r_name" class="form-label"><font color="red">* </font>이름</label>
+									</td>
+									<td>
+										<input type="text" id="r_name" name="receiveName" class="form-control w-50 input25">
+									</td>
+								</tr>
+								<tr>
+									<td class="text-start text-light-emphasis">
+										<label for="r_tel" class="form-label">&nbsp; 전화번호</label>
+									</td>
+									<td>
+										<input type="text" id="r_tel" name="receiveTel" class="form-control w-50 phoneNumber input25">
+									</td>
+								</tr>
+								<tr>
+									<td class="text-start text-light-emphasis">
+										<label for="r_phone" class="form-label"><font color="red">* </font>핸드폰</label>
+									</td>
+									<td>
+										<input type="text" id="r_phone" name="receivePhone" class="form-control w-50 phoneNumber input25" maxlength="13">
+									</td>
+								</tr>
+								<tr>
+									<td class="text-start text-light-emphasis">
+										<label for="r_address" class="form-label"><font color="red">* </font>주소</label>
+									</td>
+									<td>
+										<button type="button" class="btn btn-sm btn-outline-secondary float-start me-1 btn25"  onclick="execDaumPostcode2();">주소검색</button>
+										<input type="text" id="r_postNum" name="receivePostNum" readonly="readonly" class="form-control form-control-sm w-25 input25" placeholder="우편번호"/>
+										<div id="wrap2" style="display:none;border:1px solid;width:100%;height:300px;margin:5px 0;position:relative">
+											<img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode2()" alt="접기 버튼">
+										</div>
+										<input type="text" id="r_addr" name="receiveAddr" class="form-control form-control-sm w-75 mt-1 input50" placeholder="기본주소" readonly />
+										<input type="text" id="r_addrDetail" name="receiveAddrDetail" class="form-control form-control-sm w-75 mt-1 input50" placeholder="상세주소" autocomplete="off"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-start text-light-emphasis">
+										<label for="r_address" class="form-label"><font color="red">* </font>배송유형</label>
+									</td>
+									<td>
+										<div class="form-check float-start me-3">
+											<input class="form-check-input" type="radio" name="delivKind" id="radio1">
+											<label class="form-check-label" for="radio1">
+												당일배송(안산)
+											</label>
+										</div>
+										<div class="form-check float-start">
+											<input class="form-check-input" type="radio" name="delivKind" id="radio2">
+											<label class="form-check-label" for="radio2">
+												우체국 택배(안산 외)
+											</label>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-start text-light-emphasis">
+										<label for="r_commonPwd" class="form-label">&nbsp; 공동현관 비밀번호</label>
+									</td>
+									<td>
+										<input type="text" id="commonPwd" name="commonPwd" class="form-control form-control-sm w-75 mt-1 input50" placeholder="비밀번호 입력 예시: 종버튼 + 1234" maxlength="50"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-start text-light-emphasis">
+										<label for="r_bigo" class="form-label">&nbsp; 전하실 말씀</label>
+									</td>
+									<td>
+										<div class="input-group">
+											<textarea class="form-control input50" id="r_bigo" name="bigo" style="resize: none;"placeholder="배송 시에 찾기 어려운 곳이나 기타 사항이 있는 경우 원활한 배송을 위해 기입해 주시기 바랍니다 :)"></textarea>
+										</div>
+									</td>
+								</tr>
+							</table>
 						</div>
 						<div class="text-center">
 							<button class="btn btn-outline-primary btn-lg ms-1 btn25" type="button" onclick="fnSubmit()">주문하기</button>
-							<button class="btn btn-outline-danger btn-lg ms-1 btn25" type="button" onclick='$("#modalPay").trigger("click");'>취소</button>
+							<button class="btn btn-outline-danger btn-lg ms-1 btn25" type="button" onclick="window.history.back();">취소</button>
 						</div>
 					</form>
 					<button type="button" style="display:none;" class="btn btn-primary" id="modalPay" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></button>
@@ -737,7 +727,7 @@
 								}
 							}
 						} else {
-							alert("API 통신 실패");
+							alert("관리자에게 문의 부탁드립니다.");
 				        }
 					},
 					error: function (e) {

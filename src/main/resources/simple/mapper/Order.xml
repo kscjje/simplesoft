@@ -151,15 +151,25 @@
 			, COMMON_PWD		= #{commonPwd}
 			, BIGO				= #{bigo}
 			, UPT_USER			= #{userNo}
-			, UPT_DT			= SYSDATE()
-			, ORDER_PAY_DT		= SYSDATE()
-			, ORDER_STATUS		= '0000' 
+			, UPT_DT			= NOW()
 		WHERE USER_NO = #{userNo}
 		AND ORDER_NO = #{orderNo}
 		AND ORDER_STATUS = #{orderStatus}
 		<if test="userNo == '0'">
 			AND USER_SESSION = #{userSession}
 		</if>
+	</update>
+	
+	<!-- 주문정보 주문완료 업데이트  -->
+	<update id="updateOrderStatusComplete" parameterType="com.simplesoft.order.service.OrderVO">
+		/* OrderMapper.updateOrderStatusComplete */
+		UPDATE ORDER_MST SET
+			ORDER_STATUS = '0000'
+			, UPT_USER			= #{userNo}
+			, UPT_DT			= NOW()
+			, ORDER_PAY_DT		= NOW()
+		WHERE ORDER_NO = #{orderNo}
+		AND ORDER_STATUS = #{orderStatus}
 	</update>
 	
 	<!-- 결제 전 금액 확인-->	

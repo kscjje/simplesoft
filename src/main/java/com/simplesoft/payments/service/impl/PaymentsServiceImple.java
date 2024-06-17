@@ -19,7 +19,9 @@ import com.simplesoft.util.MailTemplateSender;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class PaymentsServiceImple implements PaymentsService{
 	
@@ -38,13 +40,11 @@ public class PaymentsServiceImple implements PaymentsService{
 	//결제정보 저장 후 장바구니 내역 삭제
 	@Override
 	public void getPayResult(HttpServletRequest request, JSONObject param) {
-		System.out.println("결제 정보");
-		System.out.println(param);
+		log.info("결제 정보 : {} ", param);
 		ObjectMapper mapper = new ObjectMapper();
 		
 		try {
 			PaymentsVO vo = mapper.readValue(param.toString(), PaymentsVO.class);
-			System.out.println("vo@:"+vo);
 			vo.setReceipt(vo.getReceipt().toString());
 			switch ((String)param.get("method")) {
 				//String으로 변환하여 담기

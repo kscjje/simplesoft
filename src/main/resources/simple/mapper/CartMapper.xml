@@ -8,7 +8,7 @@
 		INSERT INTO CART_MST
 			(USER_NO, USER_SESSION, MENU_BOARD_SEQ, QTY, REG_USER, REG_DT)
 		VALUES
-			(#{userNo}, #{userSession}, #{menuBoardSeq}, 1, #{regUser}, SYSDATE())
+			(#{userNo}, #{userSession}, #{menuBoardSeq}, 1, #{regUser}, NOW())
 	</insert>
 	
 	<!-- 장바구니 수량추가 -->

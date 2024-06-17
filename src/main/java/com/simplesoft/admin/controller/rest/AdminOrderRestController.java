@@ -29,25 +29,14 @@ public class AdminOrderRestController {
 	@Autowired
 	AdmOrderService admOrderService;
 	
-	/**
-	 * 주문 내역 조회
-	 * 
-	 * @param request
-	 * @param model
-	 * @param session
-	 * @param paramVO
-	 * @return
-	 * @throws NoSuchAlgorithmException
-	 */
+	
+	//주문 내역 조회
 	@PostMapping(value = "/searchList")
 	public BasicResponse loginAjax(HttpServletRequest request, ModelMap model, HttpSession session,@ModelAttribute("orderVO") OrderVO paramVO) throws NoSuchAlgorithmException {
-		log.info("주문 내역 조회 AJAX");
-		log.info(""+paramVO);
 		Map<String, Object> returnData = new HashMap<String, Object>();
 		
 		List<OrderVO> orderList = admOrderService.selectOrderApplyList(paramVO);
 		int orderSize = admOrderService.selectOrderApplyListCount(paramVO);
-		log.info(""+orderList);
 		returnData.put("orderList", orderList);
 		returnData.put("orderSize", orderSize);
 		return new CommonResponse<Map<String, Object>>(returnData);

@@ -111,7 +111,9 @@
 							<select id="orderStatus" class="inputSelect" title="주문상태">
 								<option value="">선택</option>
 								<option value="0000">주문완료</option>
+								<option value="1001">가상계좌</option>
 								<option value="0001">주문취소</option>
+								<option value="0002">취소요청</option>
 							</select>
 						</span>
 					</div>
@@ -124,7 +126,7 @@
 								<option value="2">주문번호</option>
 							</select>
 							<span class="ms-4">
-								<input type="text" id="searchText" class="inputText" placeholder="검색어를 입력해주세요." title="검색명" maxlength="20" style="width: 265px;">
+								<input type="text" id="searchText" class="inputText" placeholder="검색어를 입력해주세요." title="검색명" maxlength="20" style="width: 265px;" onkeypress="enterKey()">
 								<button type="button" id="ui_search_btn" class="btn_search ms-1">검색</button>
 								<button type="button" id="ui_reset_btn" class="btn_search ms-1">초기화</button>
 							</span>
@@ -135,6 +137,7 @@
 						<input type="hidden" id="hiddenStartDate">
 						<input type="hidden" id="hiddenEndDate">
 						<input type="hidden" id="hiddenOrderStatus">
+						<input type="hidden" id="hiddenDelivStatus">
 						<input type="hidden" id="hiddenSearchOption">
 						<input type="hidden" id="hiddenSearchText">
 					</form>
@@ -150,6 +153,7 @@
 							<tr>
 								<th style="width:10%">상세</th>
 								<th style="width:10%">주문상태</th>
+								<th style="width:10%">결제수단</th>
 								<th style="width:20%">주문번호</th>
 								<th style="width:10%">주문자명</th>
 								<th style="width:20%">상품명</th>
@@ -190,7 +194,7 @@
 				</div>
 			</div>
         </div>
-		<script>
+		<script th:inline="javascript">
 			$(document).ready(function() {
 				
 				$('#startDate').datepicker({
@@ -301,12 +305,14 @@
 					let startDate	= $("#startDate").val();
 					let endDate		= $("#endDate").val();
 					let orderStatus = $("#orderStatus").val();
+					let delivStatus = $("#delivStatus").val();
 					let searchOption= $("#searchOption").val();
 					let searchText	= $("#searchText").val();
 					
 					if(searchText != ""){
 						if(searchOption == ""){
 							alert("검색 옵션을 선택해 주세요.");
+							$("#searchOption").focus();
 							return;
 						}
 					}
@@ -327,6 +333,7 @@
 						startPage	: startPage,
 						endPage		: endPage,
 						orderStatus : orderStatus,
+						delivStatus : delivStatus,
 						searchOption: searchOption,
 						searchText	: searchText,
 						pageSize	: pageSize
@@ -356,10 +363,11 @@
 									} else if (data.orderStatus == "0001"){
 										addHtml +=	'<td><span>주문취소</span>';
 									}
+									addHtml +=		'<td>' + data.payMethod + '</td>';
 									addHtml +=		'<td>' + data.orderNo + '</td>';
 									addHtml +=		'<td>' + data.orderName + '</td>';
 									if(data.productList.length > 1 ){
-										addHtml +=		'<td>' + data.productList[0].menuDay + ' 식단 외 '+ data.productList.length +' 건</td>';	
+										addHtml +=		'<td>' + data.productList[0].menuDay + ' 식단 외 '+ (data.productList.length -1) +'건</td>';	
 									} else {
 										addHtml +=		'<td>' + data.productList[0].menuDay + '</td>';
 									}
@@ -429,6 +437,7 @@
 					let startDate = $("#hiddenStartDate").val();
 					let endDate = $("#hiddenEndDate").val();
 					let orderStatus = $("#hiddenOrderStatus").val();
+					let delivStatus = $("#hiddenDelivStatus").val();
 					let searchOption = $("#hiddenSearchOption").val();
 					let searchText = $("#hiddenSearchText").val();
 					
@@ -445,6 +454,7 @@
 						startPage	: startPage,
 						endPage		: endPage,
 						orderStatus : orderStatus,
+						delivStatus : delivStatus,
 						searchOption: searchOption,
 						searchText	: searchText,
 						pageSize	: pageSize
@@ -473,10 +483,11 @@
 									} else if (data.orderStatus == "0001"){
 										addHtml +=	'<td><span>주문취소</span>';
 									}
+									addHtml +=		'<td>' + data.payMethod + '</td>';
 									addHtml +=		'<td>' + data.orderNo + '</td>';
 									addHtml +=		'<td>' + data.orderName + '</td>';
 									if(data.productList.length > 1 ){
-										addHtml +=		'<td>' + data.productList[0].menuDay + ' 식단 외 '+ data.productList.length +' 건</td>';	
+										addHtml +=		'<td>' + data.productList[0].menuDay + ' 식단 외 '+ (data.productList.length -1) +'건</td>';	
 									} else {
 										addHtml +=		'<td>' + data.productList[0].menuDay + '</td>';
 									}
@@ -548,7 +559,40 @@
 						}
 					});
 				}				
-
+				enterKey = function(type){
+					if (window.event.keyCode == 13) {
+						searchBtn();
+					}
+				}
+				let option = /*[[${option}]]*/ "";
+				
+				switch(option) {
+					case "1" :
+						$("#0").trigger("click");
+						//신규주문
+						break;	
+					case "2" :
+						//결제대기
+						$("#orderStatus").val("1001");
+						break;
+					case "3" : 
+						//취소요청
+						$("#orderStatus").val("0002");
+						break;
+					case "4" :
+						//취소완료
+						$("#orderStatus").val("0001"); 
+						break;
+					case "5" :
+						//금일배송
+						
+						break;
+					case "6" : 
+						//익일배송
+						break;
+					default:
+						break;
+				}
 				searchBtn();
 			});
 			

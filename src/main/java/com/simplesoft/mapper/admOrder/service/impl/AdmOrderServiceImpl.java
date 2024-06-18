@@ -1,6 +1,7 @@
 package com.simplesoft.mapper.admOrder.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,5 +25,10 @@ public class AdmOrderServiceImpl implements AdmOrderService{
 	@Override
 	public int selectOrderApplyListCount(OrderVO vo) {
 		return admOrderMapper.selectOrderApplyListCount(vo);
+	}
+	//주문신청정보 카운트 
+	@Override
+	public Map<String, Object> getDashBoardCnt(){
+		return admOrderMapper.getDashBoardCnt();
 	}
 }

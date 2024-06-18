@@ -368,11 +368,11 @@
 							<tbody>
 								<tr>
 									<td><span title="신규주문">신규주문</span></td>
-									<td class="ar"><a href="/admin/orderManage" style="text-decoration: none;color: #000;" data-bs-toggle="tooltip" data-bs-placement="top" title="주문자리스트 페이지의 금일 주문자 명단을 보여줌">0</a> 건</td>
+									<td class="ar"><a href="/admin/orderManage?option=1" style="text-decoration: none;color: #000;" data-bs-toggle="tooltip" data-bs-placement="top" title="주문자리스트 페이지의 금일 주문자 명단을 보여줌" th:text="${resultMap.newOrderCnt}">0</a> 건</td>
 								</tr>
 								<tr>
 									<td><span title="결제대기">결제대기</span></td>
-									<td class="ar"><a href="/admin/orderManage" style="text-decoration: none;color: #000;" data-bs-toggle="tooltip" data-bs-placement="left" title="주문자리스트 페이지의 계좌이체 신청한 주문자 명단을 보여줌">0</a> 건</td>
+									<td class="ar"><a href="/admin/orderManage?option=2" style="text-decoration: none;color: #000;" data-bs-toggle="tooltip" data-bs-placement="left" title="주문자리스트 페이지의 계좌이체 신청한 주문자 명단을 보여줌" th:text="${resultMap.payWaitCnt}">0</a> 건</td>
 								</tr>
 							</tbody>
 						</table>
@@ -388,11 +388,11 @@
 							<tbody>
 								<tr>
 									<td>취소요청</td>
-									<td class="ar">0 건</td>
+									<td class="ar"><a href="/admin/orderManage?option=3" style="text-decoration: none;color: #000;" data-bs-toggle="tooltip" data-bs-placement="top" title="주문자리스트 페이지의 취소요청 명단을 보여줌">0</a> 건</td>
 								</tr>
 								<tr>
 									<td>취소완료</td>
-									<td class="ar">0 건</td>
+									<td class="ar"><a href="/admin/orderManage?option=4" style="text-decoration: none;color: #000;" data-bs-toggle="tooltip" data-bs-placement="top" title="주문자리스트 페이지의 취소완료 명단을 보여줌">0</a> 건</td>
 								</tr>
 							</tbody>
 						</table>
@@ -414,7 +414,7 @@
 							<tbody>
 								<tr>
 									<td>금일배송</td>
-									<td class="ar"><a href="/admin/orderManage" style="text-decoration: none;color: #000;" data-bs-toggle="tooltip" data-bs-placement="top" title="금일 배송건수 관련된 배송 리스트 페이지 보여줌">0</a> 건</td>
+									<td class="ar"><a href="/admin/orderManage?option=5" style="text-decoration: none;color: #000;" data-bs-toggle="tooltip" data-bs-placement="top" title="금일 배송건수 관련된 배송 리스트 페이지 보여줌" th:text="${resultMap.todayDelivCnt}">0</a> 건</td>
 								</tr>
 							</tbody>
 						</table>
@@ -430,7 +430,7 @@
 							<tbody>
 								<tr>
 									<td>익일배송</td>
-									<td class="ar"><a href="/admin/orderManage" style="text-decoration: none;color: #000;" data-bs-toggle="tooltip" data-bs-placement="top" title="익일 배송건수 관련된 배송 리스트 페이지 보여줌">0</a> 건</td>
+									<td class="ar"><a href="/admin/orderManage?option=6" style="text-decoration: none;color: #000;" data-bs-toggle="tooltip" data-bs-placement="top" title="익일 배송건수 관련된 배송 리스트 페이지 보여줌" th:text="${resultMap.nextDelivCnt}">0</a> 건</td>
 								</tr>
 							</tbody>
 						</table>

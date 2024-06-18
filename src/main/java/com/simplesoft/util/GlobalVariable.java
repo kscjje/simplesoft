@@ -16,9 +16,14 @@ public class GlobalVariable {
 	public static final String REDIRECT_BACK	= "/common/back";
 	public static final String REDIRECT_SUBMIT	= "/common/submit";
 	
-	public static final String ORDER_STATUS_WAIT 		= "1000";	//주문대기
-	public static final String ORDER_STATUS_COMPLETE 	= "0000";	//주문완료
-	public static final String ORDER_STATUS_CANCEL	 	= "0001";	//주문취소
+	public static final String ORDER_STATUS_WAIT 			= "1000";	//주문대기
+	public static final String ORDER_STATUS_VIRTUAL			= "1001";	//가상계좌 입금대기
+	public static final String ORDER_STATUS_COMPLETE 		= "0000";	//주문완료
+	public static final String ORDER_STATUS_CANCEL_COMPLETE	= "0001";	//주문취소
+	public static final String ORDER_STATUS_CANCEL	 		= "0002";	//주문취소요청
+	
+	public static final String DELIVERY_STATUS_WAIT 		= "1000";	//배송전대기
+	public static final String DELIVERY_STATUS_COMPLETE		= "0000";	//배송완료
 	
 	//ADMIN PORTAL 서버 LOG 감시 설정 이메일 관련 코드
 	public static final String LOG_RESULT_CODE_SUCCESS = "20000200"; 					//성공

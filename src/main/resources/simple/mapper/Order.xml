@@ -180,4 +180,20 @@
 		FROM ORDER_MST
 		WHERE ORDER_NO = #{orderId}
 	</select>
+	
+	<!--배송 정보 등록-->
+	<insert id="insertDelivery" parameterType="com.simplesoft.order.service.OrderProductVO">
+		/* OrderMapper.insertDelivery */
+		INSERT INTO DELIVERY_MST(ORDER_NO, ORDER_PRODUCT_NO, MENU_DAY, STATUS, MANAGER_NO, DELIVERY_DT, REG_USER, REG_DT)
+		VALUES(
+			  #{orderNo}
+			, #{orderProductNo}
+			, #{menuDay}
+			, '1000'
+			, null
+			, null
+			, #{regUser}
+			, NOW()
+		)
+	</insert>
 </mapper>

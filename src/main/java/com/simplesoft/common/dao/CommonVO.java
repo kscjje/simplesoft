@@ -1,6 +1,5 @@
 package com.simplesoft.common.dao;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,17 +15,19 @@ public class CommonVO {
 	private int startPage;			//시작페이지
 	private int endPage;			//종료페이지
 	private String orderStatus;		//주문상태
+	private String delivStatus;		//배송상태
 	private String searchOption;	//검색종류
 	private String searchText;		//검색내용
 	
 	public CommonVO(String startDate, String endDate, int startPage, int endPage, String orderStatus,
-			String searchOption, String searchText) {
+			String delivStatus, String searchOption, String searchText) {
 		super();
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.startPage = startPage;
 		this.endPage = endPage;
 		this.orderStatus = orderStatus;
+		this.delivStatus = delivStatus;
 		this.searchOption = searchOption;
 		this.searchText = searchText;
 	}

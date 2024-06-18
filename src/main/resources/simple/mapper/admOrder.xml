@@ -44,7 +44,12 @@
 					, A.BIGO
 					, A.REG_USER
 					, A.REG_DT
+					, C.PAY_METHOD
+					, C.ORDER_NAME AS PRODUCT_NAME
+					, C.TOTAL_AMOUNT
 				FROM ORDER_MST A
+				LEFT JOIN DELIVERY_MST B ON A.ORDER_NO = B.ORDER_NO
+				LEFT JOIN PAYMENTS C ON A.ORDER_NO = C.ORDER_ID
 				WHERE A.ORDER_STATUS != '1000'
 				<if test="startDate neq null and startDate neq '' and endDate neq null and endDate neq ''">
 					AND DATE_FORMAT(A.ORDER_PAY_DT,'%Y-%m-%d') BETWEEN #{startDate} AND #{endDate}
@@ -57,9 +62,12 @@
 						AND A.ORDER_NAME LIKE CONCAT('%',#{searchText},'%')
 					</if>
 					<if test="searchOption == 2">
-						AND A.ORDER_NAME = #{searchText}
+						<if test="searchText neq null and searchText neq ''">
+							AND A.ORDER_NO = #{searchText}
+						</if>
 					</if>
 				</if>
+				GROUP BY A.ORDER_NO
 			) T
 		ORDER BY T.REG_DT DESC
 		LIMIT #{startPage}, #{endPage}
@@ -72,35 +80,9 @@
 		FROM 
 			(
 				SELECT 
-					  A.ORDER_NO
-					, A.USER_NO
-					, A.ORDER_STATUS
-					, A.USER_SESSION
-					, A.ORDER_PAY_TYPE
-					, A.TOTAL_PRODUCT_AMT
-					, A.TOTAL_DIS_AMT
-					, A.TOTAL_DELY_AMT
-					, A.MARKETING_AGREE_FG
-					, A.ORDER_NAME
-					, A.ORDER_PWD
-					, A.ORDER_TEL
-					, A.ORDER_PHONE
-					, A.ORDER_POST_NUM
-					, A.ORDER_ADDR
-					, A.ORDER_ADDR_DETAIL
-					, A.ORDER_EMAIL
-					, A.RECEIVE_NAME
-					, A.RECEIVE_TEL
-					, A.RECEIVE_PHONE
-					, A.RECEIVE_POST_NUM
-					, A.RECEIVE_ADDR
-					, A.RECEIVE_ADDR_DETAIL
-					, A.COMMON_PWD
-					, DATE_FORMAT(A.ORDER_PAY_DT,'%Y-%m-%d %H:%i:%s') AS ORDER_PAY_DT
-					, A.BIGO
-					, A.REG_USER
-					, A.REG_DT
+					 1
 				FROM ORDER_MST A
+				LEFT JOIN DELIVERY_MST B ON A.ORDER_NO = B.ORDER_NO
 				WHERE A.ORDER_STATUS != '1000'
 				<if test="startDate neq null and startDate neq '' and endDate neq null and endDate neq ''">
 					AND DATE_FORMAT(A.ORDER_PAY_DT,'%Y-%m-%d') BETWEEN #{startDate} AND #{endDate}
@@ -113,11 +95,13 @@
 						AND A.ORDER_NAME LIKE CONCAT('%',#{searchText},'%')
 					</if>
 					<if test="searchOption == 2">
-						AND A.ORDER_NAME = #{searchText}
+						<if test="searchText neq null and searchText neq ''">
+							AND A.ORDER_NO = #{searchText}
+						</if>
 					</if>
 				</if>
+				GROUP BY A.ORDER_NO
 			) T
-		ORDER BY T.REG_DT DESC
 	</select>
 	
 	<!-- 주문 신청 정보 -->	
@@ -139,4 +123,26 @@
 		FROM ORDER_PRODUCT
 		WHERE ORDER_NO = #{orderNo}
 	</select>
+	
+	<!-- 대시보드 건수 정보 -->	
+	<select id="getDashBoardCnt" resultType="CamelHashMap">
+		SELECT
+			  COUNT(CASE WHEN DATE_FORMAT(A.ORDER_PAY_DT, '%Y%m%d') = DATE_FORMAT(NOW(), '%Y%m%d') THEN 1 END) AS NEW_ORDER_CNT
+			, COUNT(CASE WHEN A.ORDER_STATUS = '1001' THEN 1 END) AS PAY_WAIT_CNT
+	    	,(SELECT COUNT(*) FROM ORDER_MST A
+	    		WHERE A.ORDER_STATUS = '0000'
+	    		AND EXISTS (
+	    					SELECT 1 FROM DELIVERY_MST B 
+	    					WHERE A.ORDER_NO = B.ORDER_NO
+	    					AND B.STATUS = '1000'
+	    					AND DATE_FORMAT(B.MENU_DAY, '%Y%m%d') = DATE_FORMAT(NOW(), '%Y%m%d'))) AS TODAY_DELIV_CNT
+	    	,(SELECT COUNT(*) FROM ORDER_MST A
+	    		WHERE A.ORDER_STATUS = '0000'
+	    		AND EXISTS (
+	    					SELECT 1 FROM DELIVERY_MST B
+	    					WHERE A.ORDER_NO = B.ORDER_NO
+	    					AND B.STATUS = '1000'
+	    					AND DATE_FORMAT(B.MENU_DAY, '%Y%m%d') = DATE_ADD(DATE_FORMAT(NOW(), '%Y%m%d'), INTERVAL 1 DAY))) AS NEXT_DELIV_CNT
+	    FROM ORDER_MST A
+    </select>
 </mapper>

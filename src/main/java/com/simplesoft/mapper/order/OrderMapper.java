@@ -1,5 +1,7 @@
 package com.simplesoft.mapper.order;
 
+import java.util.List;
+
 import com.simplesoft.config.MysqlConnMapper;
 import com.simplesoft.order.service.OrderProductVO;
 import com.simplesoft.order.service.OrderVO;
@@ -12,4 +14,6 @@ public interface OrderMapper {
 	public int updateOrderApplyInfo(OrderVO vo);
 	public int selectOrderPayConfirm(String orderId);
 	public int updateOrderStatusComplete(OrderVO vo);
+	public int insertDelivery(OrderProductVO vo);
+	public List<OrderProductVO> getOrderProductInfo(OrderProductVO productVO);	
 }

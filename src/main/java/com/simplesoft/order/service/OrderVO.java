@@ -49,6 +49,12 @@ public class OrderVO extends CommonVO{
 	private Date regDt;					//등록일시
 	
 	private List<OrderProductVO> productList;	//주문상품목록
+	
+	//Payments 테이블
+	private String payMethod;			//결제수단
+	private String productName;			//상품명
+	private int totalAmount;			//상품금액
+	
 
 	@Override
 	public String toString() {

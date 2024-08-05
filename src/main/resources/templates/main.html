@@ -1,45 +1,112 @@
 <!DOCTYPE html>
-<html xmlns:th="http//www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{layouts/default_layout}">
-	<main class="content-wrapper" layout:fragment="content">
-		<div class="swiper">
-			<!-- Additional required wrapper -->
-			<div class="swiper-wrapper">
-				<!-- Slides -->
-				<div class="swiper-slide"><img src="image/slide1.png" alt=""></div>
-				<div class="swiper-slide"><img src="image/img2.jpg" alt=""></div>
-				<div class="swiper-slide"><img src="image/img3.jpg" alt=""></div>
+<html xmlns:th="http//www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>산정현 교회 방탈출</title>
+		<link rel="stylesheet" href="/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/css/font.css">
+		<link rel="stylesheet" href="/css/bootstrap-icons.min.css">
+		<script src="/js/jquery-3.6.0.min.js"></script>
+		<script src="/js/bootstrap.bundle.min.js"></script>
+		<script src="/js/jquery.blockUI.min.js"></script>
+		<script src="/js/blockCommon.js"></script>
+		<script src="/js/jQuery.serializeObject.min.js"></script>
+	</head>
+	<style>
+		.content {
+			display:block;
+			text-align: center;
+			position: absolute;
+			left: 46%;
+			top: 40%;
+		}
+		.footer {
+			position: absolute;
+			bottom:8%;
+			left: 49%;
+		}
+		.btn_search {
+		    min-width: 60px;
+		    line-height: 30px;
+		    height: 32px;
+		    padding: 0 9px;
+		    border: 1px solid #787878;
+		    background: #787878;
+		    color: #FFF;
+			font-weight: bold;
+		}
+		#fullscreen-element {
+			width: 100%;
+			height: 300px;
+			background-color: lightblue;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: 24px;
+		}
+	</style>
+	<body style="background-color: black;">
+		<div style="float: left; cursor: pointer;" class="mt-4 ms-5" id="homeDiv">
+			<span style="color : rgb(255, 255, 255); font-weight: bold; font-size: 70px;">IGYM</span>
+			<i class="bi bi-house-door" style="font-size:80px;color: #FFF;"></i>
+		</div>
+		<div class="content">
+			
+			<span style="color: white;font-weight: bold; font-size: 50px;">HINT CODE</span><br>
+			<input type="text" id="hintText" maxlength="4" onkeypress="enterKey()"/>
+			<input type="button" class="btn_search" value="확인" onclick="fn_confirm()" >
+			
+			<div style="margin-top:300px">
+				<span style="color: white;font-weight: bold; font-size: 32px;">USED HINT</span><br>
+				<span style="color: coral;font-weight: bold; font-size: 32px;">0</span><br>
 			</div>
-			<!-- If we need pagination -->
-			<div class="swiper-pagination"></div>
-			
-			<!-- If we need navigation buttons -->
-			<div class="swiper-button-prev"></div>
-			<div class="swiper-button-next"></div>
 		</div>
-		<div class="contents mt-4">
-			<div><a href="/order"><img src="image/con2.jpg" alt="주문하기"></a></div>
-			<div><a href="#"><img src="image/con3.jpg" alt="주문내역 확인하기"></a></div>
-		</div>
-		<script>
-			const swiper = new Swiper('.swiper', {
-			// Optional parameters
-			direction: 'horizontal',
-			loop: true,
-		  
-			// If we need pagination
-			pagination: {
-			  el: '.swiper-pagination',
-			},
-		  
-			// Navigation arrows
-			navigation: {
-			  nextEl: '.swiper-button-next',
-			  prevEl: '.swiper-button-prev',
-			},
-		  })
+		<form method="post" action="hint" id="hintForm">
+			<input type="hidden" name="hintText" id="hiddenText">
+		</form>
+		<div id="fullscreen-element">Click the button to go full screen</div>
+		   <button id="fullscreen-button">Toggle Fullscreen</button>
+	</body>
+	<script>
+		$(document).ready(function(){  
+			//한글입력 안되게 처리  
+			$("input[id=hintText]").keyup(function(event){
+				if (!(event.keyCode >=37 && event.keyCode<=40)) {
+					var inputVal = $(this).val();
+					$(this).val(inputVal.replace(/[^a-z0-9]/gi,''));
+				}
+			});
+			$("#homeDiv").click(function(){
+				location.href="/";
+				return;
+			});
+			const doc = document.documentElement;
 			
-		</script>
-	</main>
+			// 전체화면 설정
+			function openFullScreen() {
+			    doc.requestFullscreen();
+			}
+			openFullScreen();
+		});
+		function enterKey(type){
+			if (window.event.keyCode == 13) {
+				fn_confirm();
+			}
+		}
+		
+		function fn_confirm(){
+			let form = $("#hintForm");
+			let hintText = $("#hintText").val();
+			
+			if("" == hintText){
+				alert("힌트코드를 올바르게 입력해 주세요.");
+				$("#hintText").val("");
+				return;
+			} else {
+				$("#hiddenText").val(hintText);
+				form.submit();
+			}
+		}
+	</script>
 </html>

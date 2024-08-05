@@ -18,7 +18,7 @@
 			display:block;
 			text-align: center;
 			position: absolute;
-			left: 46%;
+			left: 40%;
 			top: 40%;
 		}
 		.footer {
@@ -47,38 +47,24 @@
 		}
 	</style>
 	<body style="background-color: black;">
-		<div style="float: left; cursor: pointer;" class="mt-4 ms-5" id="homeDiv">
-			<span style="color : rgb(255, 255, 255); font-weight: bold; font-size: 70px;">IGYM</span>
-			<i class="bi bi-house-door" style="font-size:80px;color: #FFF;"></i>
-		</div>
 		<div class="content">
-			
-			<span style="color: white;font-weight: bold; font-size: 50px;">HINT CODE</span><br>
-			<input type="text" id="hintText" maxlength="4" onkeypress="enterKey()"/>
+			<span style="color: white;font-weight: bold; font-size: 50px;">팀 이름을 입력하세요.</span><br>
+			<input type="text" id="hintText" maxlength="20" onkeypress="enterKey()"/>
 			<input type="button" class="btn_search" value="확인" onclick="fn_confirm()" >
-			
-			<div style="margin-top:300px">
-				<span style="color: white;font-weight: bold; font-size: 32px;">USED HINT</span><br>
-				<span style="color: coral;font-weight: bold; font-size: 32px;" th:text="${hintCnt}">0</span><br>
-			</div>
 		</div>
-		<form method="post" action="hint" id="hintForm">
-			<input type="hidden" name="hintText" id="hiddenText">
+		<form method="post" action="/" id="hintForm">
+			<input type="hidden" name="value" id="hiddenText">
 		</form>
 	</body>
 	<script th:inline="javascript">
 		$(document).ready(function(){  
 			//한글입력 안되게 처리  
-			$("input[id=hintText]").keyup(function(event){
-				if (!(event.keyCode >=37 && event.keyCode<=40)) {
-					var inputVal = $(this).val();
-					$(this).val(inputVal.replace(/[^a-z0-9]/gi,''));
-				}
-			});
 			$("#homeDiv").click(function(){
 				location.href="/";
 				return;
 			});
+			let cookie = /*[[${msg}]]*/ "";
+			if("" != cookie && null != cookie)alert(cookie)
 		});
 		const doc = document.documentElement;
 		
@@ -98,7 +84,7 @@
 			let hintText = $("#hintText").val();
 			
 			if("" == hintText){
-				alert("힌트코드를 올바르게 입력해 주세요.");
+				alert("팀 이름을 입력해 주세요.");
 				$("#hintText").val("");
 				return;
 			} else {

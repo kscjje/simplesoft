@@ -58,7 +58,8 @@
 			<input type="button" class="btn_search" value="확인" onclick="fn_confirm()" >
 			
 			<div style="margin-top:300px">
-				<span style="color: white;font-weight: bold; font-size: 32px;">USED HINT</span><br>
+				<span style="color: white;font-weight: bold; font-size: 32px;">USED HINT</span>
+				<span style="float: right;cursor: pointer;" onclick="location.href='info'"><i class="bi bi-info-circle" style="font-size:32px;color: rgb(77, 166, 255)"></i></span><br>
 				<span style="color: coral;font-weight: bold; font-size: 32px;" th:text="${hintCnt}">0</span><br>
 			</div>
 		</div>
@@ -80,12 +81,6 @@
 				return;
 			});
 		});
-		const doc = document.documentElement;
-		
-		// 전체화면 설정
-		function openFullScreen() {
-		    doc.requestFullscreen();
-		}
 			
 		function enterKey(type){
 			if (window.event.keyCode == 13) {

@@ -63,15 +63,7 @@
 				location.href="/";
 				return;
 			});
-			let cookie = /*[[${msg}]]*/ "";
-			if("" != cookie && null != cookie)alert(cookie)
 		});
-		const doc = document.documentElement;
-		
-		// 전체화면 설정
-		function openFullScreen() {
-		    doc.requestFullscreen();
-		}
 			
 		function enterKey(type){
 			if (window.event.keyCode == 13) {
@@ -92,6 +84,5 @@
 				form.submit();
 			}
 		}
-		openFullScreen();
 	</script>
 </html>

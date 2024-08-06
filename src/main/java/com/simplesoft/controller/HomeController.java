@@ -59,11 +59,23 @@ public class HomeController {
 				paramMap.put("userName", value);
 				roomService.insertRoom(paramMap);
 				
-				model.addAttribute("msg", value);
+				Map<String, Object> result = roomService.selectRoomDetail(paramMap);
+				
+				String hint1 = (String)result.get("hint1");
+				String hint2 = (String)result.get("hint2");
+				String hint3 = (String)result.get("hint3");
+				String hint4 = (String)result.get("hint4");
+				
+				if("Y".equals(hint1)) hintCnt ++;	
+				if("Y".equals(hint2)) hintCnt ++;	
+				if("Y".equals(hint3)) hintCnt ++;	
+				if("Y".equals(hint4)) hintCnt ++;
+				
 			} else {
 				return "create";
 			}
 		}
+		System.out.println("hintCnt:"+hintCnt);
 		model.addAttribute("hintCnt", hintCnt);
 		return "main";
 	}
@@ -104,6 +116,8 @@ public class HomeController {
 			type = "02";
 		} else if("HR03".equals(hintText)) {
 			type = "03";
+		} else if("HR04".equals(hintText)) {
+			type = "04";
 		} else {
 			model.addAttribute("PARAM_MESSAGE", "힌트코드를 올바르게 입력해 주세요.");
 			model.addAttribute("returnUrl", "/");
@@ -131,5 +145,10 @@ public class HomeController {
 			res.addCookie(cookie); //response에 Cookie 추가
 		}
 		return "create";
+	}
+	@GetMapping({ "/info"})
+	public String info() {
+		
+		return "info";
 	}
 }

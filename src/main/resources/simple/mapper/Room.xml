@@ -41,8 +41,8 @@
 		<if test="type == '04'">
 			HINT4 = 'Y'
 		</if>
-		<if test="suc == 'Y'">
-			SUC_DT = NOW();
+		<if test="suc eq '01'">
+			SUC_DT = NOW()
 		</if>
 		WHERE USER_NAME = #{userName}
 	</update>

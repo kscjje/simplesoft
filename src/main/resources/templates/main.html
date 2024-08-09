@@ -15,16 +15,7 @@
 	</head>
 	<style>
 		.content {
-			display:block;
 			text-align: center;
-			position: absolute;
-			left: 46%;
-			top: 40%;
-		}
-		.footer {
-			position: absolute;
-			bottom:8%;
-			left: 49%;
 		}
 		.btn_search {
 		    min-width: 60px;
@@ -47,9 +38,9 @@
 		}
 	</style>
 	<body style="background-color: black;">
-		<div style="float: left; cursor: pointer;" class="mt-4 ms-5" id="homeDiv">
-			<span style="color : rgb(255, 255, 255); font-weight: bold; font-size: 70px;">IGYM</span>
-			<i class="bi bi-house-door" style="font-size:80px;color: #FFF;"></i>
+		<div style="width:100%;height: 270px;" class="mt-4 ps-5">
+			<span class="homeDiv" style="color : rgb(255, 255, 255); font-weight: bold; font-size: 70px;cursor: pointer;">IGYM</span>
+			<i class="bi bi-house-door homeDiv"	style="font-size:80px;color: #FFF;cursor: pointer;"></i>
 		</div>
 		<div class="content">
 			
@@ -58,8 +49,11 @@
 			<input type="button" class="btn_search" value="확인" onclick="fn_confirm()" >
 			
 			<div style="margin-top:300px">
-				<span style="color: white;font-weight: bold; font-size: 32px;">USED HINT</span>
-				<span style="float: right;cursor: pointer;" onclick="location.href='info'"><i class="bi bi-info-circle" style="font-size:32px;color: rgb(77, 166, 255)"></i></span><br>
+				<span style="color: white;font-weight: bold; font-size: 32px;margin-left: 160px;">USED HINT</span>
+				<span style="padding-left: 30px;">
+					<i class="bi bi-info-circle" style="font-size:32px;color: rgb(77, 166, 255);cursor: pointer;" onclick="location.href='info'"></i>
+					<img src="images/lock.png" style="width:100px; height:100px;cursor: pointer;" class="ms-4"onclick="fn_final()">
+				</span><br>
 				<span style="color: coral;font-weight: bold; font-size: 32px;" th:text="${hintCnt}">0</span><br>
 			</div>
 		</div>
@@ -76,7 +70,7 @@
 					$(this).val(inputVal.replace(/[^a-z0-9]/gi,''));
 				}
 			});
-			$("#homeDiv").click(function(){
+			$(".homeDiv").click(function(){
 				location.href="/";
 				return;
 			});
@@ -101,6 +95,26 @@
 				form.submit();
 			}
 		}
-		openFullScreen();
+		function fn_final(){
+			let final = prompt("최종 정답을 입력해 주세요.");
+			if(final == "jesus loves you"){
+				$.ajax({
+					url : "/finalAjax",
+					type : "POST",
+					success : function(data) {
+						if(data.RESULT == "SUCCESS"){
+							alert("정답입니다.");
+						}
+					}, error : function(request, status, error) {
+						alert("에러코드: " + request.status + "\n메시지: " + request.responseText);
+					}
+				});
+			} else if(final == null){
+				return;				
+			} else {
+				alert("틀렸습니다.");
+				return;
+			}
+		}
 	</script>
 </html>

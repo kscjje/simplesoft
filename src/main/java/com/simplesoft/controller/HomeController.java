@@ -1,15 +1,18 @@
 package com.simplesoft.controller;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.simplesoft.room.service.RoomService;
 import com.simplesoft.util.GlobalVariable;
@@ -123,7 +126,6 @@ public class HomeController {
 			model.addAttribute("returnUrl", "/");
 			return GlobalVariable.REDIRECT_SUBMIT;
 		}
-		System.out.println("type:" + type);
 		paramMap.put("type", type);
 		if(cookie != null) {
 			//cookieValue 변수에 쿠키 값을 저장한다.
@@ -150,5 +152,20 @@ public class HomeController {
 	public String info() {
 		
 		return "info";
+	}
+	
+	@PostMapping(value = "/finalAjax")
+	public @ResponseBody Map<String, Object> finalAjax(HttpServletRequest request,
+			ModelMap model, HttpSession session,@CookieValue(value = "room", required = false) Cookie cookie) throws NoSuchAlgorithmException {
+		if(cookie != null) {
+			//cookieValue 변수에 쿠키 값을 저장한다.
+			Map<String, Object> paramMap = new HashMap<String, Object>();
+			paramMap.put("suc","01");
+			paramMap.put("userName", cookie.getValue());
+			roomService.updateRoom(paramMap);
+		}
+		Map<String, Object> returnData = new HashMap<String, Object>();
+		returnData.put("RESULT", "SUCCESS");
+		return returnData;
 	}
 }

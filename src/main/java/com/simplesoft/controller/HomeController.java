@@ -122,17 +122,17 @@ public class HomeController {
 		} else hintText = hintText.toUpperCase();
 		
 		Map<String, Object> paramMap = new HashMap<String, Object>();
-		if("HR01".equals(hintText)) {
+		if("HR5149".equals(hintText)) {
 			type = "01";
-		} else if("HR02".equals(hintText)) {
+		} else if("HR3575".equals(hintText)) {
 			type = "02";
-		} else if("HR03".equals(hintText)) {
+		} else if("HR7031".equals(hintText)) {
 			type = "03";
-		} else if("HR04".equals(hintText)) {
+		} else if("HR6078".equals(hintText)) {
 			type = "04";
-		} else if("HR05".equals(hintText)) {
+		} else if("HR5771".equals(hintText)) {
 			type = "05";
-		} else if("HR06".equals(hintText)) {
+		} else if("HR0283".equals(hintText)) {
 			type = "06";
 		} else {
 			model.addAttribute("PARAM_MESSAGE", "힌트코드를 올바르게 입력해 주세요.");

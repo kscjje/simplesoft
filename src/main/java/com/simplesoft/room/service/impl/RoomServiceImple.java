@@ -1,5 +1,6 @@
 package com.simplesoft.room.service.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +29,8 @@ public class RoomServiceImple implements RoomService{
 	@Override
 	public Map<String, Object> selectRoomDetail(Map<String, Object> paramMap) {
 		return roomMapper.selectRoomDetail(paramMap);
+	}
+	public List<Map<String, Object>> list(){
+		return roomMapper.list();
 	}
 }

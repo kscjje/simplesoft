@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org"xmlns:thym="http://www.thymeleaf.org/extras/java8time">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>산정현 교회 방탈출</title>
+		<link rel="stylesheet" href="/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/css/font.css">
+		<link rel="stylesheet" href="/css/bootstrap-icons.min.css">
+		<script src="/js/jquery-3.6.0.min.js"></script>
+		<script src="/js/bootstrap.bundle.min.js"></script>
+		<script src="/js/jquery.blockUI.min.js"></script>
+		<script src="/js/blockCommon.js"></script>
+		<script src="/js/jQuery.serializeObject.min.js"></script>
+	</head>
+	<style>
+		.content {
+			text-align: center;
+		}
+	</style>
+	<body style="background-color: black;">
+		<div style="width:100%;height: 270px;" class="mt-4 ps-5">
+			<span class="homeDiv" style="color : rgb(255, 255, 255); font-weight: bold; font-size: 70px;cursor: pointer;">IGYM</span>
+			<i class="bi bi-house-door homeDiv"	style="font-size:80px;color: #FFF;cursor: pointer;"></i>
+		</div>
+		<div class="content">
+			<div style="width:1500px;margin-left: 170px;">
+				<table class="table	table-striped">
+					<thead>
+						<tr class="table-primary">
+							<th scope="col">No.</td>
+							<th scope="col">팀이름</td>
+							<th scope="col">힌트1</td>
+							<th scope="col">힌트2</td>
+							<th scope="col">힌트3</td>
+							<th scope="col">힌트4</td>
+							<th scope="col">힌트5</td>
+							<th scope="col">힌트6</td>
+							<th scope="col">시작 일시</td>
+							<th scope="col">탈출 여부</td>
+							<th scope="col">탈출 일시</td>
+							<th scope="col">탈출 시간</td>
+						</tr>
+					</thead>
+					<tbody>
+						<th:block th:each="rs, status : ${list}">
+							<tr class="table-light">
+								<td	th:text="${status.count}"></td>
+								<td	th:text="${rs.userName}"></td>
+								<td	th:text="${rs.hint1}"></td>
+								<td	th:text="${rs.hint2}"></td>
+								<td	th:text="${rs.hint3}"></td>
+								<td	th:text="${rs.hint4}"></td>
+								<td	th:text="${rs.hint5}"></td>
+								<td	th:text="${rs.hint6}"></td>
+								<td	th:text="${rs.regDt}"></td>
+								<td	th:text="${rs.sucYn}"></td>
+								<td	th:text="${rs.sucDt}"></td>
+								<td	th:text="${rs.resultTime}"></td>
+							</tr>
+						</th:block>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</body>
+	<script th:inline="javascript">
+			$(document).ready(function(){  
+				$(".homeDiv").click(function(){
+					location.href="/";
+					return;
+				});
+			});
+	</script>
+</html>

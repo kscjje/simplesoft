@@ -1,7 +1,9 @@
 package com.simplesoft.controller;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,11 +49,15 @@ public class HomeController {
 			String hint2 = (String)result.get("hint2");
 			String hint3 = (String)result.get("hint3");
 			String hint4 = (String)result.get("hint4");
+			String hint5 = (String)result.get("hint5");
+			String hint6 = (String)result.get("hint6");
 			
 			if("Y".equals(hint1)) hintCnt ++;	
 			if("Y".equals(hint2)) hintCnt ++;	
 			if("Y".equals(hint3)) hintCnt ++;	
 			if("Y".equals(hint4)) hintCnt ++;	
+			if("Y".equals(hint5)) hintCnt ++;	
+			if("Y".equals(hint6)) hintCnt ++;	
 		} else {
 			if(!"".equals(value) && value != null ) {
 				Cookie cookie2 = new Cookie("room", value); // 쿠키 이름 지정하여 생성( key, value 개념)
@@ -68,17 +74,20 @@ public class HomeController {
 				String hint2 = (String)result.get("hint2");
 				String hint3 = (String)result.get("hint3");
 				String hint4 = (String)result.get("hint4");
+				String hint5 = (String)result.get("hint5");
+				String hint6 = (String)result.get("hint6");
 				
 				if("Y".equals(hint1)) hintCnt ++;	
 				if("Y".equals(hint2)) hintCnt ++;	
 				if("Y".equals(hint3)) hintCnt ++;	
 				if("Y".equals(hint4)) hintCnt ++;
+				if("Y".equals(hint5)) hintCnt ++;
+				if("Y".equals(hint6)) hintCnt ++;
 				
 			} else {
 				return "create";
 			}
 		}
-		System.out.println("hintCnt:"+hintCnt);
 		model.addAttribute("hintCnt", hintCnt);
 		return "main";
 	}
@@ -121,6 +130,10 @@ public class HomeController {
 			type = "03";
 		} else if("HR04".equals(hintText)) {
 			type = "04";
+		} else if("HR05".equals(hintText)) {
+			type = "05";
+		} else if("HR06".equals(hintText)) {
+			type = "06";
 		} else {
 			model.addAttribute("PARAM_MESSAGE", "힌트코드를 올바르게 입력해 주세요.");
 			model.addAttribute("returnUrl", "/");
@@ -167,5 +180,14 @@ public class HomeController {
 		Map<String, Object> returnData = new HashMap<String, Object>();
 		returnData.put("RESULT", "SUCCESS");
 		return returnData;
+	}
+	
+	@GetMapping({ "/list"})
+	public String list(HttpServletResponse res, String value,Model model) {
+		
+		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		list = roomService.list();
+		model.addAttribute("list",list);
+		return "list";
 	}
 }

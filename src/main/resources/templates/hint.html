@@ -21,21 +21,6 @@
 			left: 36%;
 			top: 20%;
 		}
-		.footer {
-			position: absolute;
-			bottom:8%;
-			left: 49%;
-		}
-		.btn_search {
-		    min-width: 60px;
-		    line-height: 30px;
-		    height: 32px;
-		    padding: 0 9px;
-		    border: 1px solid #787878;
-		    background: #787878;
-		    color: #FFF;
-			font-weight: bold;
-		}
 	</style>
 	<body style="background-color: black;">
 		<div style="float: left; cursor: pointer;" class="mt-4 ms-5" id="homeDiv">
@@ -52,12 +37,20 @@
 				<input type="button" id="hintBtn" class="btn btn-secondary" value="정답 확인" onclick="fn_confirm('02')" >
 			</th:block>
 			<th:block th:if="${type == '03'}">
-<!--				<img src="images/hint02.png" width="60%" id="hint"><br><br>-->
-<!--				<input type="button" id="hintBtn" class="btn btn-secondary" value="정답 확인" onclick="fn_confirm('03')" >-->
+				<img src="images/hint03.png" width="610px" id="hint" style="left: 50%;"><br><br>
+				<input type="button" id="hintBtn" class="btn btn-secondary" value="정답 확인" onclick="fn_confirm('03')" >
 			</th:block>
 			<th:block th:if="${type == '04'}">
 				<img src="images/hint04.png" width="700px" id="hint"><br><br>
 				<input type="button" id="hintBtn" class="btn btn-secondary" value="정답 확인" onclick="fn_confirm('04')" >
+			</th:block>
+			<th:block th:if="${type == '05'}">
+				<img src="images/hint05.png" width="700px" id="hint"><br><br>
+				<input type="button" id="hintBtn" class="btn btn-secondary" value="정답 확인" onclick="fn_confirm('05')" >
+			</th:block>
+			<th:block th:if="${type == '06'}">
+				<img src="images/hint06.png" width="700px" id="hint"><br><br>
+				<input type="button" id="hintBtn" class="btn btn-secondary" value="정답 확인" onclick="fn_confirm('06')" >
 			</th:block>
 		</div>
 	</body>
@@ -80,6 +73,12 @@
 				$("#hintBtn").hide();
 			} else if(type == '04'){
 				$("#hint").attr("src","images/hint04_2.png");
+				$("#hintBtn").hide();
+			} else if(type == '05'){
+				$("#hint").attr("src","images/hint05_2.png");
+				$("#hintBtn").hide();
+			} else if(type == '06'){
+				$("#hint").attr("src","images/hint06_2.png");
 				$("#hintBtn").hide();
 			}
 		}

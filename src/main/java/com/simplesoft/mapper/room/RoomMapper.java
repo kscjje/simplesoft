@@ -12,4 +12,5 @@ public interface RoomMapper {
 	public Map<String, Object> selectRoomDetail(Map<String, Object> paramMap);
 	public int updateRoom(Map<String, Object> paramMap);
 	public List<Map<String, Object>> list();
+	public Map<String, Object> detail(String userName);
 }

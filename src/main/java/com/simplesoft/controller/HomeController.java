@@ -178,7 +178,19 @@ public class HomeController {
 			roomService.updateRoom(paramMap);
 		}
 		Map<String, Object> returnData = new HashMap<String, Object>();
-		returnData.put("RESULT", "SUCCESS");
+		String v_final = (String)request.getParameter("final");
+		if(v_final != null) {
+			v_final = v_final.replaceAll(" ", "");
+			if("jesuslovesyou".equals(v_final)) {
+				returnData.put("RESULT", "SUCCESS");
+				returnData.put("detail", roomService.detail(cookie.getValue()));
+			} else {
+				returnData.put("RESULT", "FAIL");
+			}
+		} else {
+			returnData.put("RESULT", "FAIL");
+		}
+		
 		return returnData;
 	}
 	

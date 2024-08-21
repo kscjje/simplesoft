@@ -33,4 +33,7 @@ public class RoomServiceImple implements RoomService{
 	public List<Map<String, Object>> list(){
 		return roomMapper.list();
 	}
+	public Map<String, Object> detail(String userName){
+		return roomMapper.detail(userName);
+	}
 }

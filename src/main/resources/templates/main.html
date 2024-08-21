@@ -97,13 +97,22 @@
 		}
 		function fn_final(){
 			let final = prompt("최종 정답을 입력해 주세요.");
-			if(final == "jesus loves you"){
+			if(final != null){
 				$.ajax({
 					url : "/finalAjax",
 					type : "POST",
+					dataType: "json",
+					data: {
+						final	: final
+					},
 					success : function(data) {
 						if(data.RESULT == "SUCCESS"){
-							alert("정답입니다.");
+							console.log(data.detail);
+							alert("정답입니다.\n탈출에 성공하셨습니다. 문을 열고 나오시면 됩니다.");
+							return;
+						} else {
+							alert("오답입니다.");
+							return;
 						}
 					}, error : function(request, status, error) {
 						alert("에러코드: " + request.status + "\n메시지: " + request.responseText);
@@ -111,9 +120,6 @@
 				});
 			} else if(final == null){
 				return;				
-			} else {
-				alert("틀렸습니다.");
-				return;
 			}
 		}
 	</script>

@@ -51,6 +51,7 @@
 			SUC_DT = NOW()
 		</if>
 		WHERE USER_NAME = #{userName}
+		AND SUC_DT IS NULL
 	</update>
 	
 	<select id="list" resultType="CamelHashMap">
@@ -90,6 +91,47 @@
 			,TIMEDIFF(SUC_DT ,REG_DT) RESULT_TIME
 		FROM ROOM
 		WHERE 1=1
+		ORDER BY TIMEDIFF(SUC_DT ,REG_DT) IS NULL ASC, TIMEDIFF(SUC_DT ,REG_DT) ASC
+	</select>
+	
+	<select id="detail" resultType="CamelHashMap" parameterType="String">
+		/* RoomMapper.detail*/
+		SELECT 
+			USER_NAME
+			,(CASE
+				WHEN HINT1 = 'Y' THEN '사용'
+				ELSE '미사용' 
+			END) AS HINT1
+			,(CASE
+				WHEN HINT2 = 'Y' THEN '사용'
+				ELSE '미사용' 
+			END) AS HINT2
+			,(CASE
+				WHEN HINT3 = 'Y' THEN '사용'
+				ELSE '미사용' 
+			END) AS HINT3
+			,(CASE
+				WHEN HINT4 = 'Y' THEN '사용'
+				ELSE '미사용' 
+			END) AS HINT4
+			,(CASE
+				WHEN HINT5 = 'Y' THEN '사용'
+				ELSE '미사용' 
+			END) AS HINT5
+			,(CASE
+				WHEN HINT6 = 'Y' THEN '사용'
+				ELSE '미사용' 
+			END) AS HINT6
+			,DATE_FORMAT(REG_DT,'%Y-%m-%d %T') AS REG_DT
+			,DATE_FORMAT(SUC_DT,'%Y-%m-%d %T') AS SUC_DT
+			,(CASE
+				WHEN TIMEDIFF(DATE_ADD(REG_DT, INTERVAL 15 MINUTE), SUC_DT) >= 0 THEN '성공'
+				ELSE '탈출 실패'
+			END) AS SUC_YN
+			,TIMEDIFF(SUC_DT ,REG_DT) RESULT_TIME
+		FROM ROOM
+		WHERE 1=1
+		AND USER_NAME = #{userName}
 		ORDER BY TIMEDIFF(SUC_DT ,REG_DT) IS NULL ASC, TIMEDIFF(SUC_DT ,REG_DT) ASC
 	</select>
 </mapper>

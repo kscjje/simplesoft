@@ -1,6 +1,8 @@
 package com.simplesoft.controller;
 
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -170,18 +172,18 @@ public class HomeController {
 	@PostMapping(value = "/finalAjax")
 	public @ResponseBody Map<String, Object> finalAjax(HttpServletRequest request,
 			ModelMap model, HttpSession session,@CookieValue(value = "room", required = false) Cookie cookie) throws NoSuchAlgorithmException {
-		if(cookie != null) {
-			//cookieValue 변수에 쿠키 값을 저장한다.
-			Map<String, Object> paramMap = new HashMap<String, Object>();
-			paramMap.put("suc","01");
-			paramMap.put("userName", cookie.getValue());
-			roomService.updateRoom(paramMap);
-		}
+		
 		Map<String, Object> returnData = new HashMap<String, Object>();
 		String v_final = (String)request.getParameter("final");
+		System.out.println("일시:"+timeCheck()+" / 팀 :"+cookie.getValue()+" / 정답시도:"+v_final);
+		
 		if(v_final != null) {
 			v_final = v_final.replaceAll(" ", "");
 			if("jesuslovesyou".equals(v_final)) {
+				Map<String, Object> paramMap = new HashMap<String, Object>();
+				paramMap.put("suc","01");
+				paramMap.put("userName", cookie.getValue());
+				roomService.updateRoom(paramMap);
 				returnData.put("RESULT", "SUCCESS");
 				returnData.put("detail", roomService.detail(cookie.getValue()));
 			} else {
@@ -201,5 +203,13 @@ public class HomeController {
 		list = roomService.list();
 		model.addAttribute("list",list);
 		return "list";
+	}
+	
+	public String timeCheck() {
+		LocalDateTime now = LocalDateTime.now();         // 현재 날짜/시간 출력
+		// 포맷팅        
+		String formatedNow = now.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초"));         // 포맷팅 현재 날짜/시간 출력
+		// 2021년 06월 17일 06시 43분 21초
+		return formatedNow;
 	}
 }

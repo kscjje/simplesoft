@@ -43,7 +43,7 @@
 					, DATE_FORMAT(A.ORDER_PAY_DT,'%Y-%m-%d %H:%i:%s') AS ORDER_PAY_DT
 					, A.BIGO
 					, A.REG_USER
-					, A.REG_DT
+					, DATE_FORMAT(A.REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
 					, C.PAY_METHOD
 					, C.ORDER_NAME AS PRODUCT_NAME
 					, C.TOTAL_AMOUNT
@@ -70,7 +70,9 @@
 				GROUP BY A.ORDER_NO
 			) T
 		ORDER BY T.REG_DT DESC
-		LIMIT #{startPage}, #{endPage}
+		<if test="startPage neq null and startPage neq '' and endPage neq null and endPage neq ''">
+			LIMIT #{startPage}, #{endPage}
+		</if>
 	</select>
 	<!-- 주문 신청 정보 -->	
 	<select id="selectOrderApplyListCount" parameterType="com.simplesoft.order.service.OrderVO" resultType="int">
@@ -119,7 +121,7 @@
 			, USED_POINT
 			, CONFIRM_DT
 			, REG_USER
-			, REG_DT
+			, DATE_FORMAT(REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
 		FROM ORDER_PRODUCT
 		WHERE ORDER_NO = #{orderNo}
 	</select>

@@ -31,9 +31,9 @@
 
 <body>
 	<th:block th:replace="~{/fragments/adminHeader :: header}"></th:block>
-	<div style="display: flex; height: 100%;width: 100%;">
+	<div style="display: flex;width: 100%;">
 		<th:block th:replace="~{/fragments/adminSidebar :: lnb}"></th:block>
-		<div style="width:100%;">
+		<div style="width:100%;height: 100%;">
 			<th:block layout:fragment="content"></th:block>
 		</div>
 	</div>

@@ -31,7 +31,7 @@
 			, ORDER_ID
 			, PAYMENT_KEY
 			, AMOUNT
-			, REG_DT
+			, DATE_FORMAT(A.REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
 		FROM PAYMENTS A
 		WHERE 1=1
 		AND PAYMENT_TYPE	= #{paymentType}

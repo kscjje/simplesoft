@@ -19,6 +19,10 @@ public class MenuBoardServiceImpl implements MenuBoardService{
 		return menuBoardMapper.insertMenuBoard(paraMap);
 	}
 	@Override
+	public int updateMenuBoard(Map<String, Object> paraMap) {
+		return menuBoardMapper.updateMenuBoard(paraMap);
+	}
+	@Override
 	public List<Map<String, Object>> selectMenuBoardList(Map<String, Object> paraMap) {
 		return menuBoardMapper.selectMenuBoardList(paraMap);
 	}

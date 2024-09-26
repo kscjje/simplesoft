@@ -36,9 +36,9 @@
 			, A.PW_CHANGE_DT
 			, A.LAST_LOGIN_DT
 			, A.REG_USER
-			, A.REG_DT
+			, DATE_FORMAT(A.REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
 			, A.UPT_USER
-			, A.UPT_DT
+			, DATE_FORMAT(A.UPT_DT,'%Y-%m-%d %H:%i:%s') AS UPT_DT
 		FROM USER_MST A
 		WHERE 1=1
 		<if test="userNo neq null and userNo neq ''">
@@ -64,9 +64,9 @@
 			, A.LAST_LOGIN_DT
 			, A.USER_STATUS
 			, A.REG_USER
-			, A.REG_DT
+			, DATE_FORMAT(A.REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
 			, A.UPT_USER
-			, A.UPT_DT
+			, DATE_FORMAT(A.UPT_DT,'%Y-%m-%d %H:%i:%s') AS UPT_DT
 		FROM USER_MST A
 		WHERE 1=1
 		AND USER_ID = #{userId}

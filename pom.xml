@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.simplesoft</groupId>
 	<artifactId>simplesoft</artifactId>
@@ -7,52 +6,70 @@
 	<name>simplesoft</name>
 	<description>Demo project for Spring Boot</description>
 	<packaging>war</packaging>
-	
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.2.1</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	
 	<properties>
 		<java.version>17</java.version>
-		<org.egovframe.rte.version>4.0.0</org.egovframe.rte.version>
-        <log4j2.version>2.19.0</log4j2.version>
 	</properties>
-	
-	 <repositories>
-        <repository>
-            <id>mvn2s</id>
-            <url>https://repo1.maven.org/maven2/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>egovframe</id>
-            <url>https://maven.egovframe.go.kr/maven/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-	
+	<repositories>
+		<repository>
+			<id>mvn2s</id>
+			<url>https://repo1.maven.org/maven2/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>egovframe</id>
+			<url>https://maven.egovframe.go.kr/maven/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+			<!-- logback exclusion -->
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
+			<artifactId>spring-boot-starter-web</artifactId>   			
+			<!-- logback exclusion -->
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.bgee.log4jdbc-log4j2/log4jdbc-log4j2-jdbc4.1 -->
+<dependency>
+    <groupId>org.bgee.log4jdbc-log4j2</groupId>
+    <artifactId>log4jdbc-log4j2-jdbc4</artifactId>
+    <version>1.16</version>
+</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -60,16 +77,15 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
-
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-        </dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -85,47 +101,57 @@
 			<version>3.0.4.RELEASE</version>
 		</dependency>
 		<dependency>
-    		<groupId>mysql</groupId>
-    		<artifactId>mysql-connector-java</artifactId>
-    		<version>8.0.33</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter -->
-		<dependency>
-		    <groupId>org.mybatis.spring.boot</groupId>
-		    <artifactId>mybatis-spring-boot-starter</artifactId>
-		    <version>3.0.3</version>
-		</dependency>
-		
-		<!-- https://mvnrepository.com/artifact/dev.mccue/guava-base -->
-		<dependency>
-		    <groupId>dev.mccue</groupId>
-		    <artifactId>guava-base</artifactId>
-		    <version>0.0.4</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.json/json -->
-		<dependency>
-		    <groupId>org.json</groupId>
-		    <artifactId>json</artifactId>
-		    <version>20231013</version>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.33</version>
 		</dependency>
 		<dependency>
-		    <groupId>com.googlecode.json-simple</groupId>
-		    <artifactId>json-simple</artifactId>
-		    <version>1.1.1</version>
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-starter</artifactId>
+			<version>3.0.3</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/javax.mail/mail -->
 		<dependency>
-		    <groupId>javax.mail</groupId>
-		    <artifactId>mail</artifactId>
-		    <version>1.4.7</version>
+			<groupId>dev.mccue</groupId>
+			<artifactId>guava-base</artifactId>
+			<version>0.0.4</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20231013</version>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.7</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>core</artifactId>
+			<version>3.5.3</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>javase</artifactId>
+			<version>3.5.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>5.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
-	
 	<profiles>
-	   	<!-- local: 로컬개발 (기본 값) -->
 		<profile>
 			<id>local</id>
 			<activation>
@@ -135,7 +161,6 @@
 				<environment>local</environment>
 			</properties>
 		</profile>
-		<!-- prd: 운영 -->
 		<profile>
 			<id>prd</id>
 			<properties>
@@ -143,7 +168,6 @@
 			</properties>
 		</profile>
 	</profiles>
-	
 	<build>
 		<finalName>ROOT</finalName>
 		<resources>
@@ -174,5 +198,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-</project>
+</project> 

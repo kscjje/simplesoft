@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  xmlns:thym="http://www.thymeleaf.org/extras/java8time"
+	  layout:decorate="~{layouts/admin_layout}">
+	<main layout:fragment="content">
+		<style>
+			.title {
+				padding: 30px 40px 20px 0px;
+			}
+			.title > h1{
+				font-size: 24px;
+			}
+			.tableWidth {
+				width:100%;
+				height: 1733px;
+				margin: auto;
+				position: relative;
+			}
+			#thHead {
+				margin-bottom: 7px;
+				font-family:'Noto Sans KR', Sans-serif;
+			}
+			table {
+				width: 100%;
+				border-collapse: separate;
+				border-spacing: 0 10px; /* Adjust the second value (vertical spacing) according to your preference */
+				margin-top: 20px;
+			}
+			th, td {
+				padding: 8px;
+				text-align: center;
+			}
+			th {
+				font-weight: bold;
+				font-size: 18px;
+			}
+			td {
+				border: 1px solid #ddd;
+				width:236px;
+				font-size: 14px;
+			}
+			tr td{
+				height:314px;
+			}
+			td div:nth-child(2){
+				margin-top:30px;
+			}
+			td:first-child, th:first-child {
+				border-radius: 15px 0 0 15px;
+			}
+			td:last-child, th:last-child {
+				border-radius: 0 15px 15px 0;
+			}
+			.addToCartButton {
+				position: absolute;
+				bottom: 5px;
+				left: 43%;
+				background-color: #45a049;
+				color: #fff;
+				border: none;
+				padding: 7px 13px;
+				cursor: pointer;
+				border-radius: 5px;
+				transition: background-color 0.3s ease;
+			}
+			.saveToCartButton {
+				position: absolute;
+				bottom: 5px;
+				left: 53%;
+				background-color: #45a049;
+				color: #fff;
+				border: none;
+				padding: 7px 13px;
+				cursor: pointer;
+				border-radius: 5px;
+				transition: background-color 0.3s ease;
+			}
+			.inputText {
+				border: 1px solid #c5c5c5;
+				background: #fff;
+				color: #444;
+				border-radius: 0;
+				height: 32px;
+				padding-left: 10px;
+				width:140px;
+			}
+		</style>
+		<div class="contents" style="height: 100%;">
+			<div class="ms-4 me-4">
+				<div class="title"><h1><i class="bi bi-check-lg me-2"></i>식단 수정</h1></div>
+				<div class="tableWidth">
+					<table>
+						<tbody>
+							<tr id="thHead">
+								<th>월요일</th>
+								<th>화요일</th>
+								<th>수요일</th>
+								<th>목요일</th>
+								<th>금요일</th>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+        </div>
+		<script th:inline="javascript">
+			$(document).ready(function() {
+				let result = /*[[${resultMap}]]*/"";
+				
+				// 오늘 날짜 객체 생성
+				const currentDate = new Date();
+				// 오늘 날짜 년도 가져오기
+				const currentYear = currentDate.getFullYear();
+				// 오늘 날짜 월 가져오기
+				const currentMonth = (currentDate.getMonth()+1) < 10 ? "0"+(currentDate.getMonth()+1) : (currentDate.getMonth()+1);
+				// 오늘 날짜 일 가져오기
+				const currentDay = 	(currentDate.getDate()+1) < 10 ? "0"+(currentDate.getDate()+1) : (currentDate.getDate()+1);
+				
+				var currentHour = currentDate.getHours();
+				var currentMinute = currentDate.getMinutes();
+
+				const currentYYYYMMDD = currentYear + currentMonth + currentDay;
+				const currentMMDD = currentMonth + currentDay;
+				// 오늘 날짜가 속한 주의 일요일을 가져오기
+				const firstSundayOfThisWeek = new Date(currentDate);
+				
+				let addHtml = "";
+				let nextDay = 1;
+				
+				for(let i = 1; i < 6; i++){			//5주차
+					addHtml +=	"<tr>";
+					for(let j = 1; j < 6; j++){		//월~금
+						if( i == 1 && j == 1) firstSundayOfThisWeek.setDate(currentDate.getDate() - currentDate.getDay()+1);
+						else firstSundayOfThisWeek.setDate(firstSundayOfThisWeek.getDate()+1);
+						
+						var month = (firstSundayOfThisWeek.getMonth() + 1).toString().padStart(2, '0'); // 월은 0부터 시작하므로 1을 더하고, 두 자리로 표시
+						var day = firstSundayOfThisWeek.getDate().toString().padStart(2, '0'); // 일을 두 자리로 표시
+						
+						addHtml += 		"<td style='position: relative;'>";
+						addHtml += 			"<div class='fw-bold fs-6 mt-3' style='position: absolute;top: 0;left: 50%;transform: translateX(-50%);font-family:Noto Sans KR, Sans-serif'>" + month +"월 "+ day +"일 </div>";
+						
+						let find = false;		//식단표 데이터가 있는지 여부
+						for(let k = 0; k < result.length; k ++){
+							if(find == true){
+								//이미 식단 데이터를 가져왔을 경우 다음 for문
+								continue;
+							}
+							if(result[k].menuDay.substring(4,8) == month+day){
+								addHtml +="<form>";
+								if(result[k].menuMsg.split("|")){
+									let menuMsg = result[k].menuMsg.split("|");
+									for(let index = 0; index < menuMsg.length; index++) {
+										addHtml +=	"<div class='menu mt-1'>";
+										if(menuMsg[index].substring(0,1) == "!") {
+											addHtml +=		"<input type='checkbox' name='hot' class='me-1' checked>";
+											addHtml +=		"<input type='text' name='menuMsg' class='inputText me-1' value='"+menuMsg[index].substring(1,menuMsg[index].length)+"'>";
+										} else {
+											addHtml +=		"<input type='checkbox' name='hot' class='me-1'>";
+											addHtml +=		"<input type='text' name='menuMsg' class='inputText me-1' value='"+menuMsg[index].substring(0,menuMsg[index].length)+"'>";
+										}
+										addHtml +=		"<i class='bi bi-x-circle me-4' style='font-size:20px;cursor:pointer;color:red;' onclick='$(this).parent().remove()'></i>";
+										addHtml +=	"</div>";
+									}
+								} else {
+									addHtml +="<div>"+result[k].menuMsg+"</div>";
+								}
+								find = true;
+								addHtml += "<button type='button' class='addToCartButton mt-3' style='left:34%' onclick='addBtn(this)'>추가</button>";
+								addHtml += "<button type='button' class='saveToCartButton mt-3' onclick='saveBtn(this,"+result[k].menuBoardSeq+","+firstSundayOfThisWeek.getFullYear()+month+day+")'>저장</button>";
+							}
+							//매칭되는 식단데이터가 없을 경우 defalut로 생성 
+							if(k == result.length-1 && !find) addHtml += "<button type='button' class='addToCartButton mt-3' onclick='addBtn(this)'>추가</button>";
+						}
+						if(result.length == 0 ) addHtml += "<button type='button' class='addToCartButton' onclick='addBtn(this)'>추가</button>";
+						addHtml += 		"</form>";
+						addHtml += 		"</td>";
+						if(j == 5 ) firstSundayOfThisWeek.setDate(firstSundayOfThisWeek.getDate()+2);
+					}
+					addHtml +=	"</tr>";
+				}
+				addHtml += 	"</tr>";
+				$("#thHead").after(addHtml);
+			});
+
+			//추가 버튼			
+			function addBtn(selector){
+				if($(selector).siblings(".menu").length > 5){
+					alert("최대 6개까지 가능합니다.");
+					return;
+				}
+				let v_html = 	"<div class='menu mt-1'>";
+					v_html += 		"<input type='checkbox' name='hot' class='me-1'>";
+					v_html += 		"<input type='text' name='menuMsg' class='inputText me-1'>";
+					v_html += 		"<i class='bi bi-x-circle me-4' style='font-size:20px;cursor:pointer;color:red;' onclick='$(this).parent().remove()'></i>";
+					v_html += 	"</div>";
+				$(selector).before(v_html);
+			}
+			
+			//저장 버튼
+			function saveBtn(selector,seq,yyyymmdd){
+				if($(selector).siblings(".menu").length < 1){
+					alert("최소 1개 이상부터 가능합니다.");
+					return;
+				}
+				//체크박스
+				let checkName = $(selector).parents("form").find("input[name='hot']");
+				//메뉴명
+				let menuMsg = $(selector).parents("form").find("input[name='menuMsg']");
+				
+				//메뉴 한 컬럼에 저장하기 위해 포맷
+				let v_msg = "";
+				for(let i = 0; i < menuMsg.length; i++){
+					if(menuMsg[i].value == "") {
+						alert("빈 값이 존재합니다.");
+						return;
+					}
+					if(i > 0) v_msg +="|" 
+					if(checkName[i].checked) v_msg +="!";
+					v_msg += menuMsg[i].value;
+				}
+				let formData = {
+					menuMsg	: v_msg,
+					menuDay	: yyyymmdd
+				}
+				if(seq > 0) formData.menuBoardSeq = seq;
+				$.showMask();
+				$.ajax({
+					url : "/admin/rest/order/saveMenu",
+					type : "POST",
+					dataType : "json",
+					data : formData,
+					success : function(result) {
+						$.hideMask();
+						if(result.resultCode == "fail"){
+							alert("오류가 발생하였습니다.");
+							return;
+						}
+					}, error : function(request, status, error) {
+						$.hideMask();
+						alert("에러코드: " + request.status + "\n메시지: " + request.responseText);
+					}
+				});
+			}
+		</script>
+	</main>
+</html>

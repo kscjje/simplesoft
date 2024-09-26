@@ -37,7 +37,7 @@
 			, A.MENU_BOARD_SEQ
 			, A.QTY
 			, A.REG_USER
-			, A.REG_DT
+			, DATE_FORMAT(A.REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
 			, CONCAT(DATE_FORMAT(B.MENU_DAY,'%Y-%m-%d'),' (',
 				CASE DAYOFWEEK(B.MENU_DAY) 
 				WHEN '2' THEN '월'
@@ -75,7 +75,7 @@
 			, A.MENU_BOARD_SEQ
 			, A.QTY
 			, A.REG_USER
-			, A.REG_DT
+			, DATE_FORMAT(A.REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
 			, CONCAT(DATE_FORMAT(B.MENU_DAY,'%Y-%m-%d'),' (',
 				CASE DAYOFWEEK(B.MENU_DAY) 
 				WHEN '2' THEN '월'
@@ -137,7 +137,7 @@
 			, A.MENU_BOARD_SEQ
 			, A.QTY
 			, A.REG_USER
-			, A.REG_DT
+			, DATE_FORMAT(A.REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
 			, CONCAT(DATE_FORMAT(B.MENU_DAY,'%Y-%m-%d'),' (',
 				CASE DAYOFWEEK(B.MENU_DAY) 
 				WHEN '2' THEN '월'

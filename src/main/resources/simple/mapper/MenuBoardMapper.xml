@@ -11,6 +11,14 @@
 			(#{menuDay}, #{menuMsg}, 'Y', 'admin', NOW())
 	</insert>
 	
+	<!-- 식단표 수정 -->
+	<update id="updateMenuBoard" parameterType="hashMap">
+		/* MenuBoardMapper.updateMenuBoard */
+		UPDATE MENU_BOARD SET 
+			MENU_MSG = #{menuMsg}
+		WHERE MENU_BOARD_SEQ = #{menuBoardSeq}
+	</update>
+	
 	<!-- 식단표 리스트 조회 -->
 	<select id="selectMenuBoardList" parameterType="hashMap" resultType="CamelHashMap">
 		/* MenuBoardMapper.selectMenuBoardList */
@@ -20,9 +28,9 @@
 			, A.MENU_MSG
 			, A.USE_YN
 			, A.REG_USER
-			, A.REG_DT
+			, DATE_FORMAT(A.REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
 			, A.UPT_USER
-			, A.UPT_DT
+			, DATE_FORMAT(A.UPT_DT,'%Y-%m-%d %H:%i:%s') AS UPT_DT
 		FROM MENU_BOARD A
 		<!-- 오늘 날짜가 속한 주의 월요일부터 4주 후 금요일까지 -->
 		WHERE A.MENU_DAY BETWEEN DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY) 
@@ -39,9 +47,9 @@
 			, A.MENU_MSG
 			, A.USE_YN
 			, A.REG_USER
-			, A.REG_DT
+			, DATE_FORMAT(A.REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
 			, A.UPT_USER
-			, A.UPT_DT
+			, DATE_FORMAT(A.UPT_DT,'%Y-%m-%d %H:%i:%s') AS UPT_DT
 		FROM MENU_BOARD A
 		WHERE 
 			MENU_BOARD_SEQ = #{menuBoardSeq}

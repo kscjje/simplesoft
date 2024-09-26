@@ -218,7 +218,7 @@ public class OrderController {
 		vo.setUserNo(userNo);
 		vo.setOrderStatus(GlobalVariable.ORDER_STATUS_WAIT);
 		OrderVO order = orderService.selectOrderApplyInfo(vo);
-		System.out.println(order);
+		
 		if (order == null) {
 			model.addAttribute("PARAM_MESSAGE", "주문 상품 정보가 없습니다.\n다시 진행해 주세요.");
 			model.addAttribute("returnUrl", "/cart");

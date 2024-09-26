@@ -115,6 +115,7 @@
 								<option value="0001">주문취소</option>
 								<option value="0002">취소요청</option>
 							</select>
+<!--							<img src="/admin/rest/qr/">-->
 						</span>
 					</div>
 					<div class="mb-2">
@@ -147,8 +148,8 @@
 					<span class="mt-4 spanTitle"><i class="bi bi-dot me-1"></i>총 : <strong id="textCount">0</strong> 건</span>
 					<span style="float: right;"><button type="button" id="ui_excel_btn" class="btn_excel ms-1">엑셀다운</button></span>
 				</div>
-				<div class="list mt-4">
-					<table class="table text-center table-bordered" style="vertical-align:middle">
+				<div class="list mt-4" style="height: 520px;">
+					<table class="table text-center table-bordered" style="vertical-align:middle;">
 						<thead>
 							<tr>
 								<th style="width:10%">상세</th>
@@ -160,41 +161,21 @@
 								<th style="width:20%">주문일시</th>
 							</tr>
 						</thead>
-						<tbody id="orderBody" class="">
-							<!--
-							<th:block th:if="${orderList ne null && orderList.size() > 0}" th:each="rs, status : ${orderList}">
-								<tr>
-									<td><button type="button" id="ui_detail_btn" class="btn_search" style="line-height: 26px; height: 30px;">상세</button></td>
-									<td th:switch="${rs.orderStatus}">
-									    <span th:case="'0000'">주문완료</span>
-									    <span th:case="'0001'">취소</span>
-									</td>
-									<td	th:text="${rs.orderNo}"></td>
-									<td th:text="${rs.orderName}"></td>
-									<th:block th:each="product, stat : ${rs.productList}" th:with="totalCnt=${rs.productList.size()}">
-										<td th:if="${totalCnt > 1 && stat.index == 0} " th:text="|${@StringUtils.formatDate(product.menuDay)} 식단 외 ${totalCnt-1}건|"></td>
-										<td th:if="${totalCnt < 2}" th:text="|${@StringUtils.formatDate(product.menuDay)} 식단|"></td>
-									</th:block>
-									<td	th:text="${#dates.format(rs.orderPayDt, 'yyyy-MM-dd HH:mm:ss')}"></td>
-								</tr>
-							</th:block>
-							<th:block th:if="${orderList ne null && orderList.size() == 0}">
-								<tr>
-									<td colspan="6">검색 결과가 없습니다.</td>
-								</tr>
-							</th:block>
-							-->
-						</tbody>
+						<tbody id="orderBody"/>
 					</table>
-					<nav aria-label="Page navigation example text-center">
-						<ul class="pagination justify-content-center">
-							<input type="hidden" id="totalCount" value="0" />
-						</ul>
-					</nav>
 				</div>
+				<nav aria-label="Page navigation example text-center">
+					<ul class="pagination justify-content-center">
+						<input type="hidden" id="totalCount" value="0" />
+					</ul>
+				</nav>
 			</div>
         </div>
 		<script th:inline="javascript">
+			
+			function fnInit(){
+				searchBtn();
+			}
 			$(document).ready(function() {
 				
 				$('#startDate').datepicker({
@@ -309,12 +290,10 @@
 					let searchOption= $("#searchOption").val();
 					let searchText	= $("#searchText").val();
 					
-					if(searchText != ""){
-						if(searchOption == ""){
-							alert("검색 옵션을 선택해 주세요.");
-							$("#searchOption").focus();
-							return;
-						}
+					if(searchText != "" && 	searchOption == ""){
+						alert("검색 옵션을 선택해 주세요.");
+						$("#searchOption").focus();
+						return;
 					}
 					
 					let pageSize	= 10;
@@ -338,6 +317,7 @@
 						searchText	: searchText,
 						pageSize	: pageSize
 					}
+					console.log(formData);
 					$.showMask();
 					$.ajax({
 						url : "/admin/rest/order/searchList",
@@ -593,7 +573,7 @@
 					default:
 						break;
 				}
-				searchBtn();
+				fnInit();
 			});
 			
 			

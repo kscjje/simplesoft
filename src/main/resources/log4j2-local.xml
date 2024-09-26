@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Configuration status="WARN">
+<Configuration status="INFO">
 
 	<Properties>
-		<Property name="FILENAME">/kscjje/tomcat/log4j/logs</Property>
+		<Property name="FILENAME">D:/simple/workspace/logs</Property>
 	</Properties>
 
     <Appenders>
@@ -10,7 +10,7 @@
             <PatternLayout pattern="%d [%-5level] %logger{36} :%5L - %msg%n" />
         </Console>     
         
-		<RollingFile name="file" fileName="${FILENAME}/APPLICATION-MOBILITY.log" filePattern="${FILENAME}/%d{yyyyMMdd}/APPLICATION-MOBILITY.%d{yyyyMMddhhmm}.log">
+		<RollingFile name="file" fileName="${FILENAME}/APPLICATION-ADMIN.log" filePattern="${FILENAME}/%d{yyyyMMdd}/APPLICATION-ADMIN.%d{yyyyMMddhhmm}.log">
 			<PatternLayout pattern="%msg%n" />
 			<Policies>
 				<TimeBasedTriggeringPolicy interval="5" modulate="true"/>
@@ -19,7 +19,8 @@
 		
     </Appenders>
     <Loggers>
-		<logger name="jdbc" level="OFF" />
+	    		
+	    <logger name="jdbc" level="OFF" />
 		<logger name="jdbc.connection" level="OFF" />
 		<logger name="jdbc.sqlonly" level="OFF"  />
 		<logger name="jdbc.audit" level="OFF"  />
@@ -31,10 +32,9 @@
 	    <logger name="org.hibernate" level="ERROR"  />
 	    <logger name="org.thymeleaf" level="ERROR"  />
 	    <logger name="org.springframework" level="WARN"/>
-    
+	    <logger name="org.springframework.boot.autoconfigure.logging" level="ERROR"  />
 		<Root level="INFO">
 			<AppenderRef ref="console" />
-			<AppenderRef ref="file" />
 		</Root>
     </Loggers>
 </Configuration>

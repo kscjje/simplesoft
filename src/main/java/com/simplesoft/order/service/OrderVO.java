@@ -55,6 +55,8 @@ public class OrderVO extends CommonVO{
 	private String productName;			//상품명
 	private int totalAmount;			//상품금액
 	
+	private List<OrderVO> orderList;	//주문목록
+	private int orderCount;				//주문목록 카운트
 
 	@Override
 	public String toString() {
@@ -67,7 +69,7 @@ public class OrderVO extends CommonVO{
 				+ ", receiveTel=" + receiveTel + ", receivePhone=" + receivePhone + ", receivePostNum=" + receivePostNum
 				+ ", receiveAddr=" + receiveAddr + ", receiveAddrDetail=" + receiveAddrDetail + ", commonPwd="
 				+ commonPwd + ", orderPayDt=" + orderPayDt + ", bigo=" + bigo + ", regUser=" + regUser + ", regDt="
-				+ regDt + ", productList=" + productList + "], " +  super.toString();
+				+ regDt + ", productList=" + productList + ", orderList=" + orderList + ", orderCount=" + orderCount + " ] " +  super.toString();
 	}
 
 }

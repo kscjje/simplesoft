@@ -203,16 +203,19 @@
 								if(result[k].menuMsg.split("|")){
 									let menuMsg = result[k].menuMsg.split("|");
 									for(let index = 0; index < menuMsg.length; index++) {
-										if(menuMsg[index].substring(0,1) == "!"){
-											addHtml +="<div class='mb-1' style='color:red'>"+menuMsg[index].substring(1,menuMsg[index].length)+"</div>";
+										if(menuMsg[index] == "") {
+											addHtml += "<div style='margin-bottom:10px;'>준비 중입니다.</div>";
 										} else {
-											addHtml +="<div class='mb-1'>"+menuMsg[index]+"</div>";
-										}
-										if(result[k].useYn == "Y" && (index+1) == menuMsg.length && (currentMMDD < month+day || currentMMDD == month+day && !(currentHour > 18 || (currentHour === 18 && currentMinute >= 0)))){
-											
-											addHtml	+="<div style='padding-top:10px;'>";
-											addHtml +=	"<input type='button' onclick='toggleButtonClick(this)' id='"+result[k].menuBoardSeq+"' value='선택' class='menuboard_btn'>";
-											addHtml +="</div>";
+											if(menuMsg[index].substring(0,1) == "!"){
+												addHtml +="<div class='mb-1' style='color:red'>"+menuMsg[index].substring(1,menuMsg[index].length)+"</div>";
+											} else {
+												addHtml +="<div class='mb-1'>"+menuMsg[index]+"</div>";
+											}
+											if(result[k].useYn == "Y" && (index+1) == menuMsg.length && (currentMMDD < month+day || currentMMDD == month+day && !(currentHour > 18 || (currentHour === 18 && currentMinute >= 0)))){
+												addHtml	+="<div style='padding-top:10px;'>";
+												addHtml +=	"<input type='button' onclick='toggleButtonClick(this)' id='"+result[k].menuBoardSeq+"' value='선택' class='menuboard_btn'>";
+												addHtml +="</div>";
+											}
 										}
 									}
 								} else {

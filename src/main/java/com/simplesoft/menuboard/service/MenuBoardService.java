@@ -8,4 +8,5 @@ public interface MenuBoardService {
 	public int updateMenuBoard(Map<String, Object> paraMap);
 	public List<Map<String, Object>> selectMenuBoardList(Map<String, Object> paraMap);
 	public Map<String, Object> selectMenuBoardDetail(Map<String, Object> paraMap);
+	public Map<String, Object> selectMenuBoardDuple(Map<String, Object> paraMap);
 }

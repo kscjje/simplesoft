@@ -30,4 +30,8 @@ public class MenuBoardServiceImpl implements MenuBoardService{
 	public Map<String, Object> selectMenuBoardDetail(Map<String, Object> paraMap) {
 		return menuBoardMapper.selectMenuBoardDetail(paraMap);
 	}
+	@Override
+	public Map<String, Object> selectMenuBoardDuple(Map<String, Object> paraMap) {
+		return menuBoardMapper.selectMenuBoardDuple(paraMap);
+	}
 }

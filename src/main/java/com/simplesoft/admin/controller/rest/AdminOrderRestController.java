@@ -50,12 +50,16 @@ public class AdminOrderRestController {
 		Map<String, Object> returnData = new HashMap<String, Object>();
 		
 		int suc = 0;
-		if(paramMap.get("menuBoardSeq") != null) {
+		Map<String, Object> detail = menuBoardService.selectMenuBoardDuple(paramMap);
+		if(detail != null) {
+			paramMap.put("menuBoardSeq", detail.get("menuBoardSeq"));
 			suc = menuBoardService.updateMenuBoard(paramMap);
 		} else {
 			suc = menuBoardService.insertMenuBoard(paramMap);
 		}
-		if(suc < 1) returnData.put("resultCode", "fail"); 
+		log.info("suc:"+suc);
+	
+		if(suc > 0) returnData.put("resultCode", "success"); 
 		return new CommonResponse<Map<String, Object>>(returnData);
 	}
 }

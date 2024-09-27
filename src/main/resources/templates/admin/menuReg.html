@@ -55,7 +55,7 @@
 			.addToCartButton {
 				position: absolute;
 				bottom: 5px;
-				left: 43%;
+				left: 34%;
 				background-color: #45a049;
 				color: #fff;
 				border: none;
@@ -85,6 +85,26 @@
 				padding-left: 10px;
 				width:140px;
 			}
+			
+			/*토스트 메시지*/
+			#tost_message {
+			    opacity: 0;
+			    position: fixed;
+			    bottom: -100px;
+			    left: 50%;
+			    transform: translate(-50%,0);
+			    padding: 10px 50px;
+			    background: rgba(0, 0, 0, 0.70);
+			    border-radius: 100px;
+			    color: #fff;
+			    box-shadow: 3px 4px 11px 0px #00000040;
+			    transition: all 0.5s;
+			}
+			/*토스트 메시지 활성화 되었을 때*/
+			#tost_message.active {
+			    opacity: 100%;
+			    bottom: 50px;
+			}
 		</style>
 		<div class="contents" style="height: 100%;">
 			<div class="ms-4 me-4">
@@ -104,6 +124,8 @@
 				</div>
 			</div>
         </div>
+		<div id="tost_message">저장 되었습니다.</div>
+		
 		<script th:inline="javascript">
 			$(document).ready(function() {
 				let result = /*[[${resultMap}]]*/"";
@@ -151,35 +173,42 @@
 								if(result[k].menuMsg.split("|")){
 									let menuMsg = result[k].menuMsg.split("|");
 									for(let index = 0; index < menuMsg.length; index++) {
-										addHtml +=	"<div class='menu mt-1'>";
-										if(menuMsg[index].substring(0,1) == "!") {
-											addHtml +=		"<input type='checkbox' name='hot' class='me-1' checked>";
-											addHtml +=		"<input type='text' name='menuMsg' class='inputText me-1' value='"+menuMsg[index].substring(1,menuMsg[index].length)+"'>";
-										} else {
-											addHtml +=		"<input type='checkbox' name='hot' class='me-1'>";
-											addHtml +=		"<input type='text' name='menuMsg' class='inputText me-1' value='"+menuMsg[index].substring(0,menuMsg[index].length)+"'>";
+										if(menuMsg[index] != "") {
+											addHtml +=	"<div class='menu mt-1'>";
+											if(menuMsg[index].substring(0,1) == "!") {
+												addHtml +=		"<input type='checkbox' name='hot' class='me-1' checked>";
+												addHtml +=		"<input type='text' name='menuMsg' class='inputText me-1' value='"+menuMsg[index].substring(1,menuMsg[index].length)+"'>";
+											} else {
+												addHtml +=		"<input type='checkbox' name='hot' class='me-1'>";
+												addHtml +=		"<input type='text' name='menuMsg' class='inputText me-1' value='"+menuMsg[index].substring(0,menuMsg[index].length)+"'>";
+											}
+											addHtml +=		"<i class='bi bi-x-circle me-4' style='font-size:20px;cursor:pointer;color:red;' onclick='$(this).parent().remove()'></i>";
+											addHtml +=	"</div>";
 										}
-										addHtml +=		"<i class='bi bi-x-circle me-4' style='font-size:20px;cursor:pointer;color:red;' onclick='$(this).parent().remove()'></i>";
-										addHtml +=	"</div>";
 									}
-								} else {
-									addHtml +="<div>"+result[k].menuMsg+"</div>";
-								}
+								} else addHtml +="<div>"+result[k].menuMsg+"</div>";
+								
 								find = true;
-								addHtml += "<button type='button' class='addToCartButton mt-3' style='left:34%' onclick='addBtn(this)'>추가</button>";
-								addHtml += "<button type='button' class='saveToCartButton mt-3' onclick='saveBtn(this,"+result[k].menuBoardSeq+","+firstSundayOfThisWeek.getFullYear()+month+day+")'>저장</button>";
+								addHtml += "<button type='button' class='addToCartButton mt-3' onclick='addBtn(this)'>추가</button>";
+								addHtml += "<button type='button' class='saveToCartButton mt-3' onclick='saveBtn(this,"+firstSundayOfThisWeek.getFullYear()+month+day+")'>저장</button>";
 							}
+							
 							//매칭되는 식단데이터가 없을 경우 defalut로 생성 
-							if(k == result.length-1 && !find) addHtml += "<button type='button' class='addToCartButton mt-3' onclick='addBtn(this)'>추가</button>";
+							if(k == result.length-1 && !find) {
+								addHtml += "<button type='button' class='addToCartButton mt-3' onclick='addBtn(this)'>추가</button>";
+								addHtml += "<button type='button' class='saveToCartButton mt-3' onclick='saveBtn(this,"+firstSundayOfThisWeek.getFullYear()+month+day+")'>저장</button>";
+							}
 						}
-						if(result.length == 0 ) addHtml += "<button type='button' class='addToCartButton' onclick='addBtn(this)'>추가</button>";
-						addHtml += 		"</form>";
-						addHtml += 		"</td>";
+						if(result.length == 0 ) {
+							addHtml += "<button type='button' class='addToCartButton' onclick='addBtn(this)'>추가</button>";
+							addHtml += "<button type='button' class='saveToCartButton mt-3' onclick='saveBtn(this,"+firstSundayOfThisWeek.getFullYear()+month+day+")'>저장</button>";
+						}
+						addHtml += 	"</form>";
+						addHtml +="</td>";
 						if(j == 5 ) firstSundayOfThisWeek.setDate(firstSundayOfThisWeek.getDate()+2);
 					}
 					addHtml +=	"</tr>";
 				}
-				addHtml += 	"</tr>";
 				$("#thHead").after(addHtml);
 			});
 
@@ -189,7 +218,8 @@
 					alert("최대 6개까지 가능합니다.");
 					return;
 				}
-				let v_html = 	"<div class='menu mt-1'>";
+				let v_html = 	"<form>";
+					v_html += 	"<div class='menu mt-1'>";
 					v_html += 		"<input type='checkbox' name='hot' class='me-1'>";
 					v_html += 		"<input type='text' name='menuMsg' class='inputText me-1'>";
 					v_html += 		"<i class='bi bi-x-circle me-4' style='font-size:20px;cursor:pointer;color:red;' onclick='$(this).parent().remove()'></i>";
@@ -198,16 +228,14 @@
 			}
 			
 			//저장 버튼
-			function saveBtn(selector,seq,yyyymmdd){
-				if($(selector).siblings(".menu").length < 1){
-					alert("최소 1개 이상부터 가능합니다.");
-					return;
-				}
+			function saveBtn(selector,yyyymmdd){
 				//체크박스
 				let checkName = $(selector).parents("form").find("input[name='hot']");
 				//메뉴명
 				let menuMsg = $(selector).parents("form").find("input[name='menuMsg']");
-				
+				console.log(				menuMsg.length)
+				console.log(				menuMsg[0])
+				console.log(				menuMsg[0].value)
 				//메뉴 한 컬럼에 저장하기 위해 포맷
 				let v_msg = "";
 				for(let i = 0; i < menuMsg.length; i++){
@@ -223,7 +251,7 @@
 					menuMsg	: v_msg,
 					menuDay	: yyyymmdd
 				}
-				if(seq > 0) formData.menuBoardSeq = seq;
+				
 				$.showMask();
 				$.ajax({
 					url : "/admin/rest/order/saveMenu",
@@ -232,15 +260,24 @@
 					data : formData,
 					success : function(result) {
 						$.hideMask();
-						if(result.resultCode == "fail"){
-							alert("오류가 발생하였습니다.");
-							return;
-						}
+						if(result.data.resultCode != "success") $("#tost_message").text("오류가 발생하였습니다.");
+						else $("#tost_message").text("저장 되었습니다.");
+						tostOn()
 					}, error : function(request, status, error) {
 						$.hideMask();
 						alert("에러코드: " + request.status + "\n메시지: " + request.responseText);
 					}
 				});
+			}
+			//1. 토스트 메시지, 버튼요소를 변수에 대입
+			let tostMessage = document.getElementById('tost_message');
+			
+			//2. 토스트 메시지 노출-사라짐 함수 작성
+			function tostOn(){
+			    tostMessage.classList.add('active');
+			    setTimeout(function(){
+			        tostMessage.classList.remove('active');
+			    },1000);
 			}
 		</script>
 	</main>

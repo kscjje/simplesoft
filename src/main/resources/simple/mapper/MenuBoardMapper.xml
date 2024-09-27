@@ -15,7 +15,9 @@
 	<update id="updateMenuBoard" parameterType="hashMap">
 		/* MenuBoardMapper.updateMenuBoard */
 		UPDATE MENU_BOARD SET 
-			MENU_MSG = #{menuMsg}
+			  MENU_MSG = #{menuMsg}
+			, UPT_USER = 'admin'
+			, UPT_DT = NOW()
 		WHERE MENU_BOARD_SEQ = #{menuBoardSeq}
 	</update>
 	
@@ -53,5 +55,22 @@
 		FROM MENU_BOARD A
 		WHERE 
 			MENU_BOARD_SEQ = #{menuBoardSeq}
+	</select>
+	
+	<!-- 식단표 리스트 상세조회 -->
+	<select id="selectMenuBoardDuple" parameterType="hashMap" resultType="CamelHashMap">
+		/* MenuBoardMapper.selectMenuBoardDuple */
+		SELECT 
+			  A.MENU_BOARD_SEQ
+			, A.MENU_DAY
+			, A.MENU_MSG
+			, A.USE_YN
+			, A.REG_USER
+			, DATE_FORMAT(A.REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
+			, A.UPT_USER
+			, DATE_FORMAT(A.UPT_DT,'%Y-%m-%d %H:%i:%s') AS UPT_DT
+		FROM MENU_BOARD A
+		WHERE 
+			MENU_DAY = #{menuDay}
 	</select>
 </mapper>

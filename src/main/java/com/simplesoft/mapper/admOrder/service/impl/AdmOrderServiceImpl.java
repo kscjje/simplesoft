@@ -21,7 +21,6 @@ public class AdmOrderServiceImpl implements AdmOrderService{
 		OrderVO result = new OrderVO();
 		result.setOrderList(admOrderMapper.selectOrderApplyList(vo));
 		result.setOrderCount(admOrderMapper.selectOrderApplyListCount(vo));
-		System.out.println(result);
 		return result;
 	}
 	//주문신청정보 카운트 

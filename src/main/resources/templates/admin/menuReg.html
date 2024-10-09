@@ -189,6 +189,7 @@
 								} else addHtml +="<div>"+result[k].menuMsg+"</div>";
 								
 								find = true;
+								addHtml += 	"</form>";
 								addHtml += "<button type='button' class='addToCartButton mt-3' onclick='addBtn(this)'>추가</button>";
 								addHtml += "<button type='button' class='saveToCartButton mt-3' onclick='saveBtn(this,"+firstSundayOfThisWeek.getFullYear()+month+day+")'>저장</button>";
 							}
@@ -203,7 +204,7 @@
 							addHtml += "<button type='button' class='addToCartButton' onclick='addBtn(this)'>추가</button>";
 							addHtml += "<button type='button' class='saveToCartButton mt-3' onclick='saveBtn(this,"+firstSundayOfThisWeek.getFullYear()+month+day+")'>저장</button>";
 						}
-						addHtml += 	"</form>";
+						
 						addHtml +="</td>";
 						if(j == 5 ) firstSundayOfThisWeek.setDate(firstSundayOfThisWeek.getDate()+2);
 					}
@@ -219,25 +220,24 @@
 					return;
 				}
 				let v_html = 	"<form>";
-					v_html += 	"<div class='menu mt-1'>";
-					v_html += 		"<input type='checkbox' name='hot' class='me-1'>";
-					v_html += 		"<input type='text' name='menuMsg' class='inputText me-1'>";
-					v_html += 		"<i class='bi bi-x-circle me-4' style='font-size:20px;cursor:pointer;color:red;' onclick='$(this).parent().remove()'></i>";
-					v_html += 	"</div>";
+					v_html += 		"<div class='menu mt-1'>";
+					v_html += 			"<input type='checkbox' name='hot' class='me-1'>";
+					v_html += 			"<input type='text' name='menuMsg' class='inputText me-1'>";
+					v_html += 			"<i class='bi bi-x-circle me-4' style='font-size:20px;cursor:pointer;color:red;' onclick='$(this).parent().remove()'></i>";
+					v_html += 		"</div>";
+					v_html += 	"</form";
 				$(selector).before(v_html);
 			}
 			
 			//저장 버튼
 			function saveBtn(selector,yyyymmdd){
 				//체크박스
-				let checkName = $(selector).parents("form").find("input[name='hot']");
+				let checkName = $(selector).siblings("form").find("input[name='hot']");
 				//메뉴명
-				let menuMsg = $(selector).parents("form").find("input[name='menuMsg']");
-				console.log(				menuMsg.length)
-				console.log(				menuMsg[0])
-				console.log(				menuMsg[0].value)
+				let menuMsg = $(selector).siblings("form").find("input[name='menuMsg']");
 				//메뉴 한 컬럼에 저장하기 위해 포맷
 				let v_msg = "";
+				
 				for(let i = 0; i < menuMsg.length; i++){
 					if(menuMsg[i].value == "") {
 						alert("빈 값이 존재합니다.");
@@ -247,6 +247,11 @@
 					if(checkName[i].checked) v_msg +="!";
 					v_msg += menuMsg[i].value;
 				}
+				if(menuMsg.length == 0) {
+					alert("추가하여 작성해 주세요.");
+					return;
+				}
+				
 				let formData = {
 					menuMsg	: v_msg,
 					menuDay	: yyyymmdd
@@ -262,6 +267,8 @@
 						$.hideMask();
 						if(result.data.resultCode != "success") $("#tost_message").text("오류가 발생하였습니다.");
 						else $("#tost_message").text("저장 되었습니다.");
+						
+						//토스트 메세지 표시
 						tostOn()
 					}, error : function(request, status, error) {
 						$.hideMask();

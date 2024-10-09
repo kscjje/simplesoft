@@ -37,7 +37,7 @@ public class AdminOrderRestController {
 	@PostMapping(value = "/searchList")
 	public BasicResponse searchListAjax(HttpServletRequest request, ModelMap model, HttpSession session,@ModelAttribute("orderVO") OrderVO paramVO) throws NoSuchAlgorithmException {
 		Map<String, Object> returnData = new HashMap<String, Object>();
-		
+		System.out.println(paramVO);
 		OrderVO orderVO = admOrderService.selectOrderApplyList(paramVO);
 		returnData.put("orderList", orderVO.getOrderList());
 		returnData.put("orderSize", orderVO.getOrderCount());

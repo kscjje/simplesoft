@@ -52,11 +52,9 @@
 			td:last-child, th:last-child {
 				border-radius: 0 15px 15px 0;
 			}
-			.addToCartButton {
+			.cartButton {
 				position: absolute;
 				bottom: 5px;
-				left: 34%;
-				background-color: #45a049;
 				color: #fff;
 				border: none;
 				padding: 7px 13px;
@@ -64,17 +62,17 @@
 				border-radius: 5px;
 				transition: background-color 0.3s ease;
 			}
-			.saveToCartButton {
-				position: absolute;
-				bottom: 5px;
+			.addButton {
+				left: 34%;
+				background-color: rgb(0, 128, 255);
+			}
+			.saveButton {
 				left: 53%;
 				background-color: #45a049;
-				color: #fff;
-				border: none;
-				padding: 7px 13px;
-				cursor: pointer;
-				border-radius: 5px;
-				transition: background-color 0.3s ease;
+			}
+			.removeButton {
+				left: 72%;
+				background-color: rgb(255, 0, 0);
 			}
 			.inputText {
 				border: 1px solid #c5c5c5;
@@ -105,10 +103,35 @@
 			    opacity: 100%;
 			    bottom: 50px;
 			}
+			.search {
+				padding: 15px; 
+				background-color: #fafafa; 
+				border-top:1px solid #e1e1e1;
+				border-bottom:1px solid #e1e1e1;
+				font-size: 14px;
+			}
+			.btn_date {
+				background-color: #fff;
+				border:1px solid rgb(192, 192, 192);
+				padding:5px 15px 5px 15px;
+				width:110px;
+			}
+			.btn_active {
+				background-color: #787878;
+				color: #FFF;
+			}
 		</style>
 		<div class="contents" style="height: 100%;">
 			<div class="ms-4 me-4">
 				<div class="title"><h1><i class="bi bi-check-lg me-2"></i>식단 수정</h1></div>
+				<div class="search">
+					<div class="mb-2">
+						<span class="ms-4">
+							<input type="button" onclick="location.href='./menuReg'" class="btn_date" id="0" value="고객기준화면">
+							<input type="text" id="startDate" class="inputText datepicker cursor-pointer" th:value="${customDate}" placeholder="YYYY-MM-DD" title="시작기간" readonly><i class="bi bi-calendar i_calendar ms-2" onclick="$('#startDate').datepicker('show');"></i>
+						</span>
+					</div>
+				</div>
 				<div class="tableWidth">
 					<table>
 						<tbody>
@@ -129,19 +152,22 @@
 		<script th:inline="javascript">
 			$(document).ready(function() {
 				let result = /*[[${resultMap}]]*/"";
+				let customDate = /*[[${customDate}]]*/"";
 				
 				// 오늘 날짜 객체 생성
 				const currentDate = new Date();
 				// 오늘 날짜 년도 가져오기
-				const currentYear = currentDate.getFullYear();
+				let currentYear = currentDate.getFullYear();
 				// 오늘 날짜 월 가져오기
-				const currentMonth = (currentDate.getMonth()+1) < 10 ? "0"+(currentDate.getMonth()+1) : (currentDate.getMonth()+1);
+				let currentMonth = (currentDate.getMonth()+1) < 10 ? "0"+(currentDate.getMonth()+1) : (currentDate.getMonth()+1);
 				// 오늘 날짜 일 가져오기
-				const currentDay = 	(currentDate.getDate()+1) < 10 ? "0"+(currentDate.getDate()+1) : (currentDate.getDate()+1);
+				let currentDay = 	(currentDate.getDate()+1) < 10 ? "0"+(currentDate.getDate()+1) : (currentDate.getDate()+1);
 				
-				var currentHour = currentDate.getHours();
-				var currentMinute = currentDate.getMinutes();
-
+				if(customDate != null){
+					currentYear	= currentDate.setFullYear(customDate.substr(0,4));  // 년도를 2024로 설정
+					currentMonth= currentDate.setMonth(customDate.substr(5,2)-1);        // 월을 10월로 설정 (월은 0부터 시작하므로 9는 10월을 의미 0~11)
+					currentDay	= currentDate.setDate(customDate.substr(8,2));        // 일을 12일로 설정
+				}
 				const currentYYYYMMDD = currentYear + currentMonth + currentDay;
 				const currentMMDD = currentMonth + currentDay;
 				// 오늘 날짜가 속한 주의 일요일을 가져오기
@@ -160,7 +186,9 @@
 						var day = firstSundayOfThisWeek.getDate().toString().padStart(2, '0'); // 일을 두 자리로 표시
 						
 						addHtml += 		"<td style='position: relative;'>";
-						addHtml += 			"<div class='fw-bold fs-6 mt-3' style='position: absolute;top: 0;left: 50%;transform: translateX(-50%);font-family:Noto Sans KR, Sans-serif'>" + month +"월 "+ day +"일 </div>";
+						addHtml += 			"<div class='fw-bold fs-6 mt-3 form-switch' style='width:100%; position: absolute;top: 0;left: 45%;transform: translateX(-50%);font-family:Noto Sans KR, Sans-serif'>" + month +"월 "+ day +"일 ";
+						addHtml +=				"<input class='form-check-input check"+month+day+"' type='checkbox' role='switch' name='useYn' style='float:right' onchange='fnUseYn(this)'>";
+						addHtml +=			"</div>";
 						
 						let find = false;		//식단표 데이터가 있는지 여부
 						for(let k = 0; k < result.length; k ++){
@@ -169,12 +197,13 @@
 								continue;
 							}
 							if(result[k].menuDay.substring(4,8) == month+day){
-								addHtml +="<form>";
+								addHtml +="<form onsubmit='return false;'>";
+								addHtml +=		"<input type='hidden' id='check"+month+day+"' class='useYn seq"+result[k].menuBoardSeq+"' value='"+result[k].useYn+"'>";
 								if(result[k].menuMsg.split("|")){
 									let menuMsg = result[k].menuMsg.split("|");
 									for(let index = 0; index < menuMsg.length; index++) {
 										if(menuMsg[index] != "") {
-											addHtml +=	"<div class='menu mt-1'>";
+											addHtml +=	"<div class='menu mt-1 ms-5'>";
 											if(menuMsg[index].substring(0,1) == "!") {
 												addHtml +=		"<input type='checkbox' name='hot' class='me-1' checked>";
 												addHtml +=		"<input type='text' name='menuMsg' class='inputText me-1' value='"+menuMsg[index].substring(1,menuMsg[index].length)+"'>";
@@ -189,20 +218,22 @@
 								} else addHtml +="<div>"+result[k].menuMsg+"</div>";
 								
 								find = true;
+								
 								addHtml += 	"</form>";
-								addHtml += "<button type='button' class='addToCartButton mt-3' onclick='addBtn(this)'>추가</button>";
-								addHtml += "<button type='button' class='saveToCartButton mt-3' onclick='saveBtn(this,"+firstSundayOfThisWeek.getFullYear()+month+day+")'>저장</button>";
+								addHtml += "<button type='button' style='left: 26%;'class='cartButton addButton mt-3' onclick='addBtn(this)'>추가</button>";
+								addHtml += "<button type='button' style='left: 45%;'class='cartButton saveButton mt-3' onclick='saveBtn(this,"+firstSundayOfThisWeek.getFullYear()+month+day+")'>저장</button>";
+								addHtml += "<button type='button' style='left: 64%;'class='cartButton removeButton mt-3' onclick='removeBtn("+result[k].menuBoardSeq+")'>삭제</button>";
 							}
 							
 							//매칭되는 식단데이터가 없을 경우 defalut로 생성 
 							if(k == result.length-1 && !find) {
-								addHtml += "<button type='button' class='addToCartButton mt-3' onclick='addBtn(this)'>추가</button>";
-								addHtml += "<button type='button' class='saveToCartButton mt-3' onclick='saveBtn(this,"+firstSundayOfThisWeek.getFullYear()+month+day+")'>저장</button>";
+								addHtml += "<button type='button' class='cartButton addButton mt-3' onclick='addBtn(this)'>추가</button>";
+								addHtml += "<button type='button' class='cartButton saveButton mt-3' onclick='saveBtn(this,"+firstSundayOfThisWeek.getFullYear()+month+day+")'>저장</button>";
 							}
 						}
 						if(result.length == 0 ) {
-							addHtml += "<button type='button' class='addToCartButton' onclick='addBtn(this)'>추가</button>";
-							addHtml += "<button type='button' class='saveToCartButton mt-3' onclick='saveBtn(this,"+firstSundayOfThisWeek.getFullYear()+month+day+")'>저장</button>";
+							addHtml += "<button type='button' class='cartButton addButton' onclick='addBtn(this)'>추가</button>";
+							addHtml += "<button type='button' class='cartButton saveButton mt-3' onclick='saveBtn(this,"+firstSundayOfThisWeek.getFullYear()+month+day+")'>저장</button>";
 						}
 						
 						addHtml +="</td>";
@@ -211,22 +242,72 @@
 					addHtml +=	"</tr>";
 				}
 				$("#thHead").after(addHtml);
+				
+				$(".useYn").each(function(){
+					let className = $(this).attr("class");
+					if($(this).val() == "Y") $("."+$(this).attr("id")).prop("checked", true);
+					$("."+$(this).attr("id")).addClass(className.split(" ")[1]);
+				});
+				
+				$('#startDate').datepicker({
+					format: 'yyyy-mm-dd', //데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
+					autoclose: true, //사용자가 날짜를 클릭하면 자동 캘린더가 닫히는 옵션
+					templates: {
+						leftArrow: '&laquo;',
+						rightArrow: '&raquo;',
+					}, //다음달 이전달로 넘어가는 화살표 모양 커스텀 마이징
+					showWeekDays: true, // 위에 요일 보여주는 옵션 기본값 : true
+					todayHighlight: true, //오늘 날짜에 하이라이팅 기능 기본값 :false
+					weekStart: 0, //달력 시작 요일 선택하는 것 기본값은 0인 일요일
+					buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif", //버튼 이미지 경로
+					buttonImageOnly: true, //버튼 이미지만 깔끔하게 보이게함
+					language: 'ko', //달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
+				}).on('changeDate', function (e) {
+					location.href='./menuReg?customDate='+$("#startDate").val();
+				});
 			});
 
 			//추가 버튼			
 			function addBtn(selector){
-				if($(selector).siblings(".menu").length > 5){
+				if($(selector).siblings("form").find(".menu").length > 5){
 					alert("최대 6개까지 가능합니다.");
 					return;
 				}
-				let v_html = 	"<form>";
-					v_html += 		"<div class='menu mt-1'>";
+				let v_html = 	"<form onsubmit='return false;'>";
+					v_html += 		"<div class='menu mt-1 ms-5'>";
 					v_html += 			"<input type='checkbox' name='hot' class='me-1'>";
 					v_html += 			"<input type='text' name='menuMsg' class='inputText me-1'>";
 					v_html += 			"<i class='bi bi-x-circle me-4' style='font-size:20px;cursor:pointer;color:red;' onclick='$(this).parent().remove()'></i>";
 					v_html += 		"</div>";
 					v_html += 	"</form";
 				$(selector).before(v_html);
+			}
+			//삭제 버튼			
+			function removeBtn(seq){
+				let formData = {
+					menuBoardSeq : seq
+				}
+				if(confirm("해당 식단 데이터를 삭제 하시겠습니까?")){
+					$.showMask();
+					$.ajax({
+						url : "/admin/rest/order/removeMenu",
+						type : "POST",
+						dataType : "json",
+						data : formData,
+						success : function(result) {
+							$.hideMask();
+							if(result.data.resultCode != "0000") $("#tost_message").text("오류가 발생하였습니다.");
+							else $("#tost_message").text("삭제 되었습니다.");
+							
+							//토스트 메세지 표시
+							tostOn(1)
+						}, error : function(request, status, error) {
+							$.hideMask();
+							alert("관리자에게 문의해 주세요.");
+						}
+					});
+				}
+				
 			}
 			
 			//저장 버튼
@@ -243,7 +324,7 @@
 						alert("빈 값이 존재합니다.");
 						return;
 					}
-					if(i > 0) v_msg +="|" 
+					if(i > 0) v_msg +="|";
 					if(checkName[i].checked) v_msg +="!";
 					v_msg += menuMsg[i].value;
 				}
@@ -269,22 +350,53 @@
 						else $("#tost_message").text("저장 되었습니다.");
 						
 						//토스트 메세지 표시
-						tostOn()
+						tostOn(1)
 					}, error : function(request, status, error) {
 						$.hideMask();
 						alert("에러코드: " + request.status + "\n메시지: " + request.responseText);
 					}
 				});
 			}
+			
+			//사용여부 스위치
+			function fnUseYn(selector){
+				if(selector.className.split(" ")[2] != null){
+					//selector 체크박스
+					let seq = selector.className.split(" ")[2].substr(3);
+					let formData = {
+						menuBoardSeq : seq,
+						cValue : selector.checked
+					}
+					$.ajax({
+						url : "/admin/rest/order/useYnUpdate",
+						type : "POST",
+						dataType : "json",
+						data : formData,
+						success : function(result) {
+							if(result.data.resultCode != "0000") $("#tost_message").text("오류가 발생하였습니다.");
+							else $("#tost_message").text("사용여부 변경");
+							
+							//토스트 메세지 표시
+							tostOn(0)
+						}, error : function(request, status, error) {
+							alert("관리자에게 문의해 주세요.");
+						}
+					});
+				}
+			}
+			
 			//1. 토스트 메시지, 버튼요소를 변수에 대입
 			let tostMessage = document.getElementById('tost_message');
 			
 			//2. 토스트 메시지 노출-사라짐 함수 작성
-			function tostOn(){
+			function tostOn(option){
 			    tostMessage.classList.add('active');
 			    setTimeout(function(){
 			        tostMessage.classList.remove('active');
+			        if(option == 1) location.reload();
+					
 			    },1000);
+			    
 			}
 		</script>
 	</main>

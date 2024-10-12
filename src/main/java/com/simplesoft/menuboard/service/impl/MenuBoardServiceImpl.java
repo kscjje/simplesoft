@@ -15,23 +15,31 @@ public class MenuBoardServiceImpl implements MenuBoardService{
 	MenuBoardMapper menuBoardMapper;
 	
 	@Override
-	public int insertMenuBoard(Map<String, Object> paraMap) {
-		return menuBoardMapper.insertMenuBoard(paraMap);
+	public int insertMenuBoard(Map<String, Object> paramMap) {
+		return menuBoardMapper.insertMenuBoard(paramMap);
 	}
 	@Override
-	public int updateMenuBoard(Map<String, Object> paraMap) {
-		return menuBoardMapper.updateMenuBoard(paraMap);
+	public int updateMenuBoard(Map<String, Object> paramMap) {
+		return menuBoardMapper.updateMenuBoard(paramMap);
 	}
 	@Override
-	public List<Map<String, Object>> selectMenuBoardList(Map<String, Object> paraMap) {
-		return menuBoardMapper.selectMenuBoardList(paraMap);
+	public int deleteMenuBoard(Map<String, Object> paramMap) {
+		return menuBoardMapper.deleteMenuBoard(paramMap);
 	}
 	@Override
-	public Map<String, Object> selectMenuBoardDetail(Map<String, Object> paraMap) {
-		return menuBoardMapper.selectMenuBoardDetail(paraMap);
+	public int updateMenuBoardUseYn(Map<String, Object> paramMap) {
+		return menuBoardMapper.updateMenuBoardUseYn(paramMap);
 	}
 	@Override
-	public Map<String, Object> selectMenuBoardDuple(Map<String, Object> paraMap) {
-		return menuBoardMapper.selectMenuBoardDuple(paraMap);
+	public List<Map<String, Object>> selectMenuBoardList(Map<String, Object> paramMap) {
+		return menuBoardMapper.selectMenuBoardList(paramMap);
+	}
+	@Override
+	public Map<String, Object> selectMenuBoardDetail(Map<String, Object> paramMap) {
+		return menuBoardMapper.selectMenuBoardDetail(paramMap);
+	}
+	@Override
+	public Map<String, Object> selectMenuBoardDuple(Map<String, Object> paramMap) {
+		return menuBoardMapper.selectMenuBoardDuple(paramMap);
 	}
 }

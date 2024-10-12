@@ -211,7 +211,7 @@
 											} else {
 												addHtml +="<div class='mb-1'>"+menuMsg[index]+"</div>";
 											}
-											if(result[k].useYn == "Y" && (index+1) == menuMsg.length && (currentMMDD < month+day || currentMMDD == month+day && !(currentHour > 18 || (currentHour === 18 && currentMinute >= 0)))){
+											if(result[k].useYn == "Y" && (index+1) == menuMsg.length && (currentMMDD < month+day || currentMMDD == month+day && !(currentHour > 17))){
 												addHtml	+="<div style='padding-top:10px;'>";
 												addHtml +=	"<input type='button' onclick='toggleButtonClick(this)' id='"+result[k].menuBoardSeq+"' value='선택' class='menuboard_btn'>";
 												addHtml +="</div>";

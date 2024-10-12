@@ -1,8 +1,6 @@
 package com.simplesoft.admin.controller.rest;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +33,7 @@ public class AdminOrderRestController {
 	
 	//주문 내역 조회
 	@PostMapping(value = "/searchList")
-	public BasicResponse searchListAjax(HttpServletRequest request, ModelMap model, HttpSession session,@ModelAttribute("orderVO") OrderVO paramVO) throws NoSuchAlgorithmException {
+	public BasicResponse searchListAjax(@ModelAttribute("orderVO") OrderVO paramVO) {
 		Map<String, Object> returnData = new HashMap<String, Object>();
 		System.out.println(paramVO);
 		OrderVO orderVO = admOrderService.selectOrderApplyList(paramVO);
@@ -46,7 +44,7 @@ public class AdminOrderRestController {
 	
 	//식단표 등록 및 수정
 	@PostMapping(value = "/saveMenu")
-	public BasicResponse saveMenuAjax(HttpServletRequest request, ModelMap model, HttpSession session,@RequestParam Map<String, Object> paramMap) throws NoSuchAlgorithmException {
+	public BasicResponse saveMenuAjax(@RequestParam Map<String, Object> paramMap){
 		Map<String, Object> returnData = new HashMap<String, Object>();
 		
 		int suc = 0;
@@ -60,6 +58,29 @@ public class AdminOrderRestController {
 		log.info("suc:"+suc);
 	
 		if(suc > 0) returnData.put("resultCode", "success"); 
+		return new CommonResponse<Map<String, Object>>(returnData);
+	}
+	
+	//식단표 데이터 삭제
+	@PostMapping(value = "/removeMenu")
+	public BasicResponse removeMenuAjax(@RequestParam Map<String, Object> paramMap){
+		Map<String, Object> returnData = new HashMap<String, Object>();
+		if(!"null".equals(String.valueOf(paramMap.get("menuBoardSeq")))){
+			int suc = menuBoardService.deleteMenuBoard(paramMap);
+			if(suc > 0) returnData.put("resultCode", "0000");
+		}
+	
+		return new CommonResponse<Map<String, Object>>(returnData);
+	}
+	//식단표 데이터 삭제
+	@PostMapping(value = "/useYnUpdate")
+	public BasicResponse useYnUpdateAjax(@RequestParam Map<String, Object> paramMap){
+		Map<String, Object> returnData = new HashMap<String, Object>();
+		if(!"null".equals(String.valueOf(paramMap.get("menuBoardSeq")))){
+			int suc = menuBoardService.updateMenuBoardUseYn(paramMap);
+			if(suc > 0) returnData.put("resultCode", "0000");
+		}
+		
 		return new CommonResponse<Map<String, Object>>(returnData);
 	}
 }

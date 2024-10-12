@@ -2,7 +2,7 @@
 <Configuration status="INFO">
 
 	<Properties>
-		<Property name="FILENAME">D:/simple/workspace/logs</Property>
+		<Property name="FILENAME">C:/project/workspace/logs</Property>
 	</Properties>
 
     <Appenders>

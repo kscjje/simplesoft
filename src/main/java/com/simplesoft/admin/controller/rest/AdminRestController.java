@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
@@ -35,6 +36,9 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping(value = "/admin/rest")
 public class AdminRestController {
+	
+	@Value("${domain}")
+    private String domain;
 	
 	@Autowired
 	ManagerService managerService;
@@ -76,7 +80,7 @@ public class AdminRestController {
 		//QR 정보
 		int width = 100;
 		int height = 100;
-		String url = "http://kscjje.cafe24.com/";
+		String url = domain;
 
 		//QR Code - BitMatrix: qr code 정보 생성
 		BitMatrix encode = new MultiFormatWriter().encode(url, BarcodeFormat.QR_CODE, width, height);

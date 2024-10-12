@@ -21,6 +21,30 @@
 		WHERE MENU_BOARD_SEQ = #{menuBoardSeq}
 	</update>
 	
+	<!-- 식단표 수정 -->
+	<update id="updateMenuBoardUseYn" parameterType="hashMap">
+		/* MenuBoardMapper.updateMenuBoardUseYn */
+		UPDATE MENU_BOARD SET
+		<choose>
+			<when test="cValue eq 'true'">
+			  USE_YN = 'Y'
+			</when>
+			<otherwise>
+			  USE_YN = 'N'
+			</otherwise>
+		</choose>
+			, UPT_USER = 'admin'
+			, UPT_DT = NOW()
+		WHERE MENU_BOARD_SEQ = #{menuBoardSeq}
+	</update>
+	
+	<!-- 식단표 삭제 -->
+	<delete id="deleteMenuBoard" parameterType="hashMap">
+		/* MenuBoardMapper.deleteMenuBoard */
+		DELETE FROM MENU_BOARD  
+		WHERE MENU_BOARD_SEQ = #{menuBoardSeq}
+	</delete>
+	
 	<!-- 식단표 리스트 조회 -->
 	<select id="selectMenuBoardList" parameterType="hashMap" resultType="CamelHashMap">
 		/* MenuBoardMapper.selectMenuBoardList */
@@ -35,8 +59,18 @@
 			, DATE_FORMAT(A.UPT_DT,'%Y-%m-%d %H:%i:%s') AS UPT_DT
 		FROM MENU_BOARD A
 		<!-- 오늘 날짜가 속한 주의 월요일부터 4주 후 금요일까지 -->
-		WHERE A.MENU_DAY BETWEEN DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY) 
+		WHERE 1=1
+		<choose>
+			<when test="customDate neq null and customDate neq ''">
+				AND A.MENU_DAY BETWEEN DATE_SUB(STR_TO_DATE(#{customDate},'%Y-%m-%d'), INTERVAL WEEKDAY(STR_TO_DATE(#{customDate},'%Y-%m-%d')) DAY) 
+				AND DATE_ADD(DATE_SUB(STR_TO_DATE(#{customDate},'%Y-%m-%d'), INTERVAL WEEKDAY(STR_TO_DATE(#{customDate},'%Y-%m-%d')) DAY), INTERVAL 4 WEEK) + INTERVAL 4 DAY
+			</when>
+			<otherwise>
+		AND A.MENU_DAY BETWEEN DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY) 
 		AND DATE_ADD(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 4 WEEK) + INTERVAL 4 DAY
+			</otherwise>
+		</choose>
+		
 		ORDER BY A.MENU_DAY
 	</select>
 	

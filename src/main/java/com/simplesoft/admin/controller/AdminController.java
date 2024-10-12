@@ -120,6 +120,7 @@ public class AdminController {
 			return GlobalVariable.REDIRECT_SUBMIT;
 		}
 		List<Map<String, Object>> resultMap = menuboardService.selectMenuBoardList(paramMap);
+		model.addAttribute("customDate", paramMap.get("customDate"));
 		model.addAttribute("resultMap", resultMap);
 		return "/admin/menuReg";
 	}

@@ -47,6 +47,14 @@
 					, C.PAY_METHOD
 					, C.ORDER_NAME AS PRODUCT_NAME
 					, C.TOTAL_AMOUNT
+					, B.STATUS as DELIVERY_STATUS
+					, CASE 
+						WHEN B.STATUS = '1000' THEN '배송전' 
+						WHEN B.STATUS = '0000' THEN '배송완료'
+						ELSE '배송전' 
+					END AS DELIVERY_STATUS_NM
+					, B.MANAGER_NO
+					, B.DELIVERY_DT
 				FROM ORDER_MST A
 				LEFT JOIN DELIVERY_MST B ON A.ORDER_NO = B.ORDER_NO
 				LEFT JOIN PAYMENTS C ON A.ORDER_NO = C.ORDER_ID
@@ -107,6 +115,78 @@
 	</select>
 	
 	<!-- 주문 신청 정보 -->	
+	<select id="selectOrderApplyExcel" parameterType="com.simplesoft.order.service.OrderVO" resultMap="orderShopApplyResult">
+		/* AdmOrderMapper.selectOrderApplyExcel */
+		SELECT 
+			T.*
+		FROM 
+			(
+				SELECT 
+					  A.ORDER_NO
+					, A.USER_NO
+					, A.ORDER_STATUS
+					, A.USER_SESSION
+					, A.ORDER_PAY_TYPE
+					, A.TOTAL_PRODUCT_AMT
+					, A.TOTAL_DIS_AMT
+					, A.TOTAL_DELY_AMT
+					, A.MARKETING_AGREE_FG
+					, A.ORDER_NAME
+					, A.ORDER_PWD
+					, A.ORDER_TEL
+					, A.ORDER_PHONE
+					, A.ORDER_POST_NUM
+					, A.ORDER_ADDR
+					, A.ORDER_ADDR_DETAIL
+					, A.ORDER_EMAIL
+					, A.RECEIVE_NAME
+					, A.RECEIVE_TEL
+					, A.RECEIVE_PHONE
+					, A.RECEIVE_POST_NUM
+					, A.RECEIVE_ADDR
+					, A.RECEIVE_ADDR_DETAIL
+					, A.COMMON_PWD
+					, DATE_FORMAT(A.ORDER_PAY_DT,'%Y-%m-%d %H:%i:%s') AS ORDER_PAY_DT
+					, A.BIGO
+					, A.REG_USER
+					, DATE_FORMAT(A.REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
+					, C.PAY_METHOD
+					, C.ORDER_NAME AS PRODUCT_NAME
+					, C.TOTAL_AMOUNT
+					, B.STATUS as DELIVERY_STATUS
+					, CASE
+						WHEN B.STATUS = '1000' THEN '배송전'
+						WHEN B.STATUS = '0000' THEN '배송완료'
+						ELSE '배송전'
+					END AS DELIVERY_STATUS_NM
+					, B.MANAGER_NO
+					, B.DELIVERY_DT
+				FROM ORDER_MST A
+				LEFT JOIN DELIVERY_MST B ON A.ORDER_NO = B.ORDER_NO
+				LEFT JOIN PAYMENTS C ON A.ORDER_NO = C.ORDER_ID
+				WHERE A.ORDER_STATUS != '1000'
+				<if test="startDate neq null and startDate neq '' and endDate neq null and endDate neq ''">
+					AND DATE_FORMAT(A.ORDER_PAY_DT,'%Y-%m-%d') BETWEEN #{startDate} AND #{endDate}
+				</if>
+				<if test="orderStatus neq null and orderStatus neq ''">
+					AND A.ORDER_STATUS = ${orderStatus}
+				</if>
+				<if test="searchOption neq null and searchOption neq ''">
+					<if test="searchOption == 1">
+						AND A.ORDER_NAME LIKE CONCAT('%',#{searchText},'%')
+					</if>
+					<if test="searchOption == 2">
+						<if test="searchText neq null and searchText neq ''">
+							AND A.ORDER_NO = #{searchText}
+						</if>
+					</if>
+				</if>
+				GROUP BY A.ORDER_NO
+			) T
+		ORDER BY T.REG_DT DESC
+	</select>
+	
+	<!-- 주문 신청 정보 -->	
 	<select id="getOrderProductInfo" parameterType="com.simplesoft.order.service.OrderProductVO" resultType="com.simplesoft.order.service.OrderProductVO">
 		/* OrderMapper.getOrderProductInfo */
 		SELECT
@@ -147,4 +227,76 @@
 	    					AND DATE_FORMAT(B.MENU_DAY, '%Y%m%d') = DATE_ADD(DATE_FORMAT(NOW(), '%Y%m%d'), INTERVAL 1 DAY))) AS NEXT_DELIV_CNT
 	    FROM ORDER_MST A
     </select>
+    
+	<!-- 배송 정보 -->	
+	<select id="selectDeliveryList" parameterType="com.simplesoft.order.service.DeliveryVO" resultType="com.simplesoft.order.service.DeliveryVO">
+		/* OrderMapper.selectDeliveryList */
+		SELECT
+			  A.ORDER_NO
+			, A.ORDER_PRODUCT_NO
+			, DATE_FORMAT(A.MENU_DAY,'%Y년 %m월 %d일') AS MENU_DAY
+			, A.STATUS as DELIVERY_STATUS
+			, CASE 
+				WHEN A.STATUS = '1000' THEN '배송전' 
+				WHEN A.STATUS = '0000' THEN '배송완료'
+				ELSE '배송전' 
+			END AS DELIVERY_STATUS_NM
+			, A.MANAGER_NO
+			, IFNULL(DATE_FORMAT(A.DELIVERY_DT,'%Y-%m-%d %H:%i:%s'),'') AS DELIVERY_DT
+			, A.RECEIVE_NAME
+			, A.RECEIVE_TEL
+			, A.RECEIVE_PHONE
+			, A.RECEIVE_POST_NUM
+			, A.RECEIVE_ADDR
+			, A.RECEIVE_ADDR_DETAIL
+			, DATE_FORMAT(A.REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
+		FROM DELIVERY_MST A
+		WHERE 1=1
+		<if test="startDate neq null and startDate neq '' and endDate neq null and endDate neq ''">
+			AND DATE_FORMAT(A.REG_DT,'%Y-%m-%d') BETWEEN #{startDate} AND #{endDate}
+		</if>
+		<if test="delivStatus neq null and delivStatus neq ''">
+			AND A.STATUS = ${delivStatus}
+		</if>
+		<if test="searchOption neq null and searchOption neq ''">
+			<if test="searchOption == 1">
+				AND A.RECEIVE_NAME LIKE CONCAT('%',#{searchText},'%')
+			</if>
+			<if test="searchOption == 2">
+				<if test="searchText neq null and searchText neq ''">
+					AND A.ORDER_NO = #{searchText}
+				</if>
+			</if>
+		</if>
+		ORDER BY REG_DT DESC
+		<if test="startPage neq null and startPage neq '' and endPage neq null and endPage neq '' or startPage eq 0">
+			LIMIT #{startPage}, #{endPage}
+		</if>
+	</select>
+	
+	<!-- 배송 정보 카운트-->	
+	<select id="selectDeliveryListCount" parameterType="com.simplesoft.order.service.DeliveryVO" resultType="int">
+		/* OrderMapper.selectDeliveryListCount */
+		SELECT
+			COUNT(*) as totalCount
+		FROM DELIVERY_MST A
+		WHERE 1=1
+		<if test="startDate neq null and startDate neq '' and endDate neq null and endDate neq ''">
+			AND DATE_FORMAT(A.REG_DT,'%Y-%m-%d') BETWEEN #{startDate} AND #{endDate}
+		</if>
+		<if test="delivStatus neq null and delivStatus neq ''">
+			AND A.STATUS = ${delivStatus}
+		</if>
+		<if test="searchOption neq null and searchOption neq ''">
+			<if test="searchOption == 1">
+				AND A.RECEIVE_NAME LIKE CONCAT('%',#{searchText},'%')
+			</if>
+			<if test="searchOption == 2">
+				<if test="searchText neq null and searchText neq ''">
+					AND A.ORDER_NO = #{searchText}
+				</if>
+			</if>
+		</if>
+		ORDER BY REG_DT DESC
+	</select>
 </mapper>

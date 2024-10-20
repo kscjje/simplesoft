@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,12 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.simplesoft.mapper.admOrder.service.AdmOrderService;
 import com.simplesoft.menuboard.service.MenuBoardService;
+import com.simplesoft.order.service.DeliveryVO;
 import com.simplesoft.order.service.OrderVO;
 import com.simplesoft.reponse.BasicResponse;
 import com.simplesoft.reponse.CommonResponse;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -35,7 +33,6 @@ public class AdminOrderRestController {
 	@PostMapping(value = "/searchList")
 	public BasicResponse searchListAjax(@ModelAttribute("orderVO") OrderVO paramVO) {
 		Map<String, Object> returnData = new HashMap<String, Object>();
-		System.out.println(paramVO);
 		OrderVO orderVO = admOrderService.selectOrderApplyList(paramVO);
 		returnData.put("orderList", orderVO.getOrderList());
 		returnData.put("orderSize", orderVO.getOrderCount());
@@ -83,4 +80,15 @@ public class AdminOrderRestController {
 		
 		return new CommonResponse<Map<String, Object>>(returnData);
 	}
+	
+	//주문 내역 조회
+		@PostMapping(value = "/deliverySearchList")
+		public BasicResponse deliverySearchListAjax(@ModelAttribute("deliveryVO") DeliveryVO paramVO) {
+			System.out.println(paramVO);
+			Map<String, Object> returnData = new HashMap<String, Object>();
+			DeliveryVO deliveryVO = admOrderService.getDeliveryList(paramVO);
+			returnData.put("deliveryList", deliveryVO.getDeliveryList());
+			returnData.put("deliverySize", deliveryVO.getDeliveryCount());
+			return new CommonResponse<Map<String, Object>>(returnData);
+		}
 }

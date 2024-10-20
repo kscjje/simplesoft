@@ -1,5 +1,7 @@
 package com.simplesoft.admin.controller;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +16,7 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +24,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
 import com.simplesoft.manager.service.ManagerVO;
 import com.simplesoft.mapper.admOrder.service.AdmOrderService;
 import com.simplesoft.menuboard.service.MenuBoardService;
@@ -39,11 +47,15 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(value="/admin")
 public class AdminController {
 	
+	@Value("${domain}")
+    private String domain;
+	
 	@Autowired
 	MenuBoardService menuboardService;
 	
 	@Autowired
 	AdmOrderService admOrderService;
+	
 	/**
 	 * 관리자 로그인 화면
 	 * 
@@ -62,10 +74,9 @@ public class AdminController {
 	 * 
 	 * @param model
 	 * @return
-	 * @throws NoSuchAlgorithmException 
 	 */
 	@GetMapping("/main")
-	public String adminMain(Model model,HttpSession session) throws NoSuchAlgorithmException {
+	public String adminMain(Model model,HttpSession session) {
 		
 		ManagerVO loginVO = (ManagerVO)session.getAttribute("adminLoginInfo");
 		if(loginVO == null) {
@@ -82,10 +93,9 @@ public class AdminController {
 	 * 
 	 * @param model
 	 * @return
-	 * @throws NoSuchAlgorithmException 
 	 */
 	@GetMapping("/orderManage")
-	public String orderManage(Model model,HttpSession session, @RequestParam Map<String, Object> paramMap) throws NoSuchAlgorithmException {
+	public String orderManage(Model model,HttpSession session, @RequestParam Map<String, Object> paramMap) {
 		
 		ManagerVO loginVO = (ManagerVO)session.getAttribute("adminLoginInfo");
 		if(loginVO == null) {
@@ -96,23 +106,37 @@ public class AdminController {
 			//메인 페이지 대시보드에서 넘어온 파라미터
 			model.addAttribute("option", paramMap.get("option"));
 		}
-//		OrderVO orderVo = new OrderVO();
-//		List<OrderVO> orderList = admOrderService.selectOrderApplyList(orderVo);
-//		int orderSize = orderList.size();
-//		model.addAttribute("orderList", orderList);
-//		model.addAttribute("orderSize", orderSize);
 		return "/admin/orderManage";
 	}
 	
+	/**
+	 * 주문자리스트 - 주문관리
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/deliveryManage")
+	public String deliveryManage(Model model,HttpSession session, @RequestParam Map<String, Object> paramMap) {
+		
+		ManagerVO loginVO = (ManagerVO)session.getAttribute("adminLoginInfo");
+		if(loginVO == null) {
+			model.addAttribute("returnUrl", "/admin/login");
+			return GlobalVariable.REDIRECT_SUBMIT;
+		}
+		if(paramMap.get("option") != null) {
+			//메인 페이지 대시보드에서 넘어온 파라미터
+			model.addAttribute("option", paramMap.get("option"));
+		}
+		return "/admin/deliveryManage";
+	}
 	/**
 	 * 식단수정
 	 * 
 	 * @param model
 	 * @return
-	 * @throws NoSuchAlgorithmException 
 	 */
 	@GetMapping("/menuReg")
-	public String menuReg(Model model,HttpSession session, @RequestParam Map<String, Object> paramMap) throws NoSuchAlgorithmException {
+	public String menuReg(Model model,HttpSession session, @RequestParam Map<String, Object> paramMap){
 		
 		ManagerVO loginVO = (ManagerVO)session.getAttribute("adminLoginInfo");
 		if(loginVO == null) {
@@ -131,17 +155,19 @@ public class AdminController {
 	 * @param model
 	 * @return
 	 * @throws NoSuchAlgorithmException 
+	 * @throws IOException 
+	 * @throws WriterException 
 	 */
-	@GetMapping("/excel")
-	public void excel(Model model,HttpSession session, HttpServletResponse response, @ModelAttribute("orderVO") OrderVO paramVO) throws NoSuchAlgorithmException {
-		
+	@GetMapping("/orderExcel")
+	public void excel(Model model,HttpSession session, HttpServletResponse response, @ModelAttribute("orderVO") OrderVO paramVO) throws NoSuchAlgorithmException, WriterException, IOException {
+		log.info("param: {}",paramVO);
 //		ManagerVO loginVO = (ManagerVO)session.getAttribute("adminLoginInfo");
 //		if(loginVO == null) {
 //			model.addAttribute("returnUrl", "/admin/login");
-//			return GlobalVariable.REDIRECT_SUBMIT;
+//			return;
 //		}
 		
-		String excelTitle = "엑셀타이틀";
+		String excelTitle = "주문리스트";
 		
 		String[] columnList = {"주문상태", "결제수단", "주문번호", "주문자명", "상품명" , "주문일시", "QR코드"};
 		
@@ -170,13 +196,12 @@ public class AdminController {
 			titleRow.getCell(i).setCellStyle(titleStyleStringCenter);
 		}
 		XSSFCellStyle styleDate = workbook.getCellStyleAt(3);
-		OrderVO orderVO = admOrderService.selectOrderApplyList(paramVO);
-//		ProductGroupSearchVo productGroupSearch = cmsProductService.getProductGroupSearch(vo);
+		OrderVO orderVO = admOrderService.selectOrderApplyExcel(paramVO);
 		if( orderVO.getOrderCount() > 0 ) {
 			int index = 1;
 			for(OrderVO order : orderVO.getOrderList()) {
 				row = sheet.createRow(index);
-				row.setHeight((short) 1000);
+				row.setHeight((short) 1200);
 				for(int i=0; i < columnList.length; i++) {
 					cell = row.createCell(i);
 					cell.setCellStyle(styleDate);
@@ -196,7 +221,7 @@ public class AdminController {
 					row.getCell(4).setCellValue(order.getProductList().get(0).getMenuDay());
 				}
 				row.getCell(5).setCellValue(order.getOrderPayDt());
-				ExcelUtils.insertImageCell(workbook, sheet, "D:\\simple\\workspace\\upload\\im.png", index, 6);
+				ExcelUtils.insertImageCell(workbook, sheet, index, 6, qrToTistory(order.getOrderNo()));
 				index++;
 			}
 		}
@@ -216,5 +241,32 @@ public class AdminController {
 		ExcelUtils.writeExcel(response, workbook, excelFileName);
 	}
 	
-	
+	/**
+	 * QR생성
+	 * @param orderNo
+	 * @return
+	 * @throws WriterException
+	 * @throws IOException
+	 */
+	public byte[] qrToTistory(String orderNo) throws WriterException, IOException {
+		//QR 정보
+		int width = 100;
+		int height = 100;
+		String url = domain + "delivery/confirm?orderNo="+orderNo;
+
+		//QR Code - BitMatrix: qr code 정보 생성
+		BitMatrix encode = new MultiFormatWriter().encode(url, BarcodeFormat.QR_CODE, width, height);
+		//QR Code - Image 생성. : 1회성으로 생성해야 하기 때문에
+		//stream으로 Generate(1회성이 아니면 File로 작성 가능.)
+		try {
+			//output Stream
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			//Bitmatrix, file.format, outputStream
+			MatrixToImageWriter.writeToStream(encode, "PNG", out);
+			return out.toByteArray();
+		}catch (Exception e){
+			log.warn("QR Code OutputStream 도중 Excpetion 발생, {}", e.getMessage());
+		}
+		return null;
+	}
 }

@@ -144,7 +144,7 @@ public class PaymentsController {
 					OrderProductVO productVO = new OrderProductVO();
 					productVO.setOrderNo(orderId);
 					
-					orderService.getOrderProductInfo(productVO).forEach(orderMapper::insertDelivery);
+					orderService.getOrderInfoDelivery(productVO).forEach(orderMapper::insertDelivery);
 					return "/payments/success";
 				} else {
 					model.addAttribute("PARAM_MESSAGE", "결제 중 오류가 발생하였습니다.");

@@ -55,6 +55,11 @@ public class OrderVO extends CommonVO{
 	private String productName;			//상품명
 	private int totalAmount;			//상품금액
 	
+	private String deliveryStatus;		//배송상태
+	private String deliveryStatusNm;	//배송상태명
+	private String managerNo;			//배송담당자
+	private Date deliveryDt;			//배송일시
+	
 	private List<OrderVO> orderList;	//주문목록
 	private int orderCount;				//주문목록 카운트
 

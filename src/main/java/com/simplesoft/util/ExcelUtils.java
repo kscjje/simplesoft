@@ -461,4 +461,36 @@ public class ExcelUtils {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * 이미지 셀 삽입
+	* @methodName : insertImageCell
+	* @author     : mksong
+	* @date       : 2022.01.04
+	*
+	* @param wb
+	* @param sheet
+	* @param imgPath
+	* @param row
+	* @param col
+	 */
+	public static void insertImageCell(XSSFWorkbook wb, XSSFSheet sheet, int row, int col, byte[] qrToTistory) {
+		byte[] bytes;
+		bytes = qrToTistory;
+		
+		int pictureIdx = wb.addPicture(bytes, Workbook.PICTURE_TYPE_PNG);
+		XSSFDrawing patriarch = sheet.createDrawingPatriarch();
+		XSSFClientAnchor anchor = new XSSFClientAnchor();
+		anchor.setCol1(col);
+		anchor.setRow1(row);
+		anchor.setCol2(col+1);
+		anchor.setRow2(row+1);
+		
+		anchor.setDx1(1);
+		anchor.setDx2((int)(256 * 1.14388 * 15));
+		anchor.setDy1(1);
+		anchor.setDy2(255);
+		
+		patriarch.createPicture(anchor, pictureIdx);
+	}
 }

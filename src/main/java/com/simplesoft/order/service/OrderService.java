@@ -8,4 +8,5 @@ public interface OrderService {
 	public int updateOrderApplyInfo(OrderVO vo);
 	public int updateOrderStatusComplete(OrderVO vo);
 	public List<OrderProductVO> getOrderProductInfo(OrderProductVO productVO);
+	public List<DeliveryVO> getOrderInfoDelivery(OrderProductVO productVO);
 }

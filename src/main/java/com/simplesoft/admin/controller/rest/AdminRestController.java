@@ -75,6 +75,7 @@ public class AdminRestController {
 		return new CommonResponse<Map<String, Object>>(returnData);
 	}
 	
+	/*
 	@GetMapping("/qr/")
 	public ResponseEntity<byte[]> qrToTistory() throws WriterException, IOException {
 		//QR 정보
@@ -84,7 +85,6 @@ public class AdminRestController {
 
 		//QR Code - BitMatrix: qr code 정보 생성
 		BitMatrix encode = new MultiFormatWriter().encode(url, BarcodeFormat.QR_CODE, width, height);
-
 		//QR Code - Image 생성. : 1회성으로 생성해야 하기 때문에
 		//stream으로 Generate(1회성이 아니면 File로 작성 가능.)
 		try {
@@ -98,4 +98,5 @@ public class AdminRestController {
 		}
 		return null;
 	}
+	*/
 }

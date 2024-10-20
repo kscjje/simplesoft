@@ -90,7 +90,7 @@
 		</style>
 		<div class="contents" style="height: 100%;">
 			<div class="ms-4 me-4">
-				<div class="title"><h1><i class="bi bi-check-lg me-2"></i>주문 내역</h1></div>
+				<div class="title"><h1><i class="bi bi-check-lg me-2"></i>배송 관리</h1></div>
 				<div class="search">
 					<div class="mb-2">
 						<span class="mb-1 spanTitle" data-bs-toggle="tooltip" data-bs-placement="top" title="주문 일시 기준"><i class="bi bi-dot me-1"></i>기간</span>
@@ -106,16 +106,13 @@
 						</span>
 					</div>
 					<div class="mb-2">
-						<span class="mb-1 spanTitle"><i class="bi bi-dot me-1"></i>주문상태</span>
+						<span class="mb-1 spanTitle"><i class="bi bi-dot me-1"></i>배송상태</span>
 						<span class="ms-4">
-							<select id="orderStatus" class="inputSelect" title="주문상태">
+							<select id="delivStatus" class="inputSelect" title="배송상태">
 								<option value="">선택</option>
-								<option value="0000">주문완료</option>
-								<option value="1001">가상계좌</option>
-								<option value="0001">주문취소</option>
-								<option value="0002">취소요청</option>
+								<option value="1000">배송전</option>
+								<option value="0000">배송완료</option>
 							</select>
-<!--							<img src="/admin/rest/qr/">-->
 						</span>
 					</div>
 					<div class="mb-2">
@@ -123,7 +120,7 @@
 						<span class="ms-4">
 							<select id="searchOption" class="inputSelect" title="검색조건">
 								<option value="">선택</option>
-								<option value="1">주문자명</option>
+								<option value="1">받는이</option>
 								<option value="2">주문번호</option>
 							</select>
 							<span class="ms-4">
@@ -137,7 +134,7 @@
 						<input type="hidden" id="nowpage" value="1"/>
 						<input type="hidden" id="hiddenStartDate">
 						<input type="hidden" id="hiddenEndDate">
-						<input type="hidden" id="hiddenOrderStatus">
+						<input type="hidden" id="hiddendelivStatus">
 						<input type="hidden" id="hiddenDelivStatus">
 						<input type="hidden" id="hiddenSearchOption">
 						<input type="hidden" id="hiddenSearchText">
@@ -153,12 +150,12 @@
 						<thead>
 							<tr>
 								<th style="width:10%">상세</th>
-								<th style="width:10%">주문상태</th>
-								<th style="width:10%">결제수단</th>
-								<th style="width:20%">주문번호</th>
-								<th style="width:10%">주문자명</th>
-								<th style="width:20%">상품명</th>
-								<th style="width:20%">주문일시</th>
+								<th style="width:10%">배송상태</th>
+								<th style="width:10%">배송일시</th>
+								<th style="width:10%">주문번호</th>
+								<th style="width:10%">받는이</th>
+								<th style="width:10%">식단일자</th>
+								<th style="width:10%">등록일시</th>
 							</tr>
 						</thead>
 						<tbody id="orderBody"/>
@@ -270,7 +267,7 @@
 					$('#startDate').datepicker('setDate',null);	//시작기간
 					$('#endDate').datepicker('setDate',null);	//종료기간
 					
-					$("#orderStatus").val("");					//주문상태
+					$("#delivStatus").val("");					//주문상태
 					$("#searchOption").val("");					//검색종류
 					$("#searchText").val("");					//검색어
 					
@@ -288,7 +285,6 @@
 					
 					let startDate	= $("#startDate").val();
 					let endDate		= $("#endDate").val();
-					let orderStatus = $("#orderStatus").val();
 					let delivStatus = $("#delivStatus").val();
 					let searchOption= $("#searchOption").val();
 					let searchText	= $("#searchText").val();
@@ -301,7 +297,7 @@
 					
 					$("#hiddenStartDate").val(startDate);
 					$("#hiddenEndDate").val(endDate);
-					$("#hiddenOrderStatus").val(orderStatus);
+					$("#hiddendelivStatus").val(delivStatus);
 					$("#hiddenSearchOption").val(searchOption);
 					$("#hiddenSearchText").val(searchText);
 					let form = document.hiddenForm;
@@ -313,7 +309,6 @@
 					
 					let startDate	= $("#startDate").val();
 					let endDate		= $("#endDate").val();
-					let orderStatus = $("#orderStatus").val();
 					let delivStatus = $("#delivStatus").val();
 					let searchOption= $("#searchOption").val();
 					let searchText	= $("#searchText").val();
@@ -330,7 +325,7 @@
 					
 					$("#hiddenStartDate").val(startDate);
 					$("#hiddenEndDate").val(endDate);
-					$("#hiddenOrderStatus").val(orderStatus);
+					$("#hiddendelivStatus").val(delivStatus);
 					$("#hiddenSearchOption").val(searchOption);
 					$("#hiddenSearchText").val(searchText);
 					
@@ -339,7 +334,7 @@
 						endDate		: endDate,
 						startPage	: startPage,
 						endPage		: endPage,
-						orderStatus : orderStatus,
+						delivStatus : delivStatus,
 						delivStatus : delivStatus,
 						searchOption: searchOption,
 						searchText	: searchText,
@@ -347,43 +342,35 @@
 					}
 					$.showMask();
 					$.ajax({
-						url : "/admin/rest/order/searchList",
+						url : "/admin/rest/order/deliverySearchList",
 						type : "POST",
 						dataType : "json",
 						data : formData,
 						success : function(result) {
 							$.hideMask();
 							
-							let cnt = result.data.orderSize;
+							let cnt = result.data.deliverySize;
 							
 							$("#textCount").text(cnt);
 							$("#totalCount").val(cnt);
 							
 							let addHtml = "";
 							if(cnt > 0 ){
-								for(let i = 0; i < result.data.orderList.length; i ++){
-									let data = result.data.orderList[i];
+								for(let i = 0; i < result.data.deliveryList.length; i ++){
+									let data = result.data.deliveryList[i];
 									addHtml +=	'<tr>';
 									addHtml += 		'<td><button type="button" id="ui_detail_btn" class="btn_search" style="line-height: 26px; height: 30px;">상세</button></td>';
-									if(data.orderStatus == "0000"){
-										addHtml +=	'<td><span>주문완료</span>';
-									} else if (data.orderStatus == "0001"){
-										addHtml +=	'<td><span>주문취소</span>';
-									}
-									addHtml +=		'<td>' + data.payMethod + '</td>';
+									addHtml +=		'<td>' + data.deliveryStatusNm + '</td>';
+									addHtml +=		'<td>' + data.deliveryDt + '</td>';
 									addHtml +=		'<td>' + data.orderNo + '</td>';
-									addHtml +=		'<td>' + data.orderName + '</td>';
-									if(data.productList.length > 1 ){
-										addHtml +=		'<td>' + data.productList[0].menuDay + ' 식단 외 '+ (data.productList.length -1) +'건</td>';	
-									} else {
-										addHtml +=		'<td>' + data.productList[0].menuDay + ' 식단</td>';
-									}
-									addHtml +=		'<td>' + data.orderPayDt + '</td>';
+									addHtml +=		'<td>' + data.receiveName + '</td>';
+									addHtml +=		'<td>' + data.menuDay + '</td>';
+									addHtml +=		'<td>' + data.regDt + '</td>';
 									addHtml +=	'</tr>';
 								}
 							} else {
 								addHtml +='<tr>';
-								addHtml +='<td colspan="6">검색 결과가 없습니다.</td>';
+								addHtml +='<td colspan="7">검색 결과가 없습니다.</td>';
 								addHtml +='</tr>';
 							}
 							$("#orderBody").html(addHtml);
@@ -443,7 +430,6 @@
 					
 					let startDate = $("#hiddenStartDate").val();
 					let endDate = $("#hiddenEndDate").val();
-					let orderStatus = $("#hiddenOrderStatus").val();
 					let delivStatus = $("#hiddenDelivStatus").val();
 					let searchOption = $("#hiddenSearchOption").val();
 					let searchText = $("#hiddenSearchText").val();
@@ -460,7 +446,7 @@
 						endDate		: endDate,
 						startPage	: startPage,
 						endPage		: endPage,
-						orderStatus : orderStatus,
+						delivStatus : delivStatus,
 						delivStatus : delivStatus,
 						searchOption: searchOption,
 						searchText	: searchText,
@@ -468,43 +454,35 @@
 					}
 					$.showMask();
 					$.ajax({
-						url : "/admin/rest/order/searchList",
+						url : "/admin/rest/order/deliverySearchList",
 						type : "POST",
 						dataType : "json",
 						data : formData,
 						success : function(result) {
 							$.hideMask();
 							
-							let cnt = result.data.orderSize;
+							let cnt = result.data.deliverySize;
 							
 							$("#textCount").text(cnt);
 							$("#totalCount").val(cnt);
 							
 							let addHtml = "";
 							if(cnt > 0 ){
-								for(let i = 0; i < result.data.orderList.length; i ++){
-									let data = result.data.orderList[i];
+								for(let i = 0; i < result.data.deliveryList.length; i ++){
+									let data = result.data.deliveryList[i];
 									addHtml +=	'<tr>';
 									addHtml += 		'<td><button type="button" id="ui_detail_btn" class="btn_search" style="line-height: 26px; height: 30px;">상세</button></td>';
-									if(data.orderStatus == "0000"){
-										addHtml +=	'<td><span>주문완료</span>';
-									} else if (data.orderStatus == "0001"){
-										addHtml +=	'<td><span>주문취소</span>';
-									}
-									addHtml +=		'<td>' + data.payMethod + '</td>';
+									addHtml +=		'<td>' + data.deliveryStatusNm + '</td>';
+									addHtml +=		'<td>' + data.deliveryDt + '</td>';
 									addHtml +=		'<td>' + data.orderNo + '</td>';
-									addHtml +=		'<td>' + data.orderName + '</td>';
-									if(data.productList.length > 1 ){
-										addHtml +=		'<td>' + data.productList[0].menuDay + ' 식단 외 '+ (data.productList.length -1) +'건</td>';	
-									} else {
-										addHtml +=		'<td>' + data.productList[0].menuDay + ' 식단</td>';
-									}
-									addHtml +=		'<td>' + data.orderPayDt + '</td>';
+									addHtml +=		'<td>' + data.receiveName + '</td>';
+									addHtml +=		'<td>' + data.menuDay + '</td>';
+									addHtml +=		'<td>' + data.regDt + '</td>';
 									addHtml +=	'</tr>';
 								}
 							} else {
 								addHtml +='<tr>';
-								addHtml +='<td colspan="6">검색 결과가 없습니다.</td>';
+								addHtml +='<td colspan="7">검색 결과가 없습니다.</td>';
 								addHtml +='</tr>';
 							}
 							$("#orderBody").html(addHtml);
@@ -572,35 +550,7 @@
 						searchBtn();
 					}
 				}
-				let option = /*[[${option}]]*/ "";
 				
-				switch(option) {
-					case "1" :
-						$("#0").trigger("click");
-						//신규주문
-						break;	
-					case "2" :
-						//결제대기
-						$("#orderStatus").val("1001");
-						break;
-					case "3" : 
-						//취소요청
-						$("#orderStatus").val("0002");
-						break;
-					case "4" :
-						//취소완료
-						$("#orderStatus").val("0001"); 
-						break;
-					case "5" :
-						//금일배송
-						
-						break;
-					case "6" : 
-						//익일배송
-						break;
-					default:
-						break;
-				}
 				fnInit();
 			});
 			

@@ -120,6 +120,16 @@
 				background-color: #787878;
 				color: #FFF;
 			}
+			.btn_excel {
+				min-width: 60px;
+				line-height: 30px;
+				height: 32px;
+				padding: 0 9px;
+				border: 1px solid rgb(192, 192, 192);
+				background: rgb(128, 128, 128);
+				color: #FFF;
+				font-size: 15px;
+			}
 		</style>
 		<div class="contents" style="height: 100%;">
 			<div class="ms-4 me-4">
@@ -129,6 +139,7 @@
 						<span class="ms-4">
 							<input type="button" onclick="location.href='./menuReg'" class="btn_date" id="0" value="고객기준화면">
 							<input type="text" id="startDate" class="inputText datepicker cursor-pointer" th:value="${customDate}" placeholder="YYYY-MM-DD" title="시작기간" readonly><i class="bi bi-calendar i_calendar ms-2" onclick="$('#startDate').datepicker('show');"></i>
+							<input type="button" id="modalPay" class="btn_excel ms-1 float-end" value="엑셀업로드"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">
 						</span>
 					</div>
 				</div>
@@ -147,8 +158,23 @@
 				</div>
 			</div>
         </div>
+	    <!-- Modal -->
+		<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="staticBackdropLabel">식단엑셀 업로드</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="wrapper">
+							<div id="payment-method"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div id="tost_message">저장 되었습니다.</div>
-		
 		<script th:inline="javascript">
 			$(document).ready(function() {
 				let result = /*[[${resultMap}]]*/"";

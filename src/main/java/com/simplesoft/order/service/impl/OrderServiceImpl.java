@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.simplesoft.mapper.order.OrderMapper;
+import com.simplesoft.order.service.DeliveryVO;
 import com.simplesoft.order.service.OrderProductVO;
 import com.simplesoft.order.service.OrderService;
 import com.simplesoft.order.service.OrderVO;
@@ -51,9 +52,14 @@ public class OrderServiceImpl implements OrderService{
 	public int updateOrderStatusComplete(OrderVO vo) {
 		return orderMapper.updateOrderStatusComplete(vo);
 	}
-	
+	//주문상품정보
+	@Override
 	public List<OrderProductVO> getOrderProductInfo(OrderProductVO productVO){
 		return orderMapper.getOrderProductInfo(productVO);
 	}
-	
+	//배송정보 넣을 리스트 조회
+	@Override
+	public List<DeliveryVO> getOrderInfoDelivery(OrderProductVO vo) {
+		return orderMapper.getOrderInfoDelivery(vo);
+	}
 }

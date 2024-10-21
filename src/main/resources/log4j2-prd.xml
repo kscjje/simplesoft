@@ -2,7 +2,7 @@
 <Configuration status="WARN">
 
 	<Properties>
-		<Property name="FILENAME">/kscjje/tomcat/log4j/logs</Property>
+		<Property name="FILENAME">/tomcat/log4j/logs</Property>
 	</Properties>
 
     <Appenders>

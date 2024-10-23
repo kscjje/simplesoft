@@ -18,9 +18,11 @@ public class CommonVO {
 	private String delivStatus;		//배송상태
 	private String searchOption;	//검색종류
 	private String searchText;		//검색내용
+	private String searchOrder;		//정렬조건
+	private String searchOrderBy;	//오름내림차순
 	
 	public CommonVO(String startDate, String endDate, int startPage, int endPage, String orderStatus,
-			String delivStatus, String searchOption, String searchText) {
+			String delivStatus, String searchOption, String searchText, String searchOrder, String searchOrderBy) {
 		super();
 		this.startDate = startDate;
 		this.endDate = endDate;
@@ -30,5 +32,7 @@ public class CommonVO {
 		this.delivStatus = delivStatus;
 		this.searchOption = searchOption;
 		this.searchText = searchText;
+		this.searchOrder = searchOrder;
+		this.searchOrderBy = searchOrderBy;
 	}
 }

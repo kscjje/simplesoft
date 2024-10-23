@@ -232,7 +232,8 @@
 	<select id="selectDeliveryList" parameterType="com.simplesoft.order.service.DeliveryVO" resultType="com.simplesoft.order.service.DeliveryVO">
 		/* OrderMapper.selectDeliveryList */
 		SELECT
-			  A.ORDER_NO
+			  A.DELIVERY_SEQ
+			, A.ORDER_NO
 			, A.ORDER_PRODUCT_NO
 			, DATE_FORMAT(A.MENU_DAY,'%Y년 %m월 %d일') AS MENU_DAY
 			, A.STATUS as DELIVERY_STATUS
@@ -241,16 +242,19 @@
 				WHEN A.STATUS = '0000' THEN '배송완료'
 				ELSE '배송전' 
 			END AS DELIVERY_STATUS_NM
-			, A.MANAGER_NO
+			, IFNULL((SELECT MANAGER_NM FROM MANAGER_MST MM WHERE MM.MANAGER_NO = A.MANAGER_NO),'미배정') AS MANAGER_NM
 			, IFNULL(DATE_FORMAT(A.DELIVERY_DT,'%Y-%m-%d %H:%i:%s'),'') AS DELIVERY_DT
-			, A.RECEIVE_NAME
-			, A.RECEIVE_TEL
-			, A.RECEIVE_PHONE
-			, A.RECEIVE_POST_NUM
-			, A.RECEIVE_ADDR
-			, A.RECEIVE_ADDR_DETAIL
+			, IFNULL(A.RECEIVE_NAME,'') AS RECEIVE_NAME
+			, IFNULL(A.RECEIVE_TEL,'') AS RECEIVE_TEL
+			, IFNULL(A.RECEIVE_PHONE,'') AS RECEIVE_PHONE
+			, IFNULL(A.RECEIVE_POST_NUM,'') AS RECEIVE_POST_NUM 
+			, IFNULL(A.RECEIVE_ADDR,'') AS RECEIVE_ADDR 
+			, IFNULL(A.RECEIVE_ADDR_DETAIL,'') AS RECEIVE_ADDR_DETAIL
 			, DATE_FORMAT(A.REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
+			, B.ORDER_QTY
 		FROM DELIVERY_MST A
+		JOIN ORDER_PRODUCT B ON A.ORDER_PRODUCT_NO = B.ORDER_PRODUCT_NO
+		AND A.ORDER_NO = B.ORDER_NO
 		WHERE 1=1
 		<if test="startDate neq null and startDate neq '' and endDate neq null and endDate neq ''">
 			AND DATE_FORMAT(A.REG_DT,'%Y-%m-%d') BETWEEN #{startDate} AND #{endDate}
@@ -268,7 +272,23 @@
 				</if>
 			</if>
 		</if>
-		ORDER BY REG_DT DESC
+		ORDER BY
+		<if test="searchOrder neq null and searchOrder neq ''">
+			<if test="searchOrder == 1">
+				MENU_DAY
+			</if>
+			<if test="searchOrder == 2">
+				REG_DT
+			</if>
+		</if>
+		<if test="searchOrderBy neq null and searchOrderBy neq ''">
+			<if test="searchOrderBy == 1">
+				DESC
+			</if>
+			<if test="searchOrderBy == 2">
+				ASC
+			</if>
+		</if>
 		<if test="startPage neq null and startPage neq '' and endPage neq null and endPage neq '' or startPage eq 0">
 			LIMIT #{startPage}, #{endPage}
 		</if>

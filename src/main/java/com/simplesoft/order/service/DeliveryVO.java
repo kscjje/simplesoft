@@ -20,13 +20,15 @@ import lombok.ToString;
 @ToString
 public class DeliveryVO extends CommonVO{
 	
+	private int deliverySeq;			//시퀀스
 	private int orderProductNo;			//주문상품번호
 	private String orderNo;				//주문번호
 	private String menuDay;				//식단일자
 	private String deliveryStatus;		//배송상태
 	
 	private String deliveryStatusNm;	//배송상태명
-	private String managerNo;			//배송담당자
+	private String managerNo;			//배송담당자 번호
+	private String managerNm;			//배송담당자
 	private String deliveryDt;			//배송일시
 	private String regUser;				//등록자
 	private String regDt;				//등록일시
@@ -41,4 +43,5 @@ public class DeliveryVO extends CommonVO{
 	
 	private List<DeliveryVO> deliveryList;	//배송목록
 	private int deliveryCount;				//배송목록 카운트
+	private int orderQty;				//수량
 }

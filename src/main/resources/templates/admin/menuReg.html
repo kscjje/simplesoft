@@ -185,9 +185,9 @@
 				// 오늘 날짜 년도 가져오기
 				let currentYear = currentDate.getFullYear();
 				// 오늘 날짜 월 가져오기
-				let currentMonth = (currentDate.getMonth()+1) < 10 ? "0"+(currentDate.getMonth()+1) : (currentDate.getMonth()+1);
+				let currentMonth = (currentDate.getMonth()+1) < 10 ? "0"+(currentDate.getMonth()+1) : (currentDate.getMonth()+1)+"";
 				// 오늘 날짜 일 가져오기
-				let currentDay = 	(currentDate.getDate()+1) < 10 ? "0"+(currentDate.getDate()+1) : (currentDate.getDate()+1);
+				let currentDay = 	(currentDate.getDate()+1) < 10 ? "0"+(currentDate.getDate()+1) : (currentDate.getDate()+1)+"";
 				
 				if(customDate != null){
 					currentYear	= currentDate.setFullYear(customDate.substr(0,4));  // 년도를 2024로 설정

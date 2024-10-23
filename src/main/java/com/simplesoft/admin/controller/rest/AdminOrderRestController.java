@@ -16,6 +16,7 @@ import com.simplesoft.order.service.DeliveryVO;
 import com.simplesoft.order.service.OrderVO;
 import com.simplesoft.reponse.BasicResponse;
 import com.simplesoft.reponse.CommonResponse;
+import com.simplesoft.util.EncryptUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -82,13 +83,21 @@ public class AdminOrderRestController {
 	}
 	
 	//주문 내역 조회
-		@PostMapping(value = "/deliverySearchList")
-		public BasicResponse deliverySearchListAjax(@ModelAttribute("deliveryVO") DeliveryVO paramVO) {
-			System.out.println(paramVO);
-			Map<String, Object> returnData = new HashMap<String, Object>();
-			DeliveryVO deliveryVO = admOrderService.getDeliveryList(paramVO);
-			returnData.put("deliveryList", deliveryVO.getDeliveryList());
-			returnData.put("deliverySize", deliveryVO.getDeliveryCount());
-			return new CommonResponse<Map<String, Object>>(returnData);
-		}
+	@PostMapping(value = "/deliverySearchList")
+	public BasicResponse deliverySearchListAjax(@ModelAttribute("deliveryVO") DeliveryVO paramVO) {
+		System.out.println(paramVO);
+		Map<String, Object> returnData = new HashMap<String, Object>();
+		DeliveryVO deliveryVO = admOrderService.getDeliveryList(paramVO);
+		returnData.put("deliveryList", deliveryVO.getDeliveryList());
+		returnData.put("deliverySize", deliveryVO.getDeliveryCount());
+		return new CommonResponse<Map<String, Object>>(returnData);
+	}
+	@PostMapping("/decrypt")
+    public BasicResponse decryptData(@RequestParam String encryptedData) throws Exception {
+        // Call the utility method to decrypt the data
+		Map<String, Object> returnData = new HashMap<String, Object>();
+        String decryptedData = EncryptUtils.AES256_Decrypt(encryptedData);
+        returnData.put("decryptedData", decryptedData);
+        return new CommonResponse<Map<String, Object>>(returnData);
+    }
 }

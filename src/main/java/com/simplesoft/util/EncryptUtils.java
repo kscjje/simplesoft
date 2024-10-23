@@ -218,9 +218,7 @@ public class EncryptUtils {
 	/**
 	 * AES 256 복호화
 	 */
-	public static String AES256_Decrypt(String str) throws UnsupportedEncodingException, NoSuchAlgorithmException,
-			NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException,
-			BadPaddingException, IOException, NoSuchProviderException {
+	public static String AES256_Decrypt(String str) throws Exception {
 		byte[] textBytes = Base64.decodeBase64(str);
 		AlgorithmParameterSpec ivSpec = new IvParameterSpec(ivBytes);
 		SecretKeySpec newKey = new SecretKeySpec(KEY.getBytes("UTF-8"), "AES");
@@ -232,9 +230,7 @@ public class EncryptUtils {
 	/**
 	 * AES 256 복호화
 	 */
-	public static String AES256_Decrypt(String str, String aesKey) throws UnsupportedEncodingException,
-			NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException,
-			IllegalBlockSizeException, BadPaddingException, IOException, NoSuchProviderException {
+	public static String AES256_Decrypt(String str, String aesKey) throws Exception {
 
 		if (StringUtils.ifNull(KEY, "").equals("")) {
 			KEY = aesKey;

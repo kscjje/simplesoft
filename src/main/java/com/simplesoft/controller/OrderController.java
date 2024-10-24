@@ -124,7 +124,7 @@ public class OrderController {
 		
 		String cartArray = request.getParameter("cartArray");
 		if("".equals(cartArray)) {
-			model.addAttribute("PARAM_MESSAGE", "선택한 상품이 없습니다.");
+			model.addAttribute("PARAM_MESSAGE", "선택한 식단이 없습니다.");
 			return GlobalVariable.REDIRECT_BACK;
 		}
 		
@@ -179,11 +179,11 @@ public class OrderController {
 				return GlobalVariable.REDIRECT_SUBMIT;
 			} else {
 				//구매상품정보가없음.
-				model.addAttribute("PARAM_MESSAGE", "상품정보가 없습니다.<br>계속 오류 발생시 고객센터에 문의 하여 주십시오.");
+				model.addAttribute("PARAM_MESSAGE", "식단정보가 없습니다.<br>계속 오류 발생시 고객센터에 문의 하여 주십시오.");
 				return GlobalVariable.REDIRECT_BACK;
 			}
 		} else {
-			model.addAttribute("PARAM_MESSAGE", "주문 가능한 상품이 없습니다.");
+			model.addAttribute("PARAM_MESSAGE", "주문 가능한 식단이 없습니다.");
 			model.addAttribute("returnUrl", "/cart");
 			return GlobalVariable.REDIRECT_SUBMIT;
 		}
@@ -239,7 +239,6 @@ public class OrderController {
 	}
 	
 	private boolean timeCheck(String dateString) {
-		
 		boolean result = true;
 		
 		LocalDateTime dateToCheck = LocalDateTime.parse(dateString + "T16:00:00");
@@ -247,13 +246,16 @@ public class OrderController {
 		
 		LocalDate dateToCheckDate	= dateToCheck.toLocalDate();
 		LocalDate currentDate		= currentDateTime.toLocalDate();
+		LocalDate gubunDate			= null;		
+		LocalTime timeToCheck 		= currentDateTime.toLocalTime();
 		
-		if(dateToCheckDate.isEqual(currentDate)) {
-			LocalTime timeToCheck = currentDateTime.toLocalTime();
-			if (timeToCheck.isAfter(LocalTime.of(18, 0))) {
-				//18시 이후
-				result = false;
-			}
+		if (timeToCheck.isAfter(LocalTime.of(18, 00))) {
+			gubunDate = currentDate.plusDays(2);
+		} else {
+			gubunDate = currentDate.plusDays(1);
+		}
+		if(gubunDate.isAfter(dateToCheckDate)) {
+			result = false;
 		}
 		return result;
 	}

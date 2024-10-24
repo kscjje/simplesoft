@@ -16,4 +16,5 @@ public interface AdmOrderMapper {
 	
 	public List<DeliveryVO> selectDeliveryList(DeliveryVO vo);
 	public int selectDeliveryListCount(DeliveryVO vo);
+	public int updateDelivComplete(Map<String, Object> paramMap);
 }

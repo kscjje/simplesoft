@@ -46,5 +46,9 @@ public class AdmOrderServiceImpl implements AdmOrderService{
 		result.setDeliveryCount(admOrderMapper.selectDeliveryListCount(vo));
 		return result;
 	}
-	
+	//배송 완료처리
+	@Override
+	public int updateDelivComplete(Map<String, Object> paramMap){
+		return admOrderMapper.updateDelivComplete(paramMap);
+	}
 }

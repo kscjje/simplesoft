@@ -369,6 +369,8 @@
 										addHtml +=	'<td><span>주문완료</span>';
 									} else if (data.orderStatus == "0001"){
 										addHtml +=	'<td><span>주문취소</span>';
+									} else if (data.orderStatus == "1000"){
+										addHtml +=	'<td><span>신청작성중</span>';
 									}
 									addHtml +=		'<td>' + data.payMethod + '</td>';
 									addHtml +=		'<td>' + data.orderNo + '</td>';

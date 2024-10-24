@@ -29,6 +29,7 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
+import com.simplesoft.manager.service.ManagerService;
 import com.simplesoft.manager.service.ManagerVO;
 import com.simplesoft.mapper.admOrder.service.AdmOrderService;
 import com.simplesoft.menuboard.service.MenuBoardService;
@@ -55,6 +56,9 @@ public class AdminController {
 	
 	@Autowired
 	AdmOrderService admOrderService;
+	
+	@Autowired
+	ManagerService managerService;
 	
 	/**
 	 * 관리자 로그인 화면
@@ -110,7 +114,7 @@ public class AdminController {
 	}
 	
 	/**
-	 * 주문자리스트 - 주문관리
+	 * 배송리스트 - 배송관리
 	 * 
 	 * @param model
 	 * @return
@@ -127,6 +131,9 @@ public class AdminController {
 			//메인 페이지 대시보드에서 넘어온 파라미터
 			model.addAttribute("option", paramMap.get("option"));
 		}
+		ManagerVO vo = new ManagerVO();
+		List<Map<String, Object>> manageList = managerService.selectManagerList(vo);
+		model.addAttribute("manageList", manageList);
 		return "/admin/deliveryManage";
 	}
 	/**

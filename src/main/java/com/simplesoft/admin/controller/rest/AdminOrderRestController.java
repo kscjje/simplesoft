@@ -92,6 +92,8 @@ public class AdminOrderRestController {
 		returnData.put("deliverySize", deliveryVO.getDeliveryCount());
 		return new CommonResponse<Map<String, Object>>(returnData);
 	}
+	
+	//복호화
 	@PostMapping("/decrypt")
     public BasicResponse decryptData(@RequestParam String encryptedData) throws Exception {
         // Call the utility method to decrypt the data
@@ -100,4 +102,22 @@ public class AdminOrderRestController {
         returnData.put("decryptedData", decryptedData);
         return new CommonResponse<Map<String, Object>>(returnData);
     }
+	/**
+	 * 배송완료 처리
+	 * @param paramMap
+	 * @return
+	 */
+	@PostMapping("/delivery/complete")
+	public BasicResponse cartDelete(@RequestParam Map<String, Object> paramMap) {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		String[] array = ((String)paramMap.get("checkArray")).split(",");
+		paramMap.put("arrSeq", array);
+		
+		int suc = admOrderService.updateDelivComplete(paramMap);
+		if(suc > 0) result.put("resultCode", "SUCCESS");
+		
+		return new CommonResponse<Map<String, Object>>(result);
+	}
 }

@@ -18,6 +18,7 @@ public class ManagerVO {
 	private String managerId;
 	private String managerPw;
 	private String managerStatus;
+	private String authCode;
 	private Date managerStatusDt;
 	private int loginFailCnt;
 	private Date loginLastDt;

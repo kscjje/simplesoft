@@ -1,5 +1,8 @@
 package com.simplesoft.manager.service.impl;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,5 +27,9 @@ public class ManagerServiceImpl implements ManagerService {
 	@Override
 	public ManagerVO selectManagerDetail(ManagerVO vo) {
 		return managerMapper.selectManagerDetail(vo);
+	}
+	@Override
+	public List<Map<String, Object>> selectManagerList(ManagerVO vo){
+		return managerMapper.selectManagerList(vo);
 	}
 }

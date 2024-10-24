@@ -188,7 +188,7 @@
 	
 	<!-- 주문 신청 정보 -->	
 	<select id="getOrderProductInfo" parameterType="com.simplesoft.order.service.OrderProductVO" resultType="com.simplesoft.order.service.OrderProductVO">
-		/* OrderMapper.getOrderProductInfo */
+		/* AdmOrderMapper.getOrderProductInfo */
 		SELECT
 			  ORDER_PRODUCT_NO
 			, ORDER_NO
@@ -230,7 +230,7 @@
     
 	<!-- 배송 정보 -->	
 	<select id="selectDeliveryList" parameterType="com.simplesoft.order.service.DeliveryVO" resultType="com.simplesoft.order.service.DeliveryVO">
-		/* OrderMapper.selectDeliveryList */
+		/* AdmOrderMapper.selectDeliveryList */
 		SELECT
 			  A.DELIVERY_SEQ
 			, A.ORDER_NO
@@ -262,6 +262,9 @@
 		<if test="delivStatus neq null and delivStatus neq ''">
 			AND A.STATUS = ${delivStatus}
 		</if>
+		<if test="managerNo neq null and managerNo neq ''">
+			AND A.MANAGER_NO = ${managerNo}
+		</if>
 		<if test="searchOption neq null and searchOption neq ''">
 			<if test="searchOption == 1">
 				AND A.RECEIVE_NAME LIKE CONCAT('%',#{searchText},'%')
@@ -275,10 +278,10 @@
 		ORDER BY
 		<if test="searchOrder neq null and searchOrder neq ''">
 			<if test="searchOrder == 1">
-				MENU_DAY
+				REG_DT
 			</if>
 			<if test="searchOrder == 2">
-				REG_DT
+				MENU_DAY
 			</if>
 		</if>
 		<if test="searchOrderBy neq null and searchOrderBy neq ''">
@@ -296,7 +299,7 @@
 	
 	<!-- 배송 정보 카운트-->	
 	<select id="selectDeliveryListCount" parameterType="com.simplesoft.order.service.DeliveryVO" resultType="int">
-		/* OrderMapper.selectDeliveryListCount */
+		/* AdmOrderMapper.selectDeliveryListCount */
 		SELECT
 			COUNT(*) as totalCount
 		FROM DELIVERY_MST A
@@ -306,6 +309,9 @@
 		</if>
 		<if test="delivStatus neq null and delivStatus neq ''">
 			AND A.STATUS = ${delivStatus}
+		</if>
+		<if test="managerNo neq null and managerNo neq ''">
+			AND A.MANAGER_NO = ${managerNo}
 		</if>
 		<if test="searchOption neq null and searchOption neq ''">
 			<if test="searchOption == 1">
@@ -317,6 +323,15 @@
 				</if>
 			</if>
 		</if>
-		ORDER BY REG_DT DESC
 	</select>
+	<!-- 장바구니 리스트 삭제 -->
+	<update id="updateDelivComplete" parameterType="hashMap">
+		/* AdmOrderMapper.updateDelivComplete */
+		UPDATE DELIVERY_MST 
+		SET STATUS = '0000', DELIVERY_DT = NOW()
+		WHERE DELIVERY_SEQ IN
+		<foreach collection="arrSeq" item="item" index="index" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</update>
 </mapper>

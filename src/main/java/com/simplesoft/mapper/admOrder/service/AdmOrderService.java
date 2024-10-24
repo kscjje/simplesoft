@@ -10,4 +10,5 @@ public interface AdmOrderService {
 	public OrderVO selectOrderApplyExcel(OrderVO vo);
 	public Map<String, Object> getDashBoardCnt();
 	public DeliveryVO getDeliveryList(DeliveryVO vo);
+	public int updateDelivComplete(Map<String, Object> paramMap);
 }

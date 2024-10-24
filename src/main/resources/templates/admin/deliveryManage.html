@@ -136,6 +136,18 @@
 						</span>
 					</div>
 					<div class="mb-2">
+						<span class="mb-1 spanTitle"><i class="bi bi-dot me-1"></i>담당자</span>
+						<span class="ms-4">
+							<select id="managerNo" class="inputSelect" title="배송담당자">
+								<option value="">선택</option>
+								<option value="0">미배정</option>
+								<th:block th:each="rs,rsStat : ${manageList}">
+									<option th:value="${rs.managerNo}" th:utext="${rs.managerNm}"></option>
+								</th:block>
+							</select>
+						</span>
+					</div>
+					<div class="mb-2">
 						<span class="mb-1 spanTitle"><i class="bi bi-dot me-1"></i>검색</span>
 						<span class="ms-4">
 							<select id="searchOption" class="inputSelect" title="검색조건">
@@ -162,12 +174,12 @@
 						<input type="hidden" id="nowpage" value="1"/>
 						<input type="hidden" id="hiddenStartDate">
 						<input type="hidden" id="hiddenEndDate">
-						<input type="hidden" id="hiddendelivStatus">
 						<input type="hidden" id="hiddenDelivStatus">
 						<input type="hidden" id="hiddenSearchOption">
 						<input type="hidden" id="hiddenSearchText">
 						<input type="hidden" id="hiddenSearchOrder">
 						<input type="hidden" id="hiddenSearchOrderBy">
+						<input type="hidden" id="managerNo">
 					</form>
 				</div>
 				
@@ -186,7 +198,7 @@
 								<th style="width:9%">식단일자</th>
 								<th style="width:5%">배송상태</th>
 								<th style="width:9%">배송일시</th>
-								<th style="width:5%">배송담당</th>
+								<th style="width:5%">담당자</th>
 								<th style="width:4%">수량</th>
 								<th style="width:10%">주문번호</th>
 								<th style="width:7%">받는이</th>
@@ -350,6 +362,7 @@
 					let searchText	= $("#searchText").val();
 					let searchOrder	= $("#searchOrder").val();
 					let searchOrderBy= $("#searchOrderBy").val();
+					let managerNo= $("#managerNo").val();
 					
 					if(searchText != "" && 	searchOption == ""){
 						alert("검색 옵션을 선택해 주세요.");
@@ -359,11 +372,12 @@
 					
 					$("#hiddenStartDate").val(startDate);
 					$("#hiddenEndDate").val(endDate);
-					$("#hiddendelivStatus").val(delivStatus);
+					$("#hiddenDelivStatus").val(delivStatus);
 					$("#hiddenSearchOption").val(searchOption);
 					$("#hiddenSearchText").val(searchText);
 					$("#hiddenSearchOrder").val(searchOrder);
 					$("#hiddenSearchOrderBy").val(searchOrderBy);
+					$("#hiddenManagerNo").val(managerNo);
 					
 					let form = document.hiddenForm;
 					form.method = "GET";
@@ -379,6 +393,7 @@
 					let searchText	= $("#searchText").val();
 					let searchOrder	= $("#searchOrder").val();
 					let searchOrderBy= $("#searchOrderBy").val();
+					let managerNo= $("#managerNo").val();
 					
 					if(searchText != "" && 	searchOption == ""){
 						alert("검색 옵션을 선택해 주세요.");
@@ -392,11 +407,12 @@
 					
 					$("#hiddenStartDate").val(startDate);
 					$("#hiddenEndDate").val(endDate);
-					$("#hiddendelivStatus").val(delivStatus);
+					$("#hiddenDelivStatus").val(delivStatus);
 					$("#hiddenSearchOption").val(searchOption);
 					$("#hiddenSearchText").val(searchText);
 					$("#hiddenSearchOrder").val(searchOrder);
 					$("#hiddenSearchOrderBy").val(searchOrderBy);
+					$("#hiddenManagerNo").val(managerNo);
 					
 					let formData = {
 						startDate	: startDate,
@@ -404,11 +420,11 @@
 						startPage	: startPage,
 						endPage		: endPage,
 						delivStatus : delivStatus,
-						delivStatus : delivStatus,
 						searchOption: searchOption,
 						searchText	: searchText,
 						searchOrder	: searchOrder,
 						searchOrderBy: searchOrderBy,
+						managerNo: managerNo,
 						pageSize	: pageSize
 					}
 					$.showMask();
@@ -503,7 +519,6 @@
 					});
 				}
 				fnModalDelivery = function (managerNm){
-					alert(managerNm)
 					$("#modalDeliv").trigger("click");
 				}
 				fnDecrypt = function (encryptedData, callback) {
@@ -536,6 +551,7 @@
 					let searchText = $("#hiddenSearchText").val();
 					let searchOrder	= $("#searchOrder").val();
 					let searchOrderBy= $("#searchOrderBy").val();
+					let managerNo= $("#managerNo").val();
 					
 					let pageSize = 10;
 					let startPage = 0;
@@ -548,11 +564,11 @@
 						startPage	: startPage,
 						endPage		: endPage,
 						delivStatus : delivStatus,
-						delivStatus : delivStatus,
 						searchOption: searchOption,
 						searchText	: searchText,
 						searchOrder	: searchOrder,
 						searchOrderBy: searchOrderBy,
+						managerNo: managerNo,
 						pageSize	: pageSize
 					}
 					$.showMask();
@@ -664,18 +680,36 @@
 					if(checked) $('input:checkbox').prop('checked',true);
 					else $('input:checkbox').prop('checked',false);
 				});
-				
+				//배송완료처리
 				$("#ui_deliv_btn").click(function(){
 					if($('input:checkbox:checked').length < 1){
 						alert("체크된 리스트가 없습니다.");
 						return;
 					}
 					if(confirm("배송완료 처리 하시겠습니까?")){
+						let checkArray = "";
 						$('input:checkbox').each(function(){
-							if($(this).is(":checked") == true){
-								console.log($(this).val());
-							}
+							if($(this).is(":checked") == true) checkArray += $(this).val()+",";
 						})
+						if(checkArray.substring(checkArray.length-1, checkArray.length) == ","){
+							checkArray = checkArray.substring(0,checkArray.length-1);
+						}
+						$.ajax({
+							url : "/admin/rest/order/delivery/complete",
+							type : "POST",
+							dataType : "json",
+							data: {
+				        		checkArray	: checkArray
+			        		},
+							success : function(result) {
+								if(result.data.resultCode == "SUCCESS") {
+									alert("배송완료 처리 하였습니다.");
+									$(".pagination").find(".active").trigger("click");
+								} else alert("배송완료 처리에 실패하였습니다.");
+							}, error : function(request, status, error) {
+								alert("관리자에게 문의해 주세요.");
+							}
+						});
 					}
 				});
 				fnInit();

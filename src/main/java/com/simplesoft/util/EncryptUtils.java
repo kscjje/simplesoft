@@ -203,9 +203,7 @@ public class EncryptUtils {
 	/**
 	 * AES 256 암호화
 	 */
-	public static String AES256_Encrypt(String str) throws UnsupportedEncodingException, NoSuchAlgorithmException,
-			NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException,
-			BadPaddingException, IOException, NoSuchProviderException {
+	public static String AES256_Encrypt(String str) throws Exception {
 		byte[] textBytes = str.getBytes("UTF-8");
 		AlgorithmParameterSpec ivSpec = new IvParameterSpec(ivBytes);
 		SecretKeySpec newKey = new SecretKeySpec(KEY.getBytes("UTF-8"), "AES");

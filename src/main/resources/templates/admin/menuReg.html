@@ -137,8 +137,8 @@
 				<div class="search">
 					<div class="mb-2">
 						<span class="ms-4">
-							<input type="button" onclick="location.href='./menuReg'" class="btn_date" id="0" value="고객기준화면">
-							<input type="text" id="startDate" class="inputText datepicker cursor-pointer" th:value="${customDate}" placeholder="YYYY-MM-DD" title="시작기간" readonly><i class="bi bi-calendar i_calendar ms-2" onclick="$('#startDate').datepicker('show');"></i>
+							<input type="button" onclick="location.href='./menuReg'" class="btn_date" id="0" value="고객기준화면" data-bs-toggle="tooltip" data-bs-placement="top" title="고객이 보는 시점으로 달력을 보여줍니다.">
+							<input type="text" id="startDate" class="inputText datepicker cursor-pointer" th:value="${customDate}" placeholder="YYYY-MM-DD" data-bs-toggle="tooltip" data-bs-placement="top" title="특정 날짜 시점으로 달력을 보여줍니다." readonly><i class="bi bi-calendar i_calendar ms-2" onclick="$('#startDate').datepicker('show');"></i>
 							<input type="button" id="modalPay" class="btn_excel ms-1 float-end" value="엑셀업로드"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">
 						</span>
 					</div>
@@ -288,9 +288,16 @@
 					buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif", //버튼 이미지 경로
 					buttonImageOnly: true, //버튼 이미지만 깔끔하게 보이게함
 					language: 'ko', //달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
+					beforeShowDay: function(date){
+						/* 일요일만 선택 불가 */
+						return (date.getDay() != 0);
+					},
 				}).on('changeDate', function (e) {
 					location.href='./menuReg?customDate='+$("#startDate").val();
 				});
+				
+				//툴팁 이펙트 효과
+				$('[data-bs-toggle="tooltip"]').tooltip();
 			});
 
 			//추가 버튼			

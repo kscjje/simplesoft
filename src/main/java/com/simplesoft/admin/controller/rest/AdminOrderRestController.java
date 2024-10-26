@@ -1,6 +1,7 @@
 package com.simplesoft.admin.controller.rest;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.simplesoft.manager.service.ManagerService;
+import com.simplesoft.manager.service.ManagerVO;
 import com.simplesoft.mapper.admOrder.service.AdmOrderService;
 import com.simplesoft.menuboard.service.MenuBoardService;
 import com.simplesoft.order.service.DeliveryVO;
@@ -29,6 +32,8 @@ public class AdminOrderRestController {
 	AdmOrderService admOrderService;
 	@Autowired
 	MenuBoardService menuBoardService;
+	@Autowired
+	ManagerService managerService;
 	
 	//주문 내역 조회
 	@PostMapping(value = "/searchList")
@@ -93,15 +98,6 @@ public class AdminOrderRestController {
 		return new CommonResponse<Map<String, Object>>(returnData);
 	}
 	
-	//복호화
-	@PostMapping("/decrypt")
-    public BasicResponse decryptData(@RequestParam String encryptedData) throws Exception {
-        // Call the utility method to decrypt the data
-		Map<String, Object> returnData = new HashMap<String, Object>();
-        String decryptedData = EncryptUtils.AES256_Decrypt(encryptedData);
-        returnData.put("decryptedData", decryptedData);
-        return new CommonResponse<Map<String, Object>>(returnData);
-    }
 	/**
 	 * 배송완료 처리
 	 * @param paramMap
@@ -119,5 +115,50 @@ public class AdminOrderRestController {
 		if(suc > 0) result.put("resultCode", "SUCCESS");
 		
 		return new CommonResponse<Map<String, Object>>(result);
+	}
+	/**
+	 * 배정 리스트
+	 * @param paramMap
+	 * @return
+	 */
+	@PostMapping("/delivery/manageList")
+	public BasicResponse manageList(@RequestParam Map<String, Object> paramMap) {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		ManagerVO vo = new ManagerVO();
+		List<Map<String, Object>> manageList = managerService.selectManagerList(vo);
+		List<Map<String, Object>> noneList = admOrderService.selectDeliveryNoneList();
+		
+		result.put("list", manageList);
+		result.put("noneList", noneList);
+		result.put("resultCode", "SUCCESS");
+		return new CommonResponse<Map<String, Object>>(result);
+	}
+	/**
+	 * 배정 하기
+	 * @param paramMap
+	 * @return
+	 */
+	@PostMapping("/delivery/manageAjax")
+	public BasicResponse manageAjax(@RequestParam Map<String, Object> paramMap) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		String[] array = ((String)paramMap.get("checkArray")).split(",");
+		paramMap.put("arrSeq", array);
+		
+		int suc = admOrderService.updateDelivManage(paramMap);
+		if(suc > 0) result.put("resultCode", "SUCCESS");
+		
+		return new CommonResponse<Map<String, Object>>(result);
+	}
+	//복호화
+	@PostMapping("/decrypt")
+	public BasicResponse decryptData(@RequestParam String encryptedData) throws Exception {
+		//Call the utility method to decrypt the data
+		Map<String, Object> returnData = new HashMap<String, Object>();
+		String decryptedData = EncryptUtils.AES256_Decrypt(encryptedData);
+		returnData.put("decryptedData", decryptedData);
+		return new CommonResponse<Map<String, Object>>(returnData);
 	}
 }

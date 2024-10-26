@@ -1,5 +1,6 @@
 package com.simplesoft.mapper.admOrder.service.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,9 +47,27 @@ public class AdmOrderServiceImpl implements AdmOrderService{
 		result.setDeliveryCount(admOrderMapper.selectDeliveryListCount(vo));
 		return result;
 	}
+	//배송 정보
+	@Override
+	public DeliveryVO getDeliveryExcel(DeliveryVO vo) {
+		DeliveryVO result = new DeliveryVO();
+		result.setDeliveryList(admOrderMapper.selectDeliveryExcel(vo));
+		result.setDeliveryCount(admOrderMapper.selectDeliveryListCount(vo));
+		return result;
+	}
 	//배송 완료처리
 	@Override
 	public int updateDelivComplete(Map<String, Object> paramMap){
 		return admOrderMapper.updateDelivComplete(paramMap);
+	}
+	//미배정리스트 -> 배정처리
+	@Override
+	public int updateDelivManage(Map<String, Object> paramMap){
+		return admOrderMapper.updateDelivManage(paramMap);
+	}
+	//미배정 리스트
+	@Override
+	public List<Map<String, Object>> selectDeliveryNoneList(){
+		return admOrderMapper.selectDeliveryNoneList();
 	}
 }

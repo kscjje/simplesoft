@@ -93,6 +93,16 @@
 				color: #FFF;
 				font-size: 15px;
 			}
+			.btn_manage {
+				min-width: 60px;
+				line-height: 30px;
+				height: 32px;
+				padding: 0 9px;
+				border: 1px solid rgb(0, 128, 255);
+				background: rgb(0, 128, 255);
+				color: #FFF;
+				font-size: 15px;
+			}
 			.btn_deliv {
 				min-width: 60px;
 				line-height: 30px;
@@ -106,6 +116,18 @@
 			.table {
 				font-size: 13px;
 				border: 1px solid #c5c5c5;
+			}
+			.modalFirst {
+				padding: 20px;
+				font-size: 13px;
+				color: #666;
+				border: 1px solid #eee;
+				background: #f9f9f9;
+			}
+			@media (min-width: 1200px) {
+			    .modal-xxl {
+			        --bs-modal-width: 1454px;
+			    }
 			}
 		</style>
 		<div class="contents" style="height: 100%;">
@@ -186,6 +208,7 @@
 				<div class="list-header mt-4">
 					<span class="mt-4 spanTitle"><i class="bi bi-dot me-1"></i>총 : <strong id="textCount">0</strong> 건</span>
 					<span style="float: right;">
+						<button type="button" id="ui_manage_btn" class="btn_manage ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="배송할 담당자를 지정한다.">배정관리</button>
 						<button type="button" id="ui_deliv_btn" class="btn_deliv ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="리스트를 체크하여 수동으로 배송완료 시킨다.">배송완료처리</button>
 						<button type="button" id="ui_excel_btn" class="btn_excel ms-1">엑셀다운</button>
 					</span>
@@ -218,28 +241,40 @@
 			</div>
 			<button type="button" style="display:none;" id="modalDeliv" data-bs-toggle="modal" data-bs-target="#exampleModalCenteredScrollable"></button>
         </div>
-        <!-- Modal -->
+        <!-- 배정관리 Modal -->
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel">
 			<div class="modal fade" id="exampleModalCenteredScrollable" tabindex="-1" aria-labelledby="exampleModalCenteredScrollableTitle" style="display: none;">
-				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+				<div class="modal-dialog modal-xxl">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="exampleModalCenteredScrollableTitle">배송 담당자 선택</h1>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							<h1 class="modal-title fs-5" id="exampleModalCenteredScrollableTitle">배정관리</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
 						</div>
 						<div class="modal-body">
-							<p>Just like that.</p>
+							<div class="container-fluid">
+								<div class="row p-4">
+									<div class="col-md-4">
+										<p class="lead">[ 배송 담당자 선택 ]</p>
+										<table id="modalManage" class="table table-borderless text-center fs-6" style="vertical-align:middle; border-width:0px;"></table>
+									</div>
+									<div class="col-md-8" style="height: 650px;overflow-x: scroll;overflow-y: scroll;">
+										<p class="lead">[ 미배정 리스트 ]</p>
+										<span class="">등록일시 오름차순 정렬입니다.</span>
+										<span class="float-end noCnt me-3"></span>
+										<table id="modalManage2" class="table table-bordered text-center fs-6" style="vertical-align:middle;min-width: 860px;width:max-content; height: max-content;"></table>
+									</div>
+								</div>
+							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-							<button type="button" class="btn btn-primary">Save changes</button>
+							<button type="button" class="btn btn btn-primary" onclick="fnAction()">배정</button>
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<script th:inline="javascript">
-			
 			function fnInit(){
 				searchBtn();
 			}
@@ -381,7 +416,7 @@
 					
 					let form = document.hiddenForm;
 					form.method = "GET";
-					form.action = "/admin/orderExcel";
+					form.action = "/admin/delivExcel";
 					form.submit();
 				}
 				searchBtn = function () {
@@ -449,14 +484,14 @@
 									addHtml +=		'<td>' + data.menuDay + '</td>';
 									addHtml +=		'<td>' + data.deliveryStatusNm + '</td>';
 									addHtml +=		'<td>' + data.deliveryDt + '</td>';
-									addHtml +=		'<td><a href="javascript:fnModalDelivery(\''+data.managerNm+'\')">' + data.managerNm + '</a></td>';
+									addHtml +=		'<td>' + data.managerNm + '</td>';
 									addHtml +=		'<td>' + data.orderQty + '개</td>';
 									addHtml +=		'<td>' + data.orderNo + '</td>';
 									addHtml +=		'<td>' + data.receiveName + '</td>';
 									fnDecrypt(data.receivePhone,function(decryptedData){
 										addHtml +=	'<td>' + decryptedData + '</td>';
 									});
-									addHtml +=		'<td>(' + data.receivePostNum + ') '+ data.receiveAddr+ ' '+data.receiveAddr+'</td>';
+									addHtml +=		'<td>(' + data.receivePostNum + ') '+ data.receiveAddr+ ' '+data.receiveAddrDetail+'</td>';
 									addHtml +=		'<td>' + data.regDt + '</td>';
 									addHtml +=	'</tr>';
 								}
@@ -517,9 +552,6 @@
 							alert("에러코드: " + request.status + "\n메시지: " + request.responseText);
 						}
 					});
-				}
-				fnModalDelivery = function (managerNm){
-					$("#modalDeliv").trigger("click");
 				}
 				fnDecrypt = function (encryptedData, callback) {
 					let formData = {
@@ -593,14 +625,14 @@
 									addHtml +=		'<td>' + data.menuDay + '</td>';
 									addHtml +=		'<td>' + data.deliveryStatusNm + '</td>';
 									addHtml +=		'<td>' + data.deliveryDt + '</td>';
-									addHtml +=		'<td><a href="javascript:fnModalDelivery(\''+data.managerNm+'\')">' + data.managerNm + '</a></td>';
+									addHtml +=		'<td>' + data.managerNm + '</td>';
 									addHtml +=		'<td>' + data.orderQty + '개</td>';
 									addHtml +=		'<td>' + data.orderNo + '</td>';
 									addHtml +=		'<td>' + data.receiveName + '</td>';
 									fnDecrypt(data.receivePhone,function(decryptedData){
 										addHtml +=	'<td>' + decryptedData + '</td>';
 									});
-									addHtml +=		'<td>(' + data.receivePostNum + ') '+ data.receiveAddr+ ' '+data.receiveAddr+'</td>';
+									addHtml +=		'<td>(' + data.receivePostNum + ') '+ data.receiveAddr+ ' '+data.receiveAddrDetail+'</td>';
 									addHtml +=		'<td>' + data.regDt + '</td>';
 									addHtml +=	'</tr>';
 								}
@@ -680,6 +712,11 @@
 					if(checked) $('input:checkbox').prop('checked',true);
 					else $('input:checkbox').prop('checked',false);
 				});
+				//배정관리
+				$("#ui_manage_btn").click(function(){
+					managerList();
+					$("#modalDeliv").trigger("click");
+				});
 				//배송완료처리
 				$("#ui_deliv_btn").click(function(){
 					if($('input:checkbox:checked').length < 1){
@@ -715,7 +752,125 @@
 				fnInit();
 			});
 			
-			
+			//모달 리스트 전체선택
+			function fnModalCheck(v_this){
+				var checked = $(v_this).is(':checked');
+				if(checked) $('input:checkbox[name="deliverySeq"]').prop('checked',true);
+				else $('input:checkbox[name="deliverySeq"]').prop('checked',false);
+			}
+			//배정 하기
+			function fnAction(){
+				let managerNo = $('input:radio[name=managerNo]');
+				if(managerNo.is(":checked") == ""){
+					alert("배송할 담당자를 선택해 주세요.");
+					return;
+				}
+				if($('input:checkbox[name="deliverySeq"]:checked').length < 1){
+					alert("체크된 리스트가 없습니다.");
+					return;
+				}
+				let checkArray = "";
+				$('input:checkbox[name="deliverySeq"]').each(function(){
+					if($(this).is(":checked") == true) checkArray += $(this).val()+",";
+				})
+				if(checkArray.substring(checkArray.length-1, checkArray.length) == ","){
+					checkArray = checkArray.substring(0,checkArray.length-1);
+				}
+				$.ajax({
+					url : "/admin/rest/order/delivery/manageAjax",
+					type : "POST",
+					dataType : "json",
+					data: {
+		        		checkArray	: checkArray,
+		        		managerNo	: $('input[name=managerNo]:checked').val()
+	        		},
+					success : function(result) {
+						if(result.data.resultCode == "SUCCESS") {
+							alert("정상적으로 배정하였습니다.")
+							managerList();
+						}
+					}, error : function(request, status, error) {
+						alert("관리자에게 문의해 주세요.");
+					}
+				});
+			}
+			function managerList(){
+				$.ajax({
+					url : "/admin/rest/order/delivery/manageList",
+					type : "POST",
+					dataType : "json",
+					success : function(result) {
+						if(result.data.resultCode == "SUCCESS") {
+							
+							//배송담당자 리스트
+							let innerHtml = "";
+							innerHtml += "<thead class='table-light'>";
+							innerHtml += 	"<tr>";
+							innerHtml +=		"<th>선택</th>";
+							innerHtml +=		"<th>담당자</th>";
+							innerHtml +=		"<th>배정 건수</th>";
+							innerHtml += 	"</tr>";
+							innerHtml += "</thead>";
+							for(let i = 0; i < result.data.list.length; i++){
+								let list = result.data.list[i];
+								innerHtml += "<tr>";
+								innerHtml += 	"<td>";
+								innerHtml += 		"<input class='form-check-input' name='managerNo' type='radio' value='"+list.managerNo+"' id='labelmanage"+i+"'>";
+								innerHtml += 	"</td>";
+								innerHtml += 	"<td>";
+								innerHtml += 		"<label class='form-check-label' for='labelmanage"+i+"'>"+list.managerNm+"</label>";
+								innerHtml += 	"</td>";
+								innerHtml += 	"<td>";
+								innerHtml += 		"<span>"+list.waitCnt+" 건</span>";
+								innerHtml += 	"</td>";
+								innerHtml += "</tr>";
+							}
+							$("#modalManage").html(innerHtml);
+							
+							//미배정 리스트
+							let innerHtml2 = "";
+							let noCnt = 0;
+							innerHtml2 += "<thead class='table-light'>";
+							innerHtml2 += 	"<tr>";
+							innerHtml2 +=		"<th style='width:10%'><input type='checkbox' onclick='fnModalCheck(this)'></th>";
+							innerHtml2 +=		"<th style='width:20%'>식단일자</th>";
+							innerHtml2 +=		"<th style='width:20%'>주문번호</th>";
+							innerHtml2 +=		"<th style='width:50%'>주소</th>";
+							innerHtml2 += 	"</tr>";
+							innerHtml2 += "</thead>";
+							for(let i = 0; i < result.data.noneList.length; i++){
+								let list = result.data.noneList[i];
+								innerHtml2 += "<tr>";
+								innerHtml2 += 	"<td>";
+								innerHtml2 += 		"<input name='deliverySeq' type='checkbox' value='"+list.deliverySeq+"' id='labelcheck"+i+"'>";
+								innerHtml2 += 	"</td>";
+								innerHtml2 += 	"<td>";
+								innerHtml2 += 		list.menuDay;
+								innerHtml2 += 	"</td>";
+								innerHtml2 += 	"<td>";
+								innerHtml2 += 		list.orderNo;
+								innerHtml2 += 	"</td>";
+								innerHtml2 += 	"<td>";
+								innerHtml2 += 		list.addr;
+								innerHtml2 += 	"</td>";
+								innerHtml2 += "</tr>";
+							}
+							if(result.data.noneList.length == 0){
+								innerHtml2 += "<tr>";
+								innerHtml2 += 	"<td colspan='4'>미배정 리스트가 없습니다.</td>";
+								innerHtml2 += "</tr>";
+							} else {
+								noCnt = result.data.noneList[0].totalCount;
+							}
+							$(".noCnt").text("건수 : "+noCnt +"건");
+							$("#modalManage2").html(innerHtml2);
+						} else alert("관리자에게 문의해 주세요.");
+						 
+					}, error : function(request, status, error) {
+						alert("관리자에게 문의해 주세요.");
+					}
+				});
+			}
 		</script>
 	</main>
 </html>

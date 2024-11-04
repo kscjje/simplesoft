@@ -122,12 +122,15 @@ public class OrderController {
 			}
 		}
 		
+		
+		String setArray = request.getParameter("setArray");
+		String[] setList = setArray.split("\\^");
+		
 		String cartArray = request.getParameter("cartArray");
 		if("".equals(cartArray)) {
 			model.addAttribute("PARAM_MESSAGE", "선택한 식단이 없습니다.");
 			return GlobalVariable.REDIRECT_BACK;
 		}
-		
 		String[] cartList = cartArray.split(",");
 		paramMap.put("cartList", cartList);
 		List<Map<String, Object>> cartShopList = cartService.selectOrderCartShop(paramMap);		//장바구니 상품이 판매가능한 상품인지 조회
@@ -136,6 +139,7 @@ public class OrderController {
 		if(cartShopList.size() > 0 ) {
 			int totalPrice = 0;		//총상품금액
 			int totalQty = 0;		//총상품개수
+			int productAmt = 0;		//판매가
 			int deliveryPrice = 0;	//배송비
 			
 			orderVO.setOrderStatus(GlobalVariable.ORDER_STATUS_WAIT);
@@ -150,14 +154,28 @@ public class OrderController {
 					model.addAttribute("returnUrl", "/cart");
 					return GlobalVariable.REDIRECT_SUBMIT;
 				}
-				totalPrice += GlobalVariable.PRODUCT_AMT * Integer.parseInt("null".equals(String.valueOf(map.get("qty"))) ? "0" : String.valueOf(map.get("qty")));
+				
+				//선택한 세트에 따라 판매가 변경
+				String orderSet = "";
+				for(String cartNo : setList) {
+					if(String.valueOf(map.get("cartNo")).equals(cartNo.split(",")[0])) {
+						orderSet = cartNo.split(",")[1];
+					}
+				}
+				if("1000".equals(orderSet)) {
+					productAmt = 18000;
+				} else if ("2000".equals(orderSet)) {
+					productAmt = 9000;
+				}
+				totalPrice += productAmt * Integer.parseInt("null".equals(String.valueOf(map.get("qty"))) ? "0" : String.valueOf(map.get("qty")));
 				totalQty += Integer.parseInt("null".equals(String.valueOf(map.get("qty"))) ? "0" : String.valueOf(map.get("qty")));
 				
 				OrderProductVO opVo = new OrderProductVO();
 				opVo.setMenuBoardSeq(Integer.parseInt("null".equals(String.valueOf(map.get("menuBoardSeq"))) ? "0" : String.valueOf(map.get("menuBoardSeq"))));
 				opVo.setOrderQty(Integer.parseInt("null".equals(String.valueOf(map.get("qty"))) ? "0" : String.valueOf(map.get("qty"))));
-				opVo.setPayAmt(GlobalVariable.PRODUCT_AMT * Integer.parseInt("null".equals(String.valueOf(map.get("qty"))) ? "0" : String.valueOf(map.get("qty"))));
+				opVo.setPayAmt(productAmt * Integer.parseInt("null".equals(String.valueOf(map.get("qty"))) ? "0" : String.valueOf(map.get("qty"))));
 				opVo.setUsedPoint(opVo.getPayAmt() / 100);
+				opVo.setOrderSet(orderSet);
 				productList.add(opVo);
 			}
 			deliveryPrice = totalQty >= 3 ? 0 : GlobalVariable.DELY_AMT;
@@ -249,7 +267,7 @@ public class OrderController {
 		LocalDate gubunDate			= null;		
 		LocalTime timeToCheck 		= currentDateTime.toLocalTime();
 		
-		if (timeToCheck.isAfter(LocalTime.of(18, 00))) {
+		if (timeToCheck.isAfter(LocalTime.of(16, 00))) {
 			gubunDate = currentDate.plusDays(2);
 		} else {
 			gubunDate = currentDate.plusDays(1);

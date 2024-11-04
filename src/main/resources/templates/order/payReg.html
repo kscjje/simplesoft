@@ -124,13 +124,19 @@
 										<span th:text="${rs.orderQty}"></span>
 									</td>
 									<td class="fs-5 align-middle">
-										<span th:text="${#numbers.formatInteger(18000,3,'COMMA')}"></span>
+										<th:block th:if="${rs.orderSet == '1000'}">
+											<span th:text="${#numbers.formatInteger(18000,3,'COMMA')}"></span>
+										</th:block>
+										<th:block th:if="${rs.orderSet == '2000'}">
+											<span th:text="${#numbers.formatInteger(9000,3,'COMMA')}"></span>
+										</th:block>
+										
 									</td>
 									<td class="fs-5 align-middle">
 										<span th:text="${#numbers.formatInteger(rs.payAmt,3,'COMMA')}"></span>
 									</td>
 									<td th:if="${rsStat.first == true}" th:rowspan="${order.productList.size}" class="fs-5 align-middle">
-										<span th:text="${order.totalProductAmt/18000 >= 3 ? '무료' : #numbers.formatInteger(order.totalDelyAmt,3,'COMMA')}"></span>
+										<span th:text="${order.totalDelyAmt == 0 ? '무료' : #numbers.formatInteger(order.totalDelyAmt,3,'COMMA')}"></span>
 									</td>
 								</tr>
 								<tr class="h-50 align-middle">

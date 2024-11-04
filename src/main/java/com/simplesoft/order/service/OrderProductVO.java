@@ -23,6 +23,7 @@ public class OrderProductVO {
 	private int orderQty;			//주문수량
 	private int menuBoardSeq;		//상품번호
 	private String menuDay;			//식단일자
+	private String orderSet;		//식단세트
 	private String menuMsg;			//상품명
 	private int payAmt;				//결제금액
 	private String deliveryType;	//배송방법

@@ -27,6 +27,10 @@ public class OrderVO extends CommonVO{
 	private int totalDelyAmt;			//총배송비
 	private String marketingAgreeFg;	//마케팅동의여부
 	private String orderSet;			//세트종류
+	private String delivKind;			//배송유형
+	private String packaging;			//포장가방
+	private String delivTime;			//배달시간
+	
 	private String orderName;			//주문자 이름
 	private String orderPwd;			//주문서 조회 시 필요한 비회원 비밀번호
 	private String orderTel;			//주문자 전화번호
@@ -63,18 +67,22 @@ public class OrderVO extends CommonVO{
 	private List<OrderVO> orderList;	//주문목록
 	private int orderCount;				//주문목록 카운트
 
+
 	@Override
 	public String toString() {
 		return "OrderVO [orderNo=" + orderNo + ", userNo=" + userNo + ", orderStatus=" + orderStatus + ", userSession="
 				+ userSession + ", orderPayType=" + orderPayType + ", totalProductAmt=" + totalProductAmt
 				+ ", totalDisAmt=" + totalDisAmt + ", totalDelyAmt=" + totalDelyAmt + ", marketingAgreeFg="
-				+ marketingAgreeFg + ", orderSet= " + orderSet + ", orderName=" + orderName + ", orderPwd=" + orderPwd + ", orderTel=" + orderTel
-				+ ", orderPhone=" + orderPhone + ", orderPostNum=" + orderPostNum + ", orderAddr=" + orderAddr
-				+ ", orderAddrDetail=" + orderAddrDetail + ", orderEmail=" + orderEmail + ", receiveName=" + receiveName
-				+ ", receiveTel=" + receiveTel + ", receivePhone=" + receivePhone + ", receivePostNum=" + receivePostNum
-				+ ", receiveAddr=" + receiveAddr + ", receiveAddrDetail=" + receiveAddrDetail + ", commonPwd="
-				+ commonPwd + ", orderPayDt=" + orderPayDt + ", bigo=" + bigo + ", regUser=" + regUser + ", regDt="
-				+ regDt + ", productList=" + productList + ", orderList=" + orderList + ", orderCount=" + orderCount + " ] " +  super.toString();
+				+ marketingAgreeFg + ", orderSet=" + orderSet + ", delivKind=" + delivKind + ", packaging=" + packaging
+				+ ", delivTime=" + delivTime + ", orderName=" + orderName + ", orderPwd=" + orderPwd + ", orderTel="
+				+ orderTel + ", orderPhone=" + orderPhone + ", orderPostNum=" + orderPostNum + ", orderAddr="
+				+ orderAddr + ", orderAddrDetail=" + orderAddrDetail + ", orderEmail=" + orderEmail + ", receiveName="
+				+ receiveName + ", receiveTel=" + receiveTel + ", receivePhone=" + receivePhone + ", receivePostNum="
+				+ receivePostNum + ", receiveAddr=" + receiveAddr + ", receiveAddrDetail=" + receiveAddrDetail
+				+ ", commonPwd=" + commonPwd + ", orderPayDt=" + orderPayDt + ", bigo=" + bigo + ", regUser=" + regUser
+				+ ", regDt=" + regDt + ", productList=" + productList + ", payMethod=" + payMethod + ", productName="
+				+ productName + ", totalAmount=" + totalAmount + ", deliveryStatus=" + deliveryStatus
+				+ ", deliveryStatusNm=" + deliveryStatusNm + ", managerNo=" + managerNo + ", deliveryDt=" + deliveryDt
+				+ ", orderList=" + orderList + ", orderCount=" + orderCount + "]";
 	}
-
 }

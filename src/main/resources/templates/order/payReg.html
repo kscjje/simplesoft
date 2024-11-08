@@ -130,13 +130,12 @@
 										<th:block th:if="${rs.orderSet == '2000'}">
 											<span th:text="${#numbers.formatInteger(9000,3,'COMMA')}"></span>
 										</th:block>
-										
 									</td>
 									<td class="fs-5 align-middle">
 										<span th:text="${#numbers.formatInteger(rs.payAmt,3,'COMMA')}"></span>
 									</td>
 									<td th:if="${rsStat.first == true}" th:rowspan="${order.productList.size}" class="fs-5 align-middle">
-										<span th:text="${order.totalDelyAmt == 0 ? '무료' : #numbers.formatInteger(order.totalDelyAmt,3,'COMMA')}"></span>
+										<span id="delivAmount" th:text="${order.totalDelyAmt == 0 ? '무료' : #numbers.formatInteger(order.totalDelyAmt,3,'COMMA')}"></span>
 									</td>
 								</tr>
 								<tr class="h-50 align-middle">
@@ -154,7 +153,7 @@
 								<!-- 비회원 주문정보 -->
 								<table class="table table-borderless align-middle">
 									<tr>
-										<td class="text-start text-light-emphasis" style="width:18%">
+										<td class="text-start text-light-emphasis align-top" style="width:18%">
 											<label for="o_name" class="form-label"><font color="red">* </font>이름</label>
 										</td>
 										<td>
@@ -163,7 +162,7 @@
 									</tr>
 									<th:block th:if="${#strings.isEmpty(session.loginInfo)}">
 										<tr>
-											<td class="text-start text-light-emphasis">
+											<td class="text-start text-light-emphasis align-top">
 												<label for="o_pass" class="form-label"><font color="red">* </font>비밀번호</label>
 											</td>
 											<td>
@@ -172,7 +171,7 @@
 										</tr>
 									</th:block>
 									<tr>
-										<td class="text-start text-light-emphasis">
+										<td class="text-start text-light-emphasis align-top">
 											<label for="o_tel" class="form-label">&nbsp; 전화번호</label>
 										</td>
 										<td>
@@ -180,7 +179,7 @@
 										</td>
 									</tr>
 									<tr>
-										<td class="text-start text-light-emphasis">
+										<td class="text-start text-light-emphasis align-top">
 											<label for="o_phone" class="form-label"><font color="red">* </font>핸드폰</label>
 										</td>
 										<td>
@@ -188,7 +187,7 @@
 										</td>
 									</tr>
 									<tr>
-										<td class="text-start text-light-emphasis">
+										<td class="text-start text-light-emphasis align-top">
 											<label for="o_address" class="form-label"><font color="red">* </font>주소</label>
 										</td>
 										<td>
@@ -202,7 +201,7 @@
 										</td>
 									</tr>
 									<tr>
-										<td class="text-start text-light-emphasis">
+										<td class="text-start text-light-emphasis align-top">
 											<label for="o_email" class="form-label"><font color="red">* </font>이메일</label>
 										</td>
 										<td>
@@ -231,7 +230,7 @@
 							<table class="table table-borderless align-middle">
 								<th:block th:if="${not #strings.isEmpty(session.loginInfo)}">
 									<tr>
-										<td class="text-start text-light-emphasis" style="width:18%">
+										<td class="text-start text-light-emphasis align-top" style="width:18%">
 											<label for="r_tel" class="form-label">&nbsp; 배송지선택</label>
 										</td>
 										<td>
@@ -244,7 +243,7 @@
 								</th:block>
 								<th:block th:if="${#strings.isEmpty(session.loginInfo)}">
 									<tr>
-										<td class="text-start text-light-emphasis" style="width:18%">
+										<td class="text-start text-light-emphasis align-top" style="width:18%">
 											<label for="r_tel" class="form-label">&nbsp; 배송지선택</label>
 										</td>
 										<td>
@@ -256,7 +255,7 @@
 									</tr>
 								</th:block>
 								<tr>
-									<td class="text-start text-light-emphasis">
+									<td class="text-start text-light-emphasis align-top">
 										<label for="r_name" class="form-label"><font color="red">* </font>이름</label>
 									</td>
 									<td>
@@ -264,7 +263,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td class="text-start text-light-emphasis">
+									<td class="text-start text-light-emphasis align-top">
 										<label for="r_tel" class="form-label">&nbsp; 전화번호</label>
 									</td>
 									<td>
@@ -272,7 +271,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td class="text-start text-light-emphasis">
+									<td class="text-start text-light-emphasis align-top">
 										<label for="r_phone" class="form-label"><font color="red">* </font>핸드폰</label>
 									</td>
 									<td>
@@ -280,7 +279,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td class="text-start text-light-emphasis">
+									<td class="text-start text-light-emphasis align-top">
 										<label for="r_address" class="form-label"><font color="red">* </font>주소</label>
 									</td>
 									<td>
@@ -294,58 +293,80 @@
 									</td>
 								</tr>
 								<tr>
-									<td class="text-start text-light-emphasis">
+									<td class="text-start text-light-emphasis align-top">
 										<label for="r_delivKind" class="form-label"><font color="red">* </font>배송유형</label>
 									</td>
 									<td>
 										<div class="form-check float-start me-3">
-											<input class="form-check-input" type="radio" name="delivKind" id="radio1">
+											<input class="form-check-input" type="radio" name="delivKind" id="radio1" value="1000">
 											<label class="form-check-label" for="radio1">
 												당일배송(안산)
 											</label>
 										</div>
 										<div class="form-check float-start">
-											<input class="form-check-input" type="radio" name="delivKind" id="radio2">
-											<label class="form-check-label" for="radio2">
+											<input class="form-check-input" type="radio" name="delivKind" id="radio2" value="2000">
+											<label class="form-check-label" for="radio2" data-bs-toggle="tooltip" data-bs-placement="top" title="택배비 4천원이 추가됩니다.">
 												우체국 택배(안산 외)
 											</label>
 										</div>
 									</td>
 								</tr>
 								<tr>
-									<td class="text-start text-light-emphasis">
+									<td class="text-start text-light-emphasis align-top">
 										<label for="r_packaging" class="form-label"><font color="red">* </font>포장가방</label>
 									</td>
 									<td>
 										<div class="form-check float-start me-3">
-											<input class="form-check-input" type="radio" name="packaging" id="radio3">
+											<input class="form-check-input" type="radio" name="packaging" id="radio3" value="1000">
 											<label class="form-check-label" for="radio3">
 												보냉가방(신규)
 											</label>
-											<div>
-												<img src="/image/packaging_1.jpg" alt="종이가방">
+											<div onclick="document.getElementById('radio3').checked = true;">
+												<img src="/image/packaging_1.jpg"  width="100px" alt="보냉가방(신규)">
 											</div>
 										</div>
-										
 										<div class="form-check float-start me-3">
-											<input class="form-check-input" type="radio" name="packaging" id="radio4">
+											<input class="form-check-input" type="radio" name="packaging" id="radio4" value="2000">
 											<label class="form-check-label" for="radio4">
-												보냉가방(기존사용자)
+												보냉가방(기존)
 											</label>
-											<div>
-												<img src="/image/packaging_1.jpg" alt="종이가방">
+											<div onclick="document.getElementById('radio4').checked = true;">
+												<img src="/image/packaging_1.jpg" width="100px" alt="보냉가방(기존사용자)">
 											</div>
 										</div>
 										<div class="form-check float-start me-3">
-											<input class="form-check-input" type="radio" name="packaging" id="radio5">
-											<label class="form-check-label" for="radio5">
-												종이가방
+											<input class="form-check-input" type="radio" name="packaging" id="radio5" value="3000">
+											<label class="form-check-label" style="text-align: left;" for="radio5">종이가방&nbsp;&nbsp;</label>
+											<div onclick="document.getElementById('radio5').checked = true;">
+												<img src="/image/packaging_2.jpg" width="100px" alt="종이가방">
+											</div>
+										</div>
+										<div class="float-start mt-1">
+											<span class="font-sm text-secondary">※해당 이미지는 참고용 이미지 이므로 실제 포장가방과는 다를 수 있습니다.</span>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-start text-light-emphasis align-top">
+										<label for="r_delivKind" class="form-label"><font color="red">* </font>배달시간</label>
+									</td>
+									<td>
+										<div class="form-check float-start me-3">
+											<input class="form-check-input" type="radio" name="delivTime" id="radio6" value="1000">
+											<label class="form-check-label" for="radio6">
+												오전배달(8~10시)
+											</label>
+										</div>
+										<div class="form-check float-start">
+											<input class="form-check-input" type="radio"name="delivTime" id="radio7" value="2000">
+											<label class="form-check-label" for="radio7">
+												오후배달(1~4시)
 											</label>
 										</div>
 									</td>
 								</tr>
 								<tr>
-									<td class="text-start text-light-emphasis">
+									<td class="text-start text-light-emphasis align-top">
 										<label for="r_commonPwd" class="form-label">&nbsp; 공동현관 비밀번호</label>
 									</td>
 									<td>
@@ -353,7 +374,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td class="text-start text-light-emphasis">
+									<td class="text-start text-light-emphasis align-top">
 										<label for="r_bigo" class="form-label">&nbsp; 전하실 말씀</label>
 									</td>
 									<td>
@@ -642,6 +663,8 @@
 				let o_email2	= $("#o_email2").val();
 				
 				let delivKind	= $('input[name=delivKind]').is(":checked");
+				let packaging	= $('input[name=packaging]').is(":checked");
+				let delivTime	= $('input[name=delivTime]').is(":checked");
 				let r_name		= $("#r_name").val();
 				let r_phone		= $("#r_phone").val();
 				let r_postNum	= $("#r_postNum").val();
@@ -744,6 +767,16 @@
 					setTimeout( function(){ $("#radio1").focus(); }, 1 );
 					return;
 				}
+				if(!packaging){
+					alert("포장가방을 선택해 주세요.");
+					setTimeout( function(){ $("#radio3").focus(); }, 1 );
+					return;
+				}
+				if(!delivTime){
+					alert("배달시간을 선택해 주세요.");
+					setTimeout( function(){ $("#radio6").focus(); }, 1 );
+					return;
+				}
 				
 				let orderVO = $("#orderForm").serializeObject();
 				orderVO.orderNo = /*[[${orderNo}]]*/""; 
@@ -792,7 +825,17 @@
 				$("#o_email2").val("naver.com");
 				
 				$("#radio1").prop("checked",true);
+				$("#radio3").prop("checked",true);
+				$("#radio6").prop("checked",true);
 			}
+			$(document).ready(function() {
+				$('[data-bs-toggle="tooltip"]').tooltip();
+				
+				$("input:radio[name='delivKind']").on("change", function() {
+					// 라디오 버튼 변경 클릭 시 이벤트 삽입
+				    console.log($(this).val());
+				});
+			});
 		</script>
 	</main>
 </html>

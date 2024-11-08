@@ -169,6 +169,11 @@
 			, RECEIVE_POST_NUM	= #{receivePostNum}
 			, RECEIVE_ADDR		= #{receiveAddr}
 			, RECEIVE_ADDR_DETAIL = #{receiveAddrDetail}
+			, DELIV_KIND 		= #{delivKind}
+			, PACKAGING 		= #{packaging}
+			, DELIV_TIME 		= #{delivTime}
+			, RECEIVE_ADDR_DETAIL = #{receiveAddrDetail}
+			, RECEIVE_ADDR_DETAIL = #{receiveAddrDetail}
 			, COMMON_PWD		= #{commonPwd}
 			, BIGO				= #{bigo}
 			, UPT_USER			= #{userNo}

@@ -79,6 +79,7 @@
 			, TOTAL_DIS_AMT
 			, TOTAL_DELY_AMT
 			, MARKETING_AGREE_FG
+			, ORDER_SET
 			, ORDER_NAME
 			, ORDER_PWD
 			, ORDER_TEL
@@ -93,11 +94,17 @@
 			, RECEIVE_POST_NUM
 			, RECEIVE_ADDR
 			, RECEIVE_ADDR_DETAIL
+			, DELIV_TIME
+			, DELIV_KIND
+			, PACKAGING
 			, COMMON_PWD
 			, BIGO
 			, ORDER_PAY_DT
 			, REG_USER
 			, REG_DT
+			,TOTAL_PRODUCT_AMT + TOTAL_DELY_AMT 
+    + (CASE WHEN DELIV_KIND = 2000 THEN 4000 ELSE 0 END)
+    + (CASE WHEN PACKAGING = 1000 THEN 5000 ELSE 0 END) AS TOTAL_AMOUNT
 		FROM ORDER_MST
 		WHERE ORDER_NO = #{orderNo}
 		<if test="userNo neq null and userNo neq ''">
@@ -169,11 +176,9 @@
 			, RECEIVE_POST_NUM	= #{receivePostNum}
 			, RECEIVE_ADDR		= #{receiveAddr}
 			, RECEIVE_ADDR_DETAIL = #{receiveAddrDetail}
+			, DELIV_TIME 		= #{delivTime}
 			, DELIV_KIND 		= #{delivKind}
 			, PACKAGING 		= #{packaging}
-			, DELIV_TIME 		= #{delivTime}
-			, RECEIVE_ADDR_DETAIL = #{receiveAddrDetail}
-			, RECEIVE_ADDR_DETAIL = #{receiveAddrDetail}
 			, COMMON_PWD		= #{commonPwd}
 			, BIGO				= #{bigo}
 			, UPT_USER			= #{userNo}
@@ -202,7 +207,9 @@
 	<select id="selectOrderPayConfirm" parameterType="String" resultType="Integer">
 		/* OrderMapper.selectOrderPayConfirm */
 		SELECT
-			  TOTAL_PRODUCT_AMT +  TOTAL_DELY_AMT AS totalMoney 
+			  TOTAL_PRODUCT_AMT + TOTAL_DELY_AMT 
+			+ (CASE WHEN DELIV_KIND = 2000 THEN 4000 ELSE 0 END)
+			+ (CASE WHEN PACKAGING = 1000 THEN 5000 ELSE 0 END) AS totalMoney
 		FROM ORDER_MST
 		WHERE ORDER_NO = #{orderId}
 	</select>

@@ -198,18 +198,17 @@
 						</tr>
 					</tbody>
 				</table>
-				<span>※ 일반세트의 경우,  성인 기준 2.5~3인분 분량입니다.</span>
-				<div class="container text-center mt-5 divClass" th:if="${cartList.size eq 0}">
-					
-					<i class="bi bi-cart-x"></i><br>
-					<span style="color: gray;">장바구니에 담긴 상품이 없습니다.</span>
+				
+				<div class="container mt-5 text-center divClass" th:if="${cartList.size eq 0}">
+					<span style="color: gray;">장바구니가 비었습니다.</span>
 					<div style="margin-top: 40px;">
 						<button type="button" onclick="location.href='/main'" class="btn btn-outline-secondary btn-lg mainBtn">메인화면</button>
 						<button type="button" onclick="location.href='/order'"class="btn btn-secondary btn-lg orderBtn">상품보러가기</button>
 					</div>
 				</div>
-				<div>
-					<table class="table table-borderless table-white text-center" border="1" style="height: 100px;margin-top: 50px;font-size: 18px;";>
+				<div class="mt-5">
+					<span>※ 일반세트의 경우,  성인 기준 2.5~3인분 분량입니다.</span>
+					<table class="table table-borderless mt-2 table-white text-center" border="1" style="height: 100px;font-size: 18px;";>
 						<tr style="vertical-align: middle;">
 							<td>상품금액<br><span id="r_productMoney">0</span>원</td>
 							<td><i class="bi bi-plus-circle"></i></td>
@@ -304,26 +303,8 @@
 					addHtml +=	"</tr>";
 				}
 				
-				/* 총 계산식 */
-				let productMoney = totalQty*Number(18000);					//상품 * 총 수량
-				$("#r_productMoney").text(productMoney.toLocaleString('ko-KR'));
-				
-				deliveryPrice = totalQty > 2 ? 0 : 2000;	//배송비 계산
-				if(totalQty == 0 ) deliveryPrice = 0;
-				if(deliveryPrice != 0){
-					if(totalQty == 0){
-						$("#r_deliv").text("0원");	
-					} else {
-						$("#r_deliv").text(deliveryPrice.toLocaleString('ko-KR')+"원");
-					}
-				} else {
-					$("#r_deliv").text("무료");
-				}
-				let totalMoney = productMoney + deliveryPrice;		//상품금액 + 배송비
-				if(productMoney == 0 ) totalMoney = 0;
-				$("#r_totalMoney").text(totalMoney.toLocaleString('ko-KR'));
-				
 				$("#thHead").after(addHtml);
+				priceCalculate();
 			}
 			//수량 변경
 			cartQtyUpdate = function(index,gubun){
@@ -332,6 +313,10 @@
 				let count = 0;
 				
 				if(gubun == "plus"){
+					if (cnt >= 99){
+						alert("최대 99개까지 구매 가능 합니다.");
+						return;
+					}
 					count = Number(cnt) + 1;
 				} else {
 					if(cnt <= 1){
@@ -440,6 +425,18 @@
 			//계산식
 			priceCalculate = function (){
 				
+				let disCnt = 0;
+				$(".selectOption option:selected[value='1000']").each(function() {
+					disCnt += Number($(this).parents(".cartList").find("[id^=ui_cart_]").text());
+				});
+				let productMoney = 18000;
+				if(disCnt > 14 ){
+					productMoney = 17000;
+				}
+				$(".selectOption option:selected[value='1000']").each(function() {
+					$(this).parents(".cartList").find("[id^=ui_price_]").text(productMoney.toLocaleString('ko-KR'));
+				});
+				
 				totalQty = 0;
 				let totalMoney = 0;
 				$("input[name=cartCheck]:checked").each(function () {
@@ -447,6 +444,7 @@
 					totalQty += Number($(value).attr("data"));
 					totalMoney += Number($("#ui_total_"+this.id).text().replaceAll("," , ""));
 				});
+				
 				$("#r_productMoney").text((totalMoney).toLocaleString('ko-KR'));
 				deliveryPrice = totalQty > 2 ? 0 : 2000;	//배송비 계산
 				
@@ -470,6 +468,7 @@
 				}
 				if(checked < 1){
 					alert("선택하신 상품이 없습니다.");
+					$("#orderSet").val("");
 					return;
 				}
 				$('input:checkbox[name=cartCheck]').each(function (index) {

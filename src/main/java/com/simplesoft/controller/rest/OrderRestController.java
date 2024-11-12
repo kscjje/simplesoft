@@ -85,6 +85,7 @@ public class OrderRestController {
 				vo.setOrderStatus(GlobalVariable.ORDER_STATUS_WAIT); 								//주문상태-주문대기 (조건)
 				orderService.updateOrderApplyInfo(vo);
 				result.put("resultCode", "SUCCESS");
+				result.put("TOTAL_AMOUNT", order.getTotalAmount());
 			}catch(Exception e) {
 				e.printStackTrace();
 				result.put("resultCode", "9999");

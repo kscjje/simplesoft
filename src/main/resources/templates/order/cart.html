@@ -427,7 +427,9 @@
 				
 				let disCnt = 0;
 				$(".selectOption option:selected[value='1000']").each(function() {
-					disCnt += Number($(this).parents(".cartList").find("[id^=ui_cart_]").text());
+					if($(this).parents(".cartList").find("input[name=cartCheck]").is(":checked")){
+						disCnt += Number($(this).parents(".cartList").find("[id^=ui_cart_]").text());
+					}
 				});
 				let productMoney = 18000;
 				if(disCnt > 14 ){
@@ -461,11 +463,10 @@
 			
 			//세트일괄변경
 			fnSelectChange = function (v_this){
-				let value = $(v_this).val();
-				let checked = $("input[name=cartCheck]:checked").length;
-				if(value == ""){
+				if($(v_this).val() == ""){
 					return;
 				}
+				let checked = $("input[name=cartCheck]:checked").length;
 				if(checked < 1){
 					alert("선택하신 상품이 없습니다.");
 					$("#orderSet").val("");

@@ -35,6 +35,7 @@
 			, A.USER_NO
 			, A.USER_SESSION
 			, A.MENU_BOARD_SEQ
+			, A.ORDER_SET
 			, A.QTY
 			, A.REG_USER
 			, DATE_FORMAT(A.REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
@@ -115,6 +116,13 @@
 				QTY = QTY - 1
 			</otherwise>
 		</choose> 
+		WHERE CART_NO = #{cartNo}
+	</update>
+	<!-- 장바구니 세트 변경 -->
+	<update id="updateCartOrderSet" parameterType="hashMap">
+		/* CartMapper.updateCartQty */
+		UPDATE CART_MST SET
+		ORDER_SET = #{orderSet}
 		WHERE CART_NO = #{cartNo}
 	</update>
 	

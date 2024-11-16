@@ -260,15 +260,39 @@
 				$(".selectOption").on("change", function(){
 					//selected value
 					let value = $(this).val();
-					let price = 18000;
-					if(value == "2000"){
-						price = 9000;
-					}
-					let thisFind = $(this).parents(".cartList");
-					thisFind.find("[id^=ui_price_]").text(price.toLocaleString('ko-KR'));
-					let totalMoney = Number(thisFind.find("[id^=ui_cart_]").text()) * price;
-					thisFind.find("[id^=ui_total_]").text(totalMoney.toLocaleString('ko-KR'));
-					priceCalculate();
+					let index = $(this).attr("id").split("_")[1];
+					$.ajax({
+				        url: "/rest/cart/orderSet/update",
+				        type: "POST",
+				        dataType: "json",
+				        data: {
+				        	cartNo	: index,
+				        	orderSet: value
+				        },
+				        success: function (result) {
+				        	if(result.responseCode == "SUCCESS"){
+								if(result.data.resultCode == "SUCCESS"){
+									let price = 18000;
+									if(value == "2000"){
+										price = 9000;
+									}
+									let thisFind = $(this).parents(".cartList");
+									thisFind.find("[id^=ui_price_]").text(price.toLocaleString('ko-KR'));
+									let totalMoney = Number(thisFind.find("[id^=ui_cart_]").text()) * price;
+									thisFind.find("[id^=ui_total_]").text(totalMoney.toLocaleString('ko-KR'));
+									priceCalculate();
+								} else if(result.data.resultCode == "NoData"){
+									alert("수량을 변경할 리스트가 없습니다.");
+									location.reload();
+									return;
+								}
+							}
+				        },
+				        error: function (e) {
+				            console.log("ERROR : ", e);
+				            alert("수량 변경에 실패했습니다.");
+				        }
+				    });
 				});
 			});
 			
@@ -296,7 +320,7 @@
 											}
 										}
 					addHtml +=		"</td>";
-					addHtml +=		"<td style='vertical-align:middle;font-size:14px'><select class='inputSelect selectOption'><option value='1000'>일반세트</option><option value='2000'>1인분세트</option></select></td>";
+					addHtml +=		"<td style='vertical-align:middle;font-size:14px'><select id='set_"+cartList[i].cartNo+"' class='inputSelect selectOption'><option value='1000'" + (cartList[i].orderSet == 1000 ? " selected" : "") + ">일반세트</option><option value='2000' " + (cartList[i].orderSet == 2000 ? " selected" : "") + ">1인분세트</option></select></td>";
 					addHtml +=		"<td style='vertical-align:middle;font-size:20px'><i style='cursor:pointer'class='bi bi-dash-circle' onclick='cartQtyUpdate("+cartList[i].cartNo+",\"minus\")'></i> <span id='ui_cart_" + cartList[i].cartNo + "'>"+ cartList[i].qty +"</span> <i style='cursor:pointer'class='bi bi-plus-circle'onclick='cartQtyUpdate("+cartList[i].cartNo+",\"plus\")'></i></td>";
 					addHtml +=		"<td style='vertical-align:middle;'><span id='ui_price_"+cartList[i].cartNo+"'>" + Number(18000).toLocaleString('ko-KR')+"</span></td>";
 					addHtml +=		"<td style='vertical-align:middle;'><span id='ui_total_"+cartList[i].cartNo+"'>" + (Number(18000) * cartList[i].qty).toLocaleString('ko-KR') + "</span></td>";

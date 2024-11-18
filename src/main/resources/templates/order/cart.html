@@ -198,7 +198,6 @@
 						</tr>
 					</tbody>
 				</table>
-				
 				<div class="container mt-5 text-center divClass" th:if="${cartList.size eq 0}">
 					<span style="color: gray;">장바구니가 비었습니다.</span>
 					<div style="margin-top: 40px;">
@@ -231,11 +230,10 @@
 		<script th:inline="javascript">
 			
 			let deliveryPrice = 0;		//배송비
-			
+			var cartList = []; 
 			$(function(){
 				
 				fnInit();
-				/* 총 계산식 끝*/
 				
 				$("#f-chk-all").click(function() {
 					if($("#f-chk-all").is(":checked")) {
@@ -276,10 +274,9 @@
 									if(value == "2000"){
 										price = 9000;
 									}
-									let thisFind = $(this).parents(".cartList");
-									thisFind.find("[id^=ui_price_]").text(price.toLocaleString('ko-KR'));
-									let totalMoney = Number(thisFind.find("[id^=ui_cart_]").text()) * price;
-									thisFind.find("[id^=ui_total_]").text(totalMoney.toLocaleString('ko-KR'));
+									$("#ui_price_"+index).text(price.toLocaleString('ko-KR'));
+									let totalMoney = Number($("#ui_cart_"+index).text()) * price;
+									$("#ui_total_"+index).text(totalMoney.toLocaleString('ko-KR'));
 									priceCalculate();
 								} else if(result.data.resultCode == "NoData"){
 									alert("수량을 변경할 리스트가 없습니다.");
@@ -297,8 +294,7 @@
 			});
 			
 			fnInit = function() {
-				let cartList = /*[[${cartList}]]*/"";
-				let totalQty = 0;				//총수량
+				cartList = /*[[${cartList}]]*/"";
 				
 				let addHtml = "";
 				for(let i = 0; i < cartList.length; i++){
@@ -309,21 +305,62 @@
 					addHtml +=		"</td>";
 					addHtml +=		"<td class='text-start'>";
 					addHtml +=			"<div style='margin-bottom:10px;'>"+cartList[i].menuDay+"</div>";
-										totalQty += cartList[i].qty;
+if(cartList[i].orderSet == 1000){
+										/*let menuMsg = cartList[i].menuMsg.split("|");
+										menuMsg.forEach((msg, index) => {
+											if (index !== 0) addHtml += "<br>";
+											const isHighlighted = msg.startsWith("!");
+											const message = isHighlighted ? msg.substring(1) : msg;
+											const colorStyle = isHighlighted ? "color:red;" : "";
+											addHtml += `<span style='${colorStyle}margin-right:7px;'>${message}</span>`;
+											addHtml +="<span class='float-end'>";
+											addHtml +=			"<i style='cursor:pointer'class='bi bi-dash-circle' onclick='cartQtyUpdate("+cartList[i].cartNo+",\"minus\")'></i> ";
+											addHtml +=				"<span id='ui_cart_" + cartList[i].cartNo + "'>"+ cartList[i].qty +"</span> ";
+											addHtml +=			"<i style='cursor:pointer'class='bi bi-plus-circle'onclick='cartQtyUpdate("+cartList[i].cartNo+",\"plus\")'></i>";
+											addHtml +="</span>";
+										});*/
 										let menuMsg = cartList[i].menuMsg.split("|");
-										for(let index = 0; index < menuMsg.length; index++) {
+										menuMsg.forEach((msg, index) => {
 											if(index % 3 == 0 && index != 0) addHtml +="<br>";
-											if(menuMsg[index].substring(0,1) == "!"){
-												addHtml +="<span style='color:red;margin-right:7px;'>"+menuMsg[index].substring(1,menuMsg[index].length)+"</span>";
-											} else {
-												addHtml +="<span style='margin-right:7px;'>"+menuMsg[index]+"</span>";
-											}
-										}
+											const isHighlighted = msg.startsWith("!");
+											const message = isHighlighted ? msg.substring(1) : msg;
+											const colorStyle = isHighlighted ? "color:red;" : "";
+											addHtml += `<span style='${colorStyle}margin-right:7px;'>${message}</span>`;
+										});
+} else {
+										let menuMsg = cartList[i].menuMsg.split("|");
+										menuMsg.forEach((msg, index) => {
+											if(index % 3 == 0 && index != 0) addHtml +="<br>";
+											const isHighlighted = msg.startsWith("!");
+											const message = isHighlighted ? msg.substring(1) : msg;
+											const colorStyle = isHighlighted ? "color:red;" : "";
+											addHtml += `<span style='${colorStyle}margin-right:7px;'>${message}</span>`;
+										});
+}
 					addHtml +=		"</td>";
-					addHtml +=		"<td style='vertical-align:middle;font-size:14px'><select id='set_"+cartList[i].cartNo+"' class='inputSelect selectOption'><option value='1000'" + (cartList[i].orderSet == 1000 ? " selected" : "") + ">일반세트</option><option value='2000' " + (cartList[i].orderSet == 2000 ? " selected" : "") + ">1인분세트</option></select></td>";
-					addHtml +=		"<td style='vertical-align:middle;font-size:20px'><i style='cursor:pointer'class='bi bi-dash-circle' onclick='cartQtyUpdate("+cartList[i].cartNo+",\"minus\")'></i> <span id='ui_cart_" + cartList[i].cartNo + "'>"+ cartList[i].qty +"</span> <i style='cursor:pointer'class='bi bi-plus-circle'onclick='cartQtyUpdate("+cartList[i].cartNo+",\"plus\")'></i></td>";
-					addHtml +=		"<td style='vertical-align:middle;'><span id='ui_price_"+cartList[i].cartNo+"'>" + Number(18000).toLocaleString('ko-KR')+"</span></td>";
-					addHtml +=		"<td style='vertical-align:middle;'><span id='ui_total_"+cartList[i].cartNo+"'>" + (Number(18000) * cartList[i].qty).toLocaleString('ko-KR') + "</span></td>";
+					addHtml +=		"<td style='vertical-align:middle;font-size:14px'>";
+					addHtml +=			"<select id='set_"+cartList[i].cartNo+"' class='inputSelect selectOption'>";
+					addHtml +=				"<option value='1000'" + (cartList[i].orderSet == 1000 ? " selected" : "") + ">일반세트</option>";
+					addHtml +=				"<option value='2000'" + (cartList[i].orderSet == 2000 ? " selected" : "") + ">1인분세트</option>";
+					addHtml +=			"</select>";
+					addHtml +=		"</td>";
+					
+					addHtml +=		"<td style='vertical-align:middle;font-size:20px'>";
+					addHtml +=			"<i style='cursor:pointer'class='bi bi-dash-circle' onclick='cartQtyUpdate("+cartList[i].cartNo+",\"minus\")'></i> ";
+					addHtml +=				"<span id='ui_cart_" + cartList[i].cartNo + "'>"+ cartList[i].qty +"</span> ";
+					addHtml +=			"<i style='cursor:pointer'class='bi bi-plus-circle'onclick='cartQtyUpdate("+cartList[i].cartNo+",\"plus\")'></i>";
+					addHtml +=		"</td>";
+						
+					addHtml +=		"<td style='vertical-align:middle;'>";
+					addHtml +=			"<span id='ui_price_"+cartList[i].cartNo+"'>";
+					addHtml +=				cartList[i].orderSet == 1000 ? Number(18000).toLocaleString('ko-KR') : Number(9000).toLocaleString('ko-KR') 
+					addHtml +=			"</span>";
+					addHtml +=		"</td>";
+					addHtml +=		"<td style='vertical-align:middle;'>";
+					addHtml +=			"<span id='ui_total_"+cartList[i].cartNo+"'>";
+					addHtml +=				cartList[i].orderSet == 1000 ? (Number(18000) * cartList[i].qty).toLocaleString('ko-KR') : (Number(9000) * cartList[i].qty).toLocaleString('ko-KR')
+					addHtml +=			"</span>";
+					addHtml +=		"</td>";
 					addHtml +=	"</tr>";
 				}
 				

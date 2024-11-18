@@ -120,7 +120,7 @@
 	</update>
 	<!-- 장바구니 세트 변경 -->
 	<update id="updateCartOrderSet" parameterType="hashMap">
-		/* CartMapper.updateCartQty */
+		/* CartMapper.updateCartOrderSet */
 		UPDATE CART_MST SET
 		ORDER_SET = #{orderSet}
 		WHERE CART_NO = #{cartNo}

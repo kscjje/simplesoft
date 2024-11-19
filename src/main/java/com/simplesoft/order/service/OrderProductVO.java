@@ -25,6 +25,7 @@ public class OrderProductVO {
 	private String menuDay;			//식단일자
 	private String orderSet;		//식단세트
 	private String menuMsg;			//상품명
+	private String menuMsgDetail;	//상품명 각각 수량
 	private int payAmt;				//결제금액
 	private String deliveryType;	//배송방법
 	private int usedPoint;			//사용_적립금

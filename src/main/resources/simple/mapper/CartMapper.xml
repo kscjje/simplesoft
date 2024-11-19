@@ -6,9 +6,9 @@
 	<insert id="insertCart" parameterType="hashMap">
 		/* CartMapper.insertCart */
 		INSERT INTO CART_MST
-			(USER_NO, USER_SESSION, MENU_BOARD_SEQ, QTY, REG_USER, REG_DT)
+			(USER_NO, USER_SESSION, MENU_BOARD_SEQ, MENU_MSG_DETAIL, QTY, REG_USER, REG_DT)
 		VALUES
-			(#{userNo}, #{userSession}, #{menuBoardSeq}, 1, #{regUser}, NOW())
+			(#{userNo}, #{userSession}, #{menuBoardSeq}, '1|1|1|1|1', 1, #{regUser}, NOW())
 	</insert>
 	
 	<!-- 장바구니 수량추가 -->
@@ -24,7 +24,7 @@
 				AND USER_NO = #{userNo}
 			</otherwise>
 		</choose>
-		AND MENU_BOARD_SEQ = #{menuBoardSeq} 
+		AND MENU_BOARD_SEQ = #{menuBoardSeq}
 	</update>
 	
 	<!-- 장바구니 리스트 조회 -->
@@ -35,6 +35,7 @@
 			, A.USER_NO
 			, A.USER_SESSION
 			, A.MENU_BOARD_SEQ
+			, A.MENU_MSG_DETAIL
 			, A.ORDER_SET
 			, A.QTY
 			, A.REG_USER
@@ -74,6 +75,8 @@
 			, A.USER_NO
 			, A.USER_SESSION
 			, A.MENU_BOARD_SEQ
+			, A.MENU_MSG_DETAIL
+			, A.ORDER_SET
 			, A.QTY
 			, A.REG_USER
 			, DATE_FORMAT(A.REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
@@ -110,13 +113,13 @@
 		UPDATE CART_MST SET
 		<choose>
 			<when test="gubun == 'plus'">
-				QTY = QTY + 1
+				QTY = QTY + 1 WHERE CART_NO = #{cartNo} AND QTY > 0
 			</when>
 			<otherwise>
-				QTY = QTY - 1
+				QTY = QTY - 1 WHERE CART_NO = #{cartNo} AND QTY > 1
 			</otherwise>
 		</choose> 
-		WHERE CART_NO = #{cartNo}
+		
 	</update>
 	<!-- 장바구니 세트 변경 -->
 	<update id="updateCartOrderSet" parameterType="hashMap">
@@ -143,6 +146,7 @@
 			, A.USER_NO
 			, A.USER_SESSION
 			, A.MENU_BOARD_SEQ
+			, A.MENU_MSG_DETAIL
 			, A.QTY
 			, A.REG_USER
 			, DATE_FORMAT(A.REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT

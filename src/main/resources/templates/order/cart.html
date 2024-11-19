@@ -306,27 +306,27 @@
 					addHtml +=		"<td class='text-start'>";
 					addHtml +=			"<div style='margin-bottom:10px;'>"+cartList[i].menuDay+"</div>";
 if(cartList[i].orderSet == 1000){
-										/*let menuMsg = cartList[i].menuMsg.split("|");
-										menuMsg.forEach((msg, index) => {
-											if (index !== 0) addHtml += "<br>";
-											const isHighlighted = msg.startsWith("!");
-											const message = isHighlighted ? msg.substring(1) : msg;
-											const colorStyle = isHighlighted ? "color:red;" : "";
-											addHtml += `<span style='${colorStyle}margin-right:7px;'>${message}</span>`;
-											addHtml +="<span class='float-end'>";
-											addHtml +=			"<i style='cursor:pointer'class='bi bi-dash-circle' onclick='cartQtyUpdate("+cartList[i].cartNo+",\"minus\")'></i> ";
-											addHtml +=				"<span id='ui_cart_" + cartList[i].cartNo + "'>"+ cartList[i].qty +"</span> ";
-											addHtml +=			"<i style='cursor:pointer'class='bi bi-plus-circle'onclick='cartQtyUpdate("+cartList[i].cartNo+",\"plus\")'></i>";
-											addHtml +="</span>";
-										});*/
-										let menuMsg = cartList[i].menuMsg.split("|");
-										menuMsg.forEach((msg, index) => {
-											if(index % 3 == 0 && index != 0) addHtml +="<br>";
-											const isHighlighted = msg.startsWith("!");
-											const message = isHighlighted ? msg.substring(1) : msg;
-											const colorStyle = isHighlighted ? "color:red;" : "";
-											addHtml += `<span style='${colorStyle}margin-right:7px;'>${message}</span>`;
-										});
+	let menuMsg = cartList[i].menuMsg.split("|");
+	let menuMsg2 = cartList[i].menuMsgDetail.split("|");
+	
+	menuMsg.forEach((msg, index) => {
+	    if (index !== 0) addHtml += "<br>";
+	
+	    const isHighlighted = msg.startsWith("!");
+	    const message = isHighlighted ? msg.substring(1) : msg;
+	    const colorStyle = isHighlighted ? "color:red;" : "";
+	
+	    addHtml += `<span style='${colorStyle}margin-right:7px;'>${message}</span>`;
+	    
+	    // menuMsg2 값 추가
+	    const menuMsg2Value = menuMsg2[index] ? menuMsg2[index] : "N/A"; // 값이 없으면 기본값 N/A로 처리
+	
+	    addHtml += "<span class='float-end'>";
+	    addHtml += `<i style='cursor:pointer' class='bi bi-dash-circle' onclick='cartMsgDetailUpdate(ui_set_${cartList[i].cartNo}_${index},"minus")'></i> `;
+	    addHtml += `<span id='ui_set_${cartList[i].cartNo}_${index}'>${menuMsg2Value}</span> `;
+	    addHtml += `<i style='cursor:pointer' class='bi bi-plus-circle' onclick='cartMsgDetailUpdate(ui_set_${cartList[i].cartNo}_${index},"plus")'></i>`;
+	    addHtml += "</span>";
+	});
 } else {
 										let menuMsg = cartList[i].menuMsg.split("|");
 										menuMsg.forEach((msg, index) => {
@@ -375,13 +375,61 @@ if(cartList[i].orderSet == 1000){
 				
 				if(gubun == "plus"){
 					if (cnt >= 99){
-						alert("최대 99개까지 구매 가능 합니다.");
 						return;
 					}
 					count = Number(cnt) + 1;
 				} else {
 					if(cnt <= 1){
-						alert("최소 1개 이상 구매 가능 합니다.");
+						return;
+					}
+					count = Number(cnt) - 1;
+				}
+				$.ajax({
+			        url: "/rest/cart/qty/update",
+			        type: "POST",
+			        dataType: "json",
+			        data: {
+			        	cartNo	: index,
+			        	gubun	: gubun
+			        },
+			        success: function (result) {
+			        	if(result.responseCode == "SUCCESS"){
+							if(result.data.resultCode == "SUCCESS"){
+								$("#ui_cart_"+index).text(count);
+								$("#"+index).attr("data",count);
+								let uiText = $("#ui_price_"+index).text().replaceAll(",","");
+								$("#ui_total_"+index).text((Number(uiText) * count).toLocaleString('ko-KR'));
+								
+								priceCalculate();
+							} else if(result.data.resultCode == "NoData"){
+								alert("수량을 변경할 리스트가 없습니다.");
+								location.reload();
+								return;
+							} else {
+								location.reload();
+							}
+						}
+			        },
+			        error: function (e) {
+			            console.log("ERROR : ", e);
+			            alert("수량 변경에 실패했습니다.");
+			        }
+			    });
+			}
+			//상품명 각각 수량 변경
+			cartMsgDetailUpdate = function(v_id,gubun){
+				
+				alert($(v_id).text());
+				return;
+				let count = 0;
+				
+				if(gubun == "plus"){
+					if (cnt >= 99){
+						return;
+					}
+					count = Number(cnt) + 1;
+				} else {
+					if(cnt <= 0){
 						return;
 					}
 					count = Number(cnt) - 1;

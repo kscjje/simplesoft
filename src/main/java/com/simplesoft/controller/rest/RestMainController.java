@@ -123,6 +123,39 @@ public class RestMainController {
 		return new CommonResponse<Map<String, Object>>(result);
 	}
 	/**
+	 * 일반세트시 상품명 각각 수량 수정
+	 * @param paramMap
+	 * @param model
+	 * @param session
+	 * @return
+	 */
+	@PostMapping("/cart/menuMsgQty/update")
+	public BasicResponse cartMenuMsgQtyUpdate(@RequestParam Map<String, Object> paramMap, Model model,HttpSession session) {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		Map<String, Object> cartDetail = new HashMap<String, Object>();
+		
+		MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
+		if(loginInfo != null) {
+			paramMap.put("userSession", "");
+			paramMap.put("userNo", loginInfo.getUserNo());
+		} else {
+			paramMap.put("userSession", session.getId());
+			paramMap.put("userNo", 0);
+		}
+		cartDetail = cartService.selectCartDetail(paramMap);
+		if(cartDetail != null) {
+			int suc = cartService.updateCartMenuMsgQty(paramMap);
+			if(suc > 0) {
+				result.put("resultCode", "SUCCESS");
+			}
+		} else {
+			result.put("resultCode", "NoData");
+		}
+		
+		return new CommonResponse<Map<String, Object>>(result);
+	}
+	/**
 	 * 장바구니 삭제
 	 * @param paramMap
 	 * @param model

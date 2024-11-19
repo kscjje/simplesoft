@@ -121,11 +121,25 @@
 		</choose> 
 		
 	</update>
+	<!-- 일반세트시 상품명 각각 수량 변경 -->
+	<update id="updateCartMenuMsgQty" parameterType="hashMap">
+		/* CartMapper.updateCartMenuMsgQty */
+		UPDATE CART_MST SET
+		MENU_MSG_DETAIL = #{menuMsgDetail}
+		WHERE CART_NO = #{cartNo}
+		AND ORDER_SET = '1000'
+	</update>
 	<!-- 장바구니 세트 변경 -->
 	<update id="updateCartOrderSet" parameterType="hashMap">
 		/* CartMapper.updateCartOrderSet */
 		UPDATE CART_MST SET
 		ORDER_SET = #{orderSet}
+		<if test="orderSet == '1000'">
+			,MENU_MSG_DETAIL = '1|1|1|1|1'
+		</if>
+		<if test="orderSet == '2000'">
+			,MENU_MSG_DETAIL = null
+		</if>
 		WHERE CART_NO = #{cartNo}
 	</update>
 	

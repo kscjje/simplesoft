@@ -9,13 +9,13 @@
 						<h2 class="mb-4">비회원 주문조회</h2>
 						<form action="#" method="post" id="loginForm">
 							<div class="form-group" style="margin-bottom: 12px;">
-								<input type="text" class="form-control" style="background-color: #f6f6f6; height: 60px;" name="userId" id="userId" placeholder="주문서번호를 입력하세요" required onkeypress="enterKey()" autocomplete="off">
+								<input type="text" class="form-control" style="background-color: #f6f6f6; height: 60px;" name="orderNo" id="orderNo" placeholder="주문서번호를 입력하세요" required onkeypress="enterKey()" autocomplete="off">
 							</div>
 							<div class="form-group" style="margin-bottom: 18px;">
-								<input type="password" class="form-control" style="background-color: #f6f6f6; height: 60px;" name="userPw" id="userPw" placeholder="비밀번호를 입력하세요" required onkeypress="enterKey()">
+								<input type="password" class="form-control" style="background-color: #f6f6f6; height: 60px;" name="orderPwd" id="orderPwd" placeholder="비밀번호를 입력하세요" required onkeypress="enterKey()">
 							</div>
 							<div class="form-group" style="margin-bottom: 18px;">
-								<button type="button" class="btn btn-dark btn-block" style="width:100%;height: 60px;font-weight: bold;font-size: 20px;" onclick="fnLogin()">조회</button>
+								<button type="button" class="btn btn-dark btn-block" style="width:100%;height: 60px;font-weight: bold;font-size: 20px;" onclick="fnGetOrder()">조회</button>
 							</div>
 						</form>
 						<div class="alert alert-primary" role="alert">
@@ -26,38 +26,37 @@
 			</div>
 			<script th:inline="javascript">
 				/**
-				*	로그인 시도
+				*	주문조회 시도
 				**/
-				fnLogin = function(){
-					let userId = $('#userId').val();
-					let userPw = $('#userPw').val();
+				fnGetOrder = function(){
+					let orderNo = $('#orderNo').val();
+					let orderPwd = $('#orderPwd').val();
 					
-					if(userId == ""){
-						alert("아이디를 입력해 주세요.");
-						$('#userId').focus();
+					if(orderNo == ""){
+						alert("주문서번호를 입력해 주세요.");
+						$('#orderNo').focus();
 						return;
-					} else if(userPw == ""){
+					} else if(orderPwd == ""){
 						alert("비밀번호를 입력해 주세요.")
-						$('#userPw').focus();
+						$('#orderPwd').focus();
 						return;
 					}
-					let loginInfo = {
-						userId :  userId,
-						userPw : userPw
+					let orderInfo = {
+						orderNo :  orderNo,
+						orderPwd : orderPwd
 					}
-					let returnUrl = /*[[${returnUrl}]]*/ "";
 					
 					$.ajax({
-						url : "/login/loginAjax",
+						url : "/rest/order/getOrderAjax",
 						type : "POST",
 						dataType : "json",
-						data : loginInfo,
-						success : function(data) {
-							if(data.RESULT == "SUCCESS"){
-								location.href = returnUrl == null ? "/main" : returnUrl;
+						data : 	orderInfo,
+						success : function(result) {
+							if(result.data.resultCode == "SUCCESS"){
+								location.href="./noneOrderDetail";		
 							} else{
-								alert("아이디와 비밀번호가 일치하지 않습니다.");
-								$('#userPw').val("");
+								alert("일치하는 주문정보가 없습니다.");
+								return;
 							}
 						}, error : function(request, status, error) {
 							alert("에러코드: " + request.status + "\n메시지: " + request.responseText);
@@ -66,7 +65,7 @@
 				}
 				enterKey = function(type){
 					if (window.event.keyCode == 13) {
-						fnLogin();
+						fnGetOrder();
 					}
 				}
 			</script>

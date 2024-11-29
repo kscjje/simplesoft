@@ -241,4 +241,45 @@
 			, #{receiveAddrDetail}
 		)
 	</insert>
+	
+	<!-- 비회원 주문조회 -->	
+	<select id="selectOrderCheck" parameterType="com.simplesoft.order.service.OrderVO" resultMap="orderShopApplyResult">
+		/* OrderMapper.selectOrderCheck */
+		SELECT
+			  ORDER_NO
+			, USER_NO
+			, ORDER_STATUS
+			, TOTAL_PRODUCT_AMT
+			, TOTAL_DIS_AMT
+			, TOTAL_DELY_AMT
+			, ORDER_SET
+			, ORDER_NAME
+			, ORDER_TEL
+			, ORDER_PHONE
+			, ORDER_POST_NUM
+			, ORDER_ADDR
+			, ORDER_ADDR_DETAIL
+			, ORDER_EMAIL
+			, RECEIVE_NAME
+			, RECEIVE_TEL
+			, RECEIVE_PHONE
+			, RECEIVE_POST_NUM
+			, RECEIVE_ADDR
+			, RECEIVE_ADDR_DETAIL
+			, DELIV_TIME
+			, DELIV_KIND
+			, PACKAGING
+			, COMMON_PWD
+			, BIGO
+			, ORDER_PAY_DT
+			,TOTAL_PRODUCT_AMT + TOTAL_DELY_AMT 
+    + (CASE WHEN DELIV_KIND = 2000 THEN 4000 ELSE 0 END)
+    + (CASE WHEN PACKAGING = 1000 THEN 5000 ELSE 0 END) AS TOTAL_AMOUNT
+		FROM ORDER_MST
+		WHERE ORDER_NO = #{orderNo}
+		AND ORDER_PWD = #{orderPwd}
+		AND USER_NO = '0'
+		AND ORDER_STATUS != '1000'
+		
+	</select>
 </mapper>

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.simplesoft.manager.service.ManagerVO;
 import com.simplesoft.member.service.MemberVO;
 import com.simplesoft.order.service.OrderService;
 import com.simplesoft.order.service.OrderVO;
@@ -94,5 +95,30 @@ public class OrderRestController {
 			}
 		}
 		return new CommonResponse<Map<String, Object>>(result);
+	}
+	
+	/**
+	 * 비회원 주문서조회
+	 * 
+	 * @param model
+	 * @return
+	 * @throws Exception 
+	 */
+	@PostMapping("/getOrderAjax")
+	public BasicResponse getOrderAjax(Model model, HttpSession session, @ModelAttribute("orderVO") OrderVO vo) throws Exception {
+		
+		Map<String, Object> returnData = new HashMap<String, Object>();
+		String orderPwd = vo.getOrderPwd();
+		if(orderPwd != null) {
+			vo.setOrderPwd(EncryptUtils.AES256_Encrypt(orderPwd));
+		} else {
+			returnData.put("resultCode", "FAIL");
+			return new CommonResponse<Map<String, Object>>(returnData);
+		}
+		OrderVO order = orderService.selectOrderCheck(vo);
+		if(order == null) returnData.put("resultCode", "FAIL");
+		else returnData.put("resultCode", "SUCCESS");
+		
+		return new CommonResponse<Map<String, Object>>(returnData);
 	}
 }

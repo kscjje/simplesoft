@@ -41,6 +41,12 @@ public class OrderServiceImpl implements OrderService{
 		return orderMapper.selectOrderApplyInfo(vo);
 	}
 	
+	//비회원주문조회 
+	@Override
+	public OrderVO selectOrderCheck(OrderVO vo) {
+		return orderMapper.selectOrderCheck(vo);
+	}
+	
 	//주문정보 갱신
 	@Override
 	public int updateOrderApplyInfo(OrderVO vo) {

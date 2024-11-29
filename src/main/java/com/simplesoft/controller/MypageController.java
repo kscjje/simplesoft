@@ -1,8 +1,5 @@
 package com.simplesoft.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,18 +13,25 @@ import lombok.extern.slf4j.Slf4j;
 public class MypageController {
 	
 	/**
+	 * 비회원 주문조회
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/noneOrderCheck")
+	public String noneOrderCheck(Model model) {
+		
+		return "/mypage/orderCheck";
+	}
+	/**
 	 * 비회원 주문내역
 	 * 
 	 * @param model
 	 * @return
 	 */
-	@GetMapping("/noneOrderList")
-	public String noneOrderList(Model model) {
+	@GetMapping("/noneOrderDetail")
+	public String noneOrderDetail(Model model) {
 		
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-		
-//		List<Map<String, Object>> resultMap = menuboardService.selectMenuBoardList(paramMap);
-//		model.addAttribute("resultMap", resultMap);
-		return "/mypage/orderList";
+		return "/mypage/orderDetail";
 	}
 }

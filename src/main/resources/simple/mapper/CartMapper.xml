@@ -113,13 +113,19 @@
 		UPDATE CART_MST SET
 		<choose>
 			<when test="gubun == 'plus'">
-				QTY = QTY + 1 WHERE CART_NO = #{cartNo} AND QTY > 0
+				
+				MENU_MSG_DETAIL = CONCAT_WS('|', QTY + 1, QTY + 1, QTY + 1, QTY + 1, QTY + 1),
+				QTY = QTY + 1
+				WHERE CART_NO = #{cartNo} 
+				AND QTY > 0
 			</when>
 			<otherwise>
-				QTY = QTY - 1 WHERE CART_NO = #{cartNo} AND QTY > 1
+				MENU_MSG_DETAIL = CONCAT_WS('|', QTY - 1, QTY - 1, QTY - 1, QTY - 1, QTY - 1),
+				QTY = QTY - 1
+				WHERE CART_NO = #{cartNo} 
+				AND QTY > 1
 			</otherwise>
-		</choose> 
-		
+		</choose>
 	</update>
 	<!-- 일반세트시 상품명 각각 수량 변경 -->
 	<update id="updateCartMenuMsgQty" parameterType="hashMap">
@@ -134,12 +140,6 @@
 		/* CartMapper.updateCartOrderSet */
 		UPDATE CART_MST SET
 		ORDER_SET = #{orderSet}
-		<if test="orderSet == '1000'">
-			,MENU_MSG_DETAIL = '1|1|1|1|1'
-		</if>
-		<if test="orderSet == '2000'">
-			,MENU_MSG_DETAIL = null
-		</if>
 		WHERE CART_NO = #{cartNo}
 	</update>
 	

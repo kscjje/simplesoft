@@ -14,10 +14,10 @@
 				<div id="header_menu" class="container">
 					<ul>
 						<th:block th:if="${#strings.isEmpty(session.loginInfo)}">
-							<li><a href="/login" class="menuLink">로그인</a></li>
-							<li><a href="#" class="menuLink">회원가입</a></li>
+<!--							<li><a href="/login" class="menuLink">로그인</a></li>-->
+<!--							<li><a href="#" class="menuLink">회원가입</a></li>-->
 							<li><a href="/cart" class="menuLink">장바구니</a></li>
-							<li><a href="/mypage/noneOrderList" class="menuLink">비회원주문조회</a></li>
+							<li><a href="/mypage/noneOrderCheck" class="menuLink">비회원주문조회</a></li>
 						</th:block>
 						<th:block th:if="${not #strings.isEmpty(session.loginInfo)}">
 							<li><a href="/logout" class="menuLink">로그아웃</a></li>

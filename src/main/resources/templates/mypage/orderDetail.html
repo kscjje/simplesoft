@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorate="~{layouts/default_layout}">
+		<main class="content-wrapper" layout:fragment="content" style="padding: 10px;">
+			<div class="row justify-content-center text-center">
+				<div class="col-lg-4">
+					<div class="login-container">
+						<h2 class="mb-4">비회원 주문조회</h2>
+						<form action="#" method="post" id="loginForm">
+							<div class="form-group" style="margin-bottom: 12px;">
+								<input type="text" class="form-control" style="background-color: #f6f6f6; height: 60px;" name="orderNo" id="orderNo" placeholder="주문서번호를 입력하세요" required onkeypress="enterKey()" autocomplete="off">
+							</div>
+							<div class="form-group" style="margin-bottom: 18px;">
+								<input type="password" class="form-control" style="background-color: #f6f6f6; height: 60px;" name="orderPwd" id="orderPwd" placeholder="비밀번호를 입력하세요" required onkeypress="enterKey()">
+							</div>
+							<div class="form-group" style="margin-bottom: 18px;">
+								<button type="button" class="btn btn-dark btn-block" style="width:100%;height: 60px;font-weight: bold;font-size: 20px;" onclick="fnGetOrder()">조회</button>
+							</div>
+						</form>
+						<div class="alert alert-primary" role="alert">
+							<span class="small">메일로 발송해드린 주문서의 주문번호 및 주문 시 입력하신 비밀번호를 정확히 입력해주십시오.</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<script th:inline="javascript">
+				/**
+				*	주문조회 시도
+				**/
+				fnGetOrder = function(){
+					let orderNo = $('#orderNo').val();
+					let orderPwd = $('#orderPwd').val();
+					
+					if(orderNo == ""){
+						alert("주문서번호를 입력해 주세요.");
+						$('#orderNo').focus();
+						return;
+					} else if(orderPwd == ""){
+						alert("비밀번호를 입력해 주세요.")
+						$('#orderPwd').focus();
+						return;
+					}
+					let orderInfo = {
+						orderNo :  orderNo,
+						orderPwd : orderPwd
+					}
+					let returnUrl = /*[[${returnUrl}]]*/ "";
+					
+					$.ajax({
+						url : "/rest/order/getOrderAjax",
+						type : "POST",
+						dataType : "json",
+						data : 	orderInfo,
+						success : function(result) {
+							if(result.data.resultCode == "SUCCESS"){
+								console.log(result.data.resultData);								
+							} else{
+								alert("일치하는 주문정보가 없습니다.");
+								return;
+							}
+						}, error : function(request, status, error) {
+							alert("에러코드: " + request.status + "\n메시지: " + request.responseText);
+						}
+					});
+				}
+				enterKey = function(type){
+					if (window.event.keyCode == 13) {
+						fnGetOrder();
+					}
+				}
+			</script>
+		</main>
+</html>

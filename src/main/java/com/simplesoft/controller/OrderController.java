@@ -162,20 +162,26 @@ public class OrderController {
 						orderSet = cartNo.split(",")[1];
 					}
 				}
+				int payAmt = 0;		//결제금액
+				String menuMsgDetail = String.valueOf(map.get("menuMsgDetail"));	//일반세트시 상품명 각각 수량
 				if("1000".equals(orderSet)) {
 					productAmt = 18000;
+//					payAmt = 
 				} else if ("2000".equals(orderSet)) {
 					productAmt = 9000;
+					payAmt = productAmt * Integer.parseInt("null".equals(String.valueOf(map.get("qty"))) ? "0" : String.valueOf(map.get("qty")));
 				}
+				
 				totalPrice += productAmt * Integer.parseInt("null".equals(String.valueOf(map.get("qty"))) ? "0" : String.valueOf(map.get("qty")));
 				totalQty += Integer.parseInt("null".equals(String.valueOf(map.get("qty"))) ? "0" : String.valueOf(map.get("qty")));
 				
 				OrderProductVO opVo = new OrderProductVO();
 				opVo.setMenuBoardSeq(Integer.parseInt("null".equals(String.valueOf(map.get("menuBoardSeq"))) ? "0" : String.valueOf(map.get("menuBoardSeq"))));
 				opVo.setOrderQty(Integer.parseInt("null".equals(String.valueOf(map.get("qty"))) ? "0" : String.valueOf(map.get("qty"))));
-				opVo.setPayAmt(productAmt * Integer.parseInt("null".equals(String.valueOf(map.get("qty"))) ? "0" : String.valueOf(map.get("qty"))));
+				opVo.setPayAmt(payAmt);
 				opVo.setUsedPoint(opVo.getPayAmt() / 100);
 				opVo.setOrderSet(orderSet);
+				opVo.setMenuMsgDetail(menuMsgDetail);
 				productList.add(opVo);
 			}
 			deliveryPrice = totalQty >= 3 ? 0 : GlobalVariable.DELY_AMT;

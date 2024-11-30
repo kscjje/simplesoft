@@ -226,7 +226,6 @@
 				</form>
 			</div>
 		</div>
-		</div>
 		<script th:inline="javascript">
 			
 			let deliveryPrice = 0;		//배송비
@@ -645,7 +644,6 @@ if(cartList[i].orderSet == 1000){
 						}
 					},
 					error: function (e) {
-						console.log("ERROR : ", e);
 						alert("수량 변경에 실패했습니다.");
 					}
 				});

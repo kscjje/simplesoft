@@ -110,14 +110,27 @@
 								<tr th:each="rs,rsStat : ${order.productList}">
 									<td style="text-align:left">
 										<div class="fw-bold" style="margin-bottom:10px;" th:text="${#temporals.createDate(rs.menuDay, 'yyyyMMdd')} + ' (' + ${#temporals.dayOfWeekName(#temporals.createDate(rs.menuDay, 'yyyyMMdd'))} + ')'"></div>
-										<th:block th:each="msg,msgStat : ${#strings.setSplit(rs.menuMsg,'|')}">
-											<th:block th:if="${#strings.substring(msg,0,1) == '!'}">
-												<span style="color:red;margin-right:7px;" th:text="${#strings.substring(msg,1)}"></span>
+										<th:block th:if="${rs.orderSet == '1000'}">
+											<th:block th:each="msg,msgStat : ${#strings.setSplit(rs.menuMsg,'|')}">
+												<th:block th:if="${#strings.substring(msg,0,1) == '!'}">
+													<span style="color:red;" th:text="${#strings.substring(msg,1)}"></span>
+												</th:block>
+												<th:block th:if="${#strings.substring(msg,0,1) != '!'}">
+													<span th:text="${msg}"></span>
+												</th:block>
+												<th:block th:if="${msgStat.last == false}"><br></th:block>
 											</th:block>
-											<th:block th:if="${#strings.substring(msg,0,1) != '!'}">
-												<span style="margin-right:7px;" th:text="${msg}"></span>
+										</th:block>
+										<th:block th:if="${rs.orderSet == '2000'}">
+											<th:block th:each="msg,msgStat : ${#strings.setSplit(rs.menuMsg,'|')}">
+												<th:block th:if="${#strings.substring(msg,0,1) == '!'}">
+													<span style="color:red;margin-right:7px;" th:text="${#strings.substring(msg,1)}"></span>
+												</th:block>
+												<th:block th:if="${#strings.substring(msg,0,1) != '!'}">
+													<span style="margin-right:7px;" th:text="${msg}"></span>
+												</th:block>
+												<th:block th:if="${msgStat.count % 3 == 0}"><br></th:block>
 											</th:block>
-											<th:block th:if="${msgStat.count % 3 == 0}"><br></th:block>
 										</th:block>
 									</td>
 									<td class="fs-5 align-middle">

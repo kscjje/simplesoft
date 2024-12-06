@@ -5,9 +5,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 import org.apache.groovy.parser.antlr4.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,7 @@ import com.simplesoft.util.RequestConvertUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.xml.bind.annotation.XmlElementDecl.GLOBAL;
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
@@ -158,26 +161,37 @@ public class OrderController {
 				//선택한 세트에 따라 판매가 변경
 				String orderSet = "";
 				for(String cartNo : setList) {
-					if(String.valueOf(map.get("cartNo")).equals(cartNo.split(",")[0])) {
-						orderSet = cartNo.split(",")[1];
-					}
+					if(String.valueOf(map.get("cartNo")).equals(cartNo.split(",")[0])) orderSet = cartNo.split(",")[1];
 				}
 				int payAmt = 0;		//결제금액
+				int qty = Integer.parseInt("null".equals(String.valueOf(map.get("qty"))) ? "0" : String.valueOf(map.get("qty")));
 				String menuMsgDetail = String.valueOf(map.get("menuMsgDetail"));	//일반세트시 상품명 각각 수량
 				if("1000".equals(orderSet)) {
-					productAmt = 18000;
-//					payAmt = 
+					productAmt = GlobalVariable.PRODUCT_AMT_1;
+					payAmt = productAmt * qty;
+					payAmt += IntStream.range(0, menuMsgDetail.split("\\|").length)
+									.map(i -> {
+										int value = Integer.parseInt(menuMsgDetail.split("\\|")[i]);
+										int positionValue = GlobalVariable.PROUDCT_MAP[i];
+										if (value == qty) return 0; //
+										if (value > qty) return (value - qty) * positionValue;
+										return -(qty - value) * positionValue;
+									})
+									.sum();
+					int minSum = qty * productAmt;
+					payAmt = Math.max(payAmt, minSum);
 				} else if ("2000".equals(orderSet)) {
-					productAmt = 9000;
-					payAmt = productAmt * Integer.parseInt("null".equals(String.valueOf(map.get("qty"))) ? "0" : String.valueOf(map.get("qty")));
+					productAmt = GlobalVariable.PRODUCT_AMT_2;
+					payAmt = productAmt * qty;
 				}
 				
-				totalPrice += productAmt * Integer.parseInt("null".equals(String.valueOf(map.get("qty"))) ? "0" : String.valueOf(map.get("qty")));
-				totalQty += Integer.parseInt("null".equals(String.valueOf(map.get("qty"))) ? "0" : String.valueOf(map.get("qty")));
+				totalPrice += payAmt;
+				totalQty += qty;
 				
 				OrderProductVO opVo = new OrderProductVO();
 				opVo.setMenuBoardSeq(Integer.parseInt("null".equals(String.valueOf(map.get("menuBoardSeq"))) ? "0" : String.valueOf(map.get("menuBoardSeq"))));
-				opVo.setOrderQty(Integer.parseInt("null".equals(String.valueOf(map.get("qty"))) ? "0" : String.valueOf(map.get("qty"))));
+				opVo.setOrderQty(qty);
+				opVo.setOrderSet(orderSet);
 				opVo.setPayAmt(payAmt);
 				opVo.setUsedPoint(opVo.getPayAmt() / 100);
 				opVo.setOrderSet(orderSet);

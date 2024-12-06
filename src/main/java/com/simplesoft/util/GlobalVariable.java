@@ -8,9 +8,10 @@ package com.simplesoft.util;
  */
 public class GlobalVariable {
 	
-	public static final int PRODUCT_AMT = 18000;					//상품금액(고정)
+	public static final int PRODUCT_AMT_1 = 18000;				//상품금액(고정)
+	public static final int PRODUCT_AMT_2 = 9000;				//상품금액(고정)
 	public static final int DELY_AMT = 2000;						//배송비(고정)
-	
+	public static final int[] PROUDCT_MAP = { 7500, 4500, 2500, 3500, 2500 };
 	public static final String REDIRECT_LOGIN 	= "/common/login";
 	public static final String REDIRECT_MESSAGE	= "/common/message";
 	public static final String REDIRECT_BACK	= "/common/back";

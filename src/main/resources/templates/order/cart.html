@@ -286,7 +286,7 @@ if(cartList[i].orderSet == 1000){
 		addHtml += `<span style='${colorStyle}margin-right:7px;'>${message}</span>`;
 		
 		// menuMsg2 값 추가
-		const menuMsg2Value = menuMsg2[index] ? menuMsg2[index] : "N/A"; // 값이 없으면 기본값 N/A로 처리
+		const menuMsg2Value = menuMsg2[index] ? menuMsg2[index] : "";
 	
 		addHtml += "<span class='float-end'>";
 		addHtml += `<i style='cursor:pointer' class='bi bi-dash-circle' onclick='cartMsgDetailUpdate(ui_set_${cartList[i].cartNo}_${index},"minus")'></i> `;
@@ -538,28 +538,21 @@ if(cartList[i].orderSet == 1000){
 					};
 					
 					const total = parseInt($("#ui_cart_"+id).text(), 10);
-					console.log(total);
+					
 					let positiveSum = 0;
 		            let negativeSum = 0;
 		
-		            // Loop through ui_set_seq_193_0 to ui_set_seq_193_4
 		            for (let i = 0; i <= 4; i++) {
-		                // Get the value of each ui_set_seq_193_i from the span content
 		                const spanValue = parseInt($("#ui_set_"+id+"_"+i).text(), 10);
 		
-		                // Get the last digit from the ID of the element
 		                const idLastDigit = i; // The loop variable i represents the last digit of the ID
 		
-		                // Get the corresponding mapped value from the mapping
 		                const mappedValue = valueMap[idLastDigit];
 		
-		                // Calculate the difference from the standard total
 		                const difference = spanValue - total;
 		
-		                // Multiply the difference by the mapped value
 		                const calculatedValue = difference * mappedValue;
 		
-		                // Update the positive or negative sum based on the result
 		                if (calculatedValue >= 0) {
 		                    positiveSum += calculatedValue;
 		                } else {

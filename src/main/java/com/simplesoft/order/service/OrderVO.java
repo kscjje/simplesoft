@@ -26,7 +26,6 @@ public class OrderVO extends CommonVO{
 	private int totalDisAmt;			//총상품할인금액
 	private int totalDelyAmt;			//총배송비
 	private String marketingAgreeFg;	//마케팅동의여부
-	private String orderSet;			//세트종류
 	private String delivKind;			//배송유형
 	private String packaging;			//포장가방
 	private String delivTime;			//배달시간
@@ -73,7 +72,7 @@ public class OrderVO extends CommonVO{
 		return "OrderVO [orderNo=" + orderNo + ", userNo=" + userNo + ", orderStatus=" + orderStatus + ", userSession="
 				+ userSession + ", orderPayType=" + orderPayType + ", totalProductAmt=" + totalProductAmt
 				+ ", totalDisAmt=" + totalDisAmt + ", totalDelyAmt=" + totalDelyAmt + ", marketingAgreeFg="
-				+ marketingAgreeFg + ", orderSet=" + orderSet + ", delivKind=" + delivKind + ", packaging=" + packaging
+				+ marketingAgreeFg + ", delivKind=" + delivKind + ", packaging=" + packaging
 				+ ", delivTime=" + delivTime + ", orderName=" + orderName + ", orderPwd=" + orderPwd + ", orderTel="
 				+ orderTel + ", orderPhone=" + orderPhone + ", orderPostNum=" + orderPostNum + ", orderAddr="
 				+ orderAddr + ", orderAddrDetail=" + orderAddrDetail + ", orderEmail=" + orderEmail + ", receiveName="

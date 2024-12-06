@@ -114,9 +114,11 @@
 											<th:block th:each="msg,msgStat : ${#strings.setSplit(rs.menuMsg,'|')}">
 												<th:block th:if="${#strings.substring(msg,0,1) == '!'}">
 													<span style="color:red;" th:text="${#strings.substring(msg,1)}"></span>
+													<span th:text="'('+${#strings.arraySplit(rs.menuMsgDetail ?: '', '|')[msgStat.index]}+'개)'"></span>
 												</th:block>
 												<th:block th:if="${#strings.substring(msg,0,1) != '!'}">
 													<span th:text="${msg}"></span>
+													<span th:text="'('+${#strings.arraySplit(rs.menuMsgDetail ?: '', '|')[msgStat.index]}+'개)'"></span>
 												</th:block>
 												<th:block th:if="${msgStat.last == false}"><br></th:block>
 											</th:block>

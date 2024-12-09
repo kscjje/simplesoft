@@ -102,9 +102,8 @@
 			, ORDER_PAY_DT
 			, REG_USER
 			, REG_DT
-			,TOTAL_PRODUCT_AMT + TOTAL_DELY_AMT 
-    + (CASE WHEN DELIV_KIND = 2000 THEN 4000 ELSE 0 END)
-    + (CASE WHEN PACKAGING = 1000 THEN 5000 ELSE 0 END) AS TOTAL_AMOUNT
+			,TOTAL_PRODUCT_AMT AS TOTAL_AMOUNT
+			,TOTAL_DELY_AMT
 		FROM ORDER_MST
 		WHERE ORDER_NO = #{orderNo}
 		<if test="userNo neq null and userNo neq ''">
@@ -208,8 +207,8 @@
 	<select id="selectOrderPayConfirm" parameterType="String" resultType="Integer">
 		/* OrderMapper.selectOrderPayConfirm */
 		SELECT
-			  TOTAL_PRODUCT_AMT + TOTAL_DELY_AMT 
-			+ (CASE WHEN DELIV_KIND = 2000 THEN 4000 ELSE 0 END)
+			  TOTAL_PRODUCT_AMT
+			+ (CASE WHEN DELIV_KIND = 2000 THEN 4000 ELSE TOTAL_DELY_AMT END)
 			+ (CASE WHEN PACKAGING = 1000 THEN 5000 ELSE 0 END) AS totalMoney
 		FROM ORDER_MST
 		WHERE ORDER_NO = #{orderId}

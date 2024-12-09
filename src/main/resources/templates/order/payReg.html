@@ -5,6 +5,9 @@
 	<main class="content-wrapper" layout:fragment="content" style="padding: 10px;">
 		<script src="https://js.tosspayments.com/v1/payment-widget"></script>
 		<style>
+			.colorred {
+				color:red;
+			}
 			@media only screen and (max-width: 575px) {
 				.custom{
 					font-size: 8px !important;
@@ -147,16 +150,16 @@
 										</th:block>
 									</td>
 									<td class="fs-5 align-middle">
-										<span class="subAmount" th:text="${#numbers.formatInteger(rs.payAmt,3,'COMMA')}"></span>
+										<span class="subAmount colorred" th:text="${#numbers.formatInteger(rs.payAmt,3,'COMMA')}"></span>
 									</td>
 									<td th:if="${rsStat.first == true}" th:rowspan="${order.productList.size}" class="fs-5 align-middle">
-										<span id="delivAmount" th:text="${order.totalDelyAmt == 0 ? '무료' : #numbers.formatInteger(order.totalDelyAmt,3,'COMMA')}"></span>
+										<span id="delivAmount" class="colorred" th:text="${order.totalDelyAmt == 0 ? '무료' : #numbers.formatInteger(order.totalDelyAmt,3,'COMMA')}"></span>
 									</td>
 								</tr>
 								<tr class="h-50 align-middle">
 									<td></td>
-									<td colspan="2"class="fw-bold">총 주문금액</td>
-									<td colspan="2"class="fw-bold fs-3"><span id="totalAmount" th:text="${#numbers.formatInteger(order.totalProductAmt+order.totalDelyAmt,3,'COMMA')}+'원'"></span></td>
+									<td colspan="2" class="fw-bold">총 주문금액</td>
+									<td colspan="2" class="fw-bold fs-3 text-success"><span id="totalAmount" th:text="${#numbers.formatInteger(order.totalProductAmt+order.totalDelyAmt,3,'COMMA')}+'원'"></span></td>
 								</tr>
 							</tbody>
 						</table>
@@ -399,6 +402,10 @@
 									</td>
 								</tr>
 							</table>
+						</div>
+						<div class="mb-3">
+							<input class="form-check-input" type="checkbox" id="agree1">
+							<label class="form-check-label" for="agree1" style="cursor: pointer;">								구매조건 및 결제진행 동의</label>
 						</div>
 						<div class="text-center">
 							<button class="btn btn-outline-primary btn-lg ms-1 btn25" type="button" onclick="fnSubmit()">주문하기</button>
@@ -748,7 +755,10 @@
 					setTimeout( function(){ $("#radio6").focus(); }, 1 );
 					return;
 				}
-				
+				if(!$("#agree1").is(":checked")){
+					alert("결제정보 확인 및 구매진행에 동의하셔야 주문이 가능합니다.");
+					return;
+				}
 				let orderVO = $("#orderForm").serializeObject();
 				orderVO.orderNo = /*[[${orderNo}]]*/""; 
 				
@@ -766,7 +776,7 @@
 								
 								const orderId = /*[[${orderNo}]]*/"";
 								const amount = result.data.TOTAL_AMOUNT;
-									
+								alert(amount)
 								// 구매자의 고유 아이디를 불러와서 customerKey로 설정하세요.
 								// 이메일・전화번호와 같이 유추가 가능한 값은 안전하지 않습니다.
 								const widgetClientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
@@ -849,7 +859,7 @@
 						innerHTML += '<tr id="depositTr" class="h-50 align-middle">';
 						innerHTML += '<td></td>';
 						innerHTML += '<td colspan="2"class="fw-bold">보냉가방(보증금)</td>';
-						innerHTML += "<td colspan='2'class='fw-bold fs-3'><span id='deposit'>5,000원</span></td>";
+						innerHTML += "<td colspan='2'class='fs-3'><span id='deposit' class='colorred'>5,000원</span></td>";
 						innerHTML += '</tr>';
 						$('#myTable > tbody > tr:last').before(innerHTML);
 						deposit = 5000;

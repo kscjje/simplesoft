@@ -54,7 +54,7 @@ public class OrderRestController {
 				userNm = "비회원";
 			} else {
 				result.put("resultCode", "9999");
-				result.put("resultMsg", "비회원정보가 없습니다.");
+				result.put("resultMsg", "정보가 만료되었습니다.");
 				result.put("returnUrl","/cart");
 				return new CommonResponse<Map<String, Object>>(result);
 			}
@@ -86,9 +86,18 @@ public class OrderRestController {
 				vo.setOrderStatus(GlobalVariable.ORDER_STATUS_WAIT); 								//주문상태-주문대기 (조건)
 				orderService.updateOrderApplyInfo(vo);
 				result.put("resultCode", "SUCCESS");
-				result.put("TOTAL_AMOUNT", order.getTotalAmount());
+				
+				int totalAmount = 0;
+				if("1000".equals(vo.getPackaging())) totalAmount += GlobalVariable.PACKING_AMT;
+				if("2000".equals(vo.getDelivKind())) {
+					totalAmount += GlobalVariable.DELY_OFFICE_AMT;
+				} else {
+					totalAmount += order.getTotalDelyAmt();
+				}
+				totalAmount += order.getTotalAmount();
+				result.put("TOTAL_AMOUNT", totalAmount);
 			}catch(Exception e) {
-				e.printStackTrace();
+				log.error(e.getMessage());
 				result.put("resultCode", "9999");
 				result.put("resultMsg", "오류가 발생하였습니다.");
 				result.put("returnUrl","/cart");

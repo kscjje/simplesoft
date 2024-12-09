@@ -14,7 +14,7 @@
 	<!-- 장바구니 수량추가 -->
 	<update id="updateCartAdd" parameterType="hashMap">
 		/* CartMapper.updateCartAdd */
-		UPDATE CART_MST SET QTY = QTY + 1
+		UPDATE CART_MST SET QTY = QTY + 1, MENU_MSG_DETAIL = CONCAT_WS('|', QTY, QTY , QTY , QTY , QTY ) 
 		WHERE 1=1
 		<choose>
 			<when test="userNo eq 0">

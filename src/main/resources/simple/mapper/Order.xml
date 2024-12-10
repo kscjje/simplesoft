@@ -218,7 +218,7 @@
 	<insert id="insertDelivery" parameterType="com.simplesoft.order.service.OrderProductVO">
 		/* OrderMapper.insertDelivery */
 		INSERT INTO DELIVERY_MST(
-			  ORDER_NO, ORDER_PRODUCT_NO, MENU_DAY, STATUS, MANAGER_NO
+			  ORDER_NO, ORDER_PRODUCT_NO, MENU_DAY, STATUS
 			, DELIVERY_DT, REG_USER, REG_DT, RECEIVE_NAME ,RECEIVE_TEL 
 			, RECEIVE_PHONE ,RECEIVE_POST_NUM ,RECEIVE_ADDR ,RECEIVE_ADDR_DETAIL
 		)
@@ -227,7 +227,6 @@
 			, #{orderProductNo}
 			, #{menuDay}
 			, '1000'
-			, null
 			, null
 			, #{receiveName}
 			, NOW()

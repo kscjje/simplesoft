@@ -183,6 +183,9 @@ public class OrderController {
 				} else if ("2000".equals(orderSet)) {
 					productAmt = GlobalVariable.PRODUCT_AMT_2;
 					payAmt = productAmt * qty;
+				} else {
+					productAmt = GlobalVariable.PRODUCT_AMT_1;
+					payAmt = productAmt * qty;
 				}
 				
 				totalPrice += payAmt;

@@ -222,10 +222,14 @@
 											} else {
 												addHtml +="<div class='mb-1'>"+menuMsg[index]+"</div>";
 											}
-											if(result[k].useYn == "Y" && (index+1) == menuMsg.length && (currentMMDD < month+day || currentMMDD == month+day && !(currentHour >= 16))){
-												addHtml	+="<div style='padding-top:10px;'>";
-												addHtml +=	"<input type='button' onclick='toggleButtonClick(this)' id='"+result[k].menuBoardSeq+"' value='선택' class='menuboard_btn'>";
-												addHtml +="</div>";
+											if (currentYear == result[k].menuDay.substring(0, 4) &&
+											    result[k].useYn === "Y" &&
+											    (index + 1) === menuMsg.length &&
+											    (currentMMDD < (month + day) || (currentMMDD === (month + day) && currentHour < 16))) {
+											    addHtml += `
+											        <div style="padding-top:10px;">
+											            <input type="button" onclick="toggleButtonClick(this)" id="${result[k].menuBoardSeq}" value="선택" class="menuboard_btn">
+											        </div>`;
 											}
 										}
 									}

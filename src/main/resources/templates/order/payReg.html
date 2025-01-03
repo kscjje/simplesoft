@@ -4,6 +4,7 @@
 	layout:decorate="~{layouts/default_layout}">
 	<main class="content-wrapper" layout:fragment="content" style="padding: 10px;">
 		<script src="https://js.tosspayments.com/v1/payment-widget"></script>
+		<!--<script src="https://js.tosspayments.com/v2/standard"></script>-->
 		<style>
 			.colorred {
 				color:red;
@@ -126,7 +127,7 @@
 												<th:block th:if="${msgStat.last == false}"><br></th:block>
 											</th:block>
 										</th:block>
-										<th:block th:if="${rs.orderSet == '2000'}">
+										<th:block th:if="${rs.orderSet == '2000' || rs.orderSet == '3000'}">
 											<th:block th:each="msg,msgStat : ${#strings.setSplit(rs.menuMsg,'|')}">
 												<th:block th:if="${#strings.substring(msg,0,1) == '!'}">
 													<span style="color:red;margin-right:7px;" th:text="${#strings.substring(msg,1)}"></span>
@@ -142,7 +143,7 @@
 										<span class="orderQty" th:text="${rs.orderQty}"></span>
 									</td>
 									<td class="fs-5 align-middle">
-										<th:block th:if="${rs.orderSet == '1000'}">
+										<th:block th:if="${rs.orderSet == '1000' || rs.orderSet == '3000'}">
 											<span th:text="${#numbers.formatInteger(18000,3,'COMMA')}"></span>
 										</th:block>
 										<th:block th:if="${rs.orderSet == '2000'}">
@@ -776,7 +777,6 @@
 								
 								const orderId = /*[[${orderNo}]]*/"";
 								const amount = result.data.TOTAL_AMOUNT;
-								alert(amount)
 								// 구매자의 고유 아이디를 불러와서 customerKey로 설정하세요.
 								// 이메일・전화번호와 같이 유추가 가능한 값은 안전하지 않습니다.
 								const widgetClientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";

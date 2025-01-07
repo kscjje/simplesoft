@@ -516,7 +516,7 @@ if(cartList[i].orderSet == 1000){
 				let productMoney = 18000;
 				
 				// 할인 계산
-				$(".selectOption option:selected[value='1000']").each(function() {
+				$(".selectOption option:selected[value='1000'], .selectOption option:selected[value='3000']").each(function() {
 					const $cart = $(this).parents(".cartList");
 					if ($cart.find("input[name=cartCheck]").is(":checked")) {
 						disCnt += Number($cart.find("[id^=ui_cart_]").text());
@@ -528,47 +528,40 @@ if(cartList[i].orderSet == 1000){
 				let finalResult = 0;
 				// 상품 금액 업데이트
 				$(".selectOption option:selected[value='1000'], .selectOption option:selected[value='3000']").each(function() {
+					
 					let id = $(this).parent().attr("id").split('_')[1];
 					$("#ui_price_"+id).text(productMoney.toLocaleString('ko-KR'));
 					
-					const valueMap = {
-						0: 7500,
-						1: 4500,
-						2: 2500,
-						3: 3500,
-						4: 2500
-					};
-					
 					const total = parseInt($("#ui_cart_"+id).text(), 10);
-					
-					let positiveSum = 0;
-		            let negativeSum = 0;
-		
-		            for (let i = 0; i <= 4; i++) {
-		                const spanValue = parseInt($("#ui_set_"+id+"_"+i).text(), 10);
-		
-		                const idLastDigit = i; // The loop variable i represents the last digit of the ID
-		
-		                const mappedValue = valueMap[idLastDigit];
-		
-		                const difference = spanValue - total;
-		
-		                const calculatedValue = difference * mappedValue;
-		
-		                if (calculatedValue >= 0) {
-		                    positiveSum += calculatedValue;
-		                } else {
-		                    negativeSum += calculatedValue;
-		                }
-		            }
-		            // Calculate the minimum threshold
-		            const minimumThreshold = productMoney * total;
-		
-		            // Final result: add positive sum and subtract the absolute value of the negative sum
-		            finalResult = minimumThreshold + positiveSum - Math.abs(negativeSum);
-		
-		            // Ensure the final result is not below the minimum threshold
-		            finalResult = Math.max(finalResult, minimumThreshold);
+					if ($(this).val() === '3000') {
+						finalResult = productMoney * total;
+					} else {
+						const valueMap = {
+							0: 7500,
+							1: 4500,
+							2: 2500,
+							3: 3500,
+							4: 2500
+						};
+						//총 증가 금액
+						let positiveSum = 0;
+			
+			            for (let i = 0; i <= 4; i++) {
+							//반찬 수량 
+			                const spanValue = parseInt($("#ui_set_"+id+"_"+i).text(), 10);
+							//순번에 대한 가격
+			                const mappedValue = valueMap[i];
+							//수량과 반찬수량의 차이를 구함
+			                const difference = spanValue - total;
+							//반찬수량이 더 많다면 그 만큼 가격을 합함
+			                const calculatedValue = difference * mappedValue;
+			
+			                    positiveSum += calculatedValue;
+			            }
+			            const minimumThreshold = productMoney * total;
+			
+			            finalResult = minimumThreshold + positiveSum;
+					}
 					
 					$("#ui_total_" + id).text(finalResult.toLocaleString('ko-KR'));
 				});
@@ -580,7 +573,6 @@ if(cartList[i].orderSet == 1000){
 					totalQty += Number($(this).attr("data"));
 					totalMoney += Number($("#ui_total_" + this.id).text().replace(/,/g, ""));
 				});
-				totalMoney = Math.max(finalResult, totalMoney);
 				$("#r_productMoney").text(totalMoney.toLocaleString('ko-KR'));
 				
 				// 배송비 계산

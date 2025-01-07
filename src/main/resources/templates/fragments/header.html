@@ -2,48 +2,27 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 	<th:block th:fragment="header">
 		<!-- Header (s) -->
-		<style>
-			.submenu {
-				border-top:1px solid rgba(0,0,0,0.055);
-				border-bottom: 1px solid rgba(0,0,0,0.055);				
-			}
-		</style>
 		<div id="wrap" class="mb-5">
-			<div class="header">
-				<!--header menu -->
-				<div id="header_menu" class="container">
-					<ul>
-						<th:block th:if="${#strings.isEmpty(session.loginInfo)}">
-<!--							<li><a href="/login" class="menuLink">로그인</a></li>-->
-<!--							<li><a href="#" class="menuLink">회원가입</a></li>-->
-							<li><a href="/cart" class="menuLink">장바구니</a></li>
-							<li><a href="/mypage/noneOrderCheck" class="menuLink">비회원주문조회</a></li>
-						</th:block>
-						<th:block th:if="${not #strings.isEmpty(session.loginInfo)}">
-							<li><a href="/logout" class="menuLink">로그아웃</a></li>
-							<li><a href="#"	class="menuLink">마이페이지</a></li>
-							<li><a href="/cart"	class="menuLink">장바구니</a></li>
-						</th:block>
-	                </ul>
-	            </div>
+			<div class="header" style="background-color: rgb(51, 51, 51); text-align: center;" >
+				<img src="/image/banner.jpg">
 			</div>
-			<!--header logo-->
-			<div class="header_logo"><a href="/main"><img src="/image/logo.jpg" alt="밥수니반찬헤더로고"></a></div>
+			
 			<div id="submenu" class="submenu">
+				<div class="header_logo"><a href="/main"><img src="/image/logo.jpg" alt="밥수니반찬헤더로고"></a></div>
 				<ul class="nav container">
 					<li class="nav-item">
 						<a href="/order" class="nav-link">주문하기</a>
 					</li>
 					<li class="nav-item">
-						<a href="#" class="nav-link">이용방법</a>
+						<a href="#" class="nav-link">이달의식단</a>
 					<li class="nav-item">
 						<a href="#" class="nav-link">밥수니반찬</a>
 					</li>
 					<li class="nav-item">
-						<a href="#" class="nav-link">이벤트</a>
+						<a href="/cart" class="nav-link">장바구니</a>
 					</li>
 					<li class="nav-item">
-						<a href="#" class="nav-link">고객센터</a>
+						<a href="/mypage/noneOrderCheck" class="nav-link">비회원주문조회</a>
 					</li>
 				</ul>
 			</div>

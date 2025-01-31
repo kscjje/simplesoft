@@ -3,8 +3,6 @@ package com.simplesoft.order.service;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +22,7 @@ public class OrderProductVO {
 	private int menuBoardSeq;		//상품번호
 	private String menuDay;			//식단일자
 	private String orderSet;		//식단세트
+	private String orderSetNm;		//식단세트
 	private String menuMsg;			//상품명
 	private String menuMsgDetail;	//상품명 각각 수량
 	private int payAmt;				//결제금액

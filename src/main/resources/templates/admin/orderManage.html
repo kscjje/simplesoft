@@ -87,6 +87,13 @@
 				font-size: 13px;
 				border: 1px solid #c5c5c5;
 			}
+			.pTable th {
+			    background-color: rgb(244, 244, 244); /* 헤더 배경색 */
+				text-align: center;
+			}
+			.pTable td {
+				padding-left: 15px;
+			}
 		</style>
 		<div class="contents" style="height: 100%;">
 			<div class="ms-4 me-4">
@@ -113,7 +120,8 @@
 								<option value="0000">주문완료</option>
 								<option value="1001">가상계좌</option>
 								<option value="0001">주문취소</option>
-								<option value="0002">취소요청</option>
+								<option value="0002">환불요청</option>
+								<option value="0003">환불완료</option>
 							</select>
 <!--							<img src="/admin/rest/qr/">-->
 						</span>
@@ -152,7 +160,7 @@
 					<table class="table text-center table-bordered" style="vertical-align:middle;">
 						<thead>
 							<tr>
-								<th style="width:10%">상세</th>
+								<th style="width:10%"></th>
 								<th style="width:10%">주문상태</th>
 								<th style="width:10%">결제수단</th>
 								<th style="width:20%">주문번호</th>
@@ -171,12 +179,189 @@
 				</nav>
 			</div>
         </div>
+		
+		<!-- 상세 Modal -->
+		<div class="modal-dialog modal-xl" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel">
+			<div class="modal fade" id="exampleModalCenteredScrollable" tabindex="-1" aria-labelledby="exampleModalCenteredScrollableTitle" style="display: none;">
+				<div class="modal-dialog modal-xl">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="exampleModalCenteredScrollableTitle">주문 상세</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
+						</div>
+						<div class="modal-body">
+							<div class="container-fluid">
+								<h5>주문자 정보</h5>
+								<table class="table table-bordered mb-4 pTable">
+									<tr>
+										<th style="width:15%">주문번호</th>
+										<td id="o_orderNo" style="width:35%"></td>
+										<th style="width:15%">주문일시</th>
+										<td id="o_orderPayDt" style="width:35%"></td>
+									</tr>
+									<tr>
+										<th>주문자명</th>
+										<td id="o_orderName"></td>
+										<th>주문상태</th>
+										<td id="o_orderStatus"></td>
+									</tr>
+									<tr>
+										<th>핸드폰</th>
+										<td id="o_orderPhone"></td>
+										<th>전화번호</th>
+										<td id="o_orderTel"></td>
+									</tr>
+									<tr>
+										<th>주소</th>
+										<td colspan="3" id="o_orderAddr"></td>
+									</tr>
+								</table>
+								<h5>배송 정보</h5>
+								<table class="table table-bordered mb-4 pTable">
+									<tr>
+										<th style="width:15%">받는이</th>
+										<td id="r_orderName" style="width:35%"></td>
+										<th	style="width:15%">배송상태</th>
+										<td id="r_orderStatus" style="width:35%"></td>
+									</tr>
+									<tr>
+										<th>핸드폰</th>
+										<td id="r_orderPhone"></td>
+										<th>전화번호</th>
+										<td id="r_orderTel"></td>
+									</tr>
+									<tr>
+										<th>배송유형</th>
+										<td id="r_delivKind"></td>
+										<th>포장가방</th>
+										<td id="r_packaging"></td>
+									</tr>
+									<tr>
+										<th>배달시간</th>
+										<td id="r_delivTime"></td>
+										<th>공동현관 비밀번호</th>
+										<td id="r_commonPwd"></td>
+									</tr>
+									<tr>
+										<th>주소</th>
+										<td colspan="3" id="r_orderAddr"></td>
+									</tr>
+									<tr>
+										<th>전하실말씀</th>
+										<td colspan="3" id="r_bigo"></td>
+									</tr>
+								</table>
+								<nav>
+									<div class="nav nav-tabs" id="nav-tab" role="tablist">
+										<button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">상품정보</button>
+										<button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">결제정보</button>
+									</div>
+								</nav>
+								<div class="tab-content" id="nav-tabContent">
+									<div class="tab-pane fade show active" style="height: 230px;overflow-y: scroll;" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+										<table class="table table-bordered mb-4 pTable" id="tab_product"></table>
+									</div>
+									<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+										<table class="table table-bordered mb-4 pTable">
+											<tr>
+												<th style="width:15%">주문번호</th>
+												<td id="o_orderNo" style="width:35%"></td>
+												<th style="width:15%">주문일시</th>
+												<td id="o_orderPayDt" style="width:35%"></td>
+											</tr>
+											<tr>
+												<th>주소</th>
+												<td colspan="3" id="o_orderAddr"></td>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<script th:inline="javascript">
 			
 			function fnInit(){
 				searchBtn();
 			}
 			$(document).ready(function() {
+				
+				//Modal창 클릭 시 이벤트 초기화
+				const exampleModal = document.getElementById('exampleModalCenteredScrollable')
+				if (exampleModal) {
+					exampleModal.addEventListener('show.bs.modal', event => {
+						let button = event.relatedTarget;
+						let dataString = button.getAttribute('data-bs-whatever');
+						let data = JSON.parse(dataString);
+						
+						//주문정보
+						$("#o_orderNo").text(data.orderNo);
+						$("#o_orderPayDt").text(data.orderPayDt);
+						$("#o_orderName").text(data.orderName);
+						$("#o_orderEmail").text(data.orderEmail);
+						$("#o_orderAddr").text(`${data.orderPostNum}) ${data.orderAddr} ${data.orderAddrDetail}`);
+						
+						$("#o_orderStatus").text(data.orderStatusNm);
+						fnDecrypt(data.orderPhone, decryptedData => $("#o_orderPhone").text(decryptedData));
+						fnDecrypt(data.orderTel, decryptedData => $("#o_orderTel").text(decryptedData));
+						
+						//배송정보
+						$("#r_orderName").text(data.receiveName);
+						$("#r_orderStatus").text(data.deliveryStatusNm);
+						$("#r_delivKind").text(data.delivKind);
+						$("#r_packaging").text(data.packaging);
+						$("#r_delivTime").text(data.delivTime);
+						
+						$("#r_commonPwd").text(data.commonPwd);
+						$("#r_bigo").text(data.bigo);
+						$("#r_orderAddr").text(`${data.receivePostNum}) ${data.receiveAddr} ${data.receiveAddrDetail}`);
+						fnDecrypt(data.receivePhone, decryptedData => $("#r_orderPhone").text(decryptedData));
+						fnDecrypt(data.receiveTel, decryptedData => $("#r_orderTel").text(decryptedData));
+						
+						//상품정보
+						$.ajax({
+							url : "/admin/rest/order/searchProductList",
+							type : "POST",
+							dataType : "json",
+							data : {orderNo:data.orderNo},
+							success : function(result) {
+								let addHtml = "";
+									addHtml +=	`<tr>`;
+									addHtml += 		`<th>식단일자</th>`;
+									addHtml += 		`<th>세트선택</th>`;
+									addHtml += 		`<th>식단정보</th>`;
+									addHtml +=		`<th>수량</th>`;
+									addHtml +=		`<th>가격</th>`;
+									addHtml +=	`</tr>`;
+								for(let i = 0; i < result.data.orderProductList.length; i ++){
+									let product = result.data.orderProductList[i];
+									let menuDay = formatDate(product.menuDay);
+									let menuMsg = formatString(product.menuMsg);
+									
+									addHtml +=	`<tr style="text-align:center">`;
+									addHtml +=		`<td>${menuDay}</td>`;
+									addHtml +=		`<td>${product.orderSetNm}</td>`;
+									addHtml +=		`<td>${menuMsg}</td>`;
+									addHtml +=		`<td>${product.orderQty}개</td>`;
+									addHtml +=		`<td>${product.payAmt}원</td>`;
+									addHtml +=	`</tr>`;
+								}
+								$("#tab_product").html(addHtml);
+								
+							}, error : function(request, status, error) {
+								alert("관리자에게 문의해 주세요.");
+							}
+						});
+						
+						//결제정보
+					})
+				}
 				
 				$('#startDate').datepicker({
 					format: 'yyyy-mm-dd', //데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
@@ -363,22 +548,24 @@
 							if(cnt > 0 ){
 								for(let i = 0; i < result.data.orderList.length; i ++){
 									let data = result.data.orderList[i];
+									console.log(data)
+									let jsonData = JSON.stringify(data).replace(/"/g, '&quot;');
+									
 									addHtml +=	'<tr>';
-									addHtml += 		'<td><button type="button" id="ui_detail_btn" class="btn_search" style="line-height: 26px; height: 30px;">상세</button></td>';
+									addHtml += 		`<td><button type="button" class="btn_search ui_detail_btn" data-bs-whatever="${jsonData}" data-bs-toggle="modal" data-bs-target="#exampleModalCenteredScrollable" style="line-height: 26px; height: 30px;">상세</button></td>`;
 									if(data.orderStatus == "0000"){
 										addHtml +=	'<td><span>주문완료</span>';
 									} else if (data.orderStatus == "0001"){
 										addHtml +=	'<td><span>주문취소</span>';
-									} else if (data.orderStatus == "1000"){
-										addHtml +=	'<td><span>신청작성중</span>';
 									}
 									addHtml +=		'<td>' + data.payMethod + '</td>';
 									addHtml +=		'<td>' + data.orderNo + '</td>';
 									addHtml +=		'<td>' + data.orderName + '</td>';
-									if(data.productList.length > 1 ){
-										addHtml +=		'<td>' + data.productList[0].menuDay + ' 식단 외 '+ (data.productList.length -1) +'건</td>';	
+									
+									if(Number(data.orderQty) > 1 ){
+										addHtml +=		'<td>' + data.menuDay + ' 식단 외 '+ (data.orderQty-1) +'건</td>';	
 									} else {
-										addHtml +=		'<td>' + data.productList[0].menuDay + ' 식단</td>';
+										addHtml +=		'<td>' + data.menuDay + ' 식단</td>';
 									}
 									addHtml +=		'<td>' + data.orderPayDt + '</td>';
 									addHtml +=	'</tr>';
@@ -486,8 +673,10 @@
 							if(cnt > 0 ){
 								for(let i = 0; i < result.data.orderList.length; i ++){
 									let data = result.data.orderList[i];
+									let jsonData = JSON.stringify(data).replace(/"/g, '&quot;');
+									
 									addHtml +=	'<tr>';
-									addHtml += 		'<td><button type="button" id="ui_detail_btn" class="btn_search" style="line-height: 26px; height: 30px;">상세</button></td>';
+									addHtml += 		`<td><button type="button" class="btn_search ui_detail_btn" data-bs-whatever="${jsonData}" data-bs-toggle="modal" data-bs-target="#exampleModalCenteredScrollable" style="line-height: 26px; height: 30px;">상세</button></td>`;
 									if(data.orderStatus == "0000"){
 										addHtml +=	'<td><span>주문완료</span>';
 									} else if (data.orderStatus == "0001"){
@@ -496,10 +685,11 @@
 									addHtml +=		'<td>' + data.payMethod + '</td>';
 									addHtml +=		'<td>' + data.orderNo + '</td>';
 									addHtml +=		'<td>' + data.orderName + '</td>';
-									if(data.productList.length > 1 ){
-										addHtml +=		'<td>' + data.productList[0].menuDay + ' 식단 외 '+ (data.productList.length -1) +'건</td>';	
+									
+									if(Number(data.orderQty) > 1 ){
+										addHtml +=		'<td>' + data.menuDay + ' 식단 외 '+ (data.orderQty-1) +'건</td>';	
 									} else {
-										addHtml +=		'<td>' + data.productList[0].menuDay + ' 식단</td>';
+										addHtml +=		'<td>' + data.menuDay + ' 식단</td>';
 									}
 									addHtml +=		'<td>' + data.orderPayDt + '</td>';
 									addHtml +=	'</tr>';
@@ -568,7 +758,25 @@
 							alert("에러코드: " + request.status + "\n메시지: " + request.responseText);
 						}
 					});
-				}				
+				}
+				fnDecrypt = function (encryptedData, callback) {
+					let formData = {
+						encryptedData	: encryptedData
+					}
+					$.ajax({
+						url : "/admin/rest/order/decrypt",
+						type : "POST",
+						dataType : "json",
+						async:false,
+						cache:"false",
+						data : formData,
+						success : function(result) {
+							callback(result.data.decryptedData);
+						}, error : function(request, status, error) {
+							alert("관리자에게 문의해 주세요.");
+						}
+					});
+				}
 				enterKey = function(type){
 					if (window.event.keyCode == 13) {
 						searchBtn();
@@ -586,11 +794,11 @@
 						$("#orderStatus").val("1001");
 						break;
 					case "3" : 
-						//취소요청
+						//환불요청
 						$("#orderStatus").val("0002");
 						break;
 					case "4" :
-						//취소완료
+						//환불완료
 						$("#orderStatus").val("0001"); 
 						break;
 					case "5" :
@@ -603,10 +811,19 @@
 					default:
 						break;
 				}
+				
 				fnInit();
 			});
-			
-			
+			// 날짜 형식 포맷 함수
+			function formatDate(date) {
+				const formattedDate = date.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');
+				return formattedDate;
+			}
+			//식단정보 포맷
+			function formatString(msg){
+				const formattedMsg = msg.replace(/\|/g, '</br>').replace(/\!/g,""); // | 앞에 줄 바꿈 추가
+				return formattedMsg;
+			}
 		</script>
 	</main>
 </html>

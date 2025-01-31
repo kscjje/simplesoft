@@ -65,7 +65,9 @@ public class OrderVO extends CommonVO{
 	
 	private List<OrderVO> orderList;	//주문목록
 	private int orderCount;				//주문목록 카운트
-
+	
+	private int menuDay;				//주문내역 전용
+	private int orderQty;				//주문내역 전용
 
 	@Override
 	public String toString() {

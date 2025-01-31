@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 
 public interface CartService {
 	@Transactional

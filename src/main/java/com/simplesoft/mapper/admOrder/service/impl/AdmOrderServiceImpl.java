@@ -26,6 +26,11 @@ public class AdmOrderServiceImpl implements AdmOrderService{
 		result.setOrderCount(admOrderMapper.selectOrderApplyListCount(vo));
 		return result;
 	}
+	//주문상품신청정보
+	@Override
+	public List<OrderProductVO> getOrderProductInfo(OrderProductVO vo) {
+		return admOrderMapper.getOrderProductInfo(vo);
+	}
 	//주문신청정보 엑셀 
 	@Override
 	public OrderVO selectOrderApplyExcel(OrderVO vo) {

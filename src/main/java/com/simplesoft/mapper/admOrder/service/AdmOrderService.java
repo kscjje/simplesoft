@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.simplesoft.order.service.DeliveryVO;
+import com.simplesoft.order.service.OrderProductVO;
 import com.simplesoft.order.service.OrderVO;
 
 public interface AdmOrderService {
 	public OrderVO selectOrderApplyList(OrderVO vo);
 	public OrderVO selectOrderApplyExcel(OrderVO vo);
+	public List<OrderProductVO> getOrderProductInfo(OrderProductVO vo);
 	public Map<String, Object> getDashBoardCnt();
 	public DeliveryVO getDeliveryList(DeliveryVO vo);
 	public int updateDelivComplete(Map<String, Object> paramMap);

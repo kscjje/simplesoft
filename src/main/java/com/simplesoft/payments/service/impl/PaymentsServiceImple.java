@@ -15,7 +15,6 @@ import com.simplesoft.order.service.OrderVO;
 import com.simplesoft.payments.service.PaymentsService;
 import com.simplesoft.payments.service.PaymentsVO;
 import com.simplesoft.util.EncryptUtils;
-import com.simplesoft.util.MailTemplateSender;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -34,8 +33,8 @@ public class PaymentsServiceImple implements PaymentsService{
 	@Autowired 
 	OrderMapper orderMapper;
 	
-	@Autowired
-    private MailTemplateSender mailTemplateSender;
+//	@Autowired
+//  private MailTemplateSender mailTemplateSender;
 	
 	//결제정보 저장 후 장바구니 내역 삭제
 	@Override

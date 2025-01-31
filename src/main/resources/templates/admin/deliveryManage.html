@@ -135,7 +135,7 @@
 				<div class="title"><h1><i class="bi bi-check-lg me-2"></i>배송 관리</h1></div>
 				<div class="search">
 					<div class="mb-2">
-						<span class="mb-1 spanTitle" data-bs-toggle="tooltip" data-bs-placement="top" title="등록 일시 기준"><i class="bi bi-dot me-1"></i>기간</span>
+						<span class="mb-1 spanTitle" data-bs-toggle="tooltip" data-bs-placement="top" title="배송일자 및 식단일자 기준"><i class="bi bi-dot me-1"></i>기간</span>
 						<span class="ms-4">
 							<input type="text" id="startDate" class="inputText datepicker cursor-pointer" placeholder="YYYY-MM-DD" title="시작기간" readonly><i class="bi bi-calendar i_calendar me-2" onclick="$('#startDate').datepicker('show');"></i>
 							~ 
@@ -180,8 +180,8 @@
 							<span class="ms-4">
 								<input type="text" id="searchText" class="inputText" placeholder="검색어를 입력해주세요." title="검색명" maxlength="20" style="width: 265px;" onkeypress="enterKey()">
 								<select id="searchOrder" class="inputSelect2" data-bs-toggle="tooltip" data-bs-placement="top" title="검색 정렬 기준">
-									<option value="1">등록일시</option>
-									<option value="2">식단일자</option>
+									<option value="1">식단일자</option>
+									<option value="2">등록일시</option>
 								</select>
 								<select id="searchOrderBy" class="inputSelect2">
 									<option value="1">내림차순</option>
@@ -241,8 +241,8 @@
 			</div>
 			<button type="button" style="display:none;" id="modalDeliv" data-bs-toggle="modal" data-bs-target="#exampleModalCenteredScrollable"></button>
         </div>
-        <!-- 배정관리 Modal -->
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel">
+		<!-- 배정관리 Modal -->
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel">
 			<div class="modal fade" id="exampleModalCenteredScrollable" tabindex="-1" aria-labelledby="exampleModalCenteredScrollableTitle" style="display: none;">
 				<div class="modal-dialog modal-xxl">
 					<div class="modal-content">
@@ -421,8 +421,8 @@
 				}
 				searchBtn = function () {
 					
-					let startDate	= $("#startDate").val();
-					let endDate		= $("#endDate").val();
+					let startDate	= $("#startDate").val().replaceAll("-","");
+					let endDate		= $("#endDate").val().replaceAll("-","");
 					let delivStatus = $("#delivStatus").val();
 					let searchOption= $("#searchOption").val();
 					let searchText	= $("#searchText").val();

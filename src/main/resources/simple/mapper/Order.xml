@@ -12,7 +12,7 @@
 	<insert id="insertOrderMst" parameterType="com.simplesoft.order.service.OrderVO">
 		/* OrderMapper.insertOrderMst */
 		<selectKey keyProperty="orderNo" resultType="String" order="BEFORE"> 
-			SELECT FN_CREATE_ORDER_NO() AS ORDER_NO
+			SELECT FN_CREATE_ORDER_NO_V1() AS ORDER_NO
 		</selectKey>
 		INSERT INTO ORDER_MST
 			(
@@ -117,7 +117,7 @@
 		</if>
 	</select>
 	
-	<!-- 주문 신청 정보 -->	
+	<!-- 주문 상품 정보 -->	
 	<select id="getOrderProductInfo" parameterType="com.simplesoft.order.service.OrderProductVO" resultType="com.simplesoft.order.service.OrderProductVO">
 		/* OrderMapper.getOrderProductInfo */
 		SELECT
@@ -139,7 +139,7 @@
 		WHERE ORDER_NO = #{orderNo}
 	</select>
 	
-	<!-- 주문 신청 정보 -->	
+	<!-- 주문 배송 정보 -->	
 	<select id="getOrderInfoDelivery" parameterType="com.simplesoft.order.service.OrderProductVO" resultType="com.simplesoft.order.service.DeliveryVO">
 		/* OrderMapper.getOrderInfoDelivery */
 		SELECT

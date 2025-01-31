@@ -15,6 +15,7 @@ public class CommonVO {
 	private int startPage;			//시작페이지
 	private int endPage;			//종료페이지
 	private String orderStatus;		//주문상태
+	private String orderStatusNm;	//주문상태명
 	private String delivStatus;		//배송상태
 	private String searchOption;	//검색종류
 	private String searchText;		//검색내용

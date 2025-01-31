@@ -1,12 +1,8 @@
 package com.simplesoft.controller.rest;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +21,7 @@ import jakarta.servlet.http.HttpSession;
 @RestController
 public class RestMainController {
 	
-	private static final Logger log = LogManager.getLogger(RestMainController.class);
+//	private static final Logger log = LogManager.getLogger(RestMainController.class);
 	
 	@Autowired
 	CartService cartService;

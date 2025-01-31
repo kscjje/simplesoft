@@ -16,6 +16,7 @@ import com.simplesoft.manager.service.ManagerVO;
 import com.simplesoft.mapper.admOrder.service.AdmOrderService;
 import com.simplesoft.menuboard.service.MenuBoardService;
 import com.simplesoft.order.service.DeliveryVO;
+import com.simplesoft.order.service.OrderProductVO;
 import com.simplesoft.order.service.OrderVO;
 import com.simplesoft.reponse.BasicResponse;
 import com.simplesoft.reponse.CommonResponse;
@@ -63,7 +64,14 @@ public class AdminOrderRestController {
 		if(suc > 0) returnData.put("resultCode", "success"); 
 		return new CommonResponse<Map<String, Object>>(returnData);
 	}
-	
+	//주문 상품 내역 조회
+	@PostMapping(value = "/searchProductList")
+	public BasicResponse searchProductListAjax(@ModelAttribute("orderVO") OrderProductVO paramVO) {
+		Map<String, Object> returnData = new HashMap<String, Object>();
+		List<OrderProductVO> orderProductVO = admOrderService.getOrderProductInfo(paramVO);
+		returnData.put("orderProductList", orderProductVO);
+		return new CommonResponse<Map<String, Object>>(returnData);
+	}
 	//식단표 데이터 삭제
 	@PostMapping(value = "/removeMenu")
 	public BasicResponse removeMenuAjax(@RequestParam Map<String, Object> paramMap){
@@ -87,7 +95,7 @@ public class AdminOrderRestController {
 		return new CommonResponse<Map<String, Object>>(returnData);
 	}
 	
-	//주문 내역 조회
+	//배송 내역 조회
 	@PostMapping(value = "/deliverySearchList")
 	public BasicResponse deliverySearchListAjax(@ModelAttribute("deliveryVO") DeliveryVO paramVO) {
 		System.out.println(paramVO);

@@ -1,7 +1,5 @@
 package com.simplesoft.payments.service;
 
-import java.util.ArrayList;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

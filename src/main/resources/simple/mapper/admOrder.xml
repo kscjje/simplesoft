@@ -309,7 +309,7 @@
 			, DATE_FORMAT(C.REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
 			, B.ORDER_QTY
 			, CASE 
-				WHEN B.ORDER_SET = '1000' THEN CONCAT('총:',B.ORDER_QTY,'개\n',B.MENU_MSG_DETAIL)
+				WHEN B.ORDER_SET = '1000' THEN CONCAT('총:',B.ORDER_QTY,'개\n|',B.MENU_MSG_DETAIL)
 				ELSE CONCAT(B.ORDER_QTY,'개')
 			END AS ORDER_QTY_EXCEL
 			, CASE 
@@ -334,8 +334,8 @@
 			END AS ORDER_SET_NM
 			, A.BIGO
 		FROM ORDER_MST A
-		LEFT JOIN ORDER_PRODUCT B ON A.ORDER_NO = B.ORDER_NO 
-		LEFT JOIN DELIVERY_MST C ON A.ORDER_NO = C.ORDER_NO AND B.ORDER_PRODUCT_NO = B.ORDER_PRODUCT_NO
+		INNER JOIN ORDER_PRODUCT B ON A.ORDER_NO = B.ORDER_NO 
+		INNER JOIN DELIVERY_MST C ON A.ORDER_NO = C.ORDER_NO AND B.ORDER_PRODUCT_NO = C.ORDER_PRODUCT_NO
 		
 		WHERE 1=1
 		<if test="startDate neq null and startDate neq '' and endDate neq null and endDate neq ''">
@@ -434,8 +434,8 @@
 			END AS ORDER_SET_NM
 			, A.BIGO
 		FROM ORDER_MST A
-		LEFT JOIN ORDER_PRODUCT B ON A.ORDER_NO = B.ORDER_NO 
-		LEFT JOIN DELIVERY_MST C ON A.ORDER_NO = C.ORDER_NO AND B.ORDER_PRODUCT_NO = B.ORDER_PRODUCT_NO
+		INNER JOIN ORDER_PRODUCT B ON A.ORDER_NO = B.ORDER_NO 
+		INNER JOIN DELIVERY_MST C ON A.ORDER_NO = C.ORDER_NO AND B.ORDER_PRODUCT_NO = C.ORDER_PRODUCT_NO
 		
 		WHERE 1=1
 		<if test="startDate neq null and startDate neq '' and endDate neq null and endDate neq ''">
@@ -486,24 +486,26 @@
 		/* AdmOrderMapper.selectDeliveryListCount */
 		SELECT
 			COUNT(*) as totalCount
-		FROM DELIVERY_MST A
+		FROM ORDER_MST A
+		INNER JOIN ORDER_PRODUCT B ON A.ORDER_NO = B.ORDER_NO 
+		INNER JOIN DELIVERY_MST C ON A.ORDER_NO = C.ORDER_NO AND B.ORDER_PRODUCT_NO = C.ORDER_PRODUCT_NO
 		WHERE 1=1
 		<if test="startDate neq null and startDate neq '' and endDate neq null and endDate neq ''">
-			AND DATE_FORMAT(A.MENU_DAY,'%Y%m%d') BETWEEN #{startDate} AND #{endDate}
+			AND DATE_FORMAT(C.MENU_DAY,'%Y%m%d') BETWEEN #{startDate} AND #{endDate}
 		</if>
 		<if test="delivStatus neq null and delivStatus neq ''">
-			AND A.STATUS = ${delivStatus}
+			AND C.STATUS = ${delivStatus}
 		</if>
 		<if test="managerNo neq null and managerNo neq ''">
-			AND A.MANAGER_NO = ${managerNo}
+			AND C.MANAGER_NO = ${managerNo}
 		</if>
 		<if test="searchOption neq null and searchOption neq ''">
 			<if test="searchOption == 1">
-				AND A.RECEIVE_NAME LIKE CONCAT('%',#{searchText},'%')
+				AND C.RECEIVE_NAME LIKE CONCAT('%',#{searchText},'%')
 			</if>
 			<if test="searchOption == 2">
 				<if test="searchText neq null and searchText neq ''">
-					AND A.ORDER_NO = #{searchText}
+					AND C.ORDER_NO = #{searchText}
 				</if>
 			</if>
 		</if>

@@ -179,13 +179,37 @@
 					, C.ORDER_NAME AS PRODUCT_NAME
 					, C.TOTAL_AMOUNT
 					, B.STATUS as DELIVERY_STATUS
-					, CASE
-						WHEN B.STATUS = '1000' THEN '배송전'
+					, CASE 
+						WHEN B.STATUS = '1000' THEN '배송전' 
 						WHEN B.STATUS = '0000' THEN '배송완료'
-						ELSE '배송전'
+						ELSE '배송전' 
 					END AS DELIVERY_STATUS_NM
+					, CASE 
+						WHEN A.ORDER_STATUS = '1000' THEN '주문대기'
+						WHEN A.ORDER_STATUS = '1001' THEN '가상계좌 입금대기'
+						WHEN A.ORDER_STATUS = '0000' THEN '주문완료'
+						WHEN A.ORDER_STATUS = '0001' THEN '주문취소'
+						WHEN A.ORDER_STATUS = '0002' THEN '환불요청'
+						WHEN A.ORDER_STATUS = '0003' THEN '환불완료'
+						ELSE '배송전' 
+					END AS ORDER_STATUS_NM
 					, B.MANAGER_NO
 					, B.DELIVERY_DT
+					, (SELECT COUNT(*) FROM ORDER_PRODUCT WHERE A.ORDER_NO = ORDER_NO) ORDER_QTY
+					, (SELECT MENU_DAY FROM ORDER_PRODUCT WHERE A.ORDER_NO = ORDER_NO ORDER BY MENU_DAY ASC LIMIT 1 ) MENU_DAY
+					, CASE 
+						WHEN A.DELIV_TIME = '1000' THEN '오전배달(8~10시)' 
+						WHEN A.DELIV_TIME = '2000' THEN '오후배달(1~4시)'
+					END AS DELIV_TIME
+					, CASE 
+						WHEN A.DELIV_KIND = '1000' THEN '당일배송(안산)'
+						WHEN A.DELIV_KIND = '2000' THEN '우체국 택배(안산 외)'
+					END AS DELIV_KIND
+					, CASE 
+						WHEN A.PACKAGING = '1000' THEN '보냉가방(신규)'
+						WHEN A.PACKAGING = '2000' THEN '보냉가방(기존)'
+						WHEN A.PACKAGING = '3000' THEN '종이가방'
+					END AS PACKAGING
 				FROM ORDER_MST A
 				LEFT JOIN DELIVERY_MST B ON A.ORDER_NO = B.ORDER_NO
 				LEFT JOIN PAYMENTS C ON A.ORDER_NO = C.ORDER_ID
@@ -264,46 +288,71 @@
 	<select id="selectDeliveryList" parameterType="com.simplesoft.order.service.DeliveryVO" resultType="com.simplesoft.order.service.DeliveryVO">
 		/* AdmOrderMapper.selectDeliveryList */
 		SELECT
-			  A.DELIVERY_SEQ
-			, A.ORDER_NO
-			, A.ORDER_PRODUCT_NO
-			, DATE_FORMAT(A.MENU_DAY,'%Y년 %m월 %d일') AS MENU_DAY
-			, A.STATUS as DELIVERY_STATUS
+			  C.DELIVERY_SEQ
+			, C.ORDER_NO
+			, C.ORDER_PRODUCT_NO
+			, DATE_FORMAT(C.MENU_DAY,'%Y년 %m월 %d일') AS MENU_DAY
+			, C.STATUS as DELIVERY_STATUS
 			, CASE 
-				WHEN A.STATUS = '1000' THEN '배송전' 
-				WHEN A.STATUS = '0000' THEN '배송완료'
+				WHEN C.STATUS = '1000' THEN '배송전' 
+				WHEN C.STATUS = '0000' THEN '배송완료'
 				ELSE '배송전' 
 			END AS DELIVERY_STATUS_NM
-			, IFNULL((SELECT MANAGER_NM FROM MANAGER_MST MM WHERE MM.MANAGER_NO = A.MANAGER_NO),'미배정') AS MANAGER_NM
-			, IFNULL(DATE_FORMAT(A.DELIVERY_DT,'%Y-%m-%d %H:%i:%s'),'') AS DELIVERY_DT
-			, IFNULL(A.RECEIVE_NAME,'') AS RECEIVE_NAME
-			, IFNULL(A.RECEIVE_TEL,'') AS RECEIVE_TEL
-			, IFNULL(A.RECEIVE_PHONE,'') AS RECEIVE_PHONE
-			, IFNULL(A.RECEIVE_POST_NUM,'') AS RECEIVE_POST_NUM 
-			, IFNULL(A.RECEIVE_ADDR,'') AS RECEIVE_ADDR 
-			, IFNULL(A.RECEIVE_ADDR_DETAIL,'') AS RECEIVE_ADDR_DETAIL
-			, DATE_FORMAT(A.REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
-			, B.ORDER_QTY
-		FROM DELIVERY_MST A
-		JOIN ORDER_PRODUCT B ON A.ORDER_PRODUCT_NO = B.ORDER_PRODUCT_NO
-		AND A.ORDER_NO = B.ORDER_NO
+			, IFNULL((SELECT MANAGER_NM FROM MANAGER_MST MM WHERE MM.MANAGER_NO = C.MANAGER_NO),'미배정') AS MANAGER_NM
+			, IFNULL(DATE_FORMAT(C.DELIVERY_DT,'%Y-%m-%d %H:%i:%s'),'') AS DELIVERY_DT
+			, IFNULL(C.RECEIVE_NAME,'') AS RECEIVE_NAME
+			, IFNULL(C.RECEIVE_TEL,'') AS RECEIVE_TEL
+			, IFNULL(C.RECEIVE_PHONE,'') AS RECEIVE_PHONE
+			, IFNULL(C.RECEIVE_POST_NUM,'') AS RECEIVE_POST_NUM 
+			, IFNULL(C.RECEIVE_ADDR,'') AS RECEIVE_ADDR 
+			, IFNULL(C.RECEIVE_ADDR_DETAIL,'') AS RECEIVE_ADDR_DETAIL
+			, DATE_FORMAT(C.REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
+			, CASE 
+				WHEN B.ORDER_SET = '1000' THEN CONCAT('총:',B.ORDER_QTY,'개\n',B.MENU_MSG_DETAIL)
+				ELSE CONCAT(B.ORDER_QTY,'개')
+			END AS ORDER_QTY_EXCEL
+			, CASE 
+				WHEN A.DELIV_TIME = '1000' THEN '오전배달(8~10시)' 
+				WHEN A.DELIV_TIME = '2000' THEN '오후배달(1~4시)'
+			END AS DELIV_TIME
+			, CASE 
+				WHEN A.DELIV_KIND = '1000' THEN '당일배송(안산)'
+				WHEN A.DELIV_KIND = '2000' THEN '우체국 택배(안산 외)'
+			END AS DELIV_KIND
+			, CASE 
+				WHEN A.PACKAGING = '1000' THEN '보냉가방(신규)'
+				WHEN A.PACKAGING = '2000' THEN '보냉가방(기존)'
+				WHEN A.PACKAGING = '3000' THEN '종이가방'
+			END AS PACKAGING
+			, A.COMMON_PWD
+			, B.ORDER_SET
+			, CASE 
+				WHEN B.ORDER_SET = '1000' THEN '일반세트(추가)' 
+				WHEN B.ORDER_SET = '2000' THEN '1인분세트'
+				WHEN B.ORDER_SET = '3000' THEN '일반세트'
+			END AS ORDER_SET_NM
+			, A.BIGO
+		FROM ORDER_MST A
+		LEFT JOIN ORDER_PRODUCT B ON A.ORDER_NO = B.ORDER_NO 
+		LEFT JOIN DELIVERY_MST C ON A.ORDER_NO = C.ORDER_NO AND B.ORDER_PRODUCT_NO = B.ORDER_PRODUCT_NO
+		
 		WHERE 1=1
 		<if test="startDate neq null and startDate neq '' and endDate neq null and endDate neq ''">
-			AND DATE_FORMAT(A.MENU_DAY,'%Y%m%d') BETWEEN #{startDate} AND #{endDate}
+			AND DATE_FORMAT(C.MENU_DAY,'%Y%m%d') BETWEEN #{startDate} AND #{endDate}
 		</if>
 		<if test="delivStatus neq null and delivStatus neq ''">
-			AND A.STATUS = ${delivStatus}
+			AND C.STATUS = ${delivStatus}
 		</if>
 		<if test="managerNo neq null and managerNo neq ''">
-			AND A.MANAGER_NO = ${managerNo}
+			AND C.MANAGER_NO = ${managerNo}
 		</if>
 		<if test="searchOption neq null and searchOption neq ''">
 			<if test="searchOption == 1">
-				AND A.RECEIVE_NAME LIKE CONCAT('%',#{searchText},'%')
+				AND C.RECEIVE_NAME LIKE CONCAT('%',#{searchText},'%')
 			</if>
 			<if test="searchOption == 2">
 				<if test="searchText neq null and searchText neq ''">
-					AND A.ORDER_NO = #{searchText}
+					AND C.ORDER_NO = #{searchText}
 				</if>
 			</if>
 		</if>
@@ -311,14 +360,14 @@
 		<choose>
 			<when test="searchOrder neq null and searchOrder neq ''">
 				<if test="searchOrder == 1">
-					MENU_DAY
+					C.MENU_DAY
 				</if>
 				<if test="searchOrder == 2">
-					REG_DT
+					C.REG_DT					
 				</if>
 			</when>
 			<otherwise>
-				MENU_DAY
+				C.MENU_DAY
 			</otherwise>
 		</choose>
 		<if test="searchOrderBy neq null and searchOrderBy neq ''">
@@ -338,46 +387,71 @@
 	<select id="selectDeliveryExcel" parameterType="com.simplesoft.order.service.DeliveryVO" resultType="com.simplesoft.order.service.DeliveryVO">
 		/* AdmOrderMapper.selectDeliveryExcel */
 		SELECT
-			  A.DELIVERY_SEQ
-			, A.ORDER_NO
-			, A.ORDER_PRODUCT_NO
-			, DATE_FORMAT(A.MENU_DAY,'%Y년 %m월 %d일') AS MENU_DAY
-			, A.STATUS as DELIVERY_STATUS
+			  C.DELIVERY_SEQ
+			, C.ORDER_NO
+			, C.ORDER_PRODUCT_NO
+			, DATE_FORMAT(C.MENU_DAY,'%Y년 %m월 %d일') AS MENU_DAY
+			, C.STATUS as DELIVERY_STATUS
 			, CASE 
-				WHEN A.STATUS = '1000' THEN '배송전' 
-				WHEN A.STATUS = '0000' THEN '배송완료'
+				WHEN C.STATUS = '1000' THEN '배송전' 
+				WHEN C.STATUS = '0000' THEN '배송완료'
 				ELSE '배송전' 
 			END AS DELIVERY_STATUS_NM
-			, IFNULL((SELECT MANAGER_NM FROM MANAGER_MST MM WHERE MM.MANAGER_NO = A.MANAGER_NO),'미배정') AS MANAGER_NM
-			, IFNULL(DATE_FORMAT(A.DELIVERY_DT,'%Y-%m-%d %H:%i:%s'),'') AS DELIVERY_DT
-			, IFNULL(A.RECEIVE_NAME,'') AS RECEIVE_NAME
-			, IFNULL(A.RECEIVE_TEL,'') AS RECEIVE_TEL
-			, IFNULL(A.RECEIVE_PHONE,'') AS RECEIVE_PHONE
-			, IFNULL(A.RECEIVE_POST_NUM,'') AS RECEIVE_POST_NUM 
-			, IFNULL(A.RECEIVE_ADDR,'') AS RECEIVE_ADDR 
-			, IFNULL(A.RECEIVE_ADDR_DETAIL,'') AS RECEIVE_ADDR_DETAIL
-			, DATE_FORMAT(A.REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
-			, B.ORDER_QTY
-		FROM DELIVERY_MST A
-		JOIN ORDER_PRODUCT B ON A.ORDER_PRODUCT_NO = B.ORDER_PRODUCT_NO
-		AND A.ORDER_NO = B.ORDER_NO
+			, IFNULL((SELECT MANAGER_NM FROM MANAGER_MST MM WHERE MM.MANAGER_NO = C.MANAGER_NO),'미배정') AS MANAGER_NM
+			, IFNULL(DATE_FORMAT(C.DELIVERY_DT,'%Y-%m-%d %H:%i:%s'),'') AS DELIVERY_DT
+			, IFNULL(C.RECEIVE_NAME,'') AS RECEIVE_NAME
+			, IFNULL(C.RECEIVE_TEL,'') AS RECEIVE_TEL
+			, IFNULL(C.RECEIVE_PHONE,'') AS RECEIVE_PHONE
+			, IFNULL(C.RECEIVE_POST_NUM,'') AS RECEIVE_POST_NUM 
+			, IFNULL(C.RECEIVE_ADDR,'') AS RECEIVE_ADDR 
+			, IFNULL(C.RECEIVE_ADDR_DETAIL,'') AS RECEIVE_ADDR_DETAIL
+			, DATE_FORMAT(C.REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
+			, CASE 
+				WHEN B.ORDER_SET = '1000' THEN CONCAT('총:',B.ORDER_QTY,'개\n|',B.MENU_MSG_DETAIL)
+				ELSE CONCAT(B.ORDER_QTY,'개')
+			END AS ORDER_QTY_EXCEL
+			, CASE 
+				WHEN A.DELIV_TIME = '1000' THEN '오전배달(8~10시)' 
+				WHEN A.DELIV_TIME = '2000' THEN '오후배달(1~4시)'
+			END AS DELIV_TIME
+			, CASE 
+				WHEN A.DELIV_KIND = '1000' THEN '당일배송(안산)'
+				WHEN A.DELIV_KIND = '2000' THEN '우체국 택배(안산 외)'
+			END AS DELIV_KIND
+			, CASE 
+				WHEN A.PACKAGING = '1000' THEN '보냉가방(신규)'
+				WHEN A.PACKAGING = '2000' THEN '보냉가방(기존)'
+				WHEN A.PACKAGING = '3000' THEN '종이가방'
+			END AS PACKAGING
+			, A.COMMON_PWD
+			, B.ORDER_SET
+			, CASE 
+				WHEN B.ORDER_SET = '1000' THEN '일반세트(추가)' 
+				WHEN B.ORDER_SET = '2000' THEN '1인분세트'
+				WHEN B.ORDER_SET = '3000' THEN '일반세트'
+			END AS ORDER_SET_NM
+			, A.BIGO
+		FROM ORDER_MST A
+		LEFT JOIN ORDER_PRODUCT B ON A.ORDER_NO = B.ORDER_NO 
+		LEFT JOIN DELIVERY_MST C ON A.ORDER_NO = C.ORDER_NO AND B.ORDER_PRODUCT_NO = B.ORDER_PRODUCT_NO
+		
 		WHERE 1=1
 		<if test="startDate neq null and startDate neq '' and endDate neq null and endDate neq ''">
-			AND DATE_FORMAT(A.MENU_DAY,'%Y%m%d') BETWEEN #{startDate} AND #{endDate}
+			AND DATE_FORMAT(C.MENU_DAY,'%Y%m%d') BETWEEN #{startDate} AND #{endDate}
 		</if>
 		<if test="delivStatus neq null and delivStatus neq ''">
-			AND A.STATUS = ${delivStatus}
+			AND C.STATUS = ${delivStatus}
 		</if>
 		<if test="managerNo neq null and managerNo neq ''">
-			AND A.MANAGER_NO = ${managerNo}
+			AND C.MANAGER_NO = ${managerNo}
 		</if>
 		<if test="searchOption neq null and searchOption neq ''">
 			<if test="searchOption == 1">
-				AND A.RECEIVE_NAME LIKE CONCAT('%',#{searchText},'%')
+				AND C.RECEIVE_NAME LIKE CONCAT('%',#{searchText},'%')
 			</if>
 			<if test="searchOption == 2">
 				<if test="searchText neq null and searchText neq ''">
-					AND A.ORDER_NO = #{searchText}
+					AND C.ORDER_NO = #{searchText}
 				</if>
 			</if>
 		</if>
@@ -385,14 +459,14 @@
 		<choose>
 			<when test="searchOrder neq null and searchOrder neq ''">
 				<if test="searchOrder == 1">
-					MENU_DAY
+					C.MENU_DAY
 				</if>
 				<if test="searchOrder == 2">
-					REG_DT					
+					C.REG_DT					
 				</if>
 			</when>
 			<otherwise>
-				MENU_DAY
+				C.MENU_DAY
 			</otherwise>
 		</choose>
 		<if test="searchOrderBy neq null and searchOrderBy neq ''">
@@ -469,7 +543,7 @@
 	</update>
 	
 	<!-- 미배송 건수 -->	
-	<select id="selectDeliveryNoneList" resultType="CamelHashMap">
+	<select id="selectDeliveryNoneList" parameterType="com.simplesoft.order.service.DeliveryVO" resultType="CamelHashMap">
 		/* AdmOrderMapper.selectDeliveryNoneList */
 		SELECT
 			  A.DELIVERY_SEQ
@@ -478,11 +552,13 @@
 			, DATE_FORMAT(A.MENU_DAY,'%Y년 %m월 %d일') AS MENU_DAY
 			, A.RECEIVE_NAME
 			, CONCAT('(',A.RECEIVE_POST_NUM,') ',A.RECEIVE_ADDR) ADDR
-			, (SELECT COUNT(*) FROM DELIVERY_MST WHERE STATUS = '1000') AS TOTAL_COUNT
+			, IFNULL((SELECT MANAGER_NM FROM MANAGER_MST WHERE A.MANAGER_NO = MANAGER_NO),'미배정') MANAGER_NM  
 		FROM DELIVERY_MST A
 		WHERE 1=1
 		AND A.STATUS = '1000'
-		AND A.MANAGER_NO = '0'
-		ORDER BY MENU_DAY
+		<if test="startDate neq null and startDate neq '' and endDate neq null and endDate neq ''">
+			AND DATE_FORMAT(A.MENU_DAY,'%Y%m%d') BETWEEN #{startDate} AND #{endDate}
+		</if>
+		ORDER BY A.MENU_DAY DESC, A.MANAGER_NO
 	</select>
 </mapper>

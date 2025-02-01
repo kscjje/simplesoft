@@ -73,7 +73,7 @@
 					font-size:18px !important;
 				}
 				tr td {
-					font-size:18px !important;
+					font-size:15px !important;
 				}
 				.btnOrder {
 					font-size: 22px; width:400px;padding:15px 15px;
@@ -105,7 +105,7 @@
 					font-size:18px !important;
 				}
 				tr td {
-					font-size:18px !important;
+					font-size:15px !important;
 				}
 				.btnOrder {
 					font-size: 24px; width:400px;padding:15px 15px;
@@ -137,7 +137,7 @@
 					font-size:20px !important;
 				}
 				tr td {
-					font-size:20px !important;
+					font-size:15px !important;
 				}
 				.btnOrder {
 					font-size: 26px; width:400px;padding:15px 15px;
@@ -203,6 +203,7 @@
 					<span style="color: gray;">장바구니가 비었습니다.</span>
 				</div>
 				<div class="mt-5">
+					<span>※ 일반세트의 경우, 성인 기준 2.5~3인분 분량입니다.</span></br>
 					<span>※ 세트메뉴 3회 이상 주문 시, 배송비는 무료입니다.</span></br>
 					<span>※ 일반세트 15회 이상 주문 시, 세트메뉴 가격이 할인됩니다.(18,000원 -> 17,000원 / 단, 1인분세트는 제외)</span>
 					
@@ -308,7 +309,7 @@ if(cartList[i].orderSet == 1000){
 					addHtml +=			"<select id='set_"+cartList[i].cartNo+"' class='inputSelect selectOption' onchange='fnSelectOption(this)'>";
 					addHtml +=				"<option value='3000'" + (cartList[i].orderSet == 3000 ? " selected" : "") + ">일반세트</option>";
 					addHtml +=				"<option value='2000'" + (cartList[i].orderSet == 2000 ? " selected" : "") + ">1인분세트</option>";
-					addHtml +=				"<option value='1000'" + (cartList[i].orderSet == 1000 ? " selected" : "") + ">일반세트(추가)</option>";
+					addHtml +=				"<option value='1000'" + (cartList[i].orderSet == 1000 ? " selected" : "") + ">일반세트(반찬추가)</option>";
 					addHtml +=			"</select>";
 					addHtml +=		"</td>";
 					

@@ -39,7 +39,16 @@ public class DeliveryVO extends CommonVO{
 	private String receiveAddr;			//받는사람 주소
 	private String receiveAddrDetail;	//받는사람 상세주소
 	
+	private String delivTime;
+	private String delivKind;
+	private String packaging;
+	private String commonPwd;
+	private String orderSet;
+	private String orderSetNm;
+	private String bigo;
+	
 	private List<DeliveryVO> deliveryList;	//배송목록
 	private int deliveryCount;				//배송목록 카운트
-	private int orderQty;				//수량
+	private int orderQty;					//수량
+	private String orderQtyExcel;			//수량
 }

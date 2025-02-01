@@ -72,7 +72,7 @@ public class AdmOrderServiceImpl implements AdmOrderService{
 	}
 	//미배정 리스트
 	@Override
-	public List<Map<String, Object>> selectDeliveryNoneList(){
-		return admOrderMapper.selectDeliveryNoneList();
+	public List<Map<String, Object>> selectDeliveryNoneList(DeliveryVO vo){
+		return admOrderMapper.selectDeliveryNoneList(vo);
 	}
 }

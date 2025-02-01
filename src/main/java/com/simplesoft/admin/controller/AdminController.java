@@ -305,7 +305,7 @@ public class AdminController {
 		
 		String excelTitle = "배송리스트";
 		
-		String[] columnList = {"식단일자", "배송상태", "배송일시", "담당자", "수량" , "주문번호", "받는이", "연락처", "주소", "등록일시", "QR코드"};
+		String[] columnList = {"식단일자", "담당자","세트" , "수량" , "주문번호", "받는이", "연락처", "주소", "배송유형", "포장가방", "공동현관 비밀번호", "전하실 말씀", "QR코드"};
 		
 		//Excel 생성
 		XSSFWorkbook workbook = ExcelUtils.createExcel(response, excelTitle, columnList);
@@ -337,23 +337,34 @@ public class AdminController {
 			int index = 1;
 			for(DeliveryVO delivery : deliveryVO.getDeliveryList()) {
 				row = sheet.createRow(index);
-				row.setHeight((short) 1300);
+				row.setHeight((short) 1800);
 				for(int i=0; i < columnList.length; i++) {
 					cell = row.createCell(i);
 					cell.setCellStyle(styleDate);
 				}
-				
+				String orderQtyExcel = delivery.getOrderQtyExcel();
+				if("1000".equals(delivery.getOrderSet())){
+					String orderQty = orderQtyExcel.split("\\|")[0];
+					orderQty += "메인 : "+orderQtyExcel.split("\\|")[1]+"개\n";
+					orderQty += "국 : "+orderQtyExcel.split("\\|")[2]+"개\n";
+					orderQty += "기본1 : "+orderQtyExcel.split("\\|")[3]+"개\n";
+					orderQty += "서브메인 : "+orderQtyExcel.split("\\|")[4]+"개\n";
+					orderQty += "기본2 : "+orderQtyExcel.split("\\|")[5]+"개";
+					orderQtyExcel = orderQty;
+				}
 				row.getCell(0).setCellValue(delivery.getMenuDay());
-				row.getCell(1).setCellValue(delivery.getDeliveryStatusNm());
-				row.getCell(2).setCellValue(delivery.getDeliveryDt());
-				row.getCell(3).setCellValue(delivery.getManagerNm());
-				row.getCell(4).setCellValue(delivery.getOrderQty()+"개");
-				row.getCell(5).setCellValue(delivery.getOrderNo());
-				row.getCell(6).setCellValue(delivery.getReceiveName());
-				row.getCell(7).setCellValue(EncryptUtils.AES256_Decrypt(delivery.getReceivePhone()));
-				row.getCell(8).setCellValue("("+delivery.getReceivePostNum()+") "+delivery.getReceiveAddr()+" "+delivery.getReceiveAddrDetail());
-				row.getCell(9).setCellValue(delivery.getRegDt());
-				ExcelUtils.insertImageCell(workbook, sheet, index, 10, qrToTistory(delivery.getDeliverySeq()));
+				row.getCell(1).setCellValue(delivery.getManagerNm());
+				row.getCell(2).setCellValue(delivery.getOrderSetNm());
+				row.getCell(3).setCellValue(orderQtyExcel);
+				row.getCell(4).setCellValue(delivery.getOrderNo());
+				row.getCell(5).setCellValue(delivery.getReceiveName());
+				row.getCell(6).setCellValue(EncryptUtils.AES256_Decrypt(delivery.getReceivePhone()));
+				row.getCell(7).setCellValue("("+delivery.getReceivePostNum()+") "+delivery.getReceiveAddr()+" "+delivery.getReceiveAddrDetail());
+				row.getCell(8).setCellValue(delivery.getDelivKind());
+				row.getCell(9).setCellValue(delivery.getPackaging());
+				row.getCell(10).setCellValue(delivery.getCommonPwd());
+				row.getCell(11).setCellValue(delivery.getBigo());
+				ExcelUtils.insertImageCell(workbook, sheet, index, 12, qrToTistory(delivery.getDeliverySeq()));
 				index++;
 			}
 		}

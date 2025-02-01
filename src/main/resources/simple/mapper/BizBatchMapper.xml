@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.simplesoft.mapper.bizBatch.BizBatchMapper">
+	
+	<!-- 메시지 BATCH정보::등록 -->
+	<insert id="insertBizBatch" parameterType="com.simplesoft.common.service.BizBatchVO" statementType="CALLABLE">
+	{
+		CALL BIZ_INSERT(
+		
+			  #{msgType}
+			, #{destTel}
+			, #{destNm}
+			, #{sendTel}
+			, #{sendNm}
+			
+			, #{subject}
+			, #{sendMsg}
+			, #{sendtime}
+			, #{refkey}
+			, #{senderKey}
+			
+			, #{templateCode}
+			, #{reType}
+			, #{reBody}
+			
+			, #{retCode, mode=OUT, jdbcType=VARCHAR, javaType=string}
+			, #{retMsg, mode=OUT, jdbcType=VARCHAR, javaType=string}
+		)
+	}	
+	</insert>
+	<!-- 메시지 BATCH정보::수정 -->
+	<update id="updateBizBatchReport" parameterType="com.simplesoft.common.service.BizBatchVO" statementType="CALLABLE">
+	{
+		CALL BIZ_BATCH_REPORT_UPDATE(
+		
+			  #{device}
+			, #{cmsgid}
+			, #{msgid}
+			, #{phone}
+				
+			, #{media}
+			, #{sendertime}
+			, #{resultCd}
+			, #{userdata}
+			, #{wapinfo}
+			
+			, #{telres}
+			, #{teltime}
+			, #{retryFlag}
+			, #{resendFlag}
+			
+			, #{retCode, mode=OUT, jdbcType=VARCHAR, javaType=string}
+			, #{retMsg, mode=OUT, jdbcType=VARCHAR, javaType=string}
+		)
+	}	
+	</update>
+	
+	
+	<!-- 메세지 템플릿 가져오기 -->	
+	<select id="selectBizMessage" parameterType="hashMap" resultType="CamelHashMap">
+		/* BizBatchMapper.selectBizMessage */
+		SELECT
+			  MSG_SEQ
+			, MSG_CD
+			, MSG_NM
+			, SEND_MSG
+			, KKO_MESSAGE_TEMPLATE_ID
+			, SEND_TEL
+		FROM MESSAGE
+		WHERE MSG_CD = #{msgCd}
+	</select>
+</mapper>

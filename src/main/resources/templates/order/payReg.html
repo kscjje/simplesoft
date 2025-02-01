@@ -144,7 +144,7 @@
 									</td>
 									<td class="fs-5 align-middle">
 										<th:block th:if="${rs.orderSet == '1000' || rs.orderSet == '3000'}">
-											<span th:text="${#numbers.formatInteger(18000,3,'COMMA')}"></span>
+											<span th:text="${rs.orderQty >= 15 ? #numbers.formatInteger(17000, 3, 'COMMA') : #numbers.formatInteger(18000, 3, 'COMMA')}"></span>
 										</th:block>
 										<th:block th:if="${rs.orderSet == '2000'}">
 											<span th:text="${#numbers.formatInteger(9000,3,'COMMA')}"></span>
@@ -160,7 +160,7 @@
 								<tr class="h-50 align-middle">
 									<td></td>
 									<td colspan="2" class="fw-bold">총 주문금액</td>
-									<td colspan="2" class="fw-bold fs-3 text-success"><span id="totalAmount" th:text="${#numbers.formatInteger(order.totalProductAmt+order.totalDelyAmt,3,'COMMA')}+'원'"></span></td>
+									<td colspan="2" class="fw-bold fs-3 text-success"><span id="totalAmount" th:text="${#numbers.formatInteger(order.totalAmount,3,'COMMA')}+'원'"></span></td>
 								</tr>
 							</tbody>
 						</table>
@@ -774,7 +774,7 @@
 												
 								const coupon = document.getElementById("coupon-box");
 								const button = document.getElementById("payment-request-button");
-								
+								console.log(result.data);
 								const orderId = /*[[${orderNo}]]*/"";
 								const amount = result.data.TOTAL_AMOUNT;
 								// 구매자의 고유 아이디를 불러와서 customerKey로 설정하세요.

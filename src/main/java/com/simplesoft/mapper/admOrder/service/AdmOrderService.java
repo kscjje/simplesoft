@@ -15,6 +15,6 @@ public interface AdmOrderService {
 	public DeliveryVO getDeliveryList(DeliveryVO vo);
 	public int updateDelivComplete(Map<String, Object> paramMap);
 	public int updateDelivManage(Map<String, Object> paramMap);
-	public List<Map<String, Object>> selectDeliveryNoneList();
+	public List<Map<String, Object>> selectDeliveryNoneList(DeliveryVO vo);
 	public DeliveryVO getDeliveryExcel(DeliveryVO vo);
 }

@@ -130,13 +130,13 @@ public class AdminOrderRestController {
 	 * @return
 	 */
 	@PostMapping("/delivery/manageList")
-	public BasicResponse manageList(@RequestParam Map<String, Object> paramMap) {
+	public BasicResponse manageList(@ModelAttribute("deliveryVO") DeliveryVO paramVO) {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		
 		ManagerVO vo = new ManagerVO();
 		List<Map<String, Object>> manageList = managerService.selectManagerList(vo);
-		List<Map<String, Object>> noneList = admOrderService.selectDeliveryNoneList();
+		List<Map<String, Object>> noneList = admOrderService.selectDeliveryNoneList(paramVO);
 		
 		result.put("list", manageList);
 		result.put("noneList", noneList);

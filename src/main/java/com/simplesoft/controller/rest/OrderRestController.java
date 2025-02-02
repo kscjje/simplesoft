@@ -94,7 +94,7 @@ public class OrderRestController {
 					totalAmount += order.getTotalDelyAmt();
 				}
 				totalAmount += order.getTotalAmount();
-				System.out.println("totalAmount:"+totalAmount);
+//				System.out.println("totalAmount:"+totalAmount);
 				result.put("TOTAL_AMOUNT", totalAmount);
 			}catch(Exception e) {
 				log.error(e.getMessage());

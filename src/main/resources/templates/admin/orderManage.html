@@ -264,14 +264,16 @@
 									<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
 										<table class="table table-bordered mb-4 pTable">
 											<tr>
-												<th style="width:15%">주문번호</th>
-												<td id="o_orderNo" style="width:35%"></td>
-												<th style="width:15%">주문일시</th>
-												<td id="o_orderPayDt" style="width:35%"></td>
+												<th style="width:15%">상품명</th>
+												<td id="p_productName" style="width:35%"></td>
+												<th style="width:15%">결제키</th>
+												<td id="p_paymentKey" style="width:35%"></td>
 											</tr>
 											<tr>
-												<th>주소</th>
-												<td colspan="3" id="o_orderAddr"></td>
+												<th style="width:15%">승인금액</th>
+												<td id="p_totalAmount" style="width:35%"></td>
+												<th style="width:15%">결제수단</th>
+												<td id="p_payMethod" style="width:35%"></td>
 											</tr>
 										</table>
 									</div>
@@ -341,17 +343,21 @@
 									addHtml +=	`</tr>`;
 								for(let i = 0; i < result.data.orderProductList.length; i ++){
 									let product = result.data.orderProductList[i];
+									console.log(product.menuMsgDetail)
 									let menuDay = formatDate(product.menuDay);
-									let menuMsg = formatString(product.menuMsg);
+									let menuMsg = product.orderSet == "1000" ? formatString2(product.menuMsg,product.menuMsgDetail)  : formatString(product.menuMsg);
 									
 									addHtml +=	`<tr style="text-align:center">`;
 									addHtml +=		`<td>${menuDay}</td>`;
 									addHtml +=		`<td>${product.orderSetNm}</td>`;
 									addHtml +=		`<td>${menuMsg}</td>`;
 									addHtml +=		`<td>${product.orderQty}개</td>`;
-									addHtml +=		`<td>${product.payAmt}원</td>`;
+									addHtml +=		`<td>${product.payAmt.toLocaleString('ko-KR')}원</td>`;
 									addHtml +=	`</tr>`;
 								}
+								addHtml +=	`<tr style="text-align:right">`;
+								addHtml +=		`<td colspan="4">합계 : ${data.totalAmount.toLocaleString('ko-KR')}원</td>`;
+								addHtml +=	`</tr>`;
 								$("#tab_product").html(addHtml);
 								
 							}, error : function(request, status, error) {
@@ -360,6 +366,11 @@
 						});
 						
 						//결제정보
+						$("#p_productName").text(data.productName);
+						$("#p_paymentKey").text(data.paymentKey);
+						$("#p_totalAmount").text(data.totalAmount.toLocaleString('ko-KR')+'원');
+						$("#p_payMethod").text(data.payMethod);
+						
 					})
 				}
 				
@@ -562,11 +573,7 @@
 									addHtml +=		'<td>' + data.orderNo + '</td>';
 									addHtml +=		'<td>' + data.orderName + '</td>';
 									
-									if(Number(data.orderQty) > 1 ){
-										addHtml +=		'<td>' + data.menuDay + ' 식단 외 '+ (data.orderQty-1) +'건</td>';	
-									} else {
-										addHtml +=		'<td>' + data.menuDay + ' 식단</td>';
-									}
+									addHtml +=		'<td>' + data.productName + '</td>';
 									addHtml +=		'<td>' + data.orderPayDt + '</td>';
 									addHtml +=	'</tr>';
 								}
@@ -686,11 +693,7 @@
 									addHtml +=		'<td>' + data.orderNo + '</td>';
 									addHtml +=		'<td>' + data.orderName + '</td>';
 									
-									if(Number(data.orderQty) > 1 ){
-										addHtml +=		'<td>' + data.menuDay + ' 식단 외 '+ (data.orderQty-1) +'건</td>';	
-									} else {
-										addHtml +=		'<td>' + data.menuDay + ' 식단</td>';
-									}
+									addHtml +=		'<td>' + data.productName + '</td>';
 									addHtml +=		'<td>' + data.orderPayDt + '</td>';
 									addHtml +=	'</tr>';
 								}
@@ -822,6 +825,20 @@
 			//식단정보 포맷
 			function formatString(msg){
 				const formattedMsg = msg.replace(/\|/g, '</br>').replace(/\!/g,""); // | 앞에 줄 바꿈 추가
+				return formattedMsg;
+			}
+			//식단정보 포맷
+			function formatString2(msg,detail){
+				console.log(msg.split("|")[0]+"("+detail.split("|")[0]+")");
+				console.log(msg.split("|")[1]+"("+detail.split("|")[1]+")");
+				console.log(msg.split("|")[2]+"("+detail.split("|")[2]+")");
+				console.log(msg.split("|")[3]+"("+detail.split("|")[3]+")");
+				console.log(msg.split("|")[4]+"("+detail.split("|")[4]+")");
+				let formattedMsg = "";
+				for(let i = 0; i <= 4; i++){
+					formattedMsg += msg.split("|")[i]+"("+detail.split("|")[i]+")</br>";
+				}
+				formattedMsg = formattedMsg.replace(/\!/g,""); // | 앞에 줄 바꿈 추가
 				return formattedMsg;
 			}
 		</script>

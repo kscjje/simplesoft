@@ -143,6 +143,23 @@ public class AdminController {
 		return "/admin/deliveryManage";
 	}
 	/**
+	 * 메세지 관리
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/messageManage")
+	public String messageManage(Model model,HttpSession session, @RequestParam Map<String, Object> paramMap) {
+		
+		ManagerVO loginVO = (ManagerVO)session.getAttribute("adminLoginInfo");
+		if(loginVO == null) {
+			model.addAttribute("returnUrl", "/admin/login");
+			return GlobalVariable.REDIRECT_SUBMIT;
+		}
+//		model.addAttribute("manageList", manageList);
+		return "/admin/messageManage";
+	}
+	/**
 	 * 식단수정
 	 * 
 	 * @param model

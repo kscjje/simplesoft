@@ -56,6 +56,7 @@ public class OrderVO extends CommonVO{
 	//Payments 테이블
 	private String payMethod;			//결제수단
 	private String productName;			//상품명
+	private String paymentKey;			//결제키
 	private int totalAmount;			//상품금액
 	
 	private String deliveryStatus;		//배송상태

@@ -698,13 +698,13 @@
 				});
 				//배송완료처리
 				$("#ui_deliv_btn").click(function(){
-					if($('input:checkbox:checked').length < 1){
+					if($('#orderBody tr td input:checkbox:checked').length < 1){
 						alert("체크된 리스트가 없습니다.");
 						return;
 					}
 					if(confirm("배송완료 처리 하시겠습니까?")){
 						let checkArray = "";
-						$('input:checkbox').each(function(){
+						$('#orderBody tr td input:checkbox').each(function(){
 							if($(this).is(":checked") == true) checkArray += $(this).val()+",";
 						})
 						if(checkArray.substring(checkArray.length-1, checkArray.length) == ","){

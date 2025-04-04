@@ -251,11 +251,12 @@
 										<td colspan="3" id="r_bigo"></td>
 									</tr>
 								</table>
-								<nav>
+								<nav class="d-flex align-items-center">
 									<div class="nav nav-tabs" id="nav-tab" role="tablist">
 										<button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">상품정보</button>
 										<button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">결제정보</button>
 									</div>
+									<button type="button" class="btn text-danger ms-auto me-2" onclick="fnPayCancel()">결제취소</button>
 								</nav>
 								<div class="tab-content" id="nav-tabContent">
 									<div class="tab-pane fade show active" style="height: 230px;overflow-y: scroll;" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
@@ -266,8 +267,8 @@
 											<tr>
 												<th style="width:15%">상품명</th>
 												<td id="p_productName" style="width:35%"></td>
-												<th style="width:15%">결제키</th>
-												<td id="p_paymentKey" style="width:35%"></td>
+												<th style="width:15%">주문번호</th>
+												<td id="p_orderNo" style="width:35%"></td>
 											</tr>
 											<tr>
 												<th style="width:15%">승인금액</th>
@@ -367,7 +368,8 @@
 						
 						//결제정보
 						$("#p_productName").text(data.productName);
-						$("#p_paymentKey").text(data.paymentKey);
+						$("#p_orderNo").text(data.orderNo);
+						//$("#p_paymentKey").text(data.paymentKey);
 						$("#p_totalAmount").text(data.totalAmount.toLocaleString('ko-KR')+'원');
 						$("#p_payMethod").text(data.payMethod);
 						
@@ -829,17 +831,37 @@
 			}
 			//식단정보 포맷
 			function formatString2(msg,detail){
+				/*
 				console.log(msg.split("|")[0]+"("+detail.split("|")[0]+")");
 				console.log(msg.split("|")[1]+"("+detail.split("|")[1]+")");
 				console.log(msg.split("|")[2]+"("+detail.split("|")[2]+")");
 				console.log(msg.split("|")[3]+"("+detail.split("|")[3]+")");
 				console.log(msg.split("|")[4]+"("+detail.split("|")[4]+")");
+				*/
 				let formattedMsg = "";
 				for(let i = 0; i <= 4; i++){
 					formattedMsg += msg.split("|")[i]+"("+detail.split("|")[i]+")</br>";
 				}
 				formattedMsg = formattedMsg.replace(/\!/g,""); // | 앞에 줄 바꿈 추가
 				return formattedMsg;
+			}
+			//결제 취소
+			function fnPayCancel(){
+				alert($("#p_orderNo").text());
+				
+				$.ajax({
+					url : "/admin/rest/order/decrypt",
+					type : "POST",
+					dataType : "json",
+					async:false,
+					cache:"false",
+					data : formData,
+					success : function(result) {
+						callback(result.data.decryptedData);
+					}, error : function(request, status, error) {
+						alert("관리자에게 문의해 주세요.");
+					}
+				});
 			}
 		</script>
 	</main>

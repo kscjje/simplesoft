@@ -124,6 +124,7 @@ public class AdminOrderRestController {
 		
 		return new CommonResponse<Map<String, Object>>(result);
 	}
+	
 	/**
 	 * 배정 리스트
 	 * @param paramMap
@@ -143,6 +144,7 @@ public class AdminOrderRestController {
 		result.put("resultCode", "SUCCESS");
 		return new CommonResponse<Map<String, Object>>(result);
 	}
+	
 	/**
 	 * 배정 하기
 	 * @param paramMap
@@ -160,6 +162,7 @@ public class AdminOrderRestController {
 		
 		return new CommonResponse<Map<String, Object>>(result);
 	}
+	
 	//복호화
 	@PostMapping("/decrypt")
 	public BasicResponse decryptData(@RequestParam String encryptedData) throws Exception {

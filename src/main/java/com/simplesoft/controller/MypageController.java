@@ -1,9 +1,19 @@
 package com.simplesoft.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.simplesoft.mapper.admOrder.service.AdmOrderService;
+import com.simplesoft.order.service.OrderProductVO;
+import com.simplesoft.order.service.OrderService;
+import com.simplesoft.order.service.OrderVO;
+import com.simplesoft.util.EncryptUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -11,6 +21,12 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping(value="/mypage")
 public class MypageController {
+	
+	@Autowired
+	OrderService orderService;
+
+	@Autowired
+	AdmOrderService admOrderService;
 	
 	/**
 	 * 비회원 주문조회
@@ -23,15 +39,30 @@ public class MypageController {
 		
 		return "/mypage/orderCheck";
 	}
+	
 	/**
 	 * 비회원 주문내역
 	 * 
 	 * @param model
 	 * @return
 	 */
-	@GetMapping("/noneOrderDetail")
-	public String noneOrderDetail(Model model) {
+	@RequestMapping("/noneOrderDetail")
+	public String noneOrderDetail(Model model, @ModelAttribute("orderVO") OrderVO vo) throws Exception {
+		String orderNo = String.valueOf(vo.getOrderNo());
+		String orderPwd = String.valueOf(vo.getOrderPwd());
 		
+		System.out.println(orderNo);
+		System.out.println(orderPwd);
+		if("null".equals(orderNo) || "null".equals(orderPwd)) { 
+			return "/mypage/orderCheck";
+		}
+		vo.setOrderPwd(EncryptUtils.AES256_Encrypt(orderPwd));
+		OrderVO order = orderService.selectOrderCheck(vo);
+		if(order != null) {
+			model.addAttribute("order",order);
+		} else {
+			return "/mypage/orderCheck";
+		}
 		return "/mypage/orderDetail";
 	}
 }

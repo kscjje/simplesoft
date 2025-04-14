@@ -30,6 +30,14 @@ public class HomeController {
 	public String home() {
 		return "main";
 	}
+	@GetMapping("notice")
+	public String notice() {
+		return "notice";
+	}
+	@GetMapping("foodtable")
+	public String foodtable() {
+		return "foodtable";
+	}
 	
 	/**
 	 * 메세지 발송 후 결과 받는 url

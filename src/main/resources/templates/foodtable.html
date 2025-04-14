@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorate="~{layouts/default_layout}">
+		<main class="content-wrapper" layout:fragment="content">
+			<style>
+				@media only screen and (max-width: 575px) {
+					#notice_image{
+						width:1290px;	
+					}
+				}
+				@media only screen and (min-width: 576px) {
+					
+				}
+				@media only screen and (min-width: 768px) {
+				}
+				@media only screen and (min-width: 992px) {
+					#notice_image{
+						width:800px;	
+					}
+				}
+				@media only screen and (min-width: 1600px) {
+					#notice_image{
+						width:1000px;	
+					}
+				}
+			</style>
+			<div class="row justify-content-center text-start">
+				<div id="notice_image">
+					<h2 class="mb-4">이달의 식단</h2>
+					<img src="image/foodtable.jpg" alt="식단표"/>
+				</div>
+			</div>
+		</main>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorate="~{layouts/default_layout}">
+		<main class="content-wrapper" layout:fragment="content">
+			<style>
+				@media only screen and (max-width: 575px) {
+					#notice_image{
+						width:1290px;	
+					}
+				}
+				@media only screen and (min-width: 576px) {
+					
+				}
+				@media only screen and (min-width: 768px) {
+				}
+				@media only screen and (min-width: 992px) {
+					#notice_image{
+						width:800px;	
+					}
+				}
+				@media only screen and (min-width: 1600px) {
+					#notice_image{
+						width:1000px;	
+					}
+				}
+			</style>
+			<div class="row justify-content-center text-start">
+				<div id="notice_image">
+					<h2 class="mb-4">공지사항</h2>
+					<span>밥수니 공지사항 정독 후 주문 부탁드립니다.</span>	
+					<img src="image/info.png" alt="공지사항"/>
+				</div>
+			</div>
+		</main>
+</html>

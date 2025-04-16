@@ -2,11 +2,64 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 	<th:block th:fragment="header">
 		<!-- Header (s) -->
+		<style>
+			@media only screen and (max-width: 575px) {
+				.mb-5 {
+					margin-bottom: 1.5rem !important;
+				}
+				.topbanner{ width:100%;}
+				.header {width: 575; height: 30px;}
+				.submenu {
+					display: flex;
+					border-top:1px solid rgba(0,0,0,0.055);
+					border-bottom: 1px solid rgba(0,0,0,0.055);
+					display: block; /* Flexbox로 자식 요소를 정렬 */
+					align-items: center; /* 수직 중앙 정렬 */
+				}
+				
+				.header_logo {
+				    display:none;
+				}
+				
+				.header_logo img {
+				    max-height: 15px; /* 로고 크기 제한 (원하는 크기로 조정) */
+				    margin-left: 0rem;
+				}
+				.nav-item {
+					margin-left: 0rem;
+					font-size: 9px;
+					height: auto;
+				}
+				.nav-item>a{
+					list-style: none; 
+					text-decoration: none; 
+					color: rgb(0, 0, 64);
+					font-family:'NotoSans';
+					font-weight:600;
+				}
+			}
+		/*	@media (max-width: 1024px) {
+				.m-nav {display: block;position: fixed;left: 0;right:0;bottom:0;border-radius:20px 20px 0 0;box-shadow:0 -5px 50px rgba(0,0,0,0.1);z-index:40;background: #fff;}
+				.m-nav nav {display: flex;justify-content: space-between;padding:0 10px;}
+				.m-nav nav a { flex: 1; width:20%; text-align: center; font-size:12px; height: 80px; display: flex; align-items: center; justify-content: center; color: var(--font-color3); flex-direction: column;  }
+				.m-nav nav a:before { content: '';  display: block; background: url(../img/main/ico_mobile_menu1_off.svg) no-repeat 50% 50%; width:28px; height: 28px; margin: 0 auto;  }
+				.m-nav nav a.m1:before { background-image: url(../img/main/ico_mobile_menu1_off.svg);}
+				.m-nav nav a.m2:before { background-image: url(../img/main/ico_mobile_menu2_off.svg);}
+				.m-nav nav a.m3:before { background-image: url(../img/main/ico_mobile_menu3_off.svg);}
+				.m-nav nav a.m4:before { background-image: url(../img/main/ico_mobile_menu4_off.svg);}
+				.m-nav nav a.m5:before { background-image: url(../img/main/ico_mobile_menu5_off.svg);}
+				.m-nav nav a.active { color: var(--font-color1); }
+				.m-nav nav a.active.m1:before { background-image: url(../img/main/ico_mobile_menu1_on.svg);}
+				.m-nav nav a.active.m2:before { background-image: url(../img/main/ico_mobile_menu2_on.svg);}
+				.m-nav nav a.active.m3:before { background-image: url(../img/main/ico_mobile_menu3_on.svg);}
+				.m-nav nav a.active.m4:before { background-image: url(../img/main/ico_mobile_menu4_on.svg);}
+				.m-nav nav a.active.m5:before { background-image: url(../img/main/ico_mobile_menu5_on.svg);}
+		  }*/
+		</style>
 		<div id="wrap" class="mb-5">
 			<div class="header" style="background-color: rgb(51, 51, 51); text-align: center;" >
-				<img src="/image/banner.jpg">
+				<img src="/image/banner.jpg" class="topbanner">
 			</div>
-			
 			<div id="submenu" class="submenu">
 				<div class="header_logo"><a href="/main"><img src="/image/logo.jpg" alt="밥수니반찬헤더로고"></a></div>
 				<ul class="nav container">
@@ -27,6 +80,13 @@
 				</ul>
 			</div>
 		</div>
+		<!--<div class="m-nav">
+			<nav>
+				<a class="m1 logHtag">홈</a>
+				<a href="#" class="m4">알림</a>
+				<a href="javascript:goSiteNavOpen()" class="m5 btn-nav">전체메뉴</a>
+			</nav>
+		</div>-->
 	<!-- (e) Header -->
 	</th:block>
 </html>

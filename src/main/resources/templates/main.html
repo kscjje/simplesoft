@@ -3,7 +3,20 @@
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{layouts/default_layout}">
 	<main class="content-wrapper" layout:fragment="content">
-		
+		<style>
+			@media only screen and (max-width: 575px) {
+				.image{
+					width:100%;
+				}
+				.b_image{
+					width:100px;
+				}
+				.contents {
+					height: 90px;
+				}
+			}
+			
+		</style>
 		<script>
 			$(document).ready(function () {
 				$('.slider').slick({
@@ -12,7 +25,7 @@
 			      slidesToShow : 1,        // 한 화면에 보여질 컨텐츠 개수
 			      slidesToScroll : 1,        //스크롤 한번에 움직일 컨텐츠 개수
 			      speed : 500,     // 다음 버튼 누르고 다음 화면 뜨는데까지 걸리는 시간(ms)
-			      arrows : true,         // 옆으로 이동하는 화살표 표시 여부
+			      arrows : false,         // 옆으로 이동하는 화살표 표시 여부
 			      dots : true,         // 스크롤바 아래 점으로 페이지네이션 여부
 			      autoplay : true,            // 자동 스크롤 사용 여부
 			      autoplaySpeed : 2000,         // 자동 스크롤 시 다음으로 넘어가는데 걸리는 시간 (ms)
@@ -48,35 +61,34 @@
 		<div class="slider">
 			<div>
 				<div class="image">
-					<img src="image/image1.png" />
+					<img src="image/image1.png"	class="image"/>
 				</div>
 			</div>
 			<div>
 				<div class="image">
-					<img src="image/image2.png">
+					<img src="image/image2.png"	class="image">
 				</div>
 			</div>
 			<div>
 				<div class="image">
-					<img src="image/image3.png">
+					<img src="image/image3.png" class="image">
 				</div>
 			</div>
 			<div>
 				<div class="image">
-					<img src="image/image4.png">
+					<img src="image/image4.png"	class="image">
 				</div>
 			</div>
 			<div>
 				<div class="image">
-					<img src="image/image5.png">
+					<img src="image/image5.png" class="image">
 				</div>
 			</div>
 		</div>
-		<div class="contents mt-4">
-			<div><a href="/foodtable"><img src="image/con1.jpg" alt="이달의 식단"></a></div>
-			<div><a href="/order"><img src="image/con2.jpg" alt="주문하기"></a></div>
-			<div><a href="/notice"><img src="image/con3.jpg" alt="공지사항"></a></div>
+		<div class="contents" style="margin-top: 5vh;">
+			<div><a href="/foodtable"><img src="image/con1.jpg" class="b_image" alt="이달의 식단"></a></div>
+			<div><a href="/order"><img src="image/con2.jpg" class="b_image" alt="주문하기"></a></div>
+			<div><a href="/notice"><img src="image/con3.jpg" class="b_image" alt="공지사항"></a></div>
 		</div>
-		
 	</main>
 </html>

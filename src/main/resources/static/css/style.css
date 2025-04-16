@@ -1,9 +1,6 @@
 /* 여백 초기화 */
 body, div, ul, li, dl, dd, dt, ol, h1, h2, h3, h4, h5, h6, input, fieldset, legend, p, select, table, th, td, tr, textarea, button, form, figure, figcaption {margin:0; padding:0; }
 
-a,ul,li{
-    list-style: none; text-decoration: none; color: aliceblue; 
-}
 .submenu {
 	border-top:1px solid rgba(0,0,0,0.055);
 	border-bottom: 1px solid rgba(0,0,0,0.055);
@@ -27,7 +24,7 @@ a,ul,li{
     padding: 0; /* 기본 여백 제거 */
 }
 .nav-item {
-	margin-left: 5rem !important;
+	margin-left: 5rem;
 	font-size: 18px;
 	height: 50px;
 }
@@ -44,98 +41,13 @@ a,ul,li{
 	color: aliceblue;
 }
 * {margin: 0; padding: 0;}
-        body {background-color: #fffde7;}
-        .header {width: 100%; height: 70px;}
-        .swiper {width: 100%; height: 450px; background-color: palegoldenrod;}
-        .contents {overflow:hidden; width: 100%; border: 1px solid lightgray;}
-        .contents >div {width: 29%; margin: 2.1%; float: left; height: 250px; }
-        .footer {clear: both; width: 100%; height: 170px; background-color: blue;}
+body {background-color: #fffde7;}
+.header {width: 100%; height: 70px;}
+.contents {overflow:hidden; width: 100%; border: 1px solid lightgray;}
+.contents >div {width: 29%; margin: 2.1%; float: left; height: 250px; text-align: center; }
 
-
-        /*화면 너비 0~1200px*/
-        @media (max-width: 1220px) {
-         #wrap {width: 100%;}
-         .contents > div,article{width: 29%;}
-        }
-         /*화면 너비 0~768px*/
-         @media (max-width: 768px) {
-         .contents > div,article{width: 96%;}
-        }
-
-        /*header_menu시작*/
-#header_menu{
-    font-weight: bold;
-    /*position: fixed;*/
-    top: 0;
-    /* width: 100% */
-    left: 0;
-    right: 0;
+/*header_logo시작*/
+.header_logo >a { text-align: center;}
+.header_logo>a>img {
+	height: 60px;
 }
-
-
-#header_menu ul {
-list-style: none; padding-left: 0px; float: right; margin-top: 5px;
-}
-#header_menu ul li {
-    display: inline; font-size: 12px; border-left: 1px solid black; padding: 0px 10px 0px 10px; margin: 5px 0px 5px 0px;
-}
-#header_menu li:first-child {
-    border-left: none;
-}
-#header_menu ul li>a {
-   text-decoration: none; color:black; font-size: 12px; 
-}
-  /*header_logo시작*/
-  .header_logo >a { text-align: center;}
-  .header_logo>a>img {
-    height: 60px;
-  }
-/*슬라이드시작*/
-.swiper {
-    width: 100%;
-    height: 100%;
-  }
-  .swiper-slide img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-
-/*contents 시작*/
-.contents > div {
-    text-align: center;
-}
-
-/*header_main_menu -boot*/
-/*header_footer시작*/
-.ft_wrap {
-    position: relative;
-    top:21px;
-    width: 100%;
-    height: 130px;
-    background-color: #464646;
-    color:aliceblue;
-}
-.ft_wrap>.footer_logo>img {width: 130px; height: 130px; margin-left: 50px;}
-
-.ft_info {top:25px; position: absolute; left: 200px;}
-.ft_info >ol>li {font-size: 13px;}
-
-
-.ft_code {
-    position: absolute;
-    top:21px;
-    right: 10px;
-}
-.ft_code > article {
-    display: inline;
-}
-.ft_code > article >a {
-    border: 1px solid black;
-    text-decoration: none;
-    color: inherit;
-}
-
-

@@ -44,7 +44,7 @@ body, div, ul, li, dl, dd, dt, ol, h1, h2, h3, h4, h5, h6, input, fieldset, lege
 body {background-color: #fffde7;}
 .header {width: 100%; height: 70px;}
 .contents {overflow:hidden; width: 100%; border: 1px solid lightgray;}
-.contents >div {width: 29%; margin: 2.1%; float: left; height: 250px; text-align: center; }
+.contents >div {width: 29%; margin: 2.1%; float: left; height: auto; text-align: center; }
 
 /*header_logo시작*/
 .header_logo >a { text-align: center;}

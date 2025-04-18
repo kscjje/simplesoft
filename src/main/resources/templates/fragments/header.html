@@ -3,7 +3,28 @@
 	<th:block th:fragment="header">
 		<!-- Header (s) -->
 		<style>
-			@media only screen and (max-width: 575px) {
+			/* 데스크탑 (해상도 1280px 이상) */
+			@media all and (min-width: 1280px) {
+			  /* 데스크탑 전용 스타일 */
+			}
+			
+			/* 노트북 & 테블릿 가로 (해상도 1024px ~ 1279px) */
+			@media all and (min-width: 1024px) and (max-width: 1279px) {
+			  /* 노트북 및 가로 방향 태블릿 스타일 */
+			}
+			
+			/* 테블릿 가로 (해상도 768px ~ 1023px) */
+			@media all and (min-width: 768px) and (max-width: 1023px) {
+			  /* 태블릿 가로 스타일 */
+			}
+			
+			/* 모바일 가로 & 테블릿 세로 (해상도 480px ~ 767px) */
+			@media all and (min-width: 480px) and (max-width: 767px) {
+			  /* 모바일 가로 또는 태블릿 세로 스타일 */
+			}
+			
+			/* 모바일 세로 (해상도 ~ 479px) */
+			@media all and (max-width: 479px) {
 				.mb-5 {
 					margin-bottom: 1.5rem !important;
 				}
@@ -37,23 +58,6 @@
 					font-weight:600;
 				}
 			}
-		/*	@media (max-width: 1024px) {
-				.m-nav {display: block;position: fixed;left: 0;right:0;bottom:0;border-radius:20px 20px 0 0;box-shadow:0 -5px 50px rgba(0,0,0,0.1);z-index:40;background: #fff;}
-				.m-nav nav {display: flex;justify-content: space-between;padding:0 10px;}
-				.m-nav nav a { flex: 1; width:20%; text-align: center; font-size:12px; height: 80px; display: flex; align-items: center; justify-content: center; color: var(--font-color3); flex-direction: column;  }
-				.m-nav nav a:before { content: '';  display: block; background: url(../img/main/ico_mobile_menu1_off.svg) no-repeat 50% 50%; width:28px; height: 28px; margin: 0 auto;  }
-				.m-nav nav a.m1:before { background-image: url(../img/main/ico_mobile_menu1_off.svg);}
-				.m-nav nav a.m2:before { background-image: url(../img/main/ico_mobile_menu2_off.svg);}
-				.m-nav nav a.m3:before { background-image: url(../img/main/ico_mobile_menu3_off.svg);}
-				.m-nav nav a.m4:before { background-image: url(../img/main/ico_mobile_menu4_off.svg);}
-				.m-nav nav a.m5:before { background-image: url(../img/main/ico_mobile_menu5_off.svg);}
-				.m-nav nav a.active { color: var(--font-color1); }
-				.m-nav nav a.active.m1:before { background-image: url(../img/main/ico_mobile_menu1_on.svg);}
-				.m-nav nav a.active.m2:before { background-image: url(../img/main/ico_mobile_menu2_on.svg);}
-				.m-nav nav a.active.m3:before { background-image: url(../img/main/ico_mobile_menu3_on.svg);}
-				.m-nav nav a.active.m4:before { background-image: url(../img/main/ico_mobile_menu4_on.svg);}
-				.m-nav nav a.active.m5:before { background-image: url(../img/main/ico_mobile_menu5_on.svg);}
-		  }*/
 		</style>
 		<div id="wrap" class="mb-5">
 			<div class="header" style="background-color: rgb(51, 51, 51); text-align: center;" >

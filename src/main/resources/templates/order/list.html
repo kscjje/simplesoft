@@ -4,64 +4,6 @@
 	  layout:decorate="~{layouts/default_layout}">
 	  <main class="content-wrapper" layout:fragment="content">
 		  <style>
-			@media only screen and (max-width: 991px) {
-				#thHead th{
-					font-size: 12px !important;
-				}
-				.fs-6 {
-					font-size: 12px !important;
-				}
-				tr div {
-					font-size: 12px !important;
-				}
-				tr div .menuboard_btn {
-					padding: 8px 24px;
-					font-size: 12px;
-				}
-			}
-			@media only screen and (max-width: 767px) {
-				#thHead th{
-					font-size: 10px !important;
-				}
-				.fs-6 {
-					font-size: 10px !important;
-				}
-				tr div {
-					font-size: 10px !important;
-				}
-				tr div .menuboard_btn {
-					padding: 6px 20px;
-					font-size: 10px;
-				}
-				.fixed .addToCartButton {
-					padding: 10px 12px;
-					font-size: 16px;
-					width:180px;
-				}
-			}
-			@media only screen and (max-width: 500px) {
-				#thHead th{
-					font-size: 7px !important;
-				}
-				.fs-6 {
-					font-size: 7px !important;
-				}
-				tr div {
-					font-size: 7px !important;
-				}
-				tr div .menuboard_btn {
-					padding: 6px 14px;
-					font-size: 7px;
-				}
-				.tableWidth tr td{
-					height:184px;
-				}
-				.fixed .addToCartButton {
-					padding: 8px 10px;
-					font-size: 10px;
-					width:100px;
-				}
-			}
 			.tableWidth {
 				width:100%;
 				margin: auto;
@@ -145,6 +87,77 @@
 				border: 1px solid #eee;
 				background: #f9f9f9;
 			}
+			/* prefers-color-scheme 다크모드*/
+			
+			/* 데스크탑 (해상도 1280px 이상) */
+			@media all and (min-width: 1280px) {
+			  /* 데스크탑 전용 스타일 */
+			}
+			
+			/* 노트북 & 테블릿 가로 (해상도 1024px ~ 1279px) */
+			@media all and (min-width: 1024px) and (max-width: 1279px) {
+			  /* 노트북 및 가로 방향 태블릿 스타일 */
+			}
+			
+			/* 테블릿 가로 (해상도 768px ~ 1023px) */
+			@media all and (min-width: 768px) and (max-width: 1023px) {
+			  /* 태블릿 가로 스타일 */
+			}
+			
+			/* 모바일 가로 & 테블릿 세로 (해상도 480px ~ 767px) */
+			@media all and (min-width: 480px) and (max-width: 767px) {
+			  /* 모바일 가로 또는 태블릿 세로 스타일 */
+			 	#thHead th{
+  					font-size: 10px !important;
+  				}
+  				.fs-6 {
+  					font-size: 10px !important;
+  				}
+  				tr div {
+  					font-size: 10px !important;
+  				}
+  				tr div .menuboard_btn {
+  					padding: 6px 20px;
+  					font-size: 10px;
+  				}
+  				.fixed .addToCartButton {
+  					padding: 10px 12px;
+  					font-size: 16px;
+  					width:180px;
+  				}
+			}
+			
+			/* 모바일 세로 (해상도 ~ 479px) */
+			@media all and (max-width: 479px) {
+				#thHead th{
+					font-size: 7px !important;
+				}
+				.fs-6 {
+					font-size: 0.5em !important;
+				}
+				tr div {
+					font-size: 7px !important;
+				}
+				tr div .menuboard_btn {
+					padding: 6px 14px;
+					font-size: 7px;
+				}
+				.tableWidth tr td{
+					height:184px;
+				}
+				.fixed {
+					left:40%;
+				}
+				.fixed .addToCartButton {
+					padding: 8px 10px;
+					font-size: 10px;
+					width:100px;
+				}
+				.help{
+					font-size: 11px;
+				}
+				
+			}
 		</style>
 		<div class="tableWidth">
 			<table>
@@ -201,7 +214,7 @@
 						var day = firstSundayOfThisWeek.getDate().toString().padStart(2, '0'); // 일을 두 자리로 표시
 						
 						addHtml += 		"<td style='position: relative;'>";
-						addHtml += 			"<div class='fw-bold fs-6 mt-3' style='position: absolute;top: 0;left: 50%;transform: translateX(-50%);font-family:Noto Sans KR, Sans-serif'>" + month +"월 "+ day +"일 </div>";
+						addHtml += 			"<div class='fw-bold fs-6 mt-3' style='width:100%;position: absolute;top: 0;left: 50%;transform: translateX(-50%);font-family:Noto Sans KR, Sans-serif'>" + month +"월 "+ day +"일 </div>";
 						
 						let find = false;		//식단표 데이터가 있는지 여부
 						for(let k = 0; k < result.length; k ++){
@@ -257,7 +270,7 @@
 				}
 				addHtml += 	"</tr>";
 				$("#thHead").after(addHtml);
-				$(".fixed").html('<button type="button" class="addToCartButton" style="position: sticky;top:200px;"onclick="fnCartSave()">장바구니담기</button>');
+				$(".fixed").html('<button type="button" class="addToCartButton" onclick="fnCartSave()">장바구니담기</button>');
 			});
 			
 			//장바구니 담기
@@ -298,7 +311,7 @@
 			toggleButtonClick = function (btn,value){
 				btn.classList.toggle('active'); // Toggle the 'clicked' class
 				if(btn.classList.contains('active')){
-					btn.value= "선택해제";	 
+					btn.value= "해제";	 
 				} else {
 					btn.value="선택";
 				}

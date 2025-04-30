@@ -1,40 +1,6 @@
 /* 여백 초기화 */
 body, div, ul, li, dl, dd, dt, ol, h1, h2, h3, h4, h5, h6, input, fieldset, legend, p, select, table, th, td, tr, textarea, button, form, figure, figcaption {margin:0; padding:0; }
 
-.submenu {
-	border-top:1px solid rgba(0,0,0,0.055);
-	border-bottom: 1px solid rgba(0,0,0,0.055);
-	display: flex; /* Flexbox로 자식 요소를 정렬 */
-	align-items: center; /* 수직 중앙 정렬 */
-}
-.header_logo {
-    flex-shrink: 0; /* 로고 크기를 고정 */
-}
-
-.header_logo img {
-    max-height: 50px; /* 로고 크기 제한 (원하는 크기로 조정) */
-    height: auto; /* 비율 유지 */
-    margin-left: 20rem;
-}
-
-.nav.container {
-    display: flex; /* Flexbox로 목록 정렬 */
-    list-style: none; /* 기본 리스트 스타일 제거 */
-    margin: 0; /* 기본 여백 제거 */
-    padding: 0; /* 기본 여백 제거 */
-}
-.nav-item {
-	margin-left: 5rem;
-	font-size: 18px;
-	height: 50px;
-}
-.nav-item>a{
-	list-style: none; 
-	text-decoration: none; 
-	color: rgb(0, 0, 64);
-	font-family:'NotoSans';
-	font-weight:600;
-}
 .nav-item2>a{
 	list-style: none; 
 	text-decoration: none; 

@@ -4,110 +4,65 @@
 	  layout:decorate="~{layouts/default_layout}">
 	  <main class="content-wrapper" layout:fragment="content">
 		  <style>
-			.tableWidth {
-				width:100%;
-				margin: auto;
-				position: relative;
-			}
-			#thHead {
-				margin-bottom: 7px;
-				font-family:'Noto Sans KR', Sans-serif;
-			}
-			table {
-				width: 100%;
-				border-collapse: separate;
-				border-spacing: 0 10px; /* Adjust the second value (vertical spacing) according to your preference */
-				margin-top: 20px;
-			}
-			th, td {
-				padding: 8px;
-				text-align: center;
-			}
-			th {
-				font-weight: bold;
-				font-size: 18px;
-			}
-			td {
-				border: 1px solid #ddd;
-				width:236px;
-				font-size: 14px;
-			}
-			tr td{
-				height:314px;
-			}
-			td div:nth-child(2){
-				margin-top:30px;
-			}
-			td:first-child, th:first-child {
-				border-radius: 15px 0 0 15px;
-			}
-			td:last-child, th:last-child {
-				border-radius: 0 15px 15px 0;
-			}
-			.menuboard_btn {
-				padding: 10px 32px;
-				font-size: 16px;
-				background-color: #FFF;
-				border: 1px solid #4CAF50;
-				color: #4CAF50;
-				border-radius: 20px;
-				cursor: pointer;	
-			}
-			.menuboard_btn:hover {
-				background-color: #45a049;
-				color: #FFF;
-			}
-			.menuboard_btn.active {
-				background-color: #45a049;
-				color: #FFF;
-			}
-			.addToCartButton {
-				background-color: #45a049;
-				color: #fff;
-				border: none;
-				padding: 10px 20px;
-				font-size: 20px;
-				width:200px;
-				cursor: pointer;
-				border-radius: 5px;
-				transition: background-color 0.3s ease;
-			}
-			.fixed {
-				position: sticky;
-				width: 0;
-				bottom: 2%;
-				left: 45%;
-				transform: translate(-50%, -8%);
-				background-color: #f0f0f0;
-			}
-			.help {
-				padding: 20px;
-				font-size: 13px;
-				color: #666;
-				border: 1px solid #eee;
-				background: #f9f9f9;
-			}
+			
 			/* prefers-color-scheme 다크모드*/
 			
 			/* 데스크탑 (해상도 1280px 이상) */
 			@media all and (min-width: 1280px) {
-			  /* 데스크탑 전용 스타일 */
+				/* 데스크탑 전용 스타일 */
+				#thHead {
+					margin-bottom: 7px;
+				}
+				table {
+					margin-top: 20px;
+				}
+				th, td {
+					padding: 8px;
+				}
+				th {
+					font-size: 18px;
+				}
+				td {
+					width:236px;
+					font-size: 14px;
+				}
+				tr td{
+					height:314px;
+				}
+				td div:nth-child(2){
+					margin-top:30px;
+				}
+				.menuboard_btn {
+					padding: 10px 32px;
+					font-size: 16px;
+				}
+				.addToCartButton {
+					padding: 10px 20px;
+					font-size: 20px;
+					width:200px;
+				}
+				.help{
+					font-size: 13px;
+				}
+				.fixed {
+					left: 45%;
+				}
 			}
 			
 			/* 노트북 & 테블릿 가로 (해상도 1024px ~ 1279px) */
 			@media all and (min-width: 1024px) and (max-width: 1279px) {
-			  /* 노트북 및 가로 방향 태블릿 스타일 */
+				/* 노트북 및 가로 방향 태블릿 스타일 */
 			}
 			
 			/* 테블릿 가로 (해상도 768px ~ 1023px) */
 			@media all and (min-width: 768px) and (max-width: 1023px) {
-			  /* 태블릿 가로 스타일 */
+				/* 태블릿 가로 스타일 */
 			}
 			
 			/* 모바일 가로 & 테블릿 세로 (해상도 480px ~ 767px) */
 			@media all and (min-width: 480px) and (max-width: 767px) {
-			  /* 모바일 가로 또는 태블릿 세로 스타일 */
-			 	#thHead th{
+				/* 모바일 가로 또는 태블릿 세로 스타일 */
+				#thHead th{
   					font-size: 10px !important;
   				}
   				.fs-6 {
@@ -136,7 +91,7 @@
 					font-size: 0.5em !important;
 				}
 				tr div {
-					font-size: 7px !important;
+					font-size: 6px !important;
 				}
 				tr div .menuboard_btn {
 					padding: 6px 14px;
@@ -157,6 +112,66 @@
 					font-size: 11px;
 				}
 				
+			}
+			.tableWidth {
+				width:100%;
+				margin: auto;
+				position: relative;
+			}
+			#thHead {
+				font-family:'Noto Sans KR', Sans-serif;
+			}
+			table {
+				width: 100%;
+				border-collapse: separate;
+				border-spacing: 0 10px; /* Adjust the second value (vertical spacing) according to your preference */
+			}
+			th, td {
+				text-align: center;
+			}
+			th {
+				font-weight: bold;
+			}
+			td {
+				border: 1px solid #ddd;
+			}
+			td:first-child, th:first-child {
+				border-radius: 15px 0 0 15px;
+			}
+			td:last-child, th:last-child {
+				border-radius: 0 15px 15px 0;
+			}
+			.menuboard_btn {
+				background-color: #FFF;
+				border: 1px solid #4CAF50;
+				color: #4CAF50;
+				border-radius: 20px;
+				cursor: pointer;	
+			}
+			.menuboard_btn.active {
+				background-color: #45a049;
+				color: #FFF;
+			}
+			.addToCartButton {
+				background-color: #45a049;
+				color: #fff;
+				border: none;
+				cursor: pointer;
+				border-radius: 5px;
+				transition: background-color 0.3s ease;
+			}
+			.fixed {
+				position: sticky;
+				width: 0;
+				bottom: 2%;
+				transform: translate(-50%, -8%);
+				background-color: #f0f0f0;
+			}
+			.help {
+				padding: 20px;
+				color: #666;
+				border: 1px solid #eee;
+				background: #f9f9f9;
 			}
 		</style>
 		<div class="tableWidth">

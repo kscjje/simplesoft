@@ -34,6 +34,14 @@ public class HomeController {
 	public String notice() {
 		return "notice";
 	}
+	@GetMapping("privacy")
+	public String privacy() {
+		return "privacy";
+	}
+	@GetMapping("terms")
+	public String terms() {
+		return "terms";
+	}
 	@GetMapping("foodtable")
 	public String foodtable() {
 		return "foodtable";

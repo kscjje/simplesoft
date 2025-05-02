@@ -9,7 +9,7 @@
 			.colorred {
 				color:red;
 			}
-			@media only screen and (max-width: 575px) {
+			@media all and (max-width: 479px) {
 				.custom{
 					font-size: 8px !important;
 				}
@@ -40,30 +40,69 @@
 					font-size: 8px;
 				}
 			}
-			@media only screen and (min-width: 576px) {
+			@media all and (min-width: 480px) and (max-width: 767px) {
 				.custom{
-					font-size: 10px !important;
+					font-size: 8px !important;
 				}
-				.col-lg-3 {
-					flex: 0 0 auto;
+				.fs-5, .fs-3 {
+					font-size: 8px !important;
+				}
+				.input15 {
+					height: 30px;
+					width:20% !important;
+					font-size: 8px;
+				}
+				.input25 {
+					height: 30px;
+					width:50% !important;
+					font-size: 8px;
+				}
+				.input50 {
+					height: 30px;
+					width:75% !important;
+					font-size: 8px;
+				}
+				.btn25 {
+					height: 30px;
+					width:25% !important;
+					font-size: 8px;
 				}
 				.font-sm {
-					font-size: 10px;
+					font-size: 8px;
 				}
 			}
-			@media only screen and (min-width: 768px) {
+			@media all and (min-width: 768px) and (max-width: 1023px) {
 				.custom{
-					font-size: 10px !important;
+					font-size: 11px !important;
 				}
-				.col-lg-3 {
-					flex: 0 0 auto;
-					width: 80%;
+				.fs-5, .fs-3 {
+					font-size: 11px !important;
+				}
+				.input15 {
+					height: 30px;
+					width:20% !important;
+					font-size: 11px;
+				}
+				.input25 {
+					height: 30px;
+					width:50% !important;
+					font-size: 11px;
+				}
+				.input50 {
+					height: 30px;
+					width:75% !important;
+					font-size: 11px;
+				}
+				.btn25 {
+					height: 30px;
+					width:25% !important;
+					font-size: 11px;
 				}
 				.font-sm {
-					font-size: 10px;
+					font-size: 11px;
 				}
 			}
-			@media only screen and (min-width: 992px) {
+			@media all and (min-width: 1024px) and (max-width: 1279px) {
 				.custom{
 					font-size: 12px !important;
 				}
@@ -75,19 +114,14 @@
 					font-size: 12px;
 				}
 			}
-			@media only screen and (min-width: 1600px) {
+			
+			@media all and (min-width: 1280px) {
 				.custom{
 					font-size: 16px !important;
 				}
 				.col-lg-3 {
 					flex: 0 0 auto;
 					width: 80%;
-				}
-				.input25 {
-					width:25% !important;
-				}
-				.input50{
-					width:50% !important;
 				}
 				.font-sm {
 					font-size: 14px;
@@ -185,7 +219,7 @@
 											<label for="o_pass" class="form-label"><font color="red">* </font>비밀번호</label>
 										</td>
 										<td>
-											<input type="password" id="o_pass" name="orderPwd" maxlength="20" class="form-control w-50 input25" style="font-size:12px !important;" placeholder="영,숫자 3~20자 (주문서 조회시 필요)">
+											<input type="password" id="o_pass" name="orderPwd" maxlength="20" class="form-control w-50 input25" placeholder="영,숫자 3~20자 (주문서 조회시 필요)">
 										</td>
 									</tr>
 								</th:block>
@@ -324,7 +358,7 @@
 										</div>
 										<div class="form-check float-start">
 											<input class="form-check-input" type="radio" name="delivKind" id="radio2" value="2000">
-											<label class="form-check-label" for="radio2" data-bs-toggle="tooltip" data-bs-placement="top" title="택배비 4천원이 추가됩니다.">
+											<label class="form-check-label" for="radio2" data-bs-toggle="tooltip" data-bs-placement="top" title="택배비 4,000원이 추가됩니다.">
 												우체국 택배(안산 외)
 											</label>
 										</div>
@@ -337,7 +371,7 @@
 									<td>
 										<div class="form-check float-start me-3">
 											<input class="form-check-input" type="radio" name="packaging" id="radio3" value="1000">
-											<label class="form-check-label" for="radio3" data-bs-toggle="tooltip" data-bs-placement="top" title="보증금 5천원이 추가됩니다.">
+											<label class="form-check-label" for="radio3" data-bs-toggle="tooltip" data-bs-placement="top" title="보증금 5,000원이 추가됩니다.">
 												보냉가방(신규)
 											</label>
 											<div onclick="document.getElementById('radio3').checked = true;">
@@ -408,7 +442,7 @@
 							<input class="form-check-input" type="checkbox" id="agree1">
 							<label class="form-check-label" for="agree1" style="cursor: pointer;">아래 내용에 모두 동의합니다.(필수)</label>
 						</div>
-						<div class="mb-3" style="width:500px;margin: auto;">
+						<div class="mb-3 payMemo">
 							<div class="form-control text-start">
 								<p class="small lh-1">[결제 후 배송 및 환불 정책]</p>
 								<p class="small lh-1">	1. 결제 후 6주 이내로 제품을 받을 수 있습니다.</p>
@@ -950,7 +984,7 @@
 					// 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
 					await widgets.requestPayment({
 						orderId: v_orderId,
-						orderName: "토스 티셔츠 외 2건",
+						orderName: "밥수니반찬세트",
 						successUrl: window.location.origin + "/success",
 						failUrl: window.location.origin + "/fail",
 						customerEmail: $("#od_email").val(),

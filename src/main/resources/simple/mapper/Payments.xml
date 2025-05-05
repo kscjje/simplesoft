@@ -72,4 +72,63 @@
 		WHERE PAYMENT_KEY = #{paymentKey}
 	</update>
 	
+	<!-- 결제정보 생성 -->
+	<insert id="insertPaymentsCancel" parameterType="com.simplesoft.payments.service.PaymentsVO">
+		/* PaymentsMapper.insertPaymentsCancel */
+		INSERT INTO PAYMENTS
+			(
+					PAYMENT_TYPE
+				,	ORDER_ID
+				,	PAY_METHOD
+				,	PAYMENT_KEY
+				,	TOTAL_AMOUNT
+				,	BALANCE_AMOUNT
+				,	SUPPLIED_AMOUNT
+				,	VAT
+				,	TAX_FREE_AMOUNT
+				,	AMOUNT
+				,	REG_DT
+				,	ORDER_NAME
+				,	STATUS
+				,	REQUESTED_AT
+				,	APPROVED_AT
+				,	USE_ESCROW
+				,	EASY_PAY
+				,	CARD
+				,	CANCELS
+				,	SECRET
+				,	IS_PARTIAL_CANCELABLE
+				,	RECEIPT_URL
+				,	COUNTRY
+				,	FAIL_INFO
+				,	LAST_TRANSACTION_KEY
+			)
+		VALUES(
+					#{type}
+				,	#{orderId}
+				,	#{method}
+				,	#{paymentKey}
+				,	#{totalAmount}
+				,	#{balanceAmount}
+				,	#{suppliedAmount}
+				,	#{vat}
+				,	#{taxFreeAmount}
+				,	#{amount}
+				,	NOW()
+				,	#{orderName}
+				,	#{status}
+				,	#{requestedAt}
+				,	#{approvedAt}
+				,	#{useEscrow}
+				,	#{easyPay}
+				,	#{card}
+				,	#{cancels}
+				,	#{secret}
+				,	#{isPartialCancelable}
+				,	#{receipt}
+				,	#{country}
+				,	#{failure}
+				,	#{lastTransactionKey}
+		)
+	</insert>
 </mapper>

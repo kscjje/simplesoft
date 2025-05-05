@@ -1,11 +1,16 @@
 package com.simplesoft.order.service;
 
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.simplesoft.common.dao.CommonVO;
+import com.simplesoft.common.service.TossEasyPayVO;
+import com.simplesoft.payments.service.CancelsVO;
+import com.simplesoft.payments.service.CardVO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -69,6 +74,12 @@ public class OrderVO extends CommonVO{
 	
 	private int menuDay;				//주문내역 전용
 	private int orderQty;				//주문내역 전용
+	private String card;				//DB카드정보
+	private CardVO cardVO;				//카드정보 포맷
+	private String easyPay;				//DB간편결제
+	private TossEasyPayVO easyPayVO;	//간편결제 포맷
+	private String cancels;				//DB취소정보
+	private CancelsVO cancelsVO;		//취소정보 포맷
 
 	@Override
 	public String toString() {
@@ -85,6 +96,93 @@ public class OrderVO extends CommonVO{
 				+ ", regDt=" + regDt + ", productList=" + productList + ", payMethod=" + payMethod + ", productName="
 				+ productName + ", totalAmount=" + totalAmount + ", deliveryStatus=" + deliveryStatus
 				+ ", deliveryStatusNm=" + deliveryStatusNm + ", managerNo=" + managerNo + ", deliveryDt=" + deliveryDt
-				+ ", orderList=" + orderList + ", orderCount=" + orderCount + "]";
+				+ ", orderList=" + orderList + ", orderCount=" + orderCount + ", menuDay=" + menuDay + ", orderQty=" + orderQty + ", card=" + card + "]";
+	}
+	
+	public void setCard(String card) {
+		this.card = card;
+		this.cardVO = convertCard(); // setter에서 파싱
+	}
+
+	public CardVO convertCard() {
+		if (card == null || !card.startsWith("{")) return null;
+		String body = card.substring(1, card.length() - 1); // 중괄호 제거
+		String[] pairs = body.split(", ");
+		CardVO cardVO = new CardVO();
+		for (String pair : pairs) {
+			String[] kv = pair.split("=", 2);
+			if (kv.length != 2) continue;
+			String key = kv[0];
+			String value = kv[1];
+
+			switch (key) {
+				case "ownerType": cardVO.ownerType = value; break;
+				case "number": cardVO.number = value; break;
+				case "amount": cardVO.amount = Integer.parseInt(value); break;
+				case "acquireStatus": cardVO.acquireStatus = value; break;
+				case "isInterestFree": cardVO.isInterestFree = Boolean.parseBoolean(value); break;
+				case "cardType": cardVO.cardType = value; break;
+				case "approveNo": cardVO.approveNo = value; break;
+				case "installmentPlanMonths": cardVO.installmentPlanMonths = Integer.parseInt(value); break;
+				case "interestPayer": cardVO.interestPayer = value.equals("null") ? null : value; break;
+				case "issuerCode": cardVO.issuerCode = value; break;
+				case "acquirerCode": cardVO.acquirerCode = value; break;
+				case "useCardPoint": cardVO.useCardPoint = Boolean.parseBoolean(value); break;
+			}
+		}
+		return cardVO;
+	}
+	
+	public void setEasyPay(String easyPay) {
+		this.easyPay = easyPay;
+		this.easyPayVO = convertEasyPay(); // setter에서 파싱
+	}
+
+	public TossEasyPayVO convertEasyPay() {
+		if (easyPay == null || !easyPay.startsWith("{")) return null;
+		String body = easyPay.substring(1, easyPay.length() - 1); // 중괄호 제거
+		String[] pairs = body.split(", ");
+		TossEasyPayVO easyPayVO = new TossEasyPayVO();
+		for (String pair : pairs) {
+			String[] kv = pair.split("=", 2);
+			if (kv.length != 2) continue;
+			String key = kv[0];
+			String value = kv[1];
+
+			switch (key) {
+				case "provider": easyPayVO.provider = value; break;
+				case "amount": easyPayVO.amount = Integer.parseInt(value); break;
+				case "discountAmount": easyPayVO.discountAmount = Integer.parseInt(value); break;
+			}
+		}
+		return easyPayVO;
+	}
+	
+	public void setCancels(String cancels) {
+		this.cancels = cancels;
+		this.cancelsVO = convertCancels(); // setter에서 파싱
+	}
+	public CancelsVO convertCancels() {
+		if (cancels == null || !cancels.startsWith("[{")) return null;
+		String body = cancels.substring(1, cancels.length() - 1); // 중괄호 제거
+		String[] pairs = body.split(", ");
+		CancelsVO cancelsVO = new CancelsVO();
+		for (String pair : pairs) {
+			String[] kv = pair.split("=", 2);
+			if (kv.length != 2) continue;
+			String key = kv[0];
+			String value = kv[1];
+			
+			switch (key) {
+				case "canceledAt": cancelsVO.canceledAt = formatIsoDate(value); break;
+				case "cancelReason": cancelsVO.cancelReason = value; break;
+			}
+		}
+		return cancelsVO;
+	}
+	public static String formatIsoDate(String isoDate) {
+		OffsetDateTime dateTime = OffsetDateTime.parse(isoDate);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		return dateTime.format(formatter);
 	}
 }

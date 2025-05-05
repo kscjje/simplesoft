@@ -5,132 +5,10 @@
 	<main class="content-wrapper" layout:fragment="content" style="padding: 10px;">
 		<script src="https://js.tosspayments.com/v2/standard"></script>
 		<script src="/js/tosspay.js"></script>
-		<style>
-			.colorred {
-				color:red;
-			}
-			@media all and (max-width: 479px) {
-				.custom{
-					font-size: 8px !important;
-				}
-				.fs-5, .fs-3 {
-					font-size: 8px !important;
-				}
-				.input15 {
-					height: 30px;
-					width:20% !important;
-					font-size: 8px;
-				}
-				.input25 {
-					height: 30px;
-					width:50% !important;
-					font-size: 8px;
-				}
-				.input50 {
-					height: 30px;
-					width:75% !important;
-					font-size: 8px;
-				}
-				.btn25 {
-					height: 30px;
-					width:25% !important;
-					font-size: 8px;
-				}
-				.font-sm {
-					font-size: 8px;
-				}
-			}
-			@media all and (min-width: 480px) and (max-width: 767px) {
-				.custom{
-					font-size: 8px !important;
-				}
-				.fs-5, .fs-3 {
-					font-size: 8px !important;
-				}
-				.input15 {
-					height: 30px;
-					width:20% !important;
-					font-size: 8px;
-				}
-				.input25 {
-					height: 30px;
-					width:50% !important;
-					font-size: 8px;
-				}
-				.input50 {
-					height: 30px;
-					width:75% !important;
-					font-size: 8px;
-				}
-				.btn25 {
-					height: 30px;
-					width:25% !important;
-					font-size: 8px;
-				}
-				.font-sm {
-					font-size: 8px;
-				}
-			}
-			@media all and (min-width: 768px) and (max-width: 1023px) {
-				.custom{
-					font-size: 11px !important;
-				}
-				.fs-5, .fs-3 {
-					font-size: 11px !important;
-				}
-				.input15 {
-					height: 30px;
-					width:20% !important;
-					font-size: 11px;
-				}
-				.input25 {
-					height: 30px;
-					width:50% !important;
-					font-size: 11px;
-				}
-				.input50 {
-					height: 30px;
-					width:75% !important;
-					font-size: 11px;
-				}
-				.btn25 {
-					height: 30px;
-					width:25% !important;
-					font-size: 11px;
-				}
-				.font-sm {
-					font-size: 11px;
-				}
-			}
-			@media all and (min-width: 1024px) and (max-width: 1279px) {
-				.custom{
-					font-size: 12px !important;
-				}
-				.col-lg-3 {
-					flex: 0 0 auto;
-					width: 80%;
-				}
-				.font-sm {
-					font-size: 12px;
-				}
-			}
-			
-			@media all and (min-width: 1280px) {
-				.custom{
-					font-size: 16px !important;
-				}
-				.col-lg-3 {
-					flex: 0 0 auto;
-					width: 80%;
-				}
-				.font-sm {
-					font-size: 14px;
-				}
-			}
-		</style>
+		<link rel="stylesheet" href="/css/custom/payReg.css">
 		<div class="row justify-content-center custom" style="text-align: center;">
 			<h2 class="mb-5"><i class="bi bi-clipboard2-data"></i> 주문서 작성</h2>
-			<div class="col-lg-3">
+			<div style="flex: 0 0 auto;">
 				<div class="row">
 					<div class="col">
 						<h6 class="mb-3 fw-bold text-start">1.주문식단</h6>
@@ -151,7 +29,7 @@
 										<th:block th:if="${rs.orderSet == '1000'}">
 											<th:block th:each="msg,msgStat : ${#strings.setSplit(rs.menuMsg,'|')}">
 												<th:block th:if="${#strings.substring(msg,0,1) == '!'}">
-													<span style="color:red;" th:text="${#strings.substring(msg,1)}"></span>
+													<span class="colorred" th:text="${#strings.substring(msg,1)}"></span>
 													<span th:text="'('+${#strings.arraySplit(rs.menuMsgDetail ?: '', '|')[msgStat.index]}+'개)'"></span>
 												</th:block>
 												<th:block th:if="${#strings.substring(msg,0,1) != '!'}">
@@ -164,10 +42,10 @@
 										<th:block th:if="${rs.orderSet == '2000' || rs.orderSet == '3000'}">
 											<th:block th:each="msg,msgStat : ${#strings.setSplit(rs.menuMsg,'|')}">
 												<th:block th:if="${#strings.substring(msg,0,1) == '!'}">
-													<span style="color:red;margin-right:7px;" th:text="${#strings.substring(msg,1)}"></span>
+													<span class="spanClass colorred" th:text="${#strings.substring(msg,1)}"></span>
 												</th:block>
 												<th:block th:if="${#strings.substring(msg,0,1) != '!'}">
-													<span style="margin-right:7px;" th:text="${msg}"></span>
+													<span class="spanClass" th:text="${msg}"></span>
 												</th:block>
 												<th:block th:if="${msgStat.count % 3 == 0}"><br></th:block>
 											</th:block>
@@ -201,7 +79,7 @@
 					</div>
 					<form id="orderForm" method="post" onsubmit="return false;">
     					<div class="mt-4">
-							<h6 class="mb-3 fw-bold text-start">2.주문하시는 분 <a href="javascript:test()">테스트작성</a></h6>
+							<h6 class="mb-3 fw-bold text-start">2.주문하시는 분</h6>
 							<hr>
 							<!-- 비회원 주문정보 -->
 							<table class="table table-borderless align-middle">
@@ -259,7 +137,7 @@
 									</td>
 									<td>
 										<div style="display:flex;">
-											<input type="text" id="o_email" class="form-control w-25 input25">
+											<input type="text" id="o_email" class="form-control w-25 input25" maxlength="30">
 											<span class="me-1 ms-1 mt-1">@</span>
 											<input type="text" id="o_email2" class="form-control w-25 input25 me-1">
 											<select class="form-select w-25 input25" onchange="res(this.value)">
@@ -270,7 +148,7 @@
 												<option value="nate.com">nate.com</option>
 												<option value="gmail.com">gmail.com</option>
 											</select>
-											<input type="text" id="od_email" name="orderEmail" style="display:none;">
+											<input type="text" id="od_email" name="orderEmail" maxlength="20" style="display:none;">
 										</div>
 									</td>
 								</tr>
@@ -678,7 +556,6 @@
 			
 			//주문하기
 			fnSubmit = function(){
-				
 				const pattern = /^[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*$/;
 				const scriptTag = /[~^&()|<>?]/;
 				const emailPattern = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-za-z0-9\-]+/;
@@ -830,7 +707,15 @@
 								};
 								// 비회원 결제
 								// 스크립트 태그 연동방식
-								payments(amount,orderId);
+								let order = /*[[${order.productList}]]*/"";
+								let orderSize = order.length;
+								let orderName = "밥수니반찬세트";
+								if(orderSize > 1){
+									orderName = order[0].menuDay + " 외 " + Number(orderSize-1) +" 건"
+								} else if(orderSize == 1){
+									orderName = order[0].menuDay
+								}
+								payments(amount,orderId,orderName);
 								$("#modalPay").trigger("click");
 							} else {
 								alert(result.data.resultMsg);
@@ -852,22 +737,6 @@
 				$(this).val( $(this).val().replace(/[^0-9]/g, "").replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/,"$1-$2-$3").replace("--", "-") ); 
 			});
 			
-			test = function(){
-				$("#o_name").val("김영철");
-				$("#o_pass").val("2424");
-				$("#o_phone").val("010-5054-6365");
-				
-				$("#o_postNum").val("13480");
-				$("#o_addr").val("경기 성남시 분당구 대왕판교로 477");
-				$("#o_addrDetail").val("상세주소");
-				
-				$("#o_email").val("kscjje");
-				$("#o_email2").val("naver.com");
-				
-				$("#radio1").prop("checked",true);
-				$("#radio4").prop("checked",true);
-				$("#radio6").prop("checked",true);
-			}
 			$(document).ready(function() {
 				$('[data-bs-toggle="tooltip"]').tooltip();
 				
@@ -928,8 +797,7 @@
 			});
 		</script>
 		<script>
-			
-			async function payments(v_amount,v_orderId) {
+			async function payments(v_amount,v_orderId,v_orderName) {
 				const button = document.getElementById("payment-button");
 				//const coupon = document.getElementById("coupon-box");
 				// ------  결제위젯 초기화 ------
@@ -984,7 +852,7 @@
 					// 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
 					await widgets.requestPayment({
 						orderId: v_orderId,
-						orderName: "밥수니반찬세트",
+						orderName: v_orderName,
 						successUrl: window.location.origin + "/success",
 						failUrl: window.location.origin + "/fail",
 						customerEmail: $("#od_email").val(),

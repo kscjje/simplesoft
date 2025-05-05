@@ -46,8 +46,9 @@ public class PaymentsVO {
 	private int vat; 
 	private Boolean cultureExpense; 
 	private int taxFreeAmount;
+	
 	private int taxExemptionAmount;
-	private ArrayList<CancelsVO> cancels;
+	private Object cancels;
 	private Boolean isPartialCancelable;
 	private Object card;
 	private Object virtualAccount;
@@ -62,4 +63,6 @@ public class PaymentsVO {
 	private Object cashReceipt;
 	private Object cashReceipts;
 	private Object discount;
+	private String receiptUrl;
+	
 }

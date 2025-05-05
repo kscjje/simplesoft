@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.simplesoft.common.service.impl.TossServiceImpl;
 import com.simplesoft.manager.service.ManagerService;
 import com.simplesoft.manager.service.ManagerVO;
 import com.simplesoft.mapper.admOrder.service.AdmOrderService;
@@ -18,6 +21,7 @@ import com.simplesoft.menuboard.service.MenuBoardService;
 import com.simplesoft.order.service.DeliveryVO;
 import com.simplesoft.order.service.OrderProductVO;
 import com.simplesoft.order.service.OrderVO;
+import com.simplesoft.payments.service.PaymentsService;
 import com.simplesoft.reponse.BasicResponse;
 import com.simplesoft.reponse.CommonResponse;
 import com.simplesoft.util.EncryptUtils;
@@ -35,6 +39,10 @@ public class AdminOrderRestController {
 	MenuBoardService menuBoardService;
 	@Autowired
 	ManagerService managerService;
+	@Autowired
+	PaymentsService paymentsService;
+	@Autowired
+	TossServiceImpl tossService;
 	
 	//주문 내역 조회
 	@PostMapping(value = "/searchList")
@@ -171,5 +179,18 @@ public class AdminOrderRestController {
 		String decryptedData = EncryptUtils.AES256_Decrypt(encryptedData);
 		returnData.put("decryptedData", decryptedData);
 		return new CommonResponse<Map<String, Object>>(returnData);
+	}
+	
+	//주문 결제 취소
+	@PostMapping(value = "/payCancelAjax")
+	public BasicResponse payCancelAjax(@RequestParam Map<String, Object> paramMap) throws ParseException {
+		
+		JSONObject returnData = new JSONObject();
+		paramMap.put("cancelReason", "관리자 취소");
+		returnData  = tossService.cancel(paramMap);
+		if(returnData.get("cancels") != null) {
+			paymentsService.getPayResultCancel(returnData);
+		}
+		return new CommonResponse<JSONObject>(returnData);
 	}
 }

@@ -4,6 +4,7 @@
 	  xmlns:thym="http://www.thymeleaf.org/extras/java8time"
 	  layout:decorate="~{layouts/admin_layout}">
 	<main layout:fragment="content">
+		<script src="/js/cardMethod.js"></script>
 		<style>
 			.title {
 				padding: 30px 40px 20px 0px;
@@ -217,6 +218,7 @@
 									</tr>
 								</table>
 								<h5>배송 정보</h5>
+								<input type="hidden" id="p_paymentKey"/>
 								<table class="table table-bordered mb-4 pTable">
 									<tr>
 										<th style="width:15%">받는이</th>
@@ -256,6 +258,7 @@
 										<button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">상품정보</button>
 										<button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">결제정보</button>
 									</div>
+									<span id="cancels" style="color: red;" class="ms-auto me-4"></span>
 									<button type="button" class="btn text-danger ms-auto me-2" onclick="fnPayCancel()">결제취소</button>
 								</nav>
 								<div class="tab-content" id="nav-tabContent">
@@ -265,21 +268,43 @@
 									<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
 										<table class="table table-bordered mb-4 pTable">
 											<tr>
-												<th style="width:15%">상품명</th>
-												<td id="p_productName" style="width:35%"></td>
-												<th style="width:15%">주문번호</th>
-												<td id="p_orderNo" style="width:35%"></td>
+												<th style="width:20%">상품명</th>
+												<td id="p_productName" style="width:30%"></td>
+												<th style="width:20%">주문번호</th>
+												<td id="p_orderNo" style="width:30%"></td>
 											</tr>
 											<tr>
-												<th style="width:15%">승인금액</th>
-												<td id="p_totalAmount" style="width:35%"></td>
-												<th style="width:15%">결제수단</th>
-												<td id="p_payMethod" style="width:35%"></td>
+												<th style="width:20%">결제수단</th>
+												<td id="p_payMethod" style="width:30%"></td>		
+												<th style="width:20%">승인금액</th>
+												<td id="p_totalAmount" style="width:30%"></td>
+											</tr>
+											<tr>
+												<th style="width:20%">승인번호</th>
+												<td id="p_approveNo" style="width:30%"></td>																						
+												<th style="width:20%">카드종류</th>
+												<td id="p_cardType" style="width:30%"></td>
+											</tr>
+											<tr>
+												<th style="width:20%">카드사(발급/매입)</th>
+												<td id="p_cardMethod" style="width:30%"></td>
+												<th style="width:20%">카드번호</th>
+												<td id="p_cardNo" style="width:30%"></td>
+											</tr>
+											<tr>
+												<th style="width:20%">간편결제(계좌,현금성포인트)</th>
+												<td id="p_amount" style="width:30%"></td>
+												<th style="width:20%">간편결제(적립포린트,쿠폰)</th>
+												<td id="p_discountAmount" style="width:30%"></td>
 											</tr>
 										</table>
+										<span style="font-size:13px; color: red;">※ 취소 기한은 없지만, 카드사 별로 결제 데이터 보관 기간이 달라서 1년을 초과하면 취소가 안될 수 있어요.<br/></span>
+										<span style="font-size:13px; color: red;">결제가 매입되기 전에는 취소 직후 환불됩니다. 매입 이후 취소는 요청 후 영업일 기준 3~4일이 소요됩니다.<br/></span>
+										<span style="font-size:13px; color: red;">이미 정산 받은 결제도 취소가 가능하며, 다음 정산금에서 상계처리됩니다.</span>
 									</div>
 								</div>
 							</div>
+								
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
@@ -296,7 +321,7 @@
 			$(document).ready(function() {
 				
 				//Modal창 클릭 시 이벤트 초기화
-				const exampleModal = document.getElementById('exampleModalCenteredScrollable')
+				const exampleModal = document.getElementById('exampleModalCenteredScrollable');
 				if (exampleModal) {
 					exampleModal.addEventListener('show.bs.modal', event => {
 						let button = event.relatedTarget;
@@ -344,7 +369,6 @@
 									addHtml +=	`</tr>`;
 								for(let i = 0; i < result.data.orderProductList.length; i ++){
 									let product = result.data.orderProductList[i];
-									console.log(product.menuMsgDetail)
 									let menuDay = formatDate(product.menuDay);
 									let menuMsg = product.orderSet == "1000" ? formatString2(product.menuMsg,product.menuMsgDetail)  : formatString(product.menuMsg);
 									
@@ -369,10 +393,32 @@
 						//결제정보
 						$("#p_productName").text(data.productName);
 						$("#p_orderNo").text(data.orderNo);
-						//$("#p_paymentKey").text(data.paymentKey);
+						$("#p_paymentKey").val(data.paymentKey);
 						$("#p_totalAmount").text(data.totalAmount.toLocaleString('ko-KR')+'원');
 						$("#p_payMethod").text(data.payMethod);
-						
+					
+						if(data.cardVO){
+							var rawNumber = data.cardVO.number || '';
+							var formattedNumber = rawNumber.replace(/(.{4})(?=.)/g, '$1-');
+								
+							$("#p_cardNo").text(formattedNumber);
+							$("#p_cardType").text(data.cardVO.cardType);
+							$("#p_approveNo").text(data.cardVO.approveNo);
+							$("#p_cardMethod").text(cardMethod(data.cardVO.issuerCode)+" / "+cardMethod(data.cardVO.acquirerCode));
+						} else {
+							$("#p_cardNo").text("");
+							$("#p_cardType").text("");
+							$("#p_approveNo").text("");
+							$("#p_cardMethod").text("");
+							if(data.easyPayVO){
+								$("#p_payMethod").text($("#p_payMethod").text() + "("+data.easyPayVO.provider+")");
+								$("#p_amount").text(data.easyPayVO.amount.toLocaleString('ko-KR')+'원');
+								$("#p_discountAmount").text(data.easyPayVO.discountAmount.toLocaleString('ko-KR')+'원');
+							}
+						}
+						if(data.cancelsVO){
+							$("#cancels").text("주문 취소 일시 : "+data.cancelsVO.canceledAt);
+						}
 					})
 				}
 				
@@ -561,7 +607,6 @@
 							if(cnt > 0 ){
 								for(let i = 0; i < result.data.orderList.length; i ++){
 									let data = result.data.orderList[i];
-									console.log(data)
 									let jsonData = JSON.stringify(data).replace(/"/g, '&quot;');
 									
 									addHtml +=	'<tr>';
@@ -845,19 +890,28 @@
 				formattedMsg = formattedMsg.replace(/\!/g,""); // | 앞에 줄 바꿈 추가
 				return formattedMsg;
 			}
+			
 			//결제 취소
 			function fnPayCancel(){
-				alert($("#p_orderNo").text());
 				
+				if(!confirm("결제 취소 하시겠습니까?")) return;
+				let paymentKey = $("#p_paymentKey").val();
+				let formData = {
+					paymentKey : paymentKey
+				}
+				$.showMask();
 				$.ajax({
-					url : "/admin/rest/order/decrypt",
+					url : "/admin/rest/order/payCancelAjax",
 					type : "POST",
 					dataType : "json",
-					async:false,
-					cache:"false",
 					data : formData,
 					success : function(result) {
-						callback(result.data.decryptedData);
+						if(result.data.code){
+							alert(result.data.message)	
+						} else {
+							alert('결제 취소되었습니다.')
+						}
+						$.hideMask();
 					}, error : function(request, status, error) {
 						alert("관리자에게 문의해 주세요.");
 					}

@@ -23,4 +23,5 @@ public interface AdmOrderMapper {
 	public int updateDelivManage(Map<String, Object> paramMap);
 	public List<Map<String, Object>> selectDeliveryNoneList(DeliveryVO vo);
 	public Map<String, Object> selectDeliveryDuple(Map<String, Object> paramMap);
+	public int updateOrderCancel(Map<String, Object> paramMap);
 }

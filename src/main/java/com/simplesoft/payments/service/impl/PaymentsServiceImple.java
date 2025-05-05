@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.simplesoft.common.service.BizBatchVO;
+import com.simplesoft.mapper.admOrder.AdmOrderMapper;
 import com.simplesoft.mapper.bizBatch.BizBatchMapper;
 import com.simplesoft.mapper.cart.CartMapper;
 import com.simplesoft.mapper.order.OrderMapper;
@@ -30,6 +31,9 @@ public class PaymentsServiceImple implements PaymentsService{
 	
 	@Autowired
 	PaymentsMapper paymentsMapper;
+	
+	@Autowired
+	AdmOrderMapper admOrderMapper;
 	
 	@Autowired
 	BizBatchMapper bizBatchMapper;
@@ -155,7 +159,62 @@ public class PaymentsServiceImple implements PaymentsService{
 		return paymentsMapper.insertPayments(vo);
 	}
 	@Override
+	public int insertPaymentsCancel(PaymentsVO vo) {
+		return paymentsMapper.insertPaymentsCancel(vo);
+	}
+	@Override
 	public PaymentsVO selectPaymentsDetail(PaymentsVO vo) {
 		return paymentsMapper.selectPaymentsDetail(vo);
+	}
+	@Override
+	public void getPayResultCancel(JSONObject param) {
+		log.info("결제 정보 : {} ", param);
+		ObjectMapper mapper = new ObjectMapper();
+		
+		try {
+			PaymentsVO vo = mapper.readValue(param.toString(), PaymentsVO.class);
+			vo.setReceipt(vo.getReceipt().toString());
+			switch ((String)param.get("method")) {
+				//String으로 변환하여 담기
+				case "카드":
+					if(vo.getCard() != null) {
+						vo.setCard(vo.getCard().toString());
+					}
+					break;
+				case "가상계좌":
+					if(vo.getVirtualAccount() != null) {
+						vo.setVirtualAccount(vo.getVirtualAccount().toString());
+					}
+					break;
+				case "간편결제":
+					if(vo.getEasyPay() != null) {
+						vo.setEasyPay(vo.getEasyPay().toString());
+					}
+					if(vo.getCard() != null) {
+						vo.setCard(vo.getCard().toString());
+					}
+					break;
+				case "휴대폰":
+					if(vo.getMobilePhone() != null) {
+						vo.setMobilePhone(vo.getMobilePhone().toString());
+					}
+					break;
+				case "계좌이체":
+					if(vo.getTransfer() != null) {
+						vo.setTransfer(vo.getTransfer().toString());
+					}
+					break;
+				default:
+					System.out.println("지원하지 않는 결제수단입니다.");
+					break;
+			}
+			vo.setCancels(vo.getCancels().toString());
+			paymentsMapper.insertPaymentsCancel(vo);
+			Map<String, Object> paramMap = new HashMap<String, Object>();
+			paramMap.put("orderNo",vo.getOrderId());
+			admOrderMapper.updateOrderCancel(paramMap);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

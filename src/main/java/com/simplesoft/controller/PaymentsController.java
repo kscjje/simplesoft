@@ -15,6 +15,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,10 +51,14 @@ public class PaymentsController {
 	@Autowired
 	OrderService orderService;
 	
+	@Value("${widgetSecretKey}")
+	String widgetSecretKey;
+	
 	@ResponseBody
 	@PostMapping(value = "/confirm")
 	public BasicResponse confirmPayment(HttpServletRequest request, @RequestBody String jsonBody) throws Exception {
 		
+		log.info("call confirmPayment : {}", jsonBody);
 		Map<String, Object> result = new HashMap<String, Object>();
 		
 		JSONParser parser = new JSONParser();
@@ -78,8 +83,6 @@ public class PaymentsController {
 	            
 		//토스페이먼츠 API는 시크릿 키를 사용자 ID로 사용하고, 비밀번호는 사용하지 않습니다.
 		//비밀번호가 없다는 것을 알리기 위해 시크릿 키 뒤에 콜론을 추가합니다.
-//		String widgetSecretKey = "test_sk_0Poxy1XQL8RAj15OWvNr7nO5Wmlg";
-		String widgetSecretKey = "test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6";
 		Base64.Encoder encoder = Base64.getEncoder();
 		byte[] encodedBytes = encoder.encode((widgetSecretKey + ":").getBytes(StandardCharsets.UTF_8));
 		String authorizations = "Basic " + new String(encodedBytes);

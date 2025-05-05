@@ -81,9 +81,12 @@
 						WHEN A.PACKAGING = '3000' THEN '종이가방'
 					END AS PACKAGING
 					, C.PAYMENT_KEY
+					, C.CARD
+					, C.EASY_PAY
+					, (SELECT CANCELS FROM PAYMENTS WHERE A.ORDER_NO = ORDER_ID AND STATUS = 'CANCELED') AS CANCELS
 				FROM ORDER_MST A
 				LEFT JOIN DELIVERY_MST B ON A.ORDER_NO = B.ORDER_NO
-				LEFT JOIN PAYMENTS C ON A.ORDER_NO = C.ORDER_ID
+				LEFT JOIN PAYMENTS C ON A.ORDER_NO = C.ORDER_ID AND C.STATUS = 'DONE'
 				WHERE A.ORDER_STATUS != '1000'
 				<if test="startDate neq null and startDate neq '' and endDate neq null and endDate neq ''">
 					AND DATE_FORMAT(A.ORDER_PAY_DT,'%Y-%m-%d') BETWEEN #{startDate} AND #{endDate}
@@ -567,4 +570,14 @@
 		</if>
 		ORDER BY A.MENU_DAY DESC, A.MANAGER_NO
 	</select>
+	
+	<!-- 주문 취소 -->
+	<update id="updateOrderCancel" parameterType="hashMap">
+		/* AdmOrderMapper.updateOrderCancel */
+		UPDATE ORDER_MST 
+		SET ORDER_STATUS = '0001'
+		, UPT_USER = 'admin'
+		, UPT_DT = NOW()
+		WHERE ORDER_NO = #{orderNo}
+	</update>
 </mapper>

@@ -272,27 +272,10 @@
 												<img src="/image/packaging_2.jpg" width="100px" alt="종이가방">
 											</div>
 										</div>
+										
 										<div class="float-start mt-1">
+											</br>
 											<span class="font-sm text-secondary">※해당 이미지는 참고용 이미지 이므로 실제 포장가방과는 다를 수 있습니다.</span>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td class="text-start text-light-emphasis align-top">
-										<label for="r_delivKind" class="form-label"><font color="red">* </font>배달시간</label>
-									</td>
-									<td>
-										<div class="form-check float-start me-3">
-											<input class="form-check-input" type="radio" name="delivTime" id="radio6" value="1000">
-											<label class="form-check-label" for="radio6">
-												오전배달(8~10시)
-											</label>
-										</div>
-										<div class="form-check float-start">
-											<input class="form-check-input" type="radio"name="delivTime" id="radio7" value="2000">
-											<label class="form-check-label" for="radio7">
-												오후배달(1~4시)
-											</label>
 										</div>
 									</td>
 								</tr>
@@ -571,7 +554,6 @@
 				
 				let delivKind	= $('input[name=delivKind]').is(":checked");
 				let packaging	= $('input[name=packaging]').is(":checked");
-				let delivTime	= $('input[name=delivTime]').is(":checked");
 				let r_name		= $("#r_name").val();
 				let r_phone		= $("#r_phone").val();
 				let r_postNum	= $("#r_postNum").val();
@@ -677,11 +659,6 @@
 				if(!packaging){
 					alert("포장가방을 선택해 주세요.");
 					setTimeout( function(){ $("#radio3").focus(); }, 1 );
-					return;
-				}
-				if(!delivTime){
-					alert("배달시간을 선택해 주세요.");
-					setTimeout( function(){ $("#radio6").focus(); }, 1 );
 					return;
 				}
 				if(!$("#agree1").is(":checked")){

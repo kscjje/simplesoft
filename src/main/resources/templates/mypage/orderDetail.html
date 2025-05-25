@@ -68,28 +68,28 @@
 					<div class="d-flex flex-column h-95">
 						<div class="container-fluid ps-0">
 							<div class="card shadow-sm rounded-4 border-0 h-95">
+								<div class="col-10 fw-semibold ms-2 mt-2" th:text="'주문일자: ' + ${order.orderPayDt.substring(0, 10)}"></div>
 								<th:block th:if="${order.orderStatus == '0001'}">
-									<div class="col-10 fw-semibold mb-2 ms-2 mt-2" style="text-decoration: line-through; color: red;" th:text="'주문번호: ' + ${order.orderNo}"></div>	
+									<div class="col-10 fw-semibold mb-2 ms-2" style="text-decoration: line-through; color: red;" th:text="'주문번호: ' + ${order.orderNo}"></div>	
 								</th:block>
 								<th:block th:if="${order.orderStatus == '0000'}">
 									<div class="col-10 fw-semibold mb-2 ms-2 mt-2" th:text="'주문번호: ' + ${order.orderNo}"></div>
 								</th:block>
+								<button class="btn btn-outline-danger btn-lg ms-1 btn25" type="button" onclick="window.history.back();">주문 취소</button>
 								<!-- 헤더 -->
 								<div class="bg-light border-bottom rounded-top-4">
 									<div class="row text-center fw-semibold py-3 gx-0">
-										<div class="col-2 fs-5">주문일자</div>
 										<div class="col-4 fs-5">상품명</div>
-										<div class="col-2 fs-5">상품수량</div>
+										<div class="col-2 fs-5">수량</div>
 										<div class="col-2 fs-5">주문금액</div>
 										<div class="col-2 fs-5">배송상태</div>
 									</div>
 								</div>
 								<!-- 데이터 영역 -->
-								<th:bolck th:each="rs,rsStat : ${order.productList}">
+								<th:block th:each="rs,rsStat : ${order.productList}">
 									<div class="bg-white overflow-auto">
 										<div class="row text-center align-items-center border-bottom py-3 gx-0">
-											<div class="col-2 fs-5" th:text="${order.orderPayDt.substring(0, 10)}"></div>
-											<div class="col-4 fs-5 text-start">
+											<div class="col-4 fs-5 text-start ms-3">
 												<span th:text="${rs.menuDay.substring(0,4)} + '.' + ${rs.menuDay.substring(4,6)} + '.' + ${rs.menuDay.substring(6,8)}"></span><br>
 												<th:block th:if="${rs.orderSet == '1000'}">
 													<th:block th:each="msg,msgStat : ${#strings.setSplit(rs.menuMsg,'|')}">
@@ -126,7 +126,10 @@
 											</th:block>
 										</div>
 									</div>
-								</th:bolck>
+								</th:block>
+								<div th:if="${order.delivKind == '2000'}" class="col-10 fw-semibold ms-2 mt-2" th:text="'우체국택배: 4,000원'}"></div>
+								<div th:if="${order.packaging == '1000'}" class="col-10 fw-semibold ms-2 mt-2" th:text="'보냉가방(신규) 보증금 : 5,000원'"></div>
+								<div th:if="${order.packaging == '1000'}" class="col-10 fw-semibold ms-2 mt-2" th:text="'총 주문 금액: ' +${#numbers.formatInteger(order.totalAmount,3,'COMMA')} +'원'"></div>
 							</div>
 						</div>
 					</div>

@@ -57,6 +57,10 @@ public class CartServiceImpl implements CartService {
 		return cartMapper.updateCartOrderSet(paramMap);
 	}
 	@Override
+	public int updateCartOrderDelivTime(Map<String, Object> paramMap) {
+		return cartMapper.updateCartOrderDelivTime(paramMap);
+	}
+	@Override
 	public int deleteCart(Map<String, Object> paramMap) {
 		return cartMapper.deleteCart(paramMap);
 	}

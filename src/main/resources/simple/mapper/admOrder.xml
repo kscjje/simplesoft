@@ -343,6 +343,7 @@
 		INNER JOIN DELIVERY_MST C ON A.ORDER_NO = C.ORDER_NO AND B.ORDER_PRODUCT_NO = C.ORDER_PRODUCT_NO
 		
 		WHERE 1=1
+		AND A.ORDER_STATUS = '0000'
 		<if test="startDate neq null and startDate neq '' and endDate neq null and endDate neq ''">
 			AND DATE_FORMAT(C.MENU_DAY,'%Y%m%d') BETWEEN #{startDate} AND #{endDate}
 		</if>
@@ -443,6 +444,7 @@
 		INNER JOIN DELIVERY_MST C ON A.ORDER_NO = C.ORDER_NO AND B.ORDER_PRODUCT_NO = C.ORDER_PRODUCT_NO
 		
 		WHERE 1=1
+		AND A.ORDER_STATUS = '0000'
 		<if test="startDate neq null and startDate neq '' and endDate neq null and endDate neq ''">
 			AND DATE_FORMAT(C.MENU_DAY,'%Y%m%d') BETWEEN #{startDate} AND #{endDate}
 		</if>
@@ -495,6 +497,7 @@
 		INNER JOIN ORDER_PRODUCT B ON A.ORDER_NO = B.ORDER_NO 
 		INNER JOIN DELIVERY_MST C ON A.ORDER_NO = C.ORDER_NO AND B.ORDER_PRODUCT_NO = C.ORDER_PRODUCT_NO
 		WHERE 1=1
+		AND A.ORDER_STATUS = '0000'
 		<if test="startDate neq null and startDate neq '' and endDate neq null and endDate neq ''">
 			AND DATE_FORMAT(C.MENU_DAY,'%Y%m%d') BETWEEN #{startDate} AND #{endDate}
 		</if>
@@ -563,7 +566,9 @@
 			, CONCAT('(',A.RECEIVE_POST_NUM,') ',A.RECEIVE_ADDR) ADDR
 			, IFNULL((SELECT MANAGER_NM FROM MANAGER_MST WHERE A.MANAGER_NO = MANAGER_NO),'미배정') MANAGER_NM  
 		FROM DELIVERY_MST A
+		JOIN ORDER_MST B ON A.ORDER_NO = B.ORDER_NO 
 		WHERE 1=1
+		AND B.ORDER_STATUS = '0000'
 		AND A.STATUS = '1000'
 		<if test="startDate neq null and startDate neq '' and endDate neq null and endDate neq ''">
 			AND DATE_FORMAT(A.MENU_DAY,'%Y%m%d') BETWEEN #{startDate} AND #{endDate}

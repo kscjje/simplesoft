@@ -119,12 +119,11 @@
 							<select id="orderStatus" class="inputSelect" title="주문상태">
 								<option value="">선택</option>
 								<option value="0000">주문완료</option>
-								<option value="1001">가상계좌</option>
+								<!--<option value="1001">가상계좌</option>-->
 								<option value="0001">주문취소</option>
 								<option value="0002">환불요청</option>
 								<option value="0003">환불완료</option>
 							</select>
-<!--							<img src="/admin/rest/qr/">-->
 						</span>
 					</div>
 					<div class="mb-2">
@@ -857,6 +856,10 @@
 						break;
 					case "6" : 
 						//익일배송
+						break;
+					case "7" : 
+						//주문취소
+						$("#orderStatus").val("0003"); 
 						break;
 					default:
 						break;

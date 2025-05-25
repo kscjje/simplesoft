@@ -258,6 +258,7 @@
 			, ORDER_ADDR
 			, ORDER_ADDR_DETAIL
 			, ORDER_EMAIL
+			, ORDER_STATUS
 			, RECEIVE_NAME
 			, RECEIVE_TEL
 			, RECEIVE_PHONE
@@ -277,7 +278,5 @@
 		WHERE ORDER_NO = #{orderNo}
 		AND ORDER_PWD = #{orderPwd}
 		AND USER_NO = '0'
-		AND ORDER_STATUS != '1000'
-		
 	</select>
 </mapper>

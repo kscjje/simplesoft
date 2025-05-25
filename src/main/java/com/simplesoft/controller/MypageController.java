@@ -51,8 +51,6 @@ public class MypageController {
 		String orderNo = String.valueOf(vo.getOrderNo());
 		String orderPwd = String.valueOf(vo.getOrderPwd());
 		
-		System.out.println(orderNo);
-		System.out.println(orderPwd);
 		if("null".equals(orderNo) || "null".equals(orderPwd)) { 
 			return "/mypage/orderCheck";
 		}

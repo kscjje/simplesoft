@@ -37,6 +37,7 @@
 			, A.MENU_BOARD_SEQ
 			, A.MENU_MSG_DETAIL
 			, A.ORDER_SET
+			, A.DELIV_TIME
 			, A.QTY
 			, A.REG_USER
 			, DATE_FORMAT(A.REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
@@ -51,7 +52,7 @@
 			,')') MENU_DAY
 			, B.MENU_MSG
 		FROM CART_MST A
-		INNER JOIN MENU_BOARD B on A.MENU_BOARD_SEQ = B.MENU_BOARD_SEQ
+		INNER JOIN MENU_BOARD B ON A.MENU_BOARD_SEQ = B.MENU_BOARD_SEQ
 		WHERE 1=1
 		<choose>
 			<when test="userNo eq 0">
@@ -77,6 +78,7 @@
 			, A.MENU_BOARD_SEQ
 			, A.MENU_MSG_DETAIL
 			, A.ORDER_SET
+			, A.DELIV_TIME
 			, A.QTY
 			, A.REG_USER
 			, DATE_FORMAT(A.REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
@@ -91,7 +93,7 @@
 			,')') MENU_DAY
 			, B.MENU_MSG
 		FROM CART_MST A
-		INNER JOIN MENU_BOARD B on A.MENU_BOARD_SEQ = B.MENU_BOARD_SEQ
+		INNER JOIN MENU_BOARD B ON A.MENU_BOARD_SEQ = B.MENU_BOARD_SEQ
 		WHERE 1=1
 		<choose>
 			<when test="userNo eq 0">
@@ -143,6 +145,14 @@
 		WHERE CART_NO = #{cartNo}
 	</update>
 	
+	<!-- 장바구니 배달 변경 -->
+	<update id="updateCartOrderDelivTime" parameterType="hashMap">
+		/* CartMapper.updateCartOrderDelivTime */
+		UPDATE CART_MST SET
+		DELIV_TIME = #{delivTime}
+		WHERE CART_NO = #{cartNo}
+	</update>
+	
 	<!-- 장바구니 리스트 삭제 -->
 	<delete id="deleteCart" parameterType="hashMap">
 		/* CartMapper.deleteCart */
@@ -175,7 +185,7 @@
 			,')') MENU_DAY
 			, B.MENU_MSG
 		FROM CART_MST A
-		INNER JOIN MENU_BOARD B on A.MENU_BOARD_SEQ = B.MENU_BOARD_SEQ
+		INNER JOIN MENU_BOARD B ON A.MENU_BOARD_SEQ = B.MENU_BOARD_SEQ
 		WHERE 1=1
 		<choose>
 			<when test="userNo eq 0">

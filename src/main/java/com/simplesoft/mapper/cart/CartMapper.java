@@ -12,6 +12,7 @@ public interface CartMapper {
 	public int updateCartQty(Map<String, Object> paramMap);
 	public int updateCartMenuMsgQty(Map<String, Object> paramMap);
 	public int updateCartOrderSet(Map<String, Object> paramMap);
+	public int updateCartOrderDelivTime(Map<String, Object> paramMap);
 	public List<Map<String, Object>> selectCartList(Map<String, Object> paramMap);
 	public Map<String, Object> selectCartDetail(Map<String, Object> paramMap);
 	public int deleteCart(Map<String, Object> paramMap);

@@ -173,6 +173,7 @@
 			, A.MENU_MSG_DETAIL
 			, A.QTY
 			, A.REG_USER
+			, A.DELIV_TIME
 			, DATE_FORMAT(A.REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
 			, CONCAT(DATE_FORMAT(B.MENU_DAY,'%Y-%m-%d'),' (',
 				CASE DAYOFWEEK(B.MENU_DAY) 

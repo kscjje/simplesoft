@@ -33,6 +33,7 @@ public class OrderProductVO {
 	private String deliveryStatusNm;//배송상태명
 	private String managerNo;		//배송담당자
 	private Date deliveryDt;		//배송일시
+	private String delivTime;		//배송시간
 	private String regUser;			//등록자
 	private Date regDt;				//등록일시
 	

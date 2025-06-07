@@ -46,7 +46,7 @@
 	<!--주문 상품 정보 등록-->
 	<insert id="insertOrderProduct" parameterType="com.simplesoft.order.service.OrderProductVO">
 		/* OrderMapper.insertOrderProduct */
-		INSERT INTO ORDER_PRODUCT(ORDER_NO, ORDER_QTY, MENU_BOARD_SEQ, ORDER_SET, MENU_DAY, MENU_MSG, MENU_MSG_DETAIL,PAY_AMT, DELIVERY_TYPE, USED_POINT, REG_USER, REG_DT)
+		INSERT INTO ORDER_PRODUCT(ORDER_NO, ORDER_QTY, MENU_BOARD_SEQ, ORDER_SET, MENU_DAY, MENU_MSG, MENU_MSG_DETAIL,PAY_AMT, DELIVERY_TYPE, DELIV_TIME, USED_POINT, REG_USER, REG_DT)
 		
 		SELECT	  #{orderNo}
 				, #{orderQty}
@@ -57,6 +57,7 @@
 				, #{menuMsgDetail}
 				, IFNULL(#{payAmt}, 0)
 				, 'Y'
+				, #{delivTime}
 				, IFNULL(#{usedPoint}, 0)
 				, #{regUser}
 				, NOW()
@@ -132,6 +133,7 @@
 			, MENU_MSG_DETAIL
 			, PAY_AMT
 			, DELIVERY_TYPE
+			, DELIV_TIME
 			, USED_POINT
 			, CONFIRM_DT
 			, REG_USER

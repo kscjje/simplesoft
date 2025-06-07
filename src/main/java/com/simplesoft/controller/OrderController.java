@@ -164,6 +164,7 @@ public class OrderController {
 				int payAmt = 0;		//결제금액
 				int qty = Integer.parseInt("null".equals(String.valueOf(map.get("qty"))) ? "0" : String.valueOf(map.get("qty")));
 				String menuMsgDetail = String.valueOf(map.get("menuMsgDetail"));	//일반세트시 상품명 각각 수량
+				String delivTime = String.valueOf(map.get("delivTime"));	//일반세트시 상품명 각각 수량
 				if("1000".equals(orderSet)) {
 					productAmt = GlobalVariable.PRODUCT_AMT_1;
 					payAmt = productAmt * qty;
@@ -197,6 +198,7 @@ public class OrderController {
 				opVo.setUsedPoint(opVo.getPayAmt() / 100);
 				opVo.setOrderSet(orderSet);
 				opVo.setMenuMsgDetail(menuMsgDetail);
+				opVo.setDelivTime(delivTime);
 				productList.add(opVo);
 			}
 			deliveryPrice = totalQty >= 3 ? 0 : GlobalVariable.DELY_AMT;

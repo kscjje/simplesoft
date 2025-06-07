@@ -53,6 +53,10 @@
 					.spanClass{
 						margin-right: 2px;
 					}
+					.btn25{
+						width: 80px;
+						font-size: 10px;
+					}
 				}
 				.box2 {
 					background-color: #f8f9fa;
@@ -70,12 +74,12 @@
 							<div class="card shadow-sm rounded-4 border-0 h-95">
 								<div class="col-10 fw-semibold ms-2 mt-2" th:text="'주문일자: ' + ${order.orderPayDt.substring(0, 10)}"></div>
 								<th:block th:if="${order.orderStatus == '0001'}">
-									<div class="col-10 fw-semibold mb-2 ms-2" style="text-decoration: line-through; color: red;" th:text="'주문번호: ' + ${order.orderNo}"></div>	
+									<div class="col-10 fw-semibold mb-2 ms-2" style="text-decoration: line-through; color: red;" th:text="'주문번호: ' + ${order.orderNo}"></div>
+									<span class="col-10 fw-semibold mb-2 ms-2" style="color: red;">결제 취소된 주문입니다.</span>	
 								</th:block>
 								<th:block th:if="${order.orderStatus == '0000'}">
 									<div class="col-10 fw-semibold mb-2 ms-2 mt-2" th:text="'주문번호: ' + ${order.orderNo}"></div>
 								</th:block>
-								<button class="btn btn-outline-danger btn-lg ms-1 btn25" type="button" onclick="window.history.back();">주문 취소</button>
 								<!-- 헤더 -->
 								<div class="bg-light border-bottom rounded-top-4">
 									<div class="row text-center fw-semibold py-3 gx-0">
@@ -130,10 +134,51 @@
 								<div th:if="${order.delivKind == '2000'}" class="col-10 fw-semibold ms-2 mt-2" th:text="'우체국택배: 4,000원'}"></div>
 								<div th:if="${order.packaging == '1000'}" class="col-10 fw-semibold ms-2 mt-2" th:text="'보냉가방(신규) 보증금 : 5,000원'"></div>
 								<div th:if="${order.packaging == '1000'}" class="col-10 fw-semibold ms-2 mt-2" th:text="'총 주문 금액: ' +${#numbers.formatInteger(order.totalAmount,3,'COMMA')} +'원'"></div>
+								<div th:if="${order.orderStatus == '0000'}" class="text-center mt-2">
+									<button class="btn btn-outline-danger btn-lg ms-1 btn25" type="button" onclick="fnPayCancel()">주문 취소</button>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+			<script th:inline="javascript">
+				
+				
+				//결제 취소
+				function fnPayCancel(){
+					
+					if(!confirm("주문 취소 하시겠습니까?")) return;
+					let paymentKey = $("#p_paymentKey").val();
+					let orderNo = /*[[${order.orderNo}]]*/ "";
+					if(orderNo == ""){
+						alert("잠시 후에 다시 시도해 주세요.");
+						return;
+					}
+					let formData = {
+						orderNo : orderNo
+					}
+					$.showMask();
+					$.ajax({
+						url : "/rest/order/payCancelAjax",
+						type : "POST",
+						dataType : "json",
+						data : formData,
+						success : function(result) {
+							$.hideMask();
+							if(result.data.code){
+								alert(result.data.message)	
+							} else {
+								alert('결제 취소되었습니다.')
+								location.reload();
+							}
+						}, error : function(request, status, error) {
+							$.hideMask();
+							alert("관리자에게 문의해 주세요.");
+						}
+					});
+				}
+				
+			</script>
 		</main>
 </html>

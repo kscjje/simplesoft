@@ -3,16 +3,21 @@ package com.simplesoft.controller.rest;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.simplesoft.common.service.impl.TossServiceImpl;
 import com.simplesoft.member.service.MemberVO;
 import com.simplesoft.order.service.OrderService;
 import com.simplesoft.order.service.OrderVO;
+import com.simplesoft.payments.service.PaymentsService;
 import com.simplesoft.reponse.BasicResponse;
 import com.simplesoft.reponse.CommonResponse;
 import com.simplesoft.util.EncryptUtils;
@@ -28,6 +33,12 @@ public class OrderRestController {
 	
 	@Autowired
 	OrderService orderService;
+	
+	@Autowired
+	PaymentsService paymentsService;
+	
+	@Autowired
+	TossServiceImpl tossService;
 	
 	/**
 	 * 주문하기
@@ -129,5 +140,32 @@ public class OrderRestController {
 		else returnData.put("resultCode", "SUCCESS");
 		
 		return new CommonResponse<Map<String, Object>>(returnData);
+	}
+	//주문 결제 취소
+	@PostMapping(value = "/payCancelAjax")
+	public BasicResponse payCancelAjax(@RequestParam Map<String, Object> paramMap) throws ParseException {
+		
+		JSONObject returnData = new JSONObject();
+		
+		OrderVO vo = new OrderVO();
+		vo.setOrderNo((String)paramMap.get("orderNo"));
+		OrderVO returnVO = orderService.selectOrderApplyInfo(vo);
+		System.out.println(returnVO.getOrderStatus());
+		if("0001".equals(returnVO.getOrderStatus())){
+			returnData.put("code", "ERROR9999");
+			returnData.put("message", "이미 취소된 주문입니다.");
+			return new CommonResponse<JSONObject>(returnData);
+		} else if(!"0000".equals(returnVO.getOrderStatus())){
+			returnData.put("code", "ERROR9999");
+			returnData.put("message", "취소할 수 없는 주문입니다..");
+			return new CommonResponse<JSONObject>(returnData);
+		}
+		paramMap.put("cancelReason", "사용자 당일취소");
+		paramMap.put("paymentKey",returnVO.getPaymentKey());
+		returnData  = tossService.cancel(paramMap);
+		if(returnData.get("cancels") != null) {
+			paymentsService.getPayResultCancel(returnData);
+		}
+		return new CommonResponse<JSONObject>(returnData);
 	}
 }

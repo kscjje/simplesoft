@@ -909,13 +909,14 @@
 					dataType : "json",
 					data : formData,
 					success : function(result) {
+						$.hideMask();
 						if(result.data.code){
 							alert(result.data.message)	
 						} else {
 							alert('결제 취소되었습니다.')
 						}
-						$.hideMask();
 					}, error : function(request, status, error) {
+						$.hideMask();
 						alert("관리자에게 문의해 주세요.");
 					}
 				});

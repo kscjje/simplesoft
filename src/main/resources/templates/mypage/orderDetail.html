@@ -45,7 +45,7 @@
 						border-right: 1px solid #ddd;
 					}
 					.fs-5 {
-						font-size: 0.4rem !important;
+						font-size: 0.5rem !important;
 					}
 					.d-flex {
 						min-height: 55vh;
@@ -56,6 +56,9 @@
 					.btn25{
 						width: 80px;
 						font-size: 10px;
+					}
+					.fs-4{
+						font-size: 0.9rem !important;
 					}
 				}
 				.box2 {
@@ -72,13 +75,13 @@
 					<div class="d-flex flex-column h-95">
 						<div class="container-fluid ps-0">
 							<div class="card shadow-sm rounded-4 border-0 h-95">
-								<div class="col-10 fw-semibold ms-2 mt-2" th:text="'주문일자: ' + ${order.orderPayDt.substring(0, 10)}"></div>
+								<div class="col-10 fw-semibold ms-2 mt-2 fs-4" th:text="'주문일자: ' + ${order.orderPayDt.substring(0, 10)}"></div>
 								<th:block th:if="${order.orderStatus == '0001'}">
-									<div class="col-10 fw-semibold mb-2 ms-2" style="text-decoration: line-through; color: red;" th:text="'주문번호: ' + ${order.orderNo}"></div>
+									<div class="col-10 fw-semibold mb-2 ms-2 fs-4" style="text-decoration: line-through; color: red;" th:text="'주문번호: ' + ${order.orderNo}"></div>
 									<span class="col-10 fw-semibold mb-2 ms-2" style="color: red;">결제 취소된 주문입니다.</span>	
 								</th:block>
 								<th:block th:if="${order.orderStatus == '0000'}">
-									<div class="col-10 fw-semibold mb-2 ms-2 mt-2" th:text="'주문번호: ' + ${order.orderNo}"></div>
+									<div class="col-10 fw-semibold mb-2 ms-2 mt-2 fs-4" th:text="'주문번호: ' + ${order.orderNo}"></div>
 								</th:block>
 								<!-- 헤더 -->
 								<div class="bg-light border-bottom rounded-top-4">
@@ -122,20 +125,23 @@
 											</div>
 											<div class="col-2 fs-5" th:text="${rs.orderQty} + '개'"></div>
 											<div class="col-2 fs-5" th:text="${#numbers.formatInteger(rs.payAmt,3,'COMMA')} + '원'"></div>
-											<th:block th:if="${rs.deliveryStatus == '1000'}">
-												<div class="col-2 text-success fs-5">배송전</div>
-											</th:block>
-											<th:block th:if="${rs.deliveryStatus == '0000'}">
-												<div class="col-2 text-success fs-5">배송완료</div>
-											</th:block>
+											<div th:if="${rs.deliveryStatus == '1000'}" class="col-2 text-success fs-5">배송전</div>
+											<div th:if="${rs.deliveryStatus == '0000'}" class="col-2 text-success fs-5">배송완료</div>
 										</div>
 									</div>
 								</th:block>
-								<div th:if="${order.delivKind == '2000'}" class="col-10 fw-semibold ms-2 mt-2" th:text="'우체국택배: 4,000원'}"></div>
-								<div th:if="${order.packaging == '1000'}" class="col-10 fw-semibold ms-2 mt-2" th:text="'보냉가방(신규) 보증금 : 5,000원'"></div>
-								<div th:if="${order.packaging == '1000'}" class="col-10 fw-semibold ms-2 mt-2" th:text="'총 주문 금액: ' +${#numbers.formatInteger(order.totalAmount,3,'COMMA')} +'원'"></div>
-								<div th:if="${order.orderStatus == '0000'}" class="text-center mt-2">
+								<div th:if="${order.delivKind != '2000' && order.totalDelyAmt > 0}" class="col-10 fw-semibold ms-2 mt-2 fs-4" th:text="'배송비: '+${#numbers.formatInteger(order.totalDelyAmt,3,'COMMA')} +'원'"></div>
+								<div th:if="${order.delivKind == '2000'}" class="col-10 fw-semibold ms-2 mt-2 fs-4" th:text="'우체국택배: 4,000원'"></div>
+								<div th:if="${order.packaging == '1000'}" class="col-10 fw-semibold ms-2 mt-2 fs-4" th:text="'보냉가방(신규) 보증금 : 5,000원'"></div>
+								<div class="col-10 fw-semibold ms-2 mt-2 fs-4" th:text="'총 주문 금액: ' +${#numbers.formatInteger(order.totalAmount,3,'COMMA')} +'원'"></div>
+										
+								<!-- 주문 상태가 '0000'이고 결제일이 당일이며, 차단 조건에 해당하지 않는 경우 - 주문 취소 -->
+								<div class="text-center mt-2" th:if="${order.orderStatus == '0000' and #strings.substring(order.orderPayDt, 0, 10) == #dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
 									<button class="btn btn-outline-danger btn-lg ms-1 btn25" type="button" onclick="fnPayCancel()">주문 취소</button>
+								</div>
+								<!-- 주문 상태가 '0000'이고 결제일이 당일을 지났으며, 차단 조건에 해당하지 않는 경우 - 환불 신청 -->
+								<div class="text-center mt-2" th:if="${order.orderStatus == '0000' and #strings.substring(order.orderPayDt, 0, 10) < #dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
+									<button class="btn btn-outline-danger btn-lg ms-1 btn25" type="button" onclick="fnRefundRequest()">환불 신청</button>
 								</div>
 							</div>
 						</div>
@@ -148,6 +154,11 @@
 				//결제 취소
 				function fnPayCancel(){
 					
+					let check = fnCommonBlock();
+					if (check) {
+						alert("익일 배송 물량 준비 확정으로 인해 익일 배송건 결제에 대해서는\n오후 4시 이후로는 주문 취소가 불가능합니다. \n양해 부탁드립니다. 부득이한 사정의 경우,\n‘카카오톡 채널’로 문의해주세요.");
+						return;
+					}
 					if(!confirm("주문 취소 하시겠습니까?")) return;
 					let paymentKey = $("#p_paymentKey").val();
 					let orderNo = /*[[${order.orderNo}]]*/ "";
@@ -179,6 +190,45 @@
 					});
 				}
 				
+				//환불신청
+				function fnRefundRequest(){
+					let check = fnCommonBlock();
+					if (check) {
+						alert("익일 배송 물량 준비 확정으로 인해 익일 배송건 결제에 대해서는\n오후 4시 이후로는 주문 취소가 불가능합니다. \n양해 부탁드립니다. 부득이한 사정의 경우,\n‘카카오톡 채널’로 문의해주세요.");
+						return;
+					} else {
+						//환불신청로직
+						console.log('환불신청로직');
+					}
+				}
+				
+				//상품 중에 현재 시간 기준 내일 날짜인 상품이 있는지 체크(전날 오후 4시 이전까지만 취소가능)
+				function fnCommonBlock(){
+					let productList = /*[[${order.productList}]]*/ "";
+					
+					// 현재 시간
+    				const now = new Date();
+    				const currentHour = now.getHours();
+    
+					// 내일 날짜를 YYYYMMDD 형식으로 구하기
+					const tomorrow = new Date();
+					tomorrow.setDate(tomorrow.getDate() + 1);
+					const tomorrowStr = tomorrow.getFullYear().toString() + 
+										(tomorrow.getMonth() + 1).toString().padStart(2, '0') + 
+										tomorrow.getDate().toString().padStart(2, '0');
+										
+					//console.log('내일 날짜:', tomorrowStr);
+				    //console.log('현재 시간:', currentHour + '시');
+				    
+				    // 내일 배송 상품이 있는지 체크
+				    const hasTomorrowItems = productList.some(item => item.menuDay === tomorrowStr);
+				    
+				    // 오후 4시(16시) 이후인지 체크
+				    const isAfter4PM = currentHour >= 16;
+				    
+				    // 내일 배송 상품이 있고 오후 4시 이후라면 true 반환
+				    return hasTomorrowItems && isAfter4PM;
+				}
 			</script>
 		</main>
 </html>

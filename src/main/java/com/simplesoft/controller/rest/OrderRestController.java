@@ -150,7 +150,6 @@ public class OrderRestController {
 		OrderVO vo = new OrderVO();
 		vo.setOrderNo((String)paramMap.get("orderNo"));
 		OrderVO returnVO = orderService.selectOrderApplyInfo(vo);
-		System.out.println(returnVO.getOrderStatus());
 		if("0001".equals(returnVO.getOrderStatus())){
 			returnData.put("code", "ERROR9999");
 			returnData.put("message", "이미 취소된 주문입니다.");

@@ -17,6 +17,7 @@ import com.simplesoft.common.service.impl.TossServiceImpl;
 import com.simplesoft.member.service.MemberVO;
 import com.simplesoft.order.service.OrderService;
 import com.simplesoft.order.service.OrderVO;
+import com.simplesoft.order.service.RefundVO;
 import com.simplesoft.payments.service.PaymentsService;
 import com.simplesoft.reponse.BasicResponse;
 import com.simplesoft.reponse.CommonResponse;
@@ -164,6 +165,49 @@ public class OrderRestController {
 		returnData  = tossService.cancel(paramMap);
 		if(returnData.get("cancels") != null) {
 			paymentsService.getPayResultCancel(returnData);
+		}
+		return new CommonResponse<JSONObject>(returnData);
+	}
+	
+	//환불신청
+	@SuppressWarnings("unchecked")
+	@PostMapping(value = "/refundAjax")
+	public BasicResponse refundAjax(@RequestParam Map<String, Object> paramMap) throws ParseException {
+		
+		JSONObject returnData = new JSONObject();
+		
+		String refundMsg = (String)paramMap.get("refundMsg");
+		if(refundMsg == null) {
+			returnData.put("code", "ERROR9999");
+			returnData.put("message", "환불 사유를 입력해 주세요.");
+			return new CommonResponse<JSONObject>(returnData);
+		}
+		
+		OrderVO vo = new OrderVO();
+		vo.setOrderNo((String)paramMap.get("orderNo"));
+		OrderVO returnVO = orderService.selectOrderApplyInfo(vo);
+		if("0001".equals(returnVO.getOrderStatus())){
+			returnData.put("code", "ERROR9999");
+			returnData.put("message", "이미 취소된 주문입니다.");
+			return new CommonResponse<JSONObject>(returnData);
+		} else if(!"0000".equals(returnVO.getOrderStatus())){
+			returnData.put("code", "ERROR9999");
+			returnData.put("message", "취소할 수 없는 주문입니다..");
+			return new CommonResponse<JSONObject>(returnData);
+		}
+		RefundVO refund = new RefundVO();
+		refund.setOrderNo((String)paramMap.get("orderNo"));
+		refund.setRefundMsg((String)paramMap.get("refundMsg"));
+		int a = orderService.insertRefund(refund);
+		if(a == 9999) {
+			returnData.put("code", "ERROR9999");
+			returnData.put("message", "이미 환불 신청한 내역이 있습니다.");
+		}else if(a > 0) {
+			returnData.put("code", "0000");
+			returnData.put("message", "환불 신청되었습니다.");
+		}else {
+			returnData.put("code", "ERROR9999");
+			returnData.put("message", "고객센터에 문의해주세요.");
 		}
 		return new CommonResponse<JSONObject>(returnData);
 	}

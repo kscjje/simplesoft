@@ -1,7 +1,5 @@
 package com.simplesoft.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +8,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.simplesoft.mapper.admOrder.service.AdmOrderService;
-import com.simplesoft.order.service.OrderProductVO;
 import com.simplesoft.order.service.OrderService;
 import com.simplesoft.order.service.OrderVO;
 import com.simplesoft.util.EncryptUtils;
@@ -58,6 +55,7 @@ public class MypageController {
 		OrderVO order = orderService.selectOrderCheck(vo);
 		if(order != null) {
 			model.addAttribute("order",order);
+			model.addAttribute("refund",orderService.getRefundDetail(order));
 		} else {
 			return "/mypage/orderCheck";
 		}

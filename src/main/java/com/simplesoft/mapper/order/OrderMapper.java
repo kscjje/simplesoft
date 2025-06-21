@@ -6,6 +6,7 @@ import com.simplesoft.config.MysqlConnMapper;
 import com.simplesoft.order.service.DeliveryVO;
 import com.simplesoft.order.service.OrderProductVO;
 import com.simplesoft.order.service.OrderVO;
+import com.simplesoft.order.service.RefundVO;
 
 @MysqlConnMapper
 public interface OrderMapper {
@@ -19,4 +20,8 @@ public interface OrderMapper {
 	public int insertDelivery(DeliveryVO vo);
 	public List<OrderProductVO> getOrderProductInfo(OrderProductVO productVO);
 	public List<DeliveryVO> getOrderInfoDelivery(OrderProductVO vo);
+	
+	public int insertRefund(RefundVO vo);
+	public int getRefundCheck(RefundVO vo);
+	public RefundVO getRefundDetail(OrderVO vo);
 }

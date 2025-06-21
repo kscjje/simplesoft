@@ -10,4 +10,7 @@ public interface OrderService {
 	public int updateOrderStatusComplete(OrderVO vo);
 	public List<OrderProductVO> getOrderProductInfo(OrderProductVO productVO);
 	public List<DeliveryVO> getOrderInfoDelivery(OrderProductVO productVO);
+	
+	public int insertRefund(RefundVO vo);
+	public RefundVO getRefundDetail(OrderVO vo);
 }

@@ -11,6 +11,7 @@ import com.simplesoft.order.service.DeliveryVO;
 import com.simplesoft.order.service.OrderProductVO;
 import com.simplesoft.order.service.OrderService;
 import com.simplesoft.order.service.OrderVO;
+import com.simplesoft.order.service.RefundVO;
 
 @Service
 public class OrderServiceImpl implements OrderService{
@@ -67,5 +68,21 @@ public class OrderServiceImpl implements OrderService{
 	@Override
 	public List<DeliveryVO> getOrderInfoDelivery(OrderProductVO vo) {
 		return orderMapper.getOrderInfoDelivery(vo);
+	}
+	
+	//환불신청저장
+	@Override
+	public int insertRefund(RefundVO vo) {
+		int cnt = orderMapper.getRefundCheck(vo);
+		if(cnt > 0) {
+			//이미 환불 데이터가 있음
+			return 9999;
+		}
+		return orderMapper.insertRefund(vo); 
+	}
+	//환불 정보 조회
+	@Override
+	public RefundVO getRefundDetail(OrderVO vo) {
+		return orderMapper.getRefundDetail(vo);
 	}
 }

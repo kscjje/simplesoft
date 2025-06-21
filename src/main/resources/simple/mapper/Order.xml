@@ -282,4 +282,39 @@
 		AND ORDER_PWD = #{orderPwd}
 		AND USER_NO = '0'
 	</select>
+	
+	<!-- 주문번호 생성 -->
+	<insert id="insertRefund" parameterType="com.simplesoft.order.service.RefundVO">
+		/* OrderMapper.insertRefund */
+		INSERT INTO REFUND
+			(
+					ORDER_NO
+				,	REFUND_MSG
+				,	STATUS
+				,	REG_DT
+			)
+		VALUES(
+					#{orderNo}
+				,	#{refundMsg}
+				,	'0000'
+				,	NOW()
+		)
+	</insert>
+	
+	<!-- 환불 정보 조회 -->	
+	<select id="getRefundDetail" parameterType="com.simplesoft.order.service.OrderVO" resultType="com.simplesoft.order.service.RefundVO">
+		/* OrderMapper.getRefundDetail */
+		SELECT
+			  REFUND_MSG
+			, STATUS
+			, REFUND_ANSWER
+			, DATE_FORMAT(REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
+		FROM REFUND WHERE ORDER_NO = #{orderNo}
+	</select>
+	
+	<!-- 환불 정보 중복체크 -->	
+	<select id="getRefundCheck" parameterType="com.simplesoft.order.service.RefundVO" resultType="Integer">
+		/* OrderMapper.getRefundCheck */
+		SELECT COUNT(*) FROM REFUND WHERE ORDER_NO = #{orderNo}
+	</select>
 </mapper>

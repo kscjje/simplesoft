@@ -4,146 +4,244 @@
 		layout:decorate="~{layouts/mypage_layout}">
 		<main class="" layout:fragment="content" style="padding: 10px;">
 			<style>
-				/* 데스크탑 (해상도 1280px 이상) */
-				@media all and (min-width: 1280px) {
-					/* 데스크탑 전용 스타일 */
-					.box2 {
-						width: 300px;
-						font-size: 24px;
-						padding: 20px;
-						border-right: 1px solid #ddd;
-					}
-					.d-flex {
-						min-height: 55vh;
-					}
-					.spanClass{
-						margin-right: 7px;
-					}
+				body {
+					font-family: 'Noto Sans KR', sans-serif;
 				}
-				
-				/* 노트북 & 테블릿 가로 (해상도 1024px ~ 1279px) */
-				@media all and (min-width: 1024px) and (max-width: 1279px) {
-				  /* 노트북 및 가로 방향 태블릿 스타일 */
+				.gradient-bg {
+					background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 				}
-				
-				/* 테블릿 가로 (해상도 768px ~ 1023px) */
-				@media all and (min-width: 768px) and (max-width: 1023px) {
-				  /* 태블릿 가로 스타일 */
+				.card-shadow {
+					box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 				}
-				
-				/* 모바일 가로 & 테블릿 세로 (해상도 480px ~ 767px) */
-				@media all and (min-width: 480px) and (max-width: 767px) {
-				  /* 모바일 가로 또는 태블릿 세로 스타일 */
+				.status-indicator {
+					position: relative;
+					overflow: hidden;
 				}
-				
-				/* 모바일 세로 (해상도 ~ 479px) */
-				@media all and (max-width: 479px) {
-					.box2 {
-						width: 80px;
-						font-size: 10px;
-						padding: 5px;
-						border-right: 1px solid #ddd;
-					}
-					.fs-5 {
-						font-size: 0.5rem !important;
-					}
-					.d-flex {
-						min-height: 55vh;
-					}
-					.spanClass{
-						margin-right: 2px;
-					}
-					.btn25{
-						width: 80px;
-						font-size: 10px;
-					}
-					.fs-4{
-						font-size: 0.9rem !important;
-					}
+				.status-indicator::before {
+					content: '';
+					position: absolute;
+					top: 0;
+					left: -100%;
+					width: 100%;
+					height: 100%;
+					background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+					animation: shimmer 2s infinite;
 				}
-				.box2 {
-					background-color: #f8f9fa;
-					font-weight: bold;
-					text-align: center;
+				@keyframes shimmer {
+					0% { left: -100%; }
+					100% { left: 100%; }
+				}
+				.product-item {
+					transition: all 0.3s ease;
+				}
+				.product-item:hover {
+					transform: translateY(-2px);
+					box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 				}
 			</style>
-			<div class="d-flex">
-				<!-- 왼쪽 고정 마이페이지 영역 -->
-				<div class="box2 d-flex align-items-center justify-content-center">비회원 주문내역</div>
-				<!-- 오른쪽 주문 정보 영역 -->
-				<div class="flex-grow-1 overflow-auto">
-					<div class="d-flex flex-column h-95">
-						<div class="container-fluid ps-0">
-							<div class="card shadow-sm rounded-4 border-0 h-95">
-								<div class="col-10 fw-semibold ms-2 mt-2 fs-4" th:text="'주문일자: ' + ${order.orderPayDt.substring(0, 10)}"></div>
+			<!-- Main Content -->
+			<div class="container mx-auto px-4">
+				<!-- 주문 정보 카드 -->
+				<div class="bg-white rounded-2xl card-shadow p-6 mb-8">
+					<div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+						<div class="flex-1">
+							<div class="flex items-center justify-between mb-2">
+								<h2 class="text-2xl font-bold text-gray-800">주문 내역</h2>
+							</div>
+							<div class="items-center text-gray-600">
+								<span class="items-center">
+									<i class="far fa-calendar-alt mr-2"></i><span th:text="'주문일자: ' + ${order.orderPayDt.substring(0, 10)}"></span>
+								</span>
+								<br>
 								<th:block th:if="${order.orderStatus == '0001'}">
-									<div class="col-10 fw-semibold mb-2 ms-2 fs-4" style="text-decoration: line-through; color: red;" th:text="'주문번호: ' + ${order.orderNo}"></div>
-									<span class="col-10 fw-semibold mb-2 ms-2" style="color: red;">결제 취소된 주문입니다.</span>	
+									<span class="items-center">
+										<i class="fas fa-receipt mr-2"></i><span style="text-decoration: line-through; color:red" th:text="'주문번호: ' + ${order.orderNo}"></span><br>
+										<span style="color: red;">결제 취소된 주문입니다.</span>
+									</span>
 								</th:block>
 								<th:block th:if="${order.orderStatus == '0000'}">
-									<div class="col-10 fw-semibold mb-2 ms-2 mt-2 fs-4" th:text="'주문번호: ' + ${order.orderNo}"></div>
+									<span class="items-center">
+										<i class="fas fa-receipt mr-2"></i><span th:text="'주문번호: ' + ${order.orderNo}"></span>
+									</span>
 								</th:block>
-								<!-- 헤더 -->
-								<div class="bg-light border-bottom rounded-top-4">
-									<div class="row text-center fw-semibold py-3 gx-0">
-										<div class="col-4 fs-5">상품명</div>
-										<div class="col-2 fs-5">수량</div>
-										<div class="col-2 fs-5">주문금액</div>
-										<div class="col-2 fs-5">배송상태</div>
-									</div>
-								</div>
-								<!-- 데이터 영역 -->
-								<th:block th:each="rs,rsStat : ${order.productList}">
-									<div class="bg-white overflow-auto">
-										<div class="row text-center align-items-center border-bottom py-3 gx-0">
-											<div class="col-4 fs-5 text-start ms-3">
-												<span th:text="${rs.menuDay.substring(0,4)} + '.' + ${rs.menuDay.substring(4,6)} + '.' + ${rs.menuDay.substring(6,8)}"></span><br>
-												<th:block th:if="${rs.orderSet == '1000'}">
-													<th:block th:each="msg,msgStat : ${#strings.setSplit(rs.menuMsg,'|')}">
-														<th:block th:if="${#strings.substring(msg,0,1) == '!'}">
-															<span style="color:red;" th:text="${#strings.substring(msg,1)}"></span>
-															<span th:text="'('+${#strings.arraySplit(rs.menuMsgDetail ?: '', '|')[msgStat.index]}+'개)'"></span>
-														</th:block>
-														<th:block th:if="${#strings.substring(msg,0,1) != '!'}">
-															<span th:text="${msg}"></span>
-															<span th:text="'('+${#strings.arraySplit(rs.menuMsgDetail ?: '', '|')[msgStat.index]}+'개)'"></span>
-														</th:block>
-														<th:block th:if="${msgStat.last == false}"><br></th:block>
-													</th:block>
-												</th:block>
-												<th:block th:if="${rs.orderSet == '2000' || rs.orderSet == '3000'}">
-													<th:block th:each="msg,msgStat : ${#strings.setSplit(rs.menuMsg,'|')}">
-														<th:block th:if="${#strings.substring(msg,0,1) == '!'}">
-															<span class="spanClass"style="color:red;" th:text="${#strings.substring(msg,1)}"></span>
-														</th:block>
-														<th:block th:if="${#strings.substring(msg,0,1) != '!'}">
-															<span class="spanClass" th:text="${msg}"></span>
-														</th:block>
-														<th:block th:if="${msgStat.count % 3 == 0}"><br></th:block>
-													</th:block>
-												</th:block>
-											</div>
-											<div class="col-2 fs-5" th:text="${rs.orderQty} + '개'"></div>
-											<div class="col-2 fs-5" th:text="${#numbers.formatInteger(rs.payAmt,3,'COMMA')} + '원'"></div>
-											<div th:if="${rs.deliveryStatus == '1000'}" class="col-2 text-success fs-5">배송전</div>
-											<div th:if="${rs.deliveryStatus == '0000'}" class="col-2 text-success fs-5">배송완료</div>
-										</div>
-									</div>
-								</th:block>
-								<div th:if="${order.delivKind != '2000' && order.totalDelyAmt > 0}" class="col-10 fw-semibold ms-2 mt-2 fs-4" th:text="'배송비: '+${#numbers.formatInteger(order.totalDelyAmt,3,'COMMA')} +'원'"></div>
-								<div th:if="${order.delivKind == '2000'}" class="col-10 fw-semibold ms-2 mt-2 fs-4" th:text="'우체국택배: 4,000원'"></div>
-								<div th:if="${order.packaging == '1000'}" class="col-10 fw-semibold ms-2 mt-2 fs-4" th:text="'보냉가방(신규) 보증금 : 5,000원'"></div>
-								<div class="col-10 fw-semibold ms-2 mt-2 fs-4" th:text="'총 주문 금액: ' +${#numbers.formatInteger(order.totalAmount,3,'COMMA')} +'원'"></div>
-										
-								<!-- 주문 상태가 '0000'이고 결제일이 당일이며, 차단 조건에 해당하지 않는 경우 - 주문 취소 -->
-								<div class="text-center mt-2" th:if="${order.orderStatus == '0000' and #strings.substring(order.orderPayDt, 0, 10) == #dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
-									<button class="btn btn-outline-danger btn-lg ms-1 btn25" type="button" onclick="fnPayCancel()">주문 취소</button>
-								</div>
-								<!-- 주문 상태가 '0000'이고 결제일이 당일을 지났으며, 차단 조건에 해당하지 않는 경우 - 환불 신청 -->
-								<div class="text-center mt-2" th:if="${order.orderStatus == '0000' and #strings.substring(order.orderPayDt, 0, 10) < #dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
-									<button class="btn btn-outline-danger btn-lg ms-1 btn25" type="button" onclick="fnRefundRequest()">환불 신청</button>
+								<div th:if="${refund != null && refund.status == '0000'}">
+									<span class="items-center">
+										<span style="color: red;">환불 신청된 주문입니다.</span>
+									</span>
 								</div>
 							</div>
+						</div>
+					</div>
+					<th:block th:each="rs,rsStat : ${order.productList}">
+						<div class="space-y-4">
+							<div class="product-item bg-gray-50 rounded-lg p-4">
+								<div class="items-center justify-between">
+									<h4 class="font-semibold text-gray-800 mb-2">
+										<span th:text="${rs.menuDay.substring(0,4)} + '.' + ${rs.menuDay.substring(4,6)} + '.' + ${rs.menuDay.substring(6,8)}"></span>
+										<th:block th:if="${rs.orderSet == '1000'}"> 일반세트(추가)</th:block>
+										<th:block th:if="${rs.orderSet == '2000'}"> 1인분세트</th:block>
+										<th:block th:if="${rs.orderSet == '3000'}"> 일반세트</th:block>
+									</h4>
+									<div th:class="${rs.orderSet == '1000'} ? 'md:grid md:grid-cols-3 md:gap-2 text-m text-gray-600' : 'grid grid-cols-2 md:grid-cols-3 gap-2 text-m text-gray-600'">
+										<th:block th:if="${rs.orderSet == '1000'}">
+											<th:block th:each="msg,msgStat : ${#strings.setSplit(rs.menuMsg,'|')}">
+												<th:block th:if="${#strings.substring(msg,0,1) == '!'}">
+													<div class="block md:inline">
+														<span style="color:red;" th:text="${#strings.substring(msg,1)}"></span>
+														<span style="color:red;" th:text="'('+${#strings.arraySplit(rs.menuMsgDetail ?: '', '|')[msgStat.index]}+'개)'"></span>
+													</div>
+												</th:block>
+												<th:block th:if="${#strings.substring(msg,0,1) != '!'}">
+													<div class="block md:inline">
+														<span th:text="${msg}+'('+${#strings.arraySplit(rs.menuMsgDetail ?: '', '|')[msgStat.index]}+'개)'"></span>
+													</div>
+												</th:block>
+											</th:block>
+										</th:block>
+										<th:block th:if="${rs.orderSet == '2000' || rs.orderSet == '3000'}">
+											<th:block th:each="msg,msgStat : ${#strings.setSplit(rs.menuMsg,'|')}">
+												<th:block th:if="${#strings.substring(msg,0,1) == '!'}">
+													<span style="color:red;" th:text="${#strings.substring(msg,1)}"></span>
+												</th:block>
+												<th:block th:if="${#strings.substring(msg,0,1) != '!'}">
+													<span th:text="${msg}"></span>
+												</th:block>
+											</th:block>
+										</th:block>
+									</div>
+									<div class="flex items-center justify-between mt-4">
+										<div th:if="${rs.deliveryStatus == '0000'}" class="status-indicator bg-green-100 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold flex items-center">
+											<i class="fas fa-clock mr-2"></i>
+											<span>배송완료</span>
+										</div>
+										<div th:if="${rs.deliveryStatus == '1000'}" class="status-indicator bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-semibold flex items-center">
+											<i class="fas fa-clock mr-2"></i>
+											<span>배송전</span>
+										</div>
+										<div class="text-right">
+											<div class="text-lg font-bold text-gray-800" th:text="${#numbers.formatInteger(rs.payAmt,3,'COMMA')} + '원'"></div>
+											<div class="text-sm text-gray-500" th:text="'수량: '+${rs.orderQty} + '개'">수량: 1개</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</th:block>
+				</div>
+		
+				<!-- 결제 정보 카드 -->
+				<div class="bg-white rounded-2xl card-shadow p-6 mb-8">
+					<h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+						<i class="fas fa-credit-card mr-3 text-blue-500"></i>
+						결제 정보
+					</h3>
+					
+					<div class="space-y-4">
+						<div class="flex justify-between items-center py-2">
+							<span class="text-gray-600">상품금액</span>
+							<span class="font-semibold" th:text="${#numbers.formatInteger(order.totalProductAmt,3,'COMMA')} +'원'"></span>
+						</div>
+						<div th:if="${order.delivKind != '2000' && order.totalDelyAmt > 0}" class="flex justify-between items-center py-2">
+							<span class="text-gray-600 flex items-center">
+								<i class="fas fa-truck mr-2 text-green-500"></i>
+								배송비
+							</span>
+							<span class="font-semibold" th:text="${#numbers.formatInteger(order.totalDelyAmt,3,'COMMA')} +'원'"></span>
+						</div>
+						<div th:if="${order.delivKind == '2000'}" class="flex justify-between items-center py-2">
+							<span class="text-gray-600 flex items-center">
+								<i class="fas fa-truck mr-2 text-green-500"></i>
+								우체국택배
+							</span>
+							<span class="font-semibold">4,000원</span>
+						</div>
+						<div th:if="${order.packaging == '1000'}" class="flex justify-between items-center py-2">
+							<span class="text-gray-600 flex items-center">
+								<i class="fas fa-snowflake mr-2 text-blue-500"></i>
+								보냉가방(신규) 보증금
+							</span>
+							<span class="font-semibold">5,000원</span>
+						</div>
+						<hr class="border-gray-200">
+						<div class="flex justify-between items-center py-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg px-4">
+							<span class="text-lg font-bold text-gray-800">총 주문 금액</span>
+							<span class="text-2xl font-bold text-blue-600" th:text="${#numbers.formatInteger(order.totalAmount,3,'COMMA')} +'원'"></span>
+						</div>
+					</div>
+				</div>
+				<!-- 환불 정보 카드 -->
+				<div th:if="${refund != null}" class="bg-white rounded-2xl card-shadow p-6 mb-8">
+					<h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+						<i class="fas fa-undo mr-3 text-blue-500"></i>
+						환불 신청 정보
+					</h3>
+					
+					<div class="space-y-4">
+						<div class="flex justify-between items-center py-2">
+							<span class="text-gray-600">환불 사유</span>
+							<span class="font-semibold" th:text="${refund.refundMsg}"></span>
+						</div>
+						<div class="flex justify-between items-center py-2">
+							<span class="text-gray-600">환불 진행 상태</span>
+							<span class="font-semibold" th:switch="${refund.status}">
+								<span th:case="'0000'" th:text="'신청'"></span>
+								<span th:case="'1001'" th:text="'반려'"></span>
+								<span th:case="'2001'" th:text="'환불 완료'"></span>
+								<span th:case="*" th:text="${refund.status}"></span>
+							</span>
+						</div>
+						<div th:if="${refund.status == '1001' && !#strings.isEmpty(refund.refundAnswer)}" class="flex justify-between items-center py-2">
+							<span class="text-gray-600">반려 내용</span>
+							<span class="font-semibold" th:text="${refund.refundAnswer}"></span>
+						</div>
+					</div>
+				</div>
+				<!-- 주문 상태가 '0000'이고 결제일이 당일이며, 차단 조건에 해당하지 않는 경우 - 주문 취소 -->
+				<div class="flex flex-col md:flex-row gap-4 justify-center" th:if="${order.orderStatus == '0000' and #strings.substring(order.orderPayDt, 0, 10) == #dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
+					<button type="button" onclick="fnPayCancel()" class="border-2 border-red-300 text-red-600 px-8 py-3 rounded-full font-semibold hover:border-red-400 hover:bg-red-50 transition-all duration-300 flex items-center justify-center">
+						<i class="fas fa-times mr-2"></i>
+						주문 취소
+					</button>
+				</div>
+				<!-- 주문 상태가 '0000'이고 결제일이 당일을 지났으며, 차단 조건에 해당하지 않는 경우 - 환불 신청 -->
+				<div class="flex flex-col md:flex-row gap-4 justify-center" th:if="${order.orderStatus == '0000' and #strings.substring(order.orderPayDt, 0, 10) < #dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
+					<button type="button" onclick="fnRefundRequest()" class="border-2 border-red-300 text-red-600 px-8 py-3 rounded-full font-semibold hover:border-red-400 hover:bg-red-50 transition-all duration-300 flex items-center justify-center">
+						<i class="fas fa-times mr-2"></i>
+						환불 신청
+					</button>
+				</div>
+			</div>
+			<!-- 배정관리 Modal -->
+			<div id="modalRefund" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 opacity-0 pointer-events-none">
+				<div class="modal-content bg-white rounded-lg shadow-xl max-w-lg w-full mx-4 transform scale-90">
+					<div class="p-6">
+						<div class="flex justify-between items-center mb-6">
+							<h2 class="text-xl font-bold text-gray-800">환불 신청</h2>
+							<button type="button" onclick="closeModal('modalRefund')" class="text-gray-400 hover:text-gray-600 transition duration-200">
+								<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+								</svg>
+							</button>
+						</div>
+						
+						<form class="space-y-4">
+							<div>
+								<label class="block text-sm font-medium text-gray-700 mb-1">환불사유</label>
+								<input type="text" id="refundMsg"
+									   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+									   placeholder="메세지를 입력하세요.">
+							</div>
+						</form>
+						
+						<div class="flex justify-end space-x-3 mt-6">
+							<button type="button" onclick="submitForm()" 
+									class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition duration-200">
+								신청
+							</button>
+							<button type="button" onclick="closeModal('modalRefund')" 
+									class="px-4 py-2 text-gray-600 hover:text-gray-800 transition duration-200">
+								취소
+							</button>
 						</div>
 					</div>
 				</div>
@@ -196,7 +294,7 @@
 						return;
 					} else {
 						//환불신청로직
-						console.log('환불신청로직');
+						openModal("modalRefund");
 					}
 				}
 				
@@ -205,9 +303,9 @@
 					let productList = /*[[${order.productList}]]*/ "";
 					
 					// 현재 시간
-    				const now = new Date();
-    				const currentHour = now.getHours();
-    
+					const now = new Date();
+					const currentHour = now.getHours();
+	
 					// 내일 날짜를 YYYYMMDD 형식으로 구하기
 					const tomorrow = new Date();
 					tomorrow.setDate(tomorrow.getDate() + 1);
@@ -216,16 +314,57 @@
 										tomorrow.getDate().toString().padStart(2, '0');
 										
 					//console.log('내일 날짜:', tomorrowStr);
-				    //console.log('현재 시간:', currentHour + '시');
-				    
-				    // 내일 배송 상품이 있는지 체크
-				    const hasTomorrowItems = productList.some(item => item.menuDay === tomorrowStr);
-				    
-				    // 오후 4시(16시) 이후인지 체크
-				    const isAfter4PM = currentHour >= 16;
-				    
-				    // 내일 배송 상품이 있고 오후 4시 이후라면 true 반환
-				    return hasTomorrowItems && isAfter4PM;
+					//console.log('현재 시간:', currentHour + '시');
+					
+					// 내일 배송 상품이 있는지 체크
+					const hasTomorrowItems = productList.some(item => item.menuDay === tomorrowStr);
+					
+					// 오후 4시(16시) 이후인지 체크
+					const isAfter4PM = currentHour >= 16;
+					
+					// 내일 배송 상품이 있고 오후 4시 이후라면 true 반환
+					return hasTomorrowItems && isAfter4PM;
+				}
+				
+				function openModal(modalId) {
+					const modal = document.getElementById(modalId);
+					modal.classList.remove('opacity-0', 'pointer-events-none');
+		        }
+		
+		        function closeModal(modalId) {
+		            const modal = document.getElementById(modalId);
+		            modal.classList.add('opacity-0', 'pointer-events-none');
+		        }
+		        
+		        function submitForm() {
+					let refundMsg = $("#refundMsg").val();
+					if(refundMsg == ""){
+						alert("환불사유를 입력해 주세요.");
+						return;
+					}
+					let orderNo = /*[[${order.orderNo}]]*/ "";
+					let formData = {
+						orderNo : orderNo,
+						refundMsg : refundMsg
+					}
+					$.showMask();
+					$.ajax({
+						url : "/rest/order/refundAjax",
+						type : "POST",
+						dataType : "json",
+						data : formData,
+						success : function(result) {
+							$.hideMask();
+							alert(result.data.message);
+							if(result.data.code == "0000"){
+								closeModal('modalRefund');
+								location.reload();
+							}
+						}, error : function(request, status, error) {
+							$.hideMask();
+							alert("관리자에게 문의해 주세요.");
+						}
+					});
 				}
 			</script>
 		</main>

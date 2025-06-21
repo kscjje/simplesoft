@@ -197,14 +197,14 @@
 					</div>
 				</div>
 				<!-- 주문 상태가 '0000'이고 결제일이 당일이며, 차단 조건에 해당하지 않는 경우 - 주문 취소 -->
-				<div class="flex flex-col md:flex-row gap-4 justify-center" th:if="${order.orderStatus == '0000' and #strings.substring(order.orderPayDt, 0, 10) == #dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
+				<div class="flex flex-col md:flex-row gap-4 justify-center" th:if="${refund != null and order.orderStatus == '0000' and #strings.substring(order.orderPayDt, 0, 10) == #dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
 					<button type="button" onclick="fnPayCancel()" class="border-2 border-red-300 text-red-600 px-8 py-3 rounded-full font-semibold hover:border-red-400 hover:bg-red-50 transition-all duration-300 flex items-center justify-center">
 						<i class="fas fa-times mr-2"></i>
 						주문 취소
 					</button>
 				</div>
 				<!-- 주문 상태가 '0000'이고 결제일이 당일을 지났으며, 차단 조건에 해당하지 않는 경우 - 환불 신청 -->
-				<div class="flex flex-col md:flex-row gap-4 justify-center" th:if="${order.orderStatus == '0000' and #strings.substring(order.orderPayDt, 0, 10) < #dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
+				<div class="flex flex-col md:flex-row gap-4 justify-center" th:if="${refund == null and order.orderStatus == '0000' and #strings.substring(order.orderPayDt, 0, 10) < #dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
 					<button type="button" onclick="fnRefundRequest()" class="border-2 border-red-300 text-red-600 px-8 py-3 rounded-full font-semibold hover:border-red-400 hover:bg-red-50 transition-all duration-300 flex items-center justify-center">
 						<i class="fas fa-times mr-2"></i>
 						환불 신청

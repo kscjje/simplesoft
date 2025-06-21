@@ -72,7 +72,7 @@
 								<tr class="h-50 align-middle">
 									<td></td>
 									<td colspan="2" class="fw-bold">총 주문금액</td>
-									<td colspan="2" class="fw-bold fs-3 text-success"><span id="totalAmount" th:text="${#numbers.formatInteger(order.totalAmount,3,'COMMA')}+'원'"></span></td>
+									<td colspan="2" class="fw-bold fs-3 text-success"><span id="totalAmount" th:text="${#numbers.formatInteger(order.totalAmount + order.totalDelyAmt,3,'COMMA')}+'원'"></span></td>
 								</tr>
 							</tbody>
 						</table>

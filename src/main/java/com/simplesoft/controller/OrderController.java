@@ -148,6 +148,26 @@ public class OrderController {
 			orderVO.setUserSession(orderVO.getUserNo() == 0 ? (String)paramMap.get("userSession") : "");
 			orderVO.setRegUser(userNm);
 			
+			int totalDcQty = 0;		//할인 가능한 개수(15개 이상 시 할인)
+			for(Map<String, Object> map : cartShopList) {
+				String orderSet = "";
+				for(String cartNo : setList) {
+					if(String.valueOf(map.get("cartNo")).equals(cartNo.split(",")[0])) {
+						orderSet = cartNo.split(",")[1];
+						break; // 찾았으면 루프 종료
+					}
+				}
+				
+				if(!"1000".equals(orderSet) && !"2000".equals(orderSet)) {
+					totalDcQty += Integer.parseInt("null".equals(String.valueOf(map.get("qty"))) ? "0" : String.valueOf(map.get("qty")));
+				}
+			}
+
+			// totalDcQty에 따라 baseProductAmt 결정
+			int baseProductAmt = GlobalVariable.PRODUCT_AMT_1;
+			if (totalDcQty >= 15) { // 조건을 원하는 수량으로 변경하세요
+				baseProductAmt = GlobalVariable.PRODUCT_AMT_1 - 1000;
+			}
 			for(Map<String, Object> map : cartShopList) {
 				String menuDay = String.valueOf(map.get("menuDay")).split(" ")[0];
 				if(!timeCheck(menuDay)) {
@@ -164,9 +184,9 @@ public class OrderController {
 				int payAmt = 0;		//결제금액
 				int qty = Integer.parseInt("null".equals(String.valueOf(map.get("qty"))) ? "0" : String.valueOf(map.get("qty")));
 				String menuMsgDetail = String.valueOf(map.get("menuMsgDetail"));	//일반세트시 상품명 각각 수량
-				String delivTime = String.valueOf(map.get("delivTime"));	//일반세트시 상품명 각각 수량
+				String delivTime = String.valueOf(map.get("delivTime"));
 				if("1000".equals(orderSet)) {
-					productAmt = GlobalVariable.PRODUCT_AMT_1;
+					productAmt = baseProductAmt;
 					payAmt = productAmt * qty;
 					payAmt += IntStream.range(0, menuMsgDetail.split("\\|").length)
 									.map(i -> {
@@ -183,7 +203,7 @@ public class OrderController {
 					productAmt = GlobalVariable.PRODUCT_AMT_2;
 					payAmt = productAmt * qty;
 				} else {
-					productAmt = GlobalVariable.PRODUCT_AMT_1;
+					productAmt = baseProductAmt;
 					payAmt = productAmt * qty;
 				}
 				

@@ -22,12 +22,13 @@ public class OrderProductVO {
 	private int menuBoardSeq;		//상품번호
 	private String menuDay;			//식단일자
 	private String orderSet;		//식단세트
-	private String orderSetNm;		//식단세트
+	private String orderSetNm;		//식단세트명
 	private String menuMsg;			//상품명
 	private String menuMsgDetail;	//상품명 각각 수량
 	private int payAmt;				//결제금액
 	private String deliveryType;	//배송방법
 	private int usedPoint;			//사용_적립금
+	private int totalQty;			//15개할인 구하는 주문수량합계
 	private Date confirmDt;			//구매확정일시
 	private String deliveryStatus;	//배송상태
 	private String deliveryStatusNm;//배송상태명

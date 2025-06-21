@@ -231,7 +231,13 @@ public class AdminController {
 //			model.addAttribute("returnUrl", "/admin/login");
 //			return;
 //		}
-		
+		if("0002".equals(paramVO.getOrderStatus())){
+			paramVO.setOrderStatus("");
+			paramVO.setRefundStatus("1001");
+		} else if ("0003".equals(paramVO.getOrderStatus())){
+			paramVO.setOrderStatus("");
+			paramVO.setRefundStatus("2001");
+		}
 		String excelTitle = "주문리스트";
 		
 		String[] columnList = {"주문상태", "결제수단", "주문번호", "주문자명", "상품명" , "주문일시"};
@@ -261,6 +267,7 @@ public class AdminController {
 			titleRow.getCell(i).setCellStyle(titleStyleStringCenter);
 		}
 		XSSFCellStyle styleDate = workbook.getCellStyleAt(3);
+		
 		OrderVO orderVO = admOrderService.selectOrderApplyExcel(paramVO);
 		if( orderVO.getOrderCount() > 0 ) {
 			int index = 1;

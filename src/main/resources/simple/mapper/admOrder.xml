@@ -83,12 +83,16 @@
 				FROM ORDER_MST A
 				LEFT JOIN DELIVERY_MST B ON A.ORDER_NO = B.ORDER_NO
 				LEFT JOIN PAYMENTS C ON A.ORDER_NO = C.ORDER_ID AND C.STATUS = 'DONE'
+				LEFT JOIN REFUND D ON A.ORDER_NO = D.ORDER_NO
 				WHERE A.ORDER_STATUS != '1000'
 				<if test="startDate neq null and startDate neq '' and endDate neq null and endDate neq ''">
 					AND DATE_FORMAT(A.ORDER_PAY_DT,'%Y-%m-%d') BETWEEN #{startDate} AND #{endDate}
 				</if>
 				<if test="orderStatus neq null and orderStatus neq ''">
 					AND A.ORDER_STATUS = ${orderStatus}
+				</if>
+				<if test="refundStatus neq null and refundStatus neq ''">
+					AND D.STATUS = ${refundStatus}
 				</if>
 				<if test="searchOption neq null and searchOption neq ''">
 					<if test="searchOption == 1">
@@ -118,12 +122,16 @@
 					 1
 				FROM ORDER_MST A
 				LEFT JOIN DELIVERY_MST B ON A.ORDER_NO = B.ORDER_NO
+				LEFT JOIN REFUND C ON A.ORDER_NO = C.ORDER_NO
 				WHERE A.ORDER_STATUS != '1000'
 				<if test="startDate neq null and startDate neq '' and endDate neq null and endDate neq ''">
 					AND DATE_FORMAT(A.ORDER_PAY_DT,'%Y-%m-%d') BETWEEN #{startDate} AND #{endDate}
 				</if>
 				<if test="orderStatus neq null and orderStatus neq ''">
 					AND A.ORDER_STATUS = ${orderStatus}
+				</if>
+				<if test="refundStatus neq null and refundStatus neq ''">
+					AND C.STATUS = ${refundStatus}
 				</if>
 				<if test="searchOption neq null and searchOption neq ''">
 					<if test="searchOption == 1">
@@ -214,12 +222,16 @@
 				FROM ORDER_MST A
 				LEFT JOIN DELIVERY_MST B ON A.ORDER_NO = B.ORDER_NO
 				LEFT JOIN PAYMENTS C ON A.ORDER_NO = C.ORDER_ID
+				LEFT JOIN REFUND D ON A.ORDER_NO = D.ORDER_NO
 				WHERE A.ORDER_STATUS != '1000'
 				<if test="startDate neq null and startDate neq '' and endDate neq null and endDate neq ''">
 					AND DATE_FORMAT(A.ORDER_PAY_DT,'%Y-%m-%d') BETWEEN #{startDate} AND #{endDate}
 				</if>
 				<if test="orderStatus neq null and orderStatus neq ''">
 					AND A.ORDER_STATUS = ${orderStatus}
+				</if>
+				<if test="refundStatus neq null and refundStatus neq ''">
+					AND D.STATUS = ${refundStatus}
 				</if>
 				<if test="searchOption neq null and searchOption neq ''">
 					<if test="searchOption == 1">

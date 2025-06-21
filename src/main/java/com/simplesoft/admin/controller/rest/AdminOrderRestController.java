@@ -48,6 +48,13 @@ public class AdminOrderRestController {
 	@PostMapping(value = "/searchList")
 	public BasicResponse searchListAjax(@ModelAttribute("orderVO") OrderVO paramVO) {
 		Map<String, Object> returnData = new HashMap<String, Object>();
+		if("0002".equals(paramVO.getOrderStatus())){
+			paramVO.setOrderStatus("");
+			paramVO.setRefundStatus("1001");
+		} else if ("0003".equals(paramVO.getOrderStatus())){
+			paramVO.setOrderStatus("");
+			paramVO.setRefundStatus("2001");
+		}
 		OrderVO orderVO = admOrderService.selectOrderApplyList(paramVO);
 		returnData.put("orderList", orderVO.getOrderList());
 		returnData.put("orderSize", orderVO.getOrderCount());

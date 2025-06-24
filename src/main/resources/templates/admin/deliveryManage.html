@@ -742,10 +742,12 @@
 				switch(option) {
 					case "5" :
 						//금일배송
+						$("#delivStatus").val("1000");
 						$("#0").trigger("click");
 						break;
 					case "6" : 
 						//익일배송
+						$("#delivStatus").val("1000");
 						$("#5").trigger("click");
 						break;
 					default:

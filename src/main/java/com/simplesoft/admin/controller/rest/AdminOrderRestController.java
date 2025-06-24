@@ -49,12 +49,19 @@ public class AdminOrderRestController {
 	public BasicResponse searchListAjax(@ModelAttribute("orderVO") OrderVO paramVO) {
 		Map<String, Object> returnData = new HashMap<String, Object>();
 		if("0002".equals(paramVO.getOrderStatus())){
+			//환불신청
 			paramVO.setOrderStatus("");
-			paramVO.setRefundStatus("1001");
+			paramVO.setRefundStatus("0000");
 		} else if ("0003".equals(paramVO.getOrderStatus())){
+			//환불완료
 			paramVO.setOrderStatus("");
 			paramVO.setRefundStatus("2001");
+		}  else if ("0004".equals(paramVO.getOrderStatus())){
+			//환불반려
+			paramVO.setOrderStatus("");
+			paramVO.setRefundStatus("1001");
 		}
+		
 		OrderVO orderVO = admOrderService.selectOrderApplyList(paramVO);
 		returnData.put("orderList", orderVO.getOrderList());
 		returnData.put("orderSize", orderVO.getOrderCount());

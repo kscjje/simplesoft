@@ -430,7 +430,7 @@ if(cartList[i].orderSet == 1000){
 						value.push($(this).text());
 					}
 				});
-				//7500|4500|2500|3500|2500
+				//7000|5000|3000|2500|2500
 				//메인|국|기본1|서브메인|기본2
 				$.ajax({
 					url: "/rest/cart/menuMsgQty/update",
@@ -550,10 +550,10 @@ if(cartList[i].orderSet == 1000){
 						finalResult = productMoney * total;
 					} else {
 						const valueMap = {
-							0: 7500,
-							1: 4500,
-							2: 2500,
-							3: 3500,
+							0: 7000,
+							1: 5000,
+							2: 3000,
+							3: 2500,
 							4: 2500
 						};
 						//총 증가 금액

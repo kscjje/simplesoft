@@ -70,7 +70,7 @@ public class OrderServiceImpl implements OrderService{
 		return orderMapper.getOrderInfoDelivery(vo);
 	}
 	
-	//환불신청저장
+	//환불요청저장
 	@Override
 	public int insertRefund(RefundVO vo) {
 		int cnt = orderMapper.getRefundCheck(vo);

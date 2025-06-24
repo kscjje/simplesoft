@@ -9,7 +9,6 @@
 	</resultMap>
 
 	<!-- 주문 신청 정보 -->	
-	<!--<select id="selectOrderApplyList" parameterType="com.simplesoft.order.service.OrderVO" resultMap="orderShopApplyResult">-->
 	<select id="selectOrderApplyList" parameterType="com.simplesoft.order.service.OrderVO" resultType="com.simplesoft.order.service.OrderVO">
 		/* AdmOrderMapper.selectOrderApplyList */
 		SELECT 
@@ -80,6 +79,10 @@
 					, C.CARD
 					, C.EASY_PAY
 					, (SELECT CANCELS FROM PAYMENTS WHERE A.ORDER_NO = ORDER_ID AND STATUS = 'CANCELED') AS CANCELS
+					, D.STATUS AS REFUND_STATUS
+					, D.REFUND_MSG
+					, D.REFUND_ANSWER
+					, DATE_FORMAT(D.REG_DT,'%Y-%m-%d %H:%i:%s') AS REFUND_REG_DT
 				FROM ORDER_MST A
 				LEFT JOIN DELIVERY_MST B ON A.ORDER_NO = B.ORDER_NO
 				LEFT JOIN PAYMENTS C ON A.ORDER_NO = C.ORDER_ID AND C.STATUS = 'DONE'
@@ -122,7 +125,8 @@
 					 1
 				FROM ORDER_MST A
 				LEFT JOIN DELIVERY_MST B ON A.ORDER_NO = B.ORDER_NO
-				LEFT JOIN REFUND C ON A.ORDER_NO = C.ORDER_NO
+				LEFT JOIN PAYMENTS C ON A.ORDER_NO = C.ORDER_ID AND C.STATUS = 'DONE'
+				LEFT JOIN REFUND D ON A.ORDER_NO = D.ORDER_NO
 				WHERE A.ORDER_STATUS != '1000'
 				<if test="startDate neq null and startDate neq '' and endDate neq null and endDate neq ''">
 					AND DATE_FORMAT(A.ORDER_PAY_DT,'%Y-%m-%d') BETWEEN #{startDate} AND #{endDate}
@@ -131,7 +135,7 @@
 					AND A.ORDER_STATUS = ${orderStatus}
 				</if>
 				<if test="refundStatus neq null and refundStatus neq ''">
-					AND C.STATUS = ${refundStatus}
+					AND D.STATUS = ${refundStatus}
 				</if>
 				<if test="searchOption neq null and searchOption neq ''">
 					<if test="searchOption == 1">

@@ -123,6 +123,7 @@
 								<option value="0001">주문취소</option>
 								<option value="0002">환불요청</option>
 								<option value="0003">환불완료</option>
+								<option value="0004">환불반려</option>
 							</select>
 						</span>
 					</div>
@@ -238,10 +239,8 @@
 										<td id="r_packaging"></td>
 									</tr>
 									<tr>
-										<th>배달시간</th>
-										<td id="r_delivTime"></td>
 										<th>공동현관 비밀번호</th>
-										<td id="r_commonPwd"></td>
+										<td colspan="3" id="r_commonPwd"></td>
 									</tr>
 									<tr>
 										<th>주소</th>
@@ -252,13 +251,27 @@
 										<td colspan="3" id="r_bigo"></td>
 									</tr>
 								</table>
+								
+								<h5 class="refundData">환불 정보</h5>
+								<table class="table table-bordered mb-4 pTable refundData">
+									<tr>
+										<th style="width:15%">환불내용</th>
+										<td id="r_refundMsg" style="width:35%"></td>
+										<th	style="width:15%">환불일시</th>
+										<td id="r_refundRegDt" style="width:35%"></td>
+									</tr>
+									<tr>
+										<th>환불반려내용</th>
+										<td colspan="3" id="r_refundAnswer"></td>
+									</tr>
+								</table>
 								<nav class="d-flex align-items-center">
 									<div class="nav nav-tabs" id="nav-tab" role="tablist">
 										<button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">상품정보</button>
 										<button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">결제정보</button>
 									</div>
 									<span id="cancels" style="color: red;" class="ms-auto me-4"></span>
-									<button type="button" class="btn text-danger ms-auto me-2" onclick="fnPayCancel()">결제취소</button>
+									<button type="button" class="btn text-danger ms-auto me-2 cancelBtn" onclick="fnPayCancel()">결제취소</button>
 								</nav>
 								<div class="tab-content" id="nav-tabContent">
 									<div class="tab-pane fade show active" style="height: 230px;overflow-y: scroll;" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
@@ -343,13 +356,15 @@
 						$("#r_orderStatus").text(data.deliveryStatusNm);
 						$("#r_delivKind").text(data.delivKind);
 						$("#r_packaging").text(data.packaging);
-						$("#r_delivTime").text(data.delivTime);
 						
 						$("#r_commonPwd").text(data.commonPwd);
 						$("#r_bigo").text(data.bigo);
 						$("#r_orderAddr").text(`${data.receivePostNum}) ${data.receiveAddr} ${data.receiveAddrDetail}`);
 						fnDecrypt(data.receivePhone, decryptedData => $("#r_orderPhone").text(decryptedData));
 						fnDecrypt(data.receiveTel, decryptedData => $("#r_orderTel").text(decryptedData));
+						
+						//환불정보
+						
 						
 						//상품정보
 						$.ajax({
@@ -362,6 +377,7 @@
 									addHtml +=	`<tr>`;
 									addHtml += 		`<th>식단일자</th>`;
 									addHtml += 		`<th>세트선택</th>`;
+									addHtml += 		`<th>배송시간</th>`;
 									addHtml += 		`<th>식단정보</th>`;
 									addHtml +=		`<th>수량</th>`;
 									addHtml +=		`<th>가격</th>`;
@@ -374,13 +390,28 @@
 									addHtml +=	`<tr style="text-align:center">`;
 									addHtml +=		`<td>${menuDay}</td>`;
 									addHtml +=		`<td>${product.orderSetNm}</td>`;
+									addHtml +=		`<td>${product.delivTime}</td>`;
 									addHtml +=		`<td>${menuMsg}</td>`;
 									addHtml +=		`<td>${product.orderQty}개</td>`;
 									addHtml +=		`<td>${product.payAmt.toLocaleString('ko-KR')}원</td>`;
 									addHtml +=	`</tr>`;
 								}
+								if(data.totalDelyAmt > 0){
+									addHtml +=	`<tr style="text-align:right">`;
+									addHtml +=		`<td colspan="6">배송비 : ${data.totalDelyAmt.toLocaleString('ko-KR')}원</td>`;
+									addHtml +=	`</tr>`;
+								}else if(data.delivKind === '우체국 택배(안산 외)'){
+									addHtml +=	`<tr style="text-align:right">`;
+									addHtml +=		`<td colspan="6">우체국 택배(안산 외) : 4,000원</td>`;
+									addHtml +=	`</tr>`;
+								}
+								if(data.packaging === '보냉가방(신규)'){
+									addHtml +=	`<tr style="text-align:right">`;
+									addHtml +=		`<td colspan="6">보냉가방(신규) : 5,000원</td>`;
+									addHtml +=	`</tr>`;
+								}
 								addHtml +=	`<tr style="text-align:right">`;
-								addHtml +=		`<td colspan="4">합계 : ${data.totalAmount.toLocaleString('ko-KR')}원</td>`;
+								addHtml +=		`<td colspan="6">합계 : ${data.totalAmount.toLocaleString('ko-KR')}원</td>`;
 								addHtml +=	`</tr>`;
 								$("#tab_product").html(addHtml);
 								
@@ -396,6 +427,8 @@
 						$("#p_totalAmount").text(data.totalAmount.toLocaleString('ko-KR')+'원');
 						$("#p_payMethod").text(data.payMethod);
 					
+						$("#p_amount").text("");
+						$("#p_discountAmount").text("");
 						if(data.cardVO){
 							var rawNumber = data.cardVO.number || '';
 							var formattedNumber = rawNumber.replace(/(.{4})(?=.)/g, '$1-');
@@ -417,6 +450,15 @@
 						}
 						if(data.cancelsVO){
 							$("#cancels").text("주문 취소 일시 : "+data.cancelsVO.canceledAt);
+							$(".cancelBtn").hide();
+						} else {
+							$(".cancelBtn").show();
+							$("#cancels").text("");
+						}
+						if(data.refundMsg){
+							$("#r_refundMsg").text(data.refundMsg);
+							$("#r_refundRegDt").text(data.refundRegDt);
+							$("#r_refundAnswer").text(data.refundAnswer);
 						}
 					})
 				}
@@ -610,7 +652,13 @@
 									
 									addHtml +=	'<tr>';
 									addHtml += 		`<td><button type="button" class="btn_search ui_detail_btn" data-bs-whatever="${jsonData}" data-bs-toggle="modal" data-bs-target="#exampleModalCenteredScrollable" style="line-height: 26px; height: 30px;">상세</button></td>`;
-									if(data.orderStatus == "0000"){
+									if(data.refundStatus == "0000"){
+										addHtml +=	'<td><span>환불요청</span>';
+									} else if(data.refundStatus == "1001"){
+										addHtml +=	'<td><span>환불반려</span>';
+									} else if(data.refundStatus == "2001"){
+										addHtml +=	'<td><span>환불완료</span>';
+									} else if(data.orderStatus == "0000"){
 										addHtml +=	'<td><span>주문완료</span>';
 									} else if (data.orderStatus == "0001"){
 										addHtml +=	'<td><span>주문취소</span>';

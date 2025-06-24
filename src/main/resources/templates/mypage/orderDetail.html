@@ -197,7 +197,7 @@
 					</div>
 				</div>
 				<!-- 주문 상태가 '0000'이고 결제일이 당일이며, 차단 조건에 해당하지 않는 경우 - 주문 취소 -->
-				<div class="flex flex-col md:flex-row gap-4 justify-center" th:if="${refund != null and order.orderStatus == '0000' and #strings.substring(order.orderPayDt, 0, 10) == #dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
+				<div class="flex flex-col md:flex-row gap-4 justify-center" th:if="${refund == null and order.orderStatus == '0000' and #strings.substring(order.orderPayDt, 0, 10) == #dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
 					<button type="button" onclick="fnPayCancel()" class="border-2 border-red-300 text-red-600 px-8 py-3 rounded-full font-semibold hover:border-red-400 hover:bg-red-50 transition-all duration-300 flex items-center justify-center">
 						<i class="fas fa-times mr-2"></i>
 						주문 취소
@@ -286,14 +286,14 @@
 					});
 				}
 				
-				//환불신청
+				//환불요청
 				function fnRefundRequest(){
 					let check = fnCommonBlock();
 					if (check) {
 						alert("익일 배송 물량 준비 확정으로 인해 익일 배송건 결제에 대해서는\n오후 4시 이후로는 주문 취소가 불가능합니다. \n양해 부탁드립니다. 부득이한 사정의 경우,\n‘카카오톡 채널’로 문의해주세요.");
 						return;
 					} else {
-						//환불신청로직
+						//환불요청로직
 						openModal("modalRefund");
 					}
 				}

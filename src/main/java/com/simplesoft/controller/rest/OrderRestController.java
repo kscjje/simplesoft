@@ -169,7 +169,7 @@ public class OrderRestController {
 		return new CommonResponse<JSONObject>(returnData);
 	}
 	
-	//환불신청
+	//환불요청
 	@SuppressWarnings("unchecked")
 	@PostMapping(value = "/refundAjax")
 	public BasicResponse refundAjax(@RequestParam Map<String, Object> paramMap) throws ParseException {

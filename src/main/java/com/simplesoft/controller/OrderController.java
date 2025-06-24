@@ -158,7 +158,7 @@ public class OrderController {
 					}
 				}
 				
-				if(!"1000".equals(orderSet) && !"2000".equals(orderSet)) {
+				if("1000".equals(orderSet) || "3000".equals(orderSet)) {
 					totalDcQty += Integer.parseInt("null".equals(String.valueOf(map.get("qty"))) ? "0" : String.valueOf(map.get("qty")));
 				}
 			}
@@ -185,6 +185,8 @@ public class OrderController {
 				int qty = Integer.parseInt("null".equals(String.valueOf(map.get("qty"))) ? "0" : String.valueOf(map.get("qty")));
 				String menuMsgDetail = String.valueOf(map.get("menuMsgDetail"));	//일반세트시 상품명 각각 수량
 				String delivTime = String.valueOf(map.get("delivTime"));
+				System.out.println("여기다");
+				System.out.println(orderSet);
 				if("1000".equals(orderSet)) {
 					productAmt = baseProductAmt;
 					payAmt = productAmt * qty;

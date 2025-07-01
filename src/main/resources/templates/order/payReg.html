@@ -4,6 +4,9 @@
 	layout:decorate="~{layouts/default_layout}">
 	<main class="content-wrapper" layout:fragment="content" style="padding: 10px;">
 		<script src="https://js.tosspayments.com/v2/standard"></script>
+		<script th:inline="javascript">
+			const clientKey = /*[[${clientKey}]]*/"";
+		</script>
 		<script src="/js/tosspay.js"></script>
 		<link rel="stylesheet" href="/css/custom/payReg.css">
 		<div class="row justify-content-center custom" style="text-align: center;">

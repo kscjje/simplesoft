@@ -12,6 +12,7 @@ import java.util.stream.IntStream;
 
 import org.apache.groovy.parser.antlr4.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,6 +45,8 @@ public class OrderController {
 	@Autowired
 	OrderService orderService;
 	
+	@Value("${clientKey}")
+	String clientKey;
 	/**
 	 * 주문하기
 	 * 
@@ -297,6 +300,7 @@ public class OrderController {
 			}
 			model.addAttribute("orderNo", orderNo);
 			model.addAttribute("order", order);
+			model.addAttribute("clientKey", clientKey);
 		}
 		return "/order/payReg";
 	}

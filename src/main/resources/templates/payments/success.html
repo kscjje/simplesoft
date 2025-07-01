@@ -27,7 +27,12 @@
 					data: JSON.stringify(requestData),
 					success: function (result) {
 						$.hideMask();
-						location.href="/complete?orderId="+orderId;
+						if(result.data.resultCode === "SUCCESS"){
+							location.href="/complete?orderId="+orderId;
+						} else {
+							alert("결제가 정상적으로 이루어지지 않았습니다.\n고객센터에 문의해 주세요.");
+							window.location.href ='/';
+						} 
 					},
 					error: function (e) {
 						$.hideMask();

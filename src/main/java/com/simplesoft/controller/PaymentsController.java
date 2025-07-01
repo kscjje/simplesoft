@@ -107,11 +107,16 @@ public class PaymentsController {
 		Reader reader = new InputStreamReader(responseStream, StandardCharsets.UTF_8);
 		JSONObject jsonObject = (JSONObject) parser.parse(reader);
 		responseStream.close();
-
-		//결제 성공 비지니스
-		paymentsService.getPayResult(request, jsonObject);
 		
-		result.put("resultCode", "SUCCESS");
+		if (jsonObject.containsKey("code") && jsonObject.get("code") != null) {
+			//결제 성공 비지니스
+			result.put("resultCode", "ERROR");
+		} else {
+			paymentsService.getPayResult(request, jsonObject);
+			result.put("resultCode", "SUCCESS");
+		}
+		
+		
 		return new CommonResponse<Map<String, Object>>(result);
 	}
 	

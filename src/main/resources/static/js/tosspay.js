@@ -1,4 +1,3 @@
-//const clientKey = "test_gck_ZLKGPx4M3MNEZm1G79g7VBaWypv1";
 const customerKey = generateRandomString();
 const tossPayments = TossPayments(clientKey);
 /* 회원 결제
@@ -35,7 +34,8 @@ async function payments(v_amount,v_orderId,v_orderName) {
 		// 렌더링하고 싶은 결제 UI의 variantKey
 		// 결제 수단 및 스타일이 다른 멀티 UI를 직접 만들고 싶다면 계약이 필요해요.
 		// @docs https://docs.tosspayments.com/guides/v2/payment-widget/admin#새로운-결제-ui-추가하기
-		variantKey: "DEFAULT",
+		variantKey: "babsooni",
+		
 	}),
 	// ------  이용약관 UI 렌더링 ------
 	// @docs https://docs.tosspayments.com/sdk/v2/js#widgetsrenderagreement

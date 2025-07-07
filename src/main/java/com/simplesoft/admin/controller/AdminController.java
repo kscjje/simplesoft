@@ -279,9 +279,15 @@ public class AdminController {
 					cell.setCellStyle(styleDate);
 				}
 				
-				if("0000".equals(order.getOrderStatus())){
+				if("0000".equals(order.getRefundStatus())){
+					row.getCell(0).setCellValue("환불요청");
+				}else if("1001".equals(order.getRefundStatus())){
+					row.getCell(0).setCellValue("환불반려");
+				}else if("2001".equals(order.getRefundStatus())){
+					row.getCell(0).setCellValue("환불완료");
+				}else if("0000".equals(order.getOrderStatus())){
 					row.getCell(0).setCellValue("주문완료");
-				} else if ("0000".equals(order.getOrderStatus())){
+				} else if ("0001".equals(order.getOrderStatus())){
 					row.getCell(0).setCellValue("주문취소");
 				}
 				row.getCell(1).setCellValue(order.getPayMethod());

@@ -119,7 +119,6 @@
 							<select id="orderStatus" class="inputSelect" title="주문상태">
 								<option value="">선택</option>
 								<option value="0000">주문완료</option>
-								<!--<option value="1001">가상계좌</option>-->
 								<option value="0001">주문취소</option>
 								<option value="0002">환불요청</option>
 								<option value="0003">환불완료</option>
@@ -259,10 +258,6 @@
 										<td id="r_refundMsg" style="width:35%"></td>
 										<th	style="width:15%">환불일시</th>
 										<td id="r_refundRegDt" style="width:35%"></td>
-									</tr>
-									<tr>
-										<th>환불반려내용</th>
-										<td colspan="3" id="r_refundAnswer"></td>
 									</tr>
 								</table>
 								<nav class="d-flex align-items-center">
@@ -458,7 +453,6 @@
 						if(data.refundMsg){
 							$("#r_refundMsg").text(data.refundMsg);
 							$("#r_refundRegDt").text(data.refundRegDt);
-							$("#r_refundAnswer").text(data.refundAnswer);
 						}
 					})
 				}
@@ -673,7 +667,7 @@
 								}
 							} else {
 								addHtml +='<tr>';
-								addHtml +='<td colspan="6">검색 결과가 없습니다.</td>';
+								addHtml +='<td colspan="7">검색 결과가 없습니다.</td>';
 								addHtml +='</tr>';
 							}
 							$("#orderBody").html(addHtml);
@@ -778,7 +772,13 @@
 									
 									addHtml +=	'<tr>';
 									addHtml += 		`<td><button type="button" class="btn_search ui_detail_btn" data-bs-whatever="${jsonData}" data-bs-toggle="modal" data-bs-target="#exampleModalCenteredScrollable" style="line-height: 26px; height: 30px;">상세</button></td>`;
-									if(data.orderStatus == "0000"){
+									if(data.refundStatus == "0000"){
+										addHtml +=	'<td><span>환불요청</span>';
+									} else if(data.refundStatus == "1001"){
+										addHtml +=	'<td><span>환불반려</span>';
+									} else if(data.refundStatus == "2001"){
+										addHtml +=	'<td><span>환불완료</span>';
+									} else if(data.orderStatus == "0000"){
 										addHtml +=	'<td><span>주문완료</span>';
 									} else if (data.orderStatus == "0001"){
 										addHtml +=	'<td><span>주문취소</span>';
@@ -793,7 +793,7 @@
 								}
 							} else {
 								addHtml +='<tr>';
-								addHtml +='<td colspan="6">검색 결과가 없습니다.</td>';
+								addHtml +='<td colspan="7">검색 결과가 없습니다.</td>';
 								addHtml +='</tr>';
 							}
 							$("#orderBody").html(addHtml);

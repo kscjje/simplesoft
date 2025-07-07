@@ -10,12 +10,16 @@
             <PatternLayout pattern="%d [%-5level] %logger{36} :%5L - %msg%n" />
         </Console>     
         
-		<RollingFile name="file" fileName="${FILENAME}/APPLICATION-ADMIN.log" filePattern="${FILENAME}/%d{yyyyMMdd}/APPLICATION-ADMIN.%d{yyyyMMddhhmm}.log">
-			<PatternLayout pattern="%msg%n" />
-			<Policies>
-				<TimeBasedTriggeringPolicy interval="5" modulate="true"/>
-			</Policies>
-		</RollingFile>
+		<RollingFile name="file" 
+             fileName="${FILENAME}/APPLICATION-ADMIN.log" 
+             filePattern="${FILENAME}/%d{yyyyMMdd}/APPLICATION-ADMIN.%d{yyyyMMdd}.log">
+	    <PatternLayout pattern="%msg%n" />
+	    <Policies>
+	        <!-- 하루마다 롤링 -->
+	        <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+	    </Policies>
+	    <DefaultRolloverStrategy max="30"/>
+	</RollingFile>
 		
     </Appenders>
     <Loggers>

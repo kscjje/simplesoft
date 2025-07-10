@@ -107,7 +107,6 @@
 						</if>
 					</if>
 				</if>
-				GROUP BY A.ORDER_NO
 			) T
 		ORDER BY T.REG_DT DESC
 		<if test="startPage neq null and startPage neq '' and endPage neq null and endPage neq '' or startPage eq 0">
@@ -147,7 +146,6 @@
 						</if>
 					</if>
 				</if>
-				GROUP BY A.ORDER_NO
 			) T
 	</select>
 	
@@ -225,7 +223,7 @@
 					, C.PAYMENT_KEY
 				FROM ORDER_MST A
 				LEFT JOIN DELIVERY_MST B ON A.ORDER_NO = B.ORDER_NO
-				LEFT JOIN PAYMENTS C ON A.ORDER_NO = C.ORDER_ID
+				LEFT JOIN PAYMENTS C ON A.ORDER_NO = C.ORDER_ID AND C.STATUS = 'DONE'
 				LEFT JOIN REFUND D ON A.ORDER_NO = D.ORDER_NO
 				WHERE A.ORDER_STATUS != '1000'
 				<if test="startDate neq null and startDate neq '' and endDate neq null and endDate neq ''">
@@ -247,7 +245,6 @@
 						</if>
 					</if>
 				</if>
-				GROUP BY A.ORDER_NO
 			) T
 		ORDER BY T.REG_DT DESC
 	</select>
@@ -285,6 +282,7 @@
 	
 	<!-- 대시보드 건수 정보 -->	
 	<select id="getDashBoardCnt" resultType="CamelHashMap">
+		/*AdmOrderMapper.getDashBoardCnt*/
 		SELECT
 			  COUNT(CASE WHEN DATE_FORMAT(A.ORDER_PAY_DT, '%Y%m%d') = DATE_FORMAT(NOW(), '%Y%m%d') AND A.ORDER_STATUS = '0000' THEN 1 END) AS NEW_ORDER_CNT
 			, COUNT(CASE WHEN A.ORDER_STATUS = '1001' THEN 1 END) AS PAY_WAIT_CNT

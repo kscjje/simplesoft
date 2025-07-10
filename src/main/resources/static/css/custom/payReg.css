@@ -134,3 +134,54 @@
 .colorred {
 	color:red;
 }
+/*업데이트버전 이하*/
+.step-indicator {
+    transition: all 0.3s ease;
+}
+.step-indicator.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+.step-indicator.completed {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    color: white;
+}
+.slide-container {
+    transform: translateX(0);
+    transition: transform 0.3s ease-in-out;
+}
+.slide-container > div {
+    min-height: 100%;
+}
+.gradient-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+.brand-logo {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 700;
+}
+.order-table {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+.input-focus:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    transition: all 0.3s ease;
+}
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+}
+.packaging-option {
+    transition: all 0.3s ease;
+}
+.packaging-option:hover {
+    transform: scale(1.05);
+}
+.packaging-option.selected {
+    border-color: #667eea;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+}

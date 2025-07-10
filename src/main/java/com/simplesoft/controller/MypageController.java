@@ -55,6 +55,7 @@ public class MypageController {
 		OrderVO order = orderService.selectOrderCheck(vo);
 		if(order != null) {
 			model.addAttribute("order",order);
+			model.addAttribute("receivePhone",EncryptUtils.AES256_Decrypt(order.getReceivePhone()));
 			model.addAttribute("refund",orderService.getRefundDetail(order));
 		} else {
 			return "/mypage/orderCheck";

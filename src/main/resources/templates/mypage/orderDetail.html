@@ -129,6 +129,50 @@
 					</th:block>
 				</div>
 		
+				<!-- 받는분 정보 카드 -->
+				<div class="bg-white rounded-2xl card-shadow p-6 mb-8">
+					<h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+						<i class="fas fas fa-user-tag mr-3 text-blue-500"></i>
+						받는분 정보
+					</h3>
+					
+					<div class="space-y-4">
+						<div class="flex justify-between items-center py-2">
+							<span class="text-gray-600">이름</span>
+							<span class="font-semibold" th:text="${order.receiveName}"></span>
+						</div>
+						<div class="flex justify-between items-center py-2">
+							<span class="text-gray-600">핸드폰</span>
+							<span class="font-semibold" th:text="${receivePhone}"></span>
+						</div>
+						<div class="flex flex-col sm:flex-row sm:justify-between sm:items-center py-2 space-y-1 sm:space-y-0">
+							<span class="text-gray-600 flex items-center">
+								주소
+							</span>
+							<span class="font-semibold break-words whitespace-normal w-full sm:w-auto" th:text="${order.receivePostNum} + ') ' + ${order.receiveAddr} + ' ' + ${order.receiveAddrDetail}"></span>
+						</div>
+						<div class="flex justify-between items-center py-2">
+							<span class="text-gray-600 flex items-center">
+								배송 유형
+							</span>
+							<span class="font-semibold" th:if="${order.delivKind == '1000'}">당일배송(안산)</span>
+							<span class="font-semibold" th:if="${order.delivKind == '2000'}">우체국 택배(안산 외)</span>
+						</div>
+						<div class="flex flex-col sm:flex-row sm:justify-between sm:items-center py-2 space-y-1 sm:space-y-0">
+							<span class="text-gray-600 flex items-center">
+								공동현관 비밀번호
+							</span>
+							<span class="font-semibold break-words whitespace-normal w-full sm:w-auto" th:text="${order.commonPwd}"></span>
+						</div>
+						<div class="flex flex-col sm:flex-row sm:justify-between sm:items-center py-2 space-y-1 sm:space-y-0">
+							<span class="text-gray-600 flex items-center">
+								전하실말씀
+							</span>
+							<span class="font-semibold break-words whitespace-normal w-full sm:w-auto" th:text="${order.bigo}"></span>
+						</div>
+					</div>
+				</div>
+		
 				<!-- 결제 정보 카드 -->
 				<div class="bg-white rounded-2xl card-shadow p-6 mb-8">
 					<h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
@@ -138,7 +182,10 @@
 					
 					<div class="space-y-4">
 						<div class="flex justify-between items-center py-2">
-							<span class="text-gray-600">상품금액</span>
+							<span class="text-gray-600 flex items-center">
+								<i class="fas fa-money-bill mr-2 text-green-500"></i>
+								상품금액
+							</span>
 							<span class="font-semibold" th:text="${#numbers.formatInteger(order.totalProductAmt,3,'COMMA')} +'원'"></span>
 						</div>
 						<div th:if="${order.delivKind != '2000' && order.totalDelyAmt > 0}" class="flex justify-between items-center py-2">
@@ -205,13 +252,12 @@
 				</div>
 				<!-- 주문 상태가 '0000'이고 결제일이 당일을 지났으며, 차단 조건에 해당하지 않는 경우 - 환불 신청 -->
 				<div class="flex flex-col md:flex-row gap-4 justify-center" th:if="${refund == null and order.orderStatus == '0000' and #strings.substring(order.orderPayDt, 0, 10) < #dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
-					<button type="button" onclick="fnRefundRequest()" class="border-2 border-red-300 text-red-600 px-8 py-3 rounded-full font-semibold hover:border-red-400 hover:bg-red-50 transition-all duration-300 flex items-center justify-center">
+					<button type="button" onclick="fnRefundRequest()" id="refundBtn" class="border-2 border-red-300 text-red-600 px-8 py-3 rounded-full font-semibold hover:border-red-400 hover:bg-red-50 transition-all duration-300 flex items-center justify-center">
 						<i class="fas fa-times mr-2"></i>
 						환불 신청
 					</button>
 				</div>
 			</div>
-			<!-- 배정관리 Modal -->
 			<div id="modalRefund" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 opacity-0 pointer-events-none">
 				<div class="modal-content bg-white rounded-lg shadow-xl max-w-lg w-full mx-4 transform scale-90">
 					<div class="p-6">
@@ -256,7 +302,6 @@
 						return;
 					}
 					if(!confirm("주문 취소 하시겠습니까?")) return;
-					let paymentKey = $("#p_paymentKey").val();
 					let orderNo = /*[[${order.orderNo}]]*/ "";
 					if(orderNo == ""){
 						alert("잠시 후에 다시 시도해 주세요.");
@@ -326,6 +371,30 @@
 					return hasTomorrowItems && isAfter4PM;
 				}
 				
+				//상품 중에 내일 기준 지난 상품이 있는지 체크
+				function fnBtnCheck(){
+					let productList = /*[[${order.productList}]]*/ "";
+					
+					// 현재 시간
+					const now = new Date();
+					const currentHour = now.getHours();
+	
+					// 내일 날짜를 YYYYMMDD 형식으로 구하기
+					const tomorrow = new Date();
+					tomorrow.setDate(tomorrow.getDate() + 1);
+					const tomorrowStr = tomorrow.getFullYear().toString() + 
+										(tomorrow.getMonth() + 1).toString().padStart(2, '0') + 
+										tomorrow.getDate().toString().padStart(2, '0');
+										
+					//console.log('내일 날짜:', tomorrowStr);
+					//console.log('현재 시간:', currentHour + '시');
+					
+					const hasTomorrowItems = productList.some(item => item.menuDay < tomorrowStr);
+					
+					if(hasTomorrowItems)$("#refundBtn").hide();
+					
+				}
+				
 				function openModal(modalId) {
 					const modal = document.getElementById(modalId);
 					modal.classList.remove('opacity-0', 'pointer-events-none');
@@ -366,6 +435,8 @@
 						}
 					});
 				}
+				
+				fnBtnCheck();
 			</script>
 		</main>
 </html>

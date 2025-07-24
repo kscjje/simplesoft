@@ -302,7 +302,7 @@ public class OrderController {
 			model.addAttribute("order", order);
 			model.addAttribute("clientKey", clientKey);
 		}
-		return "/order/payReg";
+		return "/order/payRegNew";
 	}
 	
 	private boolean timeCheck(String dateString) {

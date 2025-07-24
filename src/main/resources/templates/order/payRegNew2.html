@@ -63,6 +63,7 @@
 												<th:block th:if="${#strings.substring(msg,0,1) != '!'}">
 													<span th:text="${msg}"></span>
 												</th:block>
+												<th:block th:if="${msgStat.count % 3 == 0}"><br></th:block>
 											</th:block>
 										</th:block>
 									</div>
@@ -95,7 +96,7 @@
 					</div>
 				</div>
 			</div>
-			<form id="pc_form" method="post" onsubmit="return false;">
+			<form id="orderForm" method="post" onsubmit="return false;">
 				<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 					<!-- Left Column -->
 					<div class="space-y-6">
@@ -170,7 +171,7 @@
 								받으시는 분
 							</h2>
 							<label for="check1" class="flex items-center space-x-2 cursor-pointer">
-								<input type="checkbox" class="check1 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+								<input type="checkbox" id="check1" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
 								<span class="text-sm text-gray-700">주문자와 동일</span>
 							</label>
 						</div>
@@ -293,260 +294,57 @@
 			</form>
 			<button type="button" style="display:none;" class="btn btn-primary" id="modalPay" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></button>
 			<!-- Modal -->
-		</div>
-		
-		<!-- Mobile Slide Layout -->
-		<div class="md:hidden">
-			<!-- Step 1: Order Information -->
-			<div class="w-full mb-5">
-				<div class="bg-white rounded-lg shadow-lg p-6">
-					<h2 class="text-xl font-bold mb-4 text-gray-800">
-						<i class="fas fa-receipt text-blue-500 mr-2"></i>
-						주문 정보
-					</h2>
-					<div class="space-y-4">
-						<div th:each="rs,rsStat : ${order.productList}" class="bg-gray-50 p-4 rounded-lg">
-							<div th:text="${#temporals.createDate(rs.menuDay, 'yyyyMMdd')} + ' (' + ${#temporals.dayOfWeekName(#temporals.createDate(rs.menuDay, 'yyyyMMdd'))} + ')'" class="font-medium text-sm mb-2">2025-07-09 (수요일)</div>
-							<th:block th:each="msg,msgStat : ${#strings.setSplit(rs.menuMsg,'|')}">
-								<th:block th:if="${rs.orderSet == '1000'}">
-									<th:block th:if="${#strings.substring(msg,0,1) == '!'}">
-										<div th:text="${#strings.substring(msg,1) + ' (' + #strings.arraySplit(rs.menuMsgDetail ?: '', '|')[msgStat.index] + '개)'}" class="text-red-600 text-xs text-gray-600 mb-2"></div>
-									</th:block>
-									<th:block th:if="${#strings.substring(msg,0,1) != '!'}">
-										<div th:text="${msg + ' (' + #strings.arraySplit(rs.menuMsgDetail ?: '', '|')[msgStat.index] + '개)'}" class="text-xs text-gray-600 mb-2"></div>
-									</th:block>
-								</th:block>
-								<th:block th:if="${rs.orderSet == '2000' || rs.orderSet == '3000'}">
-									<th:block th:if="${#strings.substring(msg,0,1) == '!'}">
-										<span th:text="${#strings.substring(msg,1)}" class="text-xs text-gray-600 mb-2"></span>
-									</th:block>
-									<th:block th:if="${#strings.substring(msg,0,1) != '!'}">
-										<span th:text="${msg}" class="text-xs text-gray-600 mb-2"></span>	
-									</th:block>
-									<th:block th:if="${msgStat.count % 3 == 0}"><br></th:block>
-								</th:block>
-							</th:block>
-							<div class="mt-3 flex justify-between items-center">
-								<span th:text="${'수량: '+rs.orderQty}" class="text-sm"></span>
-								<span th:text="${#numbers.formatInteger(rs.payAmt, 3, 'COMMA')+'원'}" class="subAmount text-sm font-bold text-red-600"></span>
-							</div>
+			<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="staticBackdropLabel">결제하기</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
-						<div class="bg-gray-50 p-4 rounded-lg">
-							<div class="flex justify-between items-center">
-								<span class="text-sm">배송비</span>
-								<span id="delivAmount" th:text="${order.totalDelyAmt == 0 ? '무료' : #numbers.formatInteger(order.totalDelyAmt, 3, 'COMMA')+'원'}" class="text-sm font-bold text-red-600"></span>
-							</div>
-						</div>
-						<div class="border-t pt-4">
-							<div class="flex justify-between items-center">
-								<span class="text-lg font-bold">총 주문금액</span>
-								<span id="totalAmount" th:text="${#numbers.formatInteger(order.totalAmount + order.totalDelyAmt,3,'COMMA')}+'원'" class="text-xl font-bold text-green-600"></span>
+						<div class="wrapper">
+							<div class="box_section" style="padding: 40px 30px 50px 30px; margin-top: 30px; margin-bottom: 50px">
+								<!-- 결제 UI -->
+								<div id="payment-method"></div>
+								<!-- 이용약관 UI -->
+								<div id="agreement"></div>
+								<!-- 쿠폰 체크박스 -->
+								<!--<div style="padding-left: 30px">
+									<div class="checkable typography--p">
+										<label for="coupon-box" class="checkable__label typography--regular">
+											<input id="coupon-box" class="checkable__input" type="checkbox" aria-checked="true" />
+											<span class="checkable__label-text">5,000원 쿠폰 적용</span>
+										</label>
+									</div>
+								</div>-->
+								<!-- 결제하기 버튼 -->
+								<div class="flex space-x-4 mt-3">
+									<button type="button" id="payment-button" class="flex-1 btn-primary text-white py-3 px-6 rounded-lg font-medium">
+										<i class="fas fa-credit-card mr-2"></i>결제하기
+									</button>
+									<button type="button" data-bs-dismiss="modal" class="flex-1 bg-gray-500 text-white py-3 px-6 rounded-lg font-medium hover:bg-gray-600 transition-colors">
+										<i class="fas fa-times mr-2"></i>취소
+									</button>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-
-			<!-- Step 2: Orderer Information -->
-			<form id="mo_form" method="post" onsubmit="return false;">
-				<div class="w-full mb-5">
-					<div class="bg-white rounded-lg shadow-lg p-6">
-						<h2 class="text-xl font-bold mb-4 text-gray-800">
-							<i class="fas fa-user text-blue-500 mr-2"></i>
-							주문하시는 분
-						</h2>
-						<div class="space-y-4">
-							<div>
-								<label for="o_name_mo" class="block text-sm font-medium text-gray-700 mb-2"><font color="red">* </font>이름</label>
-								<input type="text" id="o_name_mo" name="orderName" maxlength="10" class="w-full px-3 py-3 border border-gray-300 rounded-md input-focus" placeholder="이름을 입력하세요">
-							</div>
-							<div>
-								<label for="o_pass_mo" class="block text-sm font-medium text-gray-700 mb-2"><font color="red">* </font>비밀번호</label>
-								<input type="password" id="o_pass_mo" name="orderPwd" maxlength="20" class="w-full px-3 py-3 border border-gray-300 rounded-md input-focus" placeholder="영,숫자 3~20자 (주문서 조회시 필요)">
-							</div>
-							<div>
-								<label for="o_tel_mo" class="block text-sm font-medium text-gray-700 mb-2">전화번호</label>
-								<input type="text" id="o_tel_mo" name="orderTel" class="phoneNumber w-full px-3 py-3 border border-gray-300 rounded-md input-focus">
-							</div>
-							<div>
-								<label for="o_phone_mo" class="block text-sm font-medium text-gray-700 mb-2"><font color="red">* </font>핸드폰</label>
-								<input type="text" id="o_phone_mo" name="orderPhone" class="phoneNumber w-full px-3 py-3 border border-gray-300 rounded-md input-focus">
-							</div>
-							<div>
-								<label class="block text-sm font-medium text-gray-700 mb-2"><font color="red">* </font>주소</label>
-								<div class="flex space-x-2 mb-2">
-									<input type="text" id="o_postNum_mo" name="orderPostNum" class="w-32 px-3 py-3 border border-gray-300 rounded-md input-focus" placeholder="우편번호" readonly>
-									<button type="button" onclick="execDaumPostcode()" class="px-4 py-3 bg-gray-600 text-white rounded-md hover:bg-gray-700 text-sm">검색</button>
-								</div>
-								<div id="wrap3_mo" class="w-full border border-gray-300 rounded-md mb-2" style="display:none; height: 300px; position: relative;">
-									<img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" alt="접기 버튼" class="absolute top-0 right-0 cursor-pointer z-10" onclick="foldDaumPostcode()">
-								</div>
-								<input type="text" id="o_addr_mo" name="orderAddr" class="w-full px-3 py-3 border border-gray-300 rounded-md input-focus mb-2" placeholder="기본주소" readonly>
-								<input type="text" id="o_addrDetail_mo" name="orderAddrDetail" class="w-full px-3 py-3 border border-gray-300 rounded-md input-focus" placeholder="상세주소를 입력하세요">
-							</div>
-							<div>
-								<label for="o_email_mo"class="block text-sm font-medium text-gray-700 mb-2"><font color="red">* </font>이메일</label>
-								<input type="text" id="o_email_mo" maxlength="30" class="w-full px-3 py-3 border border-gray-300 rounded-md input-focus mb-2" placeholder="이메일 아이디">
-								<span class="mt-1">@</span>
-								<input type="text" id="o_email2_mo" maxlength="30" class="w-full px-3 py-3 border border-gray-300 rounded-md input-focus mb-2" placeholder="이메일 도메인">
-								<select class="border border-gray-300 rounded px-3 py-2 w-full bg-white" onchange="res(this.value)">
-									<option value="">직접입력</option>
-									<option value="naver.com">naver.com</option>
-									<option value="daum.net">daum.net</option>
-									<option value="hanmail.net">hanmail.net</option>
-									<option value="nate.com">nate.com</option>
-									<option value="gmail.com">gmail.com</option>
-								</select>
-								<input type="text" id="od_email_mo" name="orderEmail" maxlength="20" class="hidden">
-							</div>
-						</div>
-					</div>
-				</div>
-	
-				<!-- Step 3: Recipient Information -->
-				<div class="w-full mb-5">
-					<div class="bg-white rounded-lg shadow-lg p-6">
-						<h2 class="text-xl font-bold mb-4 text-gray-800">
-							<i class="fas fa-user-friends text-blue-500 mr-2"></i>
-							받으시는 분
-						</h2>
-						<div class="mb-4">
-							<label class="flex items-center space-x-2 cursor-pointer p-3 bg-gray-50 rounded-lg">
-								<input type="checkbox" class="check1 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-								<span class="text-sm text-gray-700">주문자와 동일</span>
-							</label>
-						</div>
-						<div class="space-y-4">
-							<div>
-								<label for="r_name_mo"class="block text-sm font-medium text-gray-700 mb-2"><font color="red">* </font>이름</label>
-								<input type="text" id="r_name_mo" name="receiveName" maxlength="10" class="w-full px-3 py-3 border border-gray-300 rounded-md input-focus" placeholder="이름을 입력하세요">
-							</div>
-							<div>
-								<label for="r_tel_mo" class="block text-sm font-medium text-gray-700 mb-2">전화번호</label>
-								<input type="text" id="r_tel_mo" name="receiveTel" class="phoneNumber w-full px-3 py-3 border border-gray-300 rounded-md input-focus">
-							</div>
-							<div>
-								<label for="r_phone_mo" class="block text-sm font-medium text-gray-700 mb-2"><font color="red">* </font>핸드폰</label>
-								<input type="text" id="r_phone_mo" name="receivePhone"  class="phoneNumber w-full px-3 py-3 border border-gray-300 rounded-md input-focus">
-							</div>
-							<div>
-								<label class="block text-sm font-medium text-gray-700 mb-2"><font color="red">* </font>주소</label>
-								<div class="flex space-x-2 mb-2">
-									<input type="text" id="r_postNum_mo" name="receivePostNum" class="w-32 px-3 py-3 border border-gray-300 rounded-md input-focus" placeholder="우편번호" readonly>
-									<button type="button" onclick="execDaumPostcode2()" class="px-4 py-3 bg-gray-600 text-white rounded-md hover:bg-gray-700 text-sm">검색</button>
-								</div>
-								<div id="wrap2_mo" class="w-full border border-gray-300 rounded-md mb-2" style="display:none; height: 300px; position: relative;">
-									<img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" alt="접기 버튼" class="absolute top-0 right-0 cursor-pointer z-10" onclick="foldDaumPostcode2()">
-								</div>
-								<input type="text" id="r_addr_mo" name="receiveAddr" class="w-full px-3 py-3 border border-gray-300 rounded-md input-focus mb-2" placeholder="기본주소" readonly>
-								<input type="text" id="r_addrDetail_mo" name="receiveAddrDetail" class="w-full px-3 py-3 border border-gray-300 rounded-md input-focus" placeholder="상세주소를 입력하세요">
-							</div>
-						</div>
-					</div>
-				</div>
-	
-				<!-- Step 4: Additional Options -->
-				<div class="w-full">
-					<div class="bg-white rounded-lg shadow-lg p-6">
-						<h2 class="text-xl font-bold mb-4 text-gray-800">
-							<i class="fas fa-cogs text-blue-500 mr-2"></i>
-							추가 옵션
-						</h2>
-						<div class="space-y-6">
-							<div>
-								<label class="block text-sm font-medium text-gray-700 mb-3">포장 방법</label>
-								<div class="grid grid-cols-3 gap-3">
-									<div class="packaging-option border-2 border-gray-200 rounded-lg p-3 text-center cursor-pointer">
-										<div class="w-12 h-12 bg-gray-100 rounded-lg mx-auto mb-2 flex items-center justify-center">
-											<i class="fas fa-shopping-bag text-lg text-gray-400"></i>
-										</div>
-										<input type="radio" name="packaging" value="bag" class="hidden">
-										<span class="text-xs font-medium">비닐봉지</span>
-									</div>
-									<div class="packaging-option border-2 border-gray-200 rounded-lg p-3 text-center cursor-pointer">
-										<div class="w-12 h-12 bg-gray-100 rounded-lg mx-auto mb-2 flex items-center justify-center">
-											<i class="fas fa-box text-lg text-gray-400"></i>
-										</div>
-										<input type="radio" name="packaging" value="box1" class="hidden">
-										<span class="text-xs font-medium">박스(소)</span>
-									</div>
-									<div class="packaging-option border-2 border-gray-200 rounded-lg p-3 text-center cursor-pointer">
-										<div class="w-12 h-12 bg-gray-100 rounded-lg mx-auto mb-2 flex items-center justify-center">
-											<i class="fas fa-boxes text-lg text-gray-400"></i>
-										</div>
-										<input type="radio" name="packaging" value="box2" class="hidden">
-										<span class="text-xs font-medium">박스(대)</span>
-									</div>
-								</div>
-							</div>
-							<div>
-								<label class="block text-sm font-medium text-gray-700 mb-2">배송 메시지</label>
-								<textarea class="w-full px-3 py-3 border border-gray-300 rounded-md input-focus" rows="4" placeholder="배송 시 요청사항을 입력하세요"></textarea>
-							</div>
-							<div>
-								<label class="flex items-center space-x-2 cursor-pointer p-3 bg-gray-50 rounded-lg">
-									<input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-									<span class="text-sm text-gray-700">주문 내용 확인 및 결제 진행에 동의합니다</span>
-								</label>
-							</div>
-						</div>
-					</div>
-				</div>
-			</form>
-		</div>
-		<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h1 class="modal-title fs-5" id="staticBackdropLabel">결제하기</h1>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="wrapper">
-						<div class="box_section" style="padding: 40px 30px 50px 30px; margin-top: 30px; margin-bottom: 50px">
-							<!-- 결제 UI -->
-							<div id="payment-method"></div>
-							<!-- 이용약관 UI -->
-							<div id="agreement"></div>
-							<!-- 쿠폰 체크박스 -->
-							<!--<div style="padding-left: 30px">
-								<div class="checkable typography--p">
-									<label for="coupon-box" class="checkable__label typography--regular">
-										<input id="coupon-box" class="checkable__input" type="checkbox" aria-checked="true" />
-										<span class="checkable__label-text">5,000원 쿠폰 적용</span>
-									</label>
-								</div>
-							</div>-->
-							<!-- 결제하기 버튼 -->
-							<div class="flex space-x-4 mt-3">
-								<button type="button" id="payment-button" class="flex-1 btn-primary text-white py-3 px-6 rounded-lg font-medium">
-									<i class="fas fa-credit-card mr-2"></i>결제하기
-								</button>
-								<button type="button" data-bs-dismiss="modal" class="flex-1 bg-gray-500 text-white py-3 px-6 rounded-lg font-medium hover:bg-gray-600 transition-colors">
-									<i class="fas fa-times mr-2"></i>취소
-								</button>
-							</div>
-						</div>
-					</div>
-				</div>
 		</div>
 		<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 		<script th:inline="javascript">
 			
 			// 우편번호 찾기 찾기 화면을 넣을 element
-			var element_wrap_mo = document.getElementById('wrap3_mo');
 			var element_wrap = document.getElementById('wrap3');
-			var element_wrap2_mo = document.getElementById('wrap2_mo');
 			var element_wrap2 = document.getElementById('wrap2');
 			
 			function foldDaumPostcode() {
-				const vWrap = window.innerWidth >= 768 ? element_wrap : element_wrap_mo;
 				// iframe을 넣은 element를 안보이게 한다.
-				vWrap.style.display = 'none';
+				element_wrap.style.display = 'none';
 			}
 			function foldDaumPostcode2() {
-				const vWrap = window.innerWidth >= 768 ? element_wrap2 : element_wrap2_mo;
 				// iframe을 넣은 element를 안보이게 한다.
-				vWrap.style.display = 'none';
+				element_wrap2.style.display = 'none';
 			}
 			
 		 	// 우편번호 찾기
@@ -555,7 +353,6 @@
 					alert("다음 우편번호 postcode.v2.js 파일이 로드되지 않았습니다.");
 					return false;
 				}
-		 		const vWrap = window.innerWidth >= 768 ? element_wrap : element_wrap_mo;
 		 		
 				// 현재 scroll 위치를 저장해놓는다.
 				var currentScroll = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
@@ -598,28 +395,26 @@
 						}
 
 						// 우편번호와 주소 정보를 해당 필드에 넣는다.
-						document.getElementById("o_postNum").value = data.zonecode;
-						document.getElementById("o_postNum_mo").value = data.zonecode;
+						document.getElementById('o_postNum').value = data.zonecode;
 						document.getElementById("o_addr").value = addr;
-						document.getElementById("o_addr_mo").value = addr;
 
 						// iframe을 넣은 element를 안보이게 한다.
 						// (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않는다.)
-						vWrap.style.display = 'none';
+						element_wrap.style.display = 'none';
 
 						// 우편번호 찾기 화면이 보이기 이전으로 scroll 위치를 되돌린다.
 						document.body.scrollTop = currentScroll;
 					},
 					// 우편번호 찾기 화면 크기가 조정되었을때 실행할 코드를 작성하는 부분. iframe을 넣은 element의 높이값을 조정한다.
 					onresize : function(size) {
-						vWrap.style.height = size.height+'px';
+						element_wrap.style.height = size.height+'px';
 					},
 					width : '100%',
 					height : '100%'
-				}).embed(vWrap);
+				}).embed(element_wrap);
 
 				// iframe을 넣은 element를 보이게 한다.
-				vWrap.style.display = 'block';				
+				element_wrap.style.display = 'block';				
 			}
 		 	// 우편번호 찾기
 			function execDaumPostcode2(){
@@ -627,7 +422,7 @@
 					alert("다음 우편번호 postcode.v2.js 파일이 로드되지 않았습니다.");
 					return false;
 				}
-		 		const vWrap = window.innerWidth >= 768 ? element_wrap2 : element_wrap2_mo;
+		 		
 				// 현재 scroll 위치를 저장해놓는다.
 				var currentScroll = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
 				new daum.Postcode({
@@ -671,70 +466,50 @@
 						// 우편번호와 주소 정보를 해당 필드에 넣는다.
 						document.getElementById('r_postNum').value = data.zonecode;
 						document.getElementById("r_addr").value = addr;
-						document.getElementById('r_postNum_mo').value = data.zonecode;
-						document.getElementById("r_addr_mo").value = addr;
 
 						// iframe을 넣은 element를 안보이게 한다.
 						// (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않는다.)
-						vWrap.style.display = 'none';
+						element_wrap2.style.display = 'none';
 
 						// 우편번호 찾기 화면이 보이기 이전으로 scroll 위치를 되돌린다.
 						document.body.scrollTop = currentScroll;
 					},
 					// 우편번호 찾기 화면 크기가 조정되었을때 실행할 코드를 작성하는 부분. iframe을 넣은 element의 높이값을 조정한다.
 					onresize : function(size) {
-						vWrap.style.height = size.height+'px';
+						element_wrap2.style.height = size.height+'px';
 					},
 					width : '100%',
 					height : '100%'
-				}).embed(vWrap);
+				}).embed(element_wrap2);
 
 				// iframe을 넣은 element를 보이게 한다.
-				vWrap.style.display = 'block';				
+				element_wrap2.style.display = 'block';				
 			}
 			
 			//이메일 직접입력 셀렉트박스
 			function res(r){
-				debugger;
 				if(r ==""){
 					$("#o_email2").attr("readonly",false);
-					$("#o_email2_mo").attr("readonly",false);
 				} else {
 					$("#o_email2").attr("readonly",true);
-					$("#o_email2_mo").attr("readonly",true);
 				}
 				document.getElementById("o_email2").value=r;
-				document.getElementById("o_email2_mo").value=r;
 			
 				var email1=document.getElementById("o_email").value;
 				var email2=document.getElementById("o_email2").value;
 				
 				document.getElementById("od_email").value=email1+"@"+email2;
-				document.getElementById("od_email_mo").value=email1+"@"+email2;
 			}
 			//주문자와 동일
-			$(".check1").on("change", function () {
-				let checked = $(this).is(":checked");
-			
-				// 전체 체크 상태 통일
-				$(".check1").prop("checked", checked);
-			
-				if (checked) {
-					// PC 주소 복사
+			$("#check1").click(function(){
+				let checked = $("#check1").is(":checked");
+				if(checked){
 					$("#r_name").val($("#o_name").val());
 					$("#r_tel").val($("#o_tel").val());
 					$("#r_phone").val($("#o_phone").val());
 					$("#r_postNum").val($("#o_postNum").val());
 					$("#r_addr").val($("#o_addr").val());
 					$("#r_addrDetail").val($("#o_addrDetail").val());
-			
-					// 모바일 주소 복사
-					$("#r_name_mo").val($("#o_name_mo").val());
-					$("#r_tel_mo").val($("#o_tel_mo").val());
-					$("#r_phone_mo").val($("#o_phone_mo").val());
-					$("#r_postNum_mo").val($("#o_postNum_mo").val());
-					$("#r_addr_mo").val($("#o_addr_mo").val());
-					$("#r_addrDetail_mo").val($("#o_addrDetail_mo").val());
 				}
 			});
 			
@@ -866,8 +641,7 @@
 					alert("결제정보 확인 및 구매진행에 동의하셔야 주문이 가능합니다.");
 					return;
 				}
-				const formId = window.innerWidth >= 768 ? "pc_form" : "mo_form";
-				let orderVO = $("#" + formId).serializeObject();
+				let orderVO = $("#orderForm").serializeObject();
 				orderVO.orderNo = /*[[${orderNo}]]*/""; 
 				
 				$.ajax({

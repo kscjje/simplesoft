@@ -107,6 +107,7 @@
 						</if>
 					</if>
 				</if>
+				GROUP BY A.ORDER_NO
 			) T
 		ORDER BY T.REG_DT DESC
 		<if test="startPage neq null and startPage neq '' and endPage neq null and endPage neq '' or startPage eq 0">
@@ -146,6 +147,7 @@
 						</if>
 					</if>
 				</if>
+				GROUP BY A.ORDER_NO
 			) T
 	</select>
 	
@@ -245,6 +247,7 @@
 						</if>
 					</if>
 				</if>
+				GROUP BY A.ORDER_NO
 			) T
 		ORDER BY T.REG_DT DESC
 	</select>

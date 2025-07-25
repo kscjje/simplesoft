@@ -76,24 +76,28 @@
 						<div class="space-y-4">
 							<div class="product-item bg-gray-50 rounded-lg p-4">
 								<div class="items-center justify-between">
-									<h4 class="font-semibold text-gray-800 mb-2">
+									<h4 class="font-semibold text-gray-800 mb-2 text-sm">
 										<span th:text="${rs.menuDay.substring(0,4)} + '.' + ${rs.menuDay.substring(4,6)} + '.' + ${rs.menuDay.substring(6,8)}"></span>
-										<th:block th:if="${rs.orderSet == '1000'}"> 일반세트(추가)</th:block>
-										<th:block th:if="${rs.orderSet == '2000'}"> 1인분세트</th:block>
-										<th:block th:if="${rs.orderSet == '3000'}"> 일반세트</th:block>
+										<span class="text-right inline-block float-right">
+											<th:block th:if="${rs.orderSet == '1000'}"> 일반세트(추가)</th:block>
+											<th:block th:if="${rs.orderSet == '2000'}"> 1인분세트</th:block>
+											<th:block th:if="${rs.orderSet == '3000'}"> 일반세트</th:block>
+											<th:block th:if="${rs.delivTime == '1000'}"> 오전배달</th:block>
+											<th:block th:if="${rs.delivTime == '2000'}"> 오후배달</th:block>
+										</span>
 									</h4>
 									<div th:class="${rs.orderSet == '1000'} ? 'md:grid md:grid-cols-3 md:gap-2 text-m text-gray-600' : 'grid grid-cols-2 md:grid-cols-3 gap-2 text-m text-gray-600'">
 										<th:block th:if="${rs.orderSet == '1000'}">
 											<th:block th:each="msg,msgStat : ${#strings.setSplit(rs.menuMsg,'|')}">
 												<th:block th:if="${#strings.substring(msg,0,1) == '!'}">
 													<div class="block md:inline">
-														<span style="color:red;" th:text="${#strings.substring(msg,1)}"></span>
-														<span style="color:red;" th:text="'('+${#strings.arraySplit(rs.menuMsgDetail ?: '', '|')[msgStat.index]}+'개)'"></span>
+														<span class="text-red-600 text-sm" th:text="${#strings.substring(msg,1)}"></span>
+														<span class="text-red-600 text-sm" th:text="'('+${#strings.arraySplit(rs.menuMsgDetail ?: '', '|')[msgStat.index]}+'개)'"></span>
 													</div>
 												</th:block>
 												<th:block th:if="${#strings.substring(msg,0,1) != '!'}">
 													<div class="block md:inline">
-														<span th:text="${msg}+'('+${#strings.arraySplit(rs.menuMsgDetail ?: '', '|')[msgStat.index]}+'개)'"></span>
+														<span class="text-sm" th:text="${msg}+'('+${#strings.arraySplit(rs.menuMsgDetail ?: '', '|')[msgStat.index]}+'개)'"></span>
 													</div>
 												</th:block>
 											</th:block>
@@ -101,10 +105,10 @@
 										<th:block th:if="${rs.orderSet == '2000' || rs.orderSet == '3000'}">
 											<th:block th:each="msg,msgStat : ${#strings.setSplit(rs.menuMsg,'|')}">
 												<th:block th:if="${#strings.substring(msg,0,1) == '!'}">
-													<span style="color:red;" th:text="${#strings.substring(msg,1)}"></span>
+													<span class="text-red-600 text-sm" th:text="${#strings.substring(msg,1)}"></span>
 												</th:block>
 												<th:block th:if="${#strings.substring(msg,0,1) != '!'}">
-													<span th:text="${msg}"></span>
+													<span class="text-sm" th:text="${msg}"></span>
 												</th:block>
 											</th:block>
 										</th:block>

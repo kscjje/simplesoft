@@ -143,9 +143,9 @@
 								<div>
 									<label for="o_email" class="block text-sm font-medium text-gray-700 mb-2"><font color="red">* </font>이메일</label>
 									<div class="flex flex-wrap items-center gap-2">
-										<input type="text" id="o_email" maxlength="30" class="border border-gray-300 rounded px-3 py-2 w-1/3" placeholder="이메일 아이디">
+										<input type="text" name="copyEmail" id="o_email" maxlength="30" class="border border-gray-300 rounded px-3 py-2 w-1/3" placeholder="이메일 아이디">
 										<span class="mt-1">@</span>
-										<input type="text" id="o_email2" maxlength="30" class="border border-gray-300 rounded px-3 py-2 w-1/3" placeholder="이메일 도메인">
+										<input type="text" name="copyEmail2" id="o_email2" maxlength="30" class="border border-gray-300 rounded px-3 py-2 w-1/3" placeholder="이메일 도메인">
 										<select class="border border-gray-300 rounded px-3 py-2 w-1/4 bg-white" onchange="res(this.value)">
 											<option value="">직접입력</option>
 											<option value="naver.com">naver.com</option>
@@ -170,7 +170,7 @@
 								받으시는 분
 							</h2>
 							<label for="check1" class="flex items-center space-x-2 cursor-pointer">
-								<input type="checkbox" class="check1 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+								<input id="check1" type="checkbox" class="check1 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
 								<span class="text-sm text-gray-700">주문자와 동일</span>
 							</label>
 						</div>
@@ -219,17 +219,17 @@
 							<label class="block text-sm font-medium text-gray-700 mb-2"><font color="red">* </font>배송유형</label>
 						</label>
 						<div class="flex flex-col sm:flex-row gap-4">
-							<label class="flex items-center space-x-2 cursor-pointer">
+							<label for="radio1" class="flex items-center space-x-2 cursor-pointer">
 								<input type="radio" name="delivKind" id="radio1" value="1000" class="form-radio text-blue-600 focus:ring-blue-500">
 								<span class="text-sm text-gray-700">당일배송(안산)</span>
 							</label>
-							<label class="flex items-center space-x-2 cursor-pointer" data-bs-toggle="tooltip" data-bs-placement="top" title="택배비 4,000원이 추가됩니다.">
+							<label for="radio2" class="flex items-center space-x-2 cursor-pointer" data-bs-toggle="tooltip" data-bs-placement="top" title="택배비 4,000원이 추가됩니다.">
 								<input type="radio" name="delivKind" id="radio2" value="2000" class="form-radio text-blue-600 focus:ring-blue-500">
 								<span class="text-sm text-gray-700">우체국 택배(안산 외)</span>
 							</label>
 						</div>
 						<div>
-							<label class="block text-sm font-medium text-gray-700 mb-2"><font color="red">* </font>포장가방</label>
+							<label id="packagingFocus" class="block text-sm font-medium text-gray-700 mb-2"><font color="red">* </font>포장가방</label>
 							<div class="grid grid-cols-3 gap-3">
 								<div class="packaging-option border-2 border-gray-200 rounded-lg p-3 text-center cursor-pointer" data-bs-toggle="tooltip" data-bs-placement="top" title="보증금 5,000원이 추가됩니다.">
 									<div class="w-16 h-16 bg-gray-100 rounded-lg mx-auto mb-2 flex items-center justify-center">
@@ -273,8 +273,8 @@
 							</div>
 						</div>
 						<div>
-							<label for="agree1" class="flex items-center space-x-2 cursor-pointer">
-								<input type="checkbox" id="agree1" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+							<label class="flex items-center space-x-2 cursor-pointer">
+								<input type="checkbox" class="agree rounded border-gray-300 text-blue-600 focus:ring-blue-500">
 								<span class="text-sm text-gray-700">주문 내용 확인 및 결제 진행에 동의합니다</span>
 							</label>
 						</div>
@@ -386,9 +386,9 @@
 							</div>
 							<div>
 								<label for="o_email_mo"class="block text-sm font-medium text-gray-700 mb-2"><font color="red">* </font>이메일</label>
-								<input type="text" id="o_email_mo" maxlength="30" class="w-full px-3 py-3 border border-gray-300 rounded-md input-focus mb-2" placeholder="이메일 아이디">
+								<input type="text" name="copyEmail" id="o_email_mo" maxlength="30" class="w-full px-3 py-3 border border-gray-300 rounded-md input-focus mb-2" placeholder="이메일 아이디">
 								<span class="mt-1">@</span>
-								<input type="text" id="o_email2_mo" maxlength="30" class="w-full px-3 py-3 border border-gray-300 rounded-md input-focus mb-2" placeholder="이메일 도메인">
+								<input type="text" name="copyEmail2" id="o_email2_mo" maxlength="30" class="w-full px-3 py-3 border border-gray-300 rounded-md input-focus mb-2" placeholder="이메일 도메인">
 								<select class="border border-gray-300 rounded px-3 py-2 w-full bg-white" onchange="res(this.value)">
 									<option value="">직접입력</option>
 									<option value="naver.com">naver.com</option>
@@ -410,8 +410,8 @@
 							받으시는 분
 						</h2>
 						<div class="mb-4">
-							<label class="flex items-center space-x-2 cursor-pointer p-3 bg-gray-50 rounded-lg">
-								<input type="checkbox" class="check1 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+							<label for="check2" class="flex items-center space-x-2 cursor-pointer p-3 bg-gray-50 rounded-lg">
+								<input id="check2" type="checkbox" class="check1 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
 								<span class="text-sm text-gray-700">주문자와 동일</span>
 							</label>
 						</div>
@@ -455,18 +455,18 @@
 							<div>
 								<label class="block text-sm font-medium text-gray-700 mb-3"><font color="red">* </font>배송유형</label>
 								<div class="grid grid-cols-2 gap-2">
-									<label class="flex items-center space-x-2 cursor-pointer">
+									<label for="radio1_mo"class="flex items-center space-x-2 cursor-pointer">
 										<input type="radio" name="delivKind" id="radio1_mo" value="1000">
 										<span class="text-sm text-gray-700">당일배송(안산)</span>
 									</label>
-									<label class="flex items-center space-x-2 cursor-pointer" data-bs-toggle="tooltip" data-bs-placement="top" title="택배비 4,000원이 추가됩니다.">
+									<label for="radio2_mo" class="flex items-center space-x-2 cursor-pointer" data-bs-toggle="tooltip" data-bs-placement="top" title="택배비 4,000원이 추가됩니다.">
 										<input type="radio" name="delivKind" id="radio2_mo" value="2000">
 										<span class="text-sm text-gray-700">우체국 택배(안산 외)</span>
 									</label>
 								</div>
 							</div>
 							<div>
-								<label class="block text-sm font-medium text-gray-700 mb-3"><font color="red">* </font>포장가방</label>
+								<label id="packagingFocus_mo" class="block text-sm font-medium text-gray-700 mb-3"><font color="red">* </font>포장가방</label>
 								<div class="grid grid-cols-3 gap-3">
 									<div class="packaging-option border-2 border-gray-200 rounded-lg p-3 text-center cursor-pointer" data-bs-toggle="tooltip" data-bs-placement="top" title="보증금 5,000원이 추가됩니다.">
 										<div class="w-12 h-12 bg-gray-100 rounded-lg mx-auto mb-2 flex items-center justify-center">
@@ -510,8 +510,8 @@
 								</div>
 							</div>
 							<div>
-								<label for="agree1_mo" class="flex items-center space-x-2 cursor-pointer p-3 bg-gray-50 rounded-lg">
-									<input id="agree1_mo" type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+								<label class="flex items-center space-x-2 cursor-pointer p-3 bg-gray-50 rounded-lg">
+									<input type="checkbox" class="agree rounded border-gray-300 text-blue-600 focus:ring-blue-500">
 									<span class="text-xs text-gray-700">주문 내용 확인 및 결제 진행에 동의합니다</span>
 								</label>
 							</div>
@@ -730,7 +730,6 @@
 			
 			//이메일 직접입력 셀렉트박스
 			function res(r){
-				debugger;
 				if(r ==""){
 					$("#o_email2").attr("readonly",false);
 					$("#o_email2_mo").attr("readonly",false);
@@ -745,7 +744,6 @@
 				var email2=document.getElementById("o_email2").value;
 				
 				document.getElementById("od_email").value=email1+"@"+email2;
-				document.getElementById("od_email_mo").value=email1+"@"+email2;
 			}
 			//주문자와 동일
 			$(".check1").on("change", function () {
@@ -773,6 +771,10 @@
 				}
 			});
 			
+			$(".agree").on("change", function () {
+				let checked = $(this).is(":checked");
+				$(".agree").prop("checked", checked);
+			});
 			//주문하기
 			fnSubmit = function(){
 				const pattern = /^[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*$/;
@@ -788,6 +790,15 @@
 				const vOrderEmail	= window.innerWidth >= 768 ? "o_email" : "o_email_mo";
 				const vOrderEmail2	= window.innerWidth >= 768 ? "o_email2" : "o_email2_mo";
 				
+				const rName			= window.innerWidth >= 768 ? "r_name" : "r_name_mo";
+				const rPhone		= window.innerWidth >= 768 ? "r_phone" : "r_phone_mo";
+				const rPostNum		= window.innerWidth >= 768 ? "r_postNum" : "r_postNum_mo";
+				const rAddr			= window.innerWidth >= 768 ? "r_addr" : "r_addr_mo";
+				const rAddrDetail	= window.innerWidth >= 768 ? "r_addrDetail" : "r_addrDetail_mo";
+				
+				const rRadio1		= window.innerWidth >= 768 ? "radio1" : "radio1_mo";
+				const packagingFocus= window.innerWidth >= 768 ? "packagingFocus" : "packagingFocus_mo";
+				
 				let o_name		= $(`#${vOrderName}`).val();
 				let o_pass		= $(`#${vOrderPass}`).val();
 				let o_phone		= $(`#${vOrderPhone}`).val();
@@ -799,11 +810,11 @@
 				
 				let delivKind	= $('input[name=delivKind]').is(":checked");
 				let packaging	= $('input[name=packaging]').is(":checked");
-				let r_name		= $("#r_name").val();
-				let r_phone		= $("#r_phone").val();
-				let r_postNum	= $("#r_postNum").val();
-				let r_addr		= $("#r_addr").val();
-				let r_addrDetail= $("#r_addrDetail").val();
+				let r_name		= $(`#${rName}`).val();
+				let r_phone		= $(`#${rPhone}`).val();
+				let r_postNum	= $(`#${rPostNum}`).val();
+				let r_addr		= $(`#${rAddr}`).val();
+				let r_addrDetail= $(`#${rAddrDetail}`).val();
 				
 				if(o_name.replaceAll(" ", "") == ""){
 					alert("주문하시는 분 이름을 입력해 주세요.");
@@ -865,48 +876,48 @@
 				
 				if(r_name.replaceAll(" ", "") == ""){
 					alert("받으시는 분 이름을 입력해 주세요.");
-					setTimeout( function(){ $("#r_name").focus(); }, 1 );
+					setTimeout( function(){ $("#"+rName).focus(); }, 1 );
 					return;
 				} else if(!pattern.test(r_name) == true){
 					alert("공백 혹은 특수문자가 입력되었습니다.");
-					setTimeout( function(){ $("#r_name").focus(); }, 1 );
+					setTimeout( function(){ $("#"+rName).focus(); }, 1 );
 					return;
 				}
 				if(r_phone.replaceAll(" ", "") == ""){
 					alert("핸드폰번호를 입력해 주세요.");
-					setTimeout( function(){ $("#r_phone").focus(); }, 1 );
+					setTimeout( function(){ $("#"+rPhone).focus(); }, 1 );
 					return;
 				}
 				if(r_postNum.replaceAll(" ", "") == ""){
 					alert("주소 검색을 해주세요.");
-					setTimeout( function(){ $("#r_postNum").focus(); }, 1 );
+					setTimeout( function(){ $("#"+rPostNum).focus(); }, 1 );
 					return;
 				} else if(!pattern.test(r_postNum) == true){
 					alert("공백 혹은 특수문자가 입력되었습니다.");
-					setTimeout( function(){ $("#r_postNum").focus(); }, 1 );
+					setTimeout( function(){ $("#"+rPostNum).focus(); }, 1 );
 					return;
 				}
 				if(r_addr.replaceAll(" ", "") == ""){
 					alert("주소 검색을 해주세요.");
-					setTimeout( function(){ $("#r_addr").focus(); }, 1 );
+					setTimeout( function(){ $("#"+rAddr).focus(); }, 1 );
 					return;
 				}
 				if(r_addrDetail.replaceAll(" ", "") == ""){
 					alert("상세 주소를 입력해 주세요.");
-					setTimeout( function(){ $("#r_addrDetail").focus(); }, 1 );
+					setTimeout( function(){ $("#"+rAddrDetail).focus(); }, 1 );
 					return;
 				}
 				if(!delivKind){
 					alert("배송 유형을 선택해 주세요.");
-					setTimeout( function(){ $("#radio1").focus(); }, 1 );
+					setTimeout( function(){ $("#"+rRadio1).focus(); }, 1 );
 					return;
 				}
 				if(!packaging){
 					alert("포장가방을 선택해 주세요.");
-					setTimeout( function(){ $("#radio3").focus(); }, 1 );
+					setTimeout( function(){ $("#"+packagingFocus).get(0).scrollIntoView(); }, 1 );
 					return;
 				}
-				if(!$("#agree1").is(":checked")){
+				if(!$(".agree").is(":checked")){
 					alert("결제정보 확인 및 구매진행에 동의하셔야 주문이 가능합니다.");
 					return;
 				}
@@ -1013,6 +1024,11 @@
 				});
 				
 				$("input:radio[name='delivKind']").on("change", function(){
+					// 선택된 radio의 값
+					let selectedValue = $(this).val();
+					// 해당 value를 가진 radio를 체크 상태로 설정
+					$("input:radio[name='delivKind'][value='" + selectedValue + "']").prop("checked", true);
+					
 					let delivAmount = 0;		//배송비
 					let orderQty = 0;			//총수량
 					let totalAmount = 0;		//총금액
@@ -1048,6 +1064,34 @@
 				});
 				
 			});
+			let isMobile = window.innerWidth < 768;
+			window.addEventListener("resize", function() {
+				const nowMobile = window.innerWidth < 768;
+
+			    // PC → 모바일 또는 모바일 → PC 전환 시에만 실행
+			    if (nowMobile !== isMobile) {
+			        isMobile = nowMobile;
+			
+			        syncFormValues();
+			    }
+			});
+			
+			function syncFormValues() {
+			    // PC → MO 또는 MO → PC로 복사
+			    const sourceForm = isMobile ? '#pc_form' : '#mo_form';
+			    const targetForm = isMobile ? '#mo_form' : '#pc_form';
+			
+			    // sourceForm의 모든 input 값을 targetForm으로 복사
+			    $(sourceForm).find('input, select, textarea').each(function () {
+			        const name = $(this).attr('name');
+			        const value = $(this).val();
+			
+			        if (name) {
+			            const $targetInput = $(targetForm).find('[name="' + name + '"]');
+			            $targetInput.val(value);
+			        }
+			    });
+			}
 		</script>
 	</main>
 </html>

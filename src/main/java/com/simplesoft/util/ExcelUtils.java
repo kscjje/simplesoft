@@ -183,6 +183,7 @@ public class ExcelUtils {
 		return multipartFileToWorkbook(multipartFile);
 	}
 
+	@SuppressWarnings("deprecation")
 	private static void verifyFileExtension(MultipartFile multipartFile) throws InvalidFormatException {
 		if (!isExcelExtension(multipartFile.getOriginalFilename())) {
 			throw new InvalidFormatException("This file extension is not verify", multipartFile, null);

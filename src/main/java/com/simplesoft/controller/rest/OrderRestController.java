@@ -143,6 +143,7 @@ public class OrderRestController {
 		return new CommonResponse<Map<String, Object>>(returnData);
 	}
 	//주문 결제 취소
+	@SuppressWarnings("unchecked")
 	@PostMapping(value = "/payCancelAjax")
 	public BasicResponse payCancelAjax(@RequestParam Map<String, Object> paramMap) throws ParseException {
 		

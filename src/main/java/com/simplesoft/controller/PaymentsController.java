@@ -54,6 +54,7 @@ public class PaymentsController {
 	@Value("${widgetSecretKey}")
 	String widgetSecretKey;
 	
+	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@PostMapping(value = "/confirm")
 	public BasicResponse confirmPayment(HttpServletRequest request, @RequestBody String jsonBody) throws Exception {

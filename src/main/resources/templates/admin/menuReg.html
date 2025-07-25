@@ -62,6 +62,10 @@
 				border-radius: 5px;
 				transition: background-color 0.3s ease;
 			}
+			.addFullButton {
+				left: 25%;
+				background-color: rgb(255, 128, 64);
+			}
 			.addButton {
 				left: 34%;
 				background-color: rgb(0, 128, 255);
@@ -253,12 +257,14 @@
 							
 							//매칭되는 식단데이터가 없을 경우 defalut로 생성 
 							if(k == result.length-1 && !find) {
+								addHtml += "<button type='button' class='cartButton addFullButton mt-3' onclick='addFullBtn(this)'>생성</button>";
 								addHtml += "<button type='button' class='cartButton addButton mt-3' onclick='addBtn(this)'>추가</button>";
 								addHtml += "<button type='button' class='cartButton saveButton mt-3' onclick='saveBtn(this,"+firstSundayOfThisWeek.getFullYear()+month+day+")'>저장</button>";
 							}
 						}
 						if(result.length == 0 ) {
-							addHtml += "<button type='button' class='cartButton addButton' onclick='addBtn(this)'>추가</button>";
+							addHtml += "<button type='button' class='cartButton addFullButton mt-3' onclick='addFullBtn(this)'>생성</button>";
+							addHtml += "<button type='button' class='cartButton addButton' onclick='addBtn(this)'>ㅌ추가</button>";
 							addHtml += "<button type='button' class='cartButton saveButton mt-3' onclick='saveBtn(this,"+firstSundayOfThisWeek.getFullYear()+month+day+")'>저장</button>";
 						}
 						
@@ -299,7 +305,24 @@
 				//툴팁 이펙트 효과
 				$('[data-bs-toggle="tooltip"]').tooltip();
 			});
-
+			//생성버튼
+			function addFullBtn(selector){
+				let menuLength = $(selector).siblings("form").find(".menu").length;
+				if(menuLength > 4){
+					alert("최대 5개까지 가능합니다.");
+					return;
+				}
+				for(let i = menuLength; i < 6; i ++){
+					let v_html = 	"<form onsubmit='return false;'>";
+						v_html += 		"<div class='menu mt-1 ms-5'>";
+						v_html += 			"<input type='checkbox' name='hot' class='me-1'>";
+						v_html += 			"<input type='text' name='menuMsg' class='inputText me-1'>";
+						v_html += 			"<i class='bi bi-x-circle me-4' style='font-size:20px;cursor:pointer;color:red;' onclick='$(this).parent().remove()'></i>";
+						v_html += 		"</div>";
+						v_html += 	"</form";
+					$(selector).before(v_html);
+				}
+			}
 			//추가 버튼			
 			function addBtn(selector){
 				if($(selector).siblings("form").find(".menu").length > 5){

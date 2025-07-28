@@ -1032,7 +1032,6 @@
 				$("input:radio[name='delivKind']").on("change", function(){
 					// 선택된 radio의 값
 					let selectedValue = $(this).val();
-					alert(					selectedValue)
 					// 해당 value를 가진 radio를 체크 상태로 설정
 					$("input:radio[name='delivKind'][value='" + selectedValue + "']").prop("checked", true);
 					

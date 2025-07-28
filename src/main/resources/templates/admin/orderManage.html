@@ -264,8 +264,8 @@
 										<button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">상품정보</button>
 										<button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">결제정보</button>
 									</div>
-									<span id="cancels" style="color: red;" class="ms-auto me-4"></span>
-									<button type="button" class="btn text-danger ms-auto me-2 cancelBtn" onclick="fnPayCancel()">결제취소</button>
+									<!--<span id="cancels" style="color: red;" class="ms-auto me-4"></span>
+									<button type="button" class="btn text-danger ms-auto me-2 cancelBtn" onclick="fnPayCancel()">결제취소</button>-->
 								</nav>
 								<div class="tab-content" id="nav-tabContent">
 									<div class="tab-pane fade show active" style="height: 230px;overflow-y: scroll;" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
@@ -939,34 +939,6 @@
 				}
 				formattedMsg = formattedMsg.replace(/\!/g,""); // | 앞에 줄 바꿈 추가
 				return formattedMsg;
-			}
-			
-			//결제 취소
-			function fnPayCancel(){
-				
-				if(!confirm("결제 취소 하시겠습니까?")) return;
-				let paymentKey = $("#p_paymentKey").val();
-				let formData = {
-					paymentKey : paymentKey
-				}
-				$.showMask();
-				$.ajax({
-					url : "/admin/rest/order/payCancelAjax",
-					type : "POST",
-					dataType : "json",
-					data : formData,
-					success : function(result) {
-						$.hideMask();
-						if(result.data.code){
-							alert(result.data.message)	
-						} else {
-							alert('결제 취소되었습니다.')
-						}
-					}, error : function(request, status, error) {
-						$.hideMask();
-						alert("관리자에게 문의해 주세요.");
-					}
-				});
 			}
 		</script>
 	</main>

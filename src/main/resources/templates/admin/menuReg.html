@@ -229,6 +229,13 @@
 							if(result[k].menuDay.substring(4,8) == month+day){
 								addHtml +="<form onsubmit='return false;'>";
 								addHtml +=		"<input type='hidden' id='check"+month+day+"' class='useYn seq"+result[k].menuBoardSeq+"' value='"+result[k].useYn+"'>";
+								addHtml +=		`<div class="mt-2 ms-3" style="text-align: center;">`;
+								addHtml +=      	`<select name="delivOption" class="form-select" style="display: inline-block;width: 140px; font-size: 0.875rem; padding: 0.25rem 0.5rem;"> >`;
+								addHtml += `<option value="" ${result[k].delivOption === "" ? "selected" : ""}>전체</option>`;
+								addHtml += `<option value="0000" ${result[k].delivOption === "0000" ? "selected" : ""}>오전만 배달</option>`;
+								addHtml += `<option value="0001" ${result[k].delivOption === "0001" ? "selected" : ""}>오후만 배달</option>`;
+								addHtml +=			`</select>`;
+								addHtml +=		`</div>`;
 								if(result[k].menuMsg.split("|")){
 									let menuMsg = result[k].menuMsg.split("|");
 									for(let index = 0; index < menuMsg.length; index++) {
@@ -372,6 +379,8 @@
 				let checkName = $(selector).siblings("form").find("input[name='hot']");
 				//메뉴명
 				let menuMsg = $(selector).siblings("form").find("input[name='menuMsg']");
+				
+				let delivOption = $(selector).siblings("form").find("select[name='delivOption']").val();
 				//메뉴 한 컬럼에 저장하기 위해 포맷
 				let v_msg = "";
 				
@@ -391,7 +400,8 @@
 				
 				let formData = {
 					menuMsg	: v_msg,
-					menuDay	: yyyymmdd
+					menuDay	: yyyymmdd,
+					delivOption:delivOption
 				}
 				
 				$.showMask();

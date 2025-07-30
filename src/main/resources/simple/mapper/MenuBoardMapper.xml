@@ -6,9 +6,9 @@
 	<insert id="insertMenuBoard" parameterType="hashMap">
 		/* MenuBoardMapper.insertMenuBoard */
 		INSERT INTO MENU_BOARD
-			(MENU_DAY, MENU_MSG, USE_YN, REG_USER, REG_DT)
+			(MENU_DAY, MENU_MSG, DELIV_OPTION, USE_YN, REG_USER, REG_DT)
 		VALUES
-			(#{menuDay}, #{menuMsg}, 'Y', 'admin', NOW())
+			(#{menuDay}, #{menuMsg}, #{delivOption}, 'Y', 'admin', NOW())
 	</insert>
 	
 	<!-- 식단표 수정 -->
@@ -16,6 +16,7 @@
 		/* MenuBoardMapper.updateMenuBoard */
 		UPDATE MENU_BOARD SET 
 			  MENU_MSG = #{menuMsg}
+			, DELIV_OPTION = #{delivOption}
 			, UPT_USER = 'admin'
 			, UPT_DT = NOW()
 		WHERE MENU_BOARD_SEQ = #{menuBoardSeq}
@@ -52,6 +53,7 @@
 			  A.MENU_BOARD_SEQ
 			, A.MENU_DAY
 			, A.MENU_MSG
+			, A.DELIV_OPTION
 			, A.USE_YN
 			, A.REG_USER
 			, DATE_FORMAT(A.REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
@@ -81,6 +83,7 @@
 			  A.MENU_BOARD_SEQ
 			, A.MENU_DAY
 			, A.MENU_MSG
+			, A.DELIV_OPTION
 			, A.USE_YN
 			, A.REG_USER
 			, DATE_FORMAT(A.REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
@@ -98,6 +101,7 @@
 			  A.MENU_BOARD_SEQ
 			, A.MENU_DAY
 			, A.MENU_MSG
+			, A.DELIV_OPTION
 			, A.USE_YN
 			, A.REG_USER
 			, DATE_FORMAT(A.REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT

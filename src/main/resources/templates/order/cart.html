@@ -315,8 +315,14 @@ if(cartList[i].orderSet == 1000){
 					addHtml +=		"</td>";
 					addHtml +=		"<td style='vertical-align:middle;'>";
 					addHtml +=			"<select id='time_"+cartList[i].cartNo+"' class='inputSelect' onchange='fnSelectOption2(this)'>";
-					addHtml +=				"<option value='1000'" + (cartList[i].delivTime == 1000 ? " selected" : "") + ">오전배달(8~10시)</option>";
-					addHtml +=				"<option value='2000'" + (cartList[i].delivTime == 2000 ? " selected" : "") + ">오후배달(1~4시)</option>";
+					if(cartList[i].delivOption === '0000'){
+						addHtml +=				"<option value='1000'" + (cartList[i].delivTime == 1000 ? " selected" : "") + ">오전배달(8~10시)</option>";	
+					} else if (cartList[i].delivOption === '0001'){
+						addHtml +=				"<option value='2000'" + (cartList[i].delivTime == 2000 ? " selected" : "") + ">오후배달(1~4시)</option>";
+					} else {
+						addHtml +=				"<option value='1000'" + (cartList[i].delivTime == 1000 ? " selected" : "") + ">오전배달(8~10시)</option>";
+						addHtml +=				"<option value='2000'" + (cartList[i].delivTime == 2000 ? " selected" : "") + ">오후배달(1~4시)</option>";
+					}
 					addHtml +=			"</select>";
 					addHtml +=		"</td>";
 					

@@ -332,8 +332,8 @@
 			}
 			//추가 버튼			
 			function addBtn(selector){
-				if($(selector).siblings("form").find(".menu").length > 5){
-					alert("최대 6개까지 가능합니다.");
+				if($(selector).siblings("form").find(".menu").length > 4){
+					alert("최대 5개까지 가능합니다.");
 					return;
 				}
 				let v_html = 	"<form onsubmit='return false;'>";

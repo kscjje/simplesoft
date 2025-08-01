@@ -50,6 +50,30 @@ public class HomeController {
 	public String foodtable() {
 		return "foodtable";
 	}
+	@GetMapping("room")
+	public String room() {
+		return "room";
+	}
+	@GetMapping("room2")
+	public String room2() {
+		return "room2";
+	}
+	@GetMapping("room3")
+	public String room3() {
+		return "room3";
+	}
+	@GetMapping("room4")
+	public String room4() {
+		return "room4";
+	}
+	@GetMapping("room5")
+	public String room5() {
+		return "room5";
+	}
+	@GetMapping("room6")
+	public String room6() {
+		return "room6";
+	}
 	
 	/**
 	 * 메세지 발송 후 결과 받는 url

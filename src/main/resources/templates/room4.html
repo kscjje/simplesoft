@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Cyberpunk Escape Room UI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+      color: #00ffff;
+      font-family: 'Orbitron', sans-serif;
+      margin: 0;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 30px;
+      text-shadow: 0 0 10px #00ffff;
+    }
+
+    .timer {
+      font-size: 4rem;
+      margin: 20px;
+      color: #00ffff;
+      text-shadow: 0 0 15px #00ffff;
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0% { text-shadow: 0 0 5px #00ffff; }
+      50% { text-shadow: 0 0 25px #00ffff; }
+      100% { text-shadow: 0 0 5px #00ffff; }
+    }
+
+    .btn {
+      background: transparent;
+      color: #ff00ff;
+      border: 2px solid #ff00ff;
+      padding: 10px 20px;
+      font-size: 1.2rem;
+      margin-top: 20px;
+      cursor: pointer;
+      text-transform: uppercase;
+      box-shadow: 0 0 10px #ff00ff;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .btn:hover {
+      background: #ff00ff;
+      color: #000;
+    }
+
+    .hint-box {
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid #00ffff;
+      padding: 15px;
+      width: 80%;
+      margin-top: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #00ffff;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔐 Escape Room Timer</h1>
+
+  <div class="timer" id="timer">05:00</div>
+
+  <button class="btn" onclick="startTimer()">Start</button>
+
+  <div class="hint-box">
+    힌트 예시: <strong>벽에 있는 코드를 확인하세요.</strong>
+  </div>
+
+  <script>
+    let seconds = 300;
+    let interval;
+
+    function startTimer() {
+      if (interval) return;
+      interval = setInterval(() => {
+        seconds--;
+        if (seconds <= 0) {
+          clearInterval(interval);
+          document.getElementById('timer').innerText = '00:00';
+        } else {
+          const min = String(Math.floor(seconds / 60)).padStart(2, '0');
+          const sec = String(seconds % 60).padStart(2, '0');
+          document.getElementById('timer').innerText = `${min}:${sec}`;
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+</html>

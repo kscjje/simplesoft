@@ -1,238 +1,148 @@
 <!DOCTYPE html>
 <html xmlns:th="http//www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{layouts/default_layout}">
+	  layout:decorate="~{layouts/mypage_layout}">
 	<main class="content-wrapper" layout:fragment="content">
-		<style>
-			/* 데스크탑 (해상도 1280px 이상) */
-			@media all and (min-width: 1280px) {
-			  /* 데스크탑 전용 스타일 */
-			  	#thHead {
-					font-size:14px !important;
-				}
-				tr td {
-					font-size:15px !important;
-				}
-				.btnOrder {
-					font-size: 26px; width:400px;padding:15px 15px;
-				}
-				.divClass i{
-					font-size: 100px !important;
-				}
-				.divClass .mainBtn {
-					font-size:20px !important;padding:15px 90px;
-				}
-				.divClass .orderBtn {
-					font-size:20px !important;padding:15px 70px;
-				}
-				.divClass span {
-					font-size: 25px !important;
-				}
-				.inputSelect {
-					border: 1px solid #c5c5c5;
-					background: #fff;
-					color: #444;
-					border-radius: 0;
-					height: 32px;
-					padding-left: 5px;
-					width:160px;
-				}
-			}
-			
-			/* 노트북 & 테블릿 가로 (해상도 1024px ~ 1279px) */
-			@media all and (min-width: 1024px) and (max-width: 1279px) {
-				/* 노트북 및 가로 방향 태블릿 스타일 */
-				#thHead {
-					font-size:14px !important;
-				}
-			}
-			
-			/* 테블릿 가로 (해상도 768px ~ 1023px) */
-			@media all and (min-width: 768px) and (max-width: 1023px) {
-				/* 태블릿 가로 스타일 */
-				#thHead {
-					font-size:9px !important;
-				}
-				tr td {
-					font-size:11px !important;
-				}
-				.btnOrder {
-					font-size: 12px; width:100px;padding:10px 10px;
-				}
-				.divClass i{
-					font-size: 40px !important;
-				}
-				.divClass .mainBtn {
-					font-size:12px !important;padding:8px 40px;
-				}
-				.divClass .orderBtn {
-					font-size:12px !important;padding:8px 20px;
-				}
-				.divClass span {
-					font-size: 12px !important;
-				}
-				.inputSelect {
-					height: 25px;
-					padding-left: 5px;
-					font-size: 7px;
-					width: 50px;
-				}
-				.list-check{
-					font-size: 12px;
-				}
-				.fs-6{
-					font-size: 10px !important;
-				}
-			}
-			
-			/* 모바일 가로 & 테블릿 세로 (해상도 480px ~ 767px) */
-			@media all and (min-width: 480px) and (max-width: 767px) {
-				/* 모바일 가로 또는 태블릿 세로 스타일 */
-				#thHead {
-					font-size:7px !important;
-				}
-				tr td {
-					font-size:8px !important;
-				}
-				.btnOrder {
-					font-size: 12px; width:100px;padding:10px 10px;
-				}
-				.divClass i{
-					font-size: 40px !important;
-				}
-				.divClass .mainBtn {
-					font-size:10px !important;padding:8px 40px;
-				}
-				.divClass .orderBtn {
-					font-size:10px !important;padding:8px 20px;
-				}
-				.divClass span {
-					font-size: 10px !important;
-				}
-				.inputSelect {
-					height: 25px;
-					padding-left: 5px;
-					font-size: 7px;
-					width: 50px;
-				}
-				.list-check{
-					font-size: 10px;
-				}
-				.fs-6{
-					font-size: 9px !important;
-				}
-			}
-			/* 모바일 세로 (해상도 ~ 479px) */
-			@media all and (max-width: 479px) {
-				#thHead {
-					font-size:6px !important;
-				}
-				tr td {
-					font-size:7px !important;
-				}
-				.btnOrder {
-					font-size: 12px; width:100px;padding:10px 10px;
-				}
-				.divClass i{
-					font-size: 40px !important;
-				}
-				.divClass .mainBtn {
-					font-size:10px !important;padding:8px 40px;
-				}
-				.divClass .orderBtn {
-					font-size:10px !important;padding:8px 20px;
-				}
-				.divClass span {
-					font-size: 10px !important;
-				}
-				.inputSelect {
-					height: 25px;
-					padding-left: 5px;
-					font-size: 7px;
-					width: 50px;
-				}
-				.list-check{
-					font-size: 10px;
-				}
-				.fs-6{
-					font-size: 8px !important;
-				}
-				.divClass{
-					margin-top:5px !important;
-					margin-bottom:5px;
-				}
-			}
-			.inputSelect {
-				border: 1px solid #c5c5c5;
-				background: #fff;
-				color: #444;
-				border-radius: 0;
-			}
-		</style>
-		<div>
-			<h2 class="mb-3">장바구니</h2>
-			<div class="list-check">
-				<input class="form-check-input" type="checkbox" id="f-chk-all" checked style="cursor: pointer;">
-				<label class="form-check-label" for="f-chk-all" style="cursor: pointer;">
-					전체선택
-				</label>
-				<div style='margin: 5px 5px;'class="align-middle"></div>
-				<span class="float-end" style="cursor: pointer;">
-					<a href="javascript:cartDelete()" class="text-decoration-none fs-3" style="color: #212529"><i class="bi bi-trash"></i></a>
-				</span>
-				<span>
-					<select id="orderSet" class="inputSelect" title="세트선택" onchange="fnSelectChange(this)">
+		<div class="max-w-4xl mx-auto p-6 min-h-screen">
+			<div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4 space-y-3 md:space-y-0">
+				<div class="flex items-center space-x-3">
+					<i class="fas fa-shopping-cart text-blue-600 text-2xl"></i>
+					<h1 class="text-2xl font-bold text-gray-800">장바구니</h1>
+				</div>
+				<div class="flex items-center space-x-4">
+					<label for="f-chk-all" style="cursor:pointer;" class="flex items-center space-x-2 cursor-pointer">
+						<input type="checkbox" id="f-chk-all" style="cursor:pointer;" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+						<span class="text-sm text-gray-600">전체선택</span>
+					</label>
+					<select id="orderSet" title="세트선택" onchange="fnSelectChange(this)" class="px-3 py-1 border border-gray-300 rounded text-sm">
 						<option value="">세트일괄변경</option>
 						<option value="3000">일반세트</option>
 						<option value="2000">1인분세트</option>
 						<option value="1000">일반세트(추가)</option>
 					</select>
-				</span>
+				</div>
 			</div>
-			<hr class="border-2 opacity-50" style="color:#000">
-			<div>
-				<table class="table table-striped text-center">
-					<tbody>
-						<tr id="thHead" style="height: 60px;vertical-align: middle;">
-							<th scope="col" width="8%">선택</th>
-							<th scope="col" width="40%">식단정보</th>
-							<th scope="col" width="14%">배달선택</th>
-							<th scope="col" width="14%">세트선택</th>
-							<th scope="col" width="20%">수량</th>
-							<th scope="col" width="12%">판매가</th>
-							<th scope="col" width="12%">소계</th>
-						</tr>
-					</tbody>
-				</table>
-				<div class="container text-center divClass" th:if="${cartList.size eq 0}">
-					<span style="color: gray;">장바구니가 비었습니다.</span>
+	
+			<!-- Cart Items -->
+			<th:block th:each="rs,rsStat : ${cartList}">
+				<div class="space-y-4 mb-4 cartList">
+					<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+						<div class="flex items-start justify-between">
+							<div class="flex items-start space-x-4">
+								<input type="checkbox" th:id="${rs.cartNo}" name="cartCheck" th:data="${rs.qty}" th:value="${rs.cartNo}" class="item-checkbox w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 mt-1">
+								<div class="flex items-center space-x-2 text-sm text-gray-500">
+									<i class="fas fa-calendar-alt"></i>
+									<span th:text="${rs.menuDay}"></span>
+								</div>
+							</div>
+							<button type="button" onclick="cartDelete()" class="text-gray-400 hover:text-red-500 transition-colors delete-btn">
+								<i class="fas fa-trash"></i>
+							</button>
+						</div>
+		
+						<div class="mt-4">
+							<h3 class="text-lg font-semibold text-gray-800 mb-4">간장닭가슴살 감자계란국 야채제단짚</h3>
+							
+							<div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+								<div>
+									<label th:for="'time_' + ${rs.cartNo}" class="block text-sm text-gray-600 mb-1">배송시간</label>
+									<select th:id="'time_' + ${rs.cartNo}" class="w-full px-3 py-2 border border-gray-300 rounded text-sm">
+									  <option th:if="${rs.delivOption == '0000'}" th:value="1000" th:selected="${rs.delivTime == 1000}">오전배달(8~10시)</option>
+									  <option th:if="${rs.delivOption == '0001'}" th:value="2000" th:selected="${rs.delivTime == 2000}">오후배달(1~4시)</option>
+									  <option th:if="${rs.delivOption != '0000' and rs.delivOption != '0001'}" th:value="1000" th:selected="${rs.delivTime == 1000}">오전배달(8~10시)</option>
+									  <option th:if="${rs.delivOption != '0000' and rs.delivOption != '0001'}" th:value="2000" th:selected="${rs.delivTime == 2000}">오후배달(1~4시)</option>
+									</select>
+								</div>
+		
+								<div>
+									<label class="block text-sm text-gray-600 mb-1">세트선택</label>
+									<select class="w-full px-3 py-2 border border-gray-300 rounded text-sm">
+										<option th:value="3000" th:selected="${rs.orderSet == 3000}">일반세트</option>
+										<option th:value="2000" th:selected="${rs.orderSet == 3000}">1인분세트</option>
+										<option th:value="1000" th:selected="${rs.orderSet == 3000}">일반세트(반찬추가)</option>
+									</select>
+								</div>
+		
+								<div class="flex items-center justify-between">
+									<div class="flex items-center space-x-2">
+										<span class="text-sm text-gray-600">수량</span>
+										<div class="flex items-center border border-gray-300 rounded">
+											<button class="px-2 py-1 hover:bg-gray-100 transition-colors quantity-btn" data-action="minus">
+												<i class="fas fa-minus text-xs"></i>
+											</button>
+											<span class="px-4 py-1 border-x border-gray-300 quantity-display">1</span>
+											<button class="px-2 py-1 hover:bg-gray-100 transition-colors quantity-btn" data-action="plus">
+												<i class="fas fa-plus text-xs"></i>
+											</button>
+										</div>
+									</div>
+									<div class="text-right">
+										<p class="text-sm text-gray-600">단가: <span class="unit-price">18,000</span>원</p>
+										<p class="text-lg font-bold text-blue-600 item-total">18,000원</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
-				<div class="mt-5">
-					<span class="fs-6">※ 일반세트의 경우, 성인 기준 2.5~3인분 분량입니다.</span></br>
-					<span class="fs-6">※ 세트메뉴 3회 이상 주문 시, 배송비는 무료입니다.</span></br>
-					<span class="fs-6">※ 일반세트 15회 이상 주문 시, 세트메뉴 가격이 할인됩니다.(18,000원 -> 17,000원 / 단, 1인분세트는 제외)</br></span>
-					<span class="fs-6">※ 주문은 전날 오후 4시까지 가능합니다. (조기마감 할 수 있음)</br></span>
-					<span class="fs-6">※ 배달시간 선택도 전날 오후 4시까지 가능합니다.</br></span>
-					<span class="fs-6">(주문 후 익일 배송을 원칙으로 하고 있습니다. 오후 4시 이후 변경은 익일 배송 스케줄 변경으로 이어져 다른 고객님께도 피해가 갈 수 있으므로 시간 준수 부탁드립니다.)</span>
-					
-					<table class="table table-borderless mt-2 table-white text-center" border="1" style="height: 100px;font-size: 18px;";>
-						<tr style="vertical-align: middle;">
-							<td>상품금액<br><span id="r_productMoney">0</span>원</td>
-							<td><i class="bi bi-plus-circle"></i></td>
-							<td>배송비<br><span id="r_deliv"></span></td>
-							<td>=</td>
-							<td>합계금액<br><span id="r_totalMoney">0</span>원</td>
-						</tr>
-					</table>
+			</th:block>
+	
+			<!-- Notice Sections -->
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+				<div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
+					<div class="flex items-center space-x-2 mb-3">
+						<i class="fas fa-info-circle text-blue-600"></i>
+						<h3 class="font-semibold text-blue-800">배송 안내</h3>
+					</div>
+					<ul class="text-xs text-blue-700 space-y-1 leading-relaxed">
+						<li>• 세트메뉴 3회 이상 주문 시, 배송비는 무료입니다.</li>
+						<li>• 주문 후 익일 배송을 원칙으로 하고 있습니다.<span class="whitespace-nowrap">오후 4시 이후 변경은 익일 배송 스케줄 변경으로 이어져</span><span class="whitespace-nowrap">다른 고객님께도 피해가 갈 수 있으므로 시간 준수 부탁드립니다.</span></li>
+					</ul>
 				</div>
-				<div class="text-center cartBtn mb-3" th:if="${cartList.size gt 0}">
-					<button type="button" onclick="cartOrder()" class="btn btn-outline-success btnOrder">주문하기</button>
+	
+				<div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+					<div class="flex items-center space-x-2 mb-3">
+						<i class="fas fa-exclamation-triangle text-yellow-600"></i>
+						<h3 class="font-semibold text-yellow-800">주문 안내</h3>
+					</div>
+					<ul class="text-xs sm:text-sm text-yellow-700 space-y-1 leading-relaxed">
+						<li>• 일반세트의 경우, 성인 기준 2.5~3인분 분량입니다.</li>
+						<li>• 일반세트 15회 이상 주문 시, 세트메뉴 가격이 할인됩니다.<span class="whitespace-nowrap">(18,000원 -> 17,000원 / 단, 1인분세트는 제외)</span></li>
+						<li>• 주문은 전날 오후 4시까지 가능합니다. (조기마감 할 수 있음)</li>
+						<li>• 배달시간 선택도 전날 오후 4시까지 가능합니다.</li>
+					</ul>
 				</div>
-				<form id="hiddenForm" style="display: none;" method="post" action="/payRegTest">
-					<input type="text" id="cartArray" name="cartArray">
-					<input type="text" id="setArray" name="setArray">
-				</form>
 			</div>
+	
+			<!-- Order Summary -->
+			<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+				<h3 class="text-lg font-semibold text-gray-800 mb-4">주문 요약</h3>
+				<div class="space-y-3">
+					<div class="flex justify-between items-center">
+						<span class="text-gray-600">상품금액</span>
+						<span class="font-semibold" id="r_productMoney"></span>
+					</div>
+					<div class="flex justify-between items-center">
+						<span class="text-gray-600">배송비</span>
+						<span class="font-semibold" id="r_deliv"></span>
+					</div>
+					<div class="border-t pt-3">
+						<div class="flex justify-between items-center">
+							<span class="text-lg font-bold text-gray-800">합계금액</span>
+							<span class="text-2xl font-bold text-blue-600" id="r_totalMoney"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+	
+			<!-- Order Button -->
+			<button type="button" onclick="cartOrder()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-lg transition-colors text-lg">
+				주문하기
+			</button>
+			<form id="hiddenForm" style="display: none;" method="post" action="/payReg">
+				<input type="text" id="cartArray" name="cartArray">
+				<input type="text" id="setArray" name="setArray">
+			</form>
 		</div>
 		<script th:inline="javascript">
 			
@@ -559,21 +469,21 @@ if(cartList[i].orderSet == 1000){
 						//총 증가 금액
 						let positiveSum = 0;
 			
-			            for (let i = 0; i <= 4; i++) {
+						for (let i = 0; i <= 4; i++) {
 							//반찬 수량 
-			                const spanValue = parseInt($("#ui_set_"+id+"_"+i).text(), 10);
+							const spanValue = parseInt($("#ui_set_"+id+"_"+i).text(), 10);
 							//순번에 대한 가격
-			                const mappedValue = valueMap[i];
+							const mappedValue = valueMap[i];
 							//수량과 반찬수량의 차이를 구함
-			                const difference = spanValue - total;
+							const difference = spanValue - total;
 							//반찬수량이 더 많다면 그 만큼 가격을 합함
-			                const calculatedValue = difference * mappedValue;
+							const calculatedValue = difference * mappedValue;
 			
-			                    positiveSum += calculatedValue;
-			            }
-			            const minimumThreshold = productMoney * total;
+								positiveSum += calculatedValue;
+						}
+						const minimumThreshold = productMoney * total;
 			
-			            finalResult = minimumThreshold + positiveSum;
+						finalResult = minimumThreshold + positiveSum;
 					}
 					
 					$("#ui_total_" + id).text(finalResult.toLocaleString('ko-KR'));
@@ -586,7 +496,7 @@ if(cartList[i].orderSet == 1000){
 					totalQty += Number($(this).attr("data"));
 					totalMoney += Number($("#ui_total_" + this.id).text().replace(/,/g, ""));
 				});
-				$("#r_productMoney").text(totalMoney.toLocaleString('ko-KR'));
+				$("#r_productMoney").text(totalMoney.toLocaleString('ko-KR')+"원");
 				
 				// 배송비 계산
 				const deliveryPrice = totalQty > 2 ? 0 : 2000;
@@ -596,7 +506,7 @@ if(cartList[i].orderSet == 1000){
 				if (totalQty === 0) totalMoney = 0;
 				
 				// 최종 금액 업데이트
-				$("#r_totalMoney").text(totalMoney.toLocaleString('ko-KR'));
+				$("#r_totalMoney").text(totalMoney.toLocaleString('ko-KR')+"원");
 			}
 			
 			//세트일괄변경

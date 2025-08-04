@@ -6,9 +6,9 @@
 	<insert id="insertCart" parameterType="hashMap">
 		/* CartMapper.insertCart */
 		INSERT INTO CART_MST
-			(USER_NO, USER_SESSION, MENU_BOARD_SEQ, MENU_MSG_DETAIL, QTY, REG_USER, REG_DT)
+			(USER_NO, USER_SESSION, MENU_BOARD_SEQ, DELIV_TIME, MENU_MSG_DETAIL, QTY, REG_USER, REG_DT)
 		VALUES
-			(#{userNo}, #{userSession}, #{menuBoardSeq}, '1|1|1|1|1', 1, #{regUser}, NOW())
+			(#{userNo}, #{userSession}, #{menuBoardSeq}, #{delivTime}, '1|1|1|1|1', 1, #{regUser}, NOW())
 	</insert>
 	
 	<!-- 장바구니 수량추가 -->

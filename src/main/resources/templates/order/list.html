@@ -343,9 +343,18 @@
 											} else {
 												addHtml +="<div class='mb-1'>"+menuMsg[index]+"</div>";
 											}
+											const isLastItem = (index + 1) === menuMsg.length;	//마지막 루프여부
+											if (isLastItem) {
+												if(result[k].delivOption === '0000'){
+													addHtml +="<div class='mb-1 text-danger'>당일은 오전만 배달</div>";	
+												} else if (result[k].delivOption === '0001'){
+													addHtml +="<div class='mb-1 text-danger'>당일은 오후만 배달</div>";
+												}
+											}
+											//선택버튼 생성 로직
 											if (currentYear == result[k].menuDay.substring(0, 4) &&
 											    result[k].useYn === "Y" &&
-											    (index + 1) === menuMsg.length &&
+												isLastItem &&
 											    (currentMMDD < (month + day) || (currentMMDD === (month + day) && currentHour < 16))) {
 											    addHtml += `
 											        <div style="padding-top:10px;">

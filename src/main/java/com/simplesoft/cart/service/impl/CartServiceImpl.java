@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.simplesoft.cart.service.CartService;
 import com.simplesoft.mapper.cart.CartMapper;
+import com.simplesoft.menuboard.service.MenuBoardService;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -15,6 +16,11 @@ public class CartServiceImpl implements CartService {
 	@Autowired
 	CartMapper cartMapper;
 	
+	@Autowired
+	MenuBoardService menuBoardService;
+	
+	/*
+	 * 20250804 장바구니 배송유형 추가하기 전
 	@Override
 	public void insertCart(Map<String, Object> paramMap) {
 		
@@ -27,6 +33,34 @@ public class CartServiceImpl implements CartService {
 				//이미 장바구니에 있다면 수량 +1
 				cartMapper.updateCartAdd(paramMap);
 			} else {
+				cartMapper.insertCart(paramMap);
+			}
+		}
+	}
+	*/
+	@Override
+	public void insertCart(Map<String, Object> paramMap) {
+		
+		String menuBoardSeq = (String)paramMap.get("menuBoardSeq");
+		String[] arrMenuBoardSeq = menuBoardSeq.split(",");
+		//선택한 개수만큼 장바구니에 담기
+		for(int i = 0; i < arrMenuBoardSeq.length; i ++) {
+			paramMap.put("menuBoardSeq", arrMenuBoardSeq[i]);
+			if (selectCartList(paramMap).size() > 0) {
+				//이미 장바구니에 있다면 수량 +1
+				cartMapper.updateCartAdd(paramMap);
+			} else {
+				Map<String, Object> delivOption = menuBoardService.selectMenuBoardDetail(paramMap);
+				if (delivOption != null) {
+					String strDelivOption = (String) delivOption.get("delivOption");
+				    String newValue = "1000"; // 기본값
+				    if ("0000".equals(strDelivOption)) {
+				        newValue = "1000";
+				    } else if ("0001".equals(strDelivOption)) {
+				        newValue = "2000";
+				    }
+				    paramMap.put("delivTime", newValue);
+				}
 				cartMapper.insertCart(paramMap);
 			}
 		}

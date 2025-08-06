@@ -59,6 +59,20 @@ public class HomeController {
 		}
 		return new CommonResponse<Map<String, Object>>(returnData);
 	}
+	@ResponseBody
+	@PostMapping("/change")
+	public BasicResponse change(Model model, HttpSession session, @ModelAttribute("refundVO") RefundVO vo) throws Exception {
+		Map<String, Object> returnData = new HashMap<String, Object>();
+		if(vo.getUserName() != null) {
+			RefundVO check = orderService.selectOrderCheck(vo);
+			if(check == null) {
+				returnData.put("RET_CODE", "NOT");
+			} else {
+				session.setAttribute("userName", vo.getUserName());
+			}
+		}
+		return new CommonResponse<Map<String, Object>>(returnData);
+	}
 	
 	@ResponseBody
 	@PostMapping("/start")
@@ -69,10 +83,14 @@ public class HomeController {
 			String userName = (String)session.getAttribute("userName");
 			vo.setUserName(userName);
 			RefundVO check = orderService.selectOrderCheck(vo);
-			if(check != null && check.getRegDt() == null) {
-				orderService.updateTime(vo);
+			if(check != null) {
+				if(check.getRegDt() == null) {
+					orderService.updateTime(vo);
+				} else {
+					returnData.put("regDt", check.getRegDt());
+				}
 			} else {
-				returnData.put("regDt", check.getRegDt());
+				returnData.put("RET_CODE","FAIL");
 			}
 		} else {
 			returnData.put("RET_CODE","FAIL");

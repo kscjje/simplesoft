@@ -11,12 +11,21 @@
 		body{
 			font-family: 'Nanum Gothic', sans-serif;
 		}
+		#start-modal .modal-content {
+			padding : 45px 115px;
+		}
+		#change-modal .modal-content {
+			padding : 45px 115px;
+		}
 	</style>
 </head>
 <body>
 	<h1>🔐 Escape Room Timer</h1>
 	
-	<button type="button" class="btn mt-5" id="idInsert">사용자 등록</button>
+	<div class="flex space-x-2 mt-5">
+		<button type="button" class="btn mt-5" id="idInsert">사용자 등록</button>
+		<button type="button" class="btn mt-5" id="idChagne">사용자 전환</button>
+	</div>
 	
 	<!-- 등록된 사용자 리스트 -->
 	<div class="mt-12">
@@ -57,24 +66,83 @@
 		</div>
 	</div>
 	
-	<!-- 시작 모달 -->
-	<div id="start-modal" style="display:none;">
-		<div class="modal-content">
-			<h2>사용자를 입력해주세요.</h2>
-			<input type="text" id="userName" class="px-3 py-2 border border-gray-300 rounded-md input-focus" onkeypress="enterKey()">
-			<button id="start-yes">등록</button>
+	<!-- 모달 HTML -->
+	<div id="start-modal" style="display: none;">
+		<div class="modal-content relative p-8 rounded-xl bg-black border-2 border-cyan-400 shadow-xl text-center">
+			<!-- 닫기 버튼 -->
+			<button type="button" id="close-modal" class="absolute top-4 right-4 text-pink-400 text-xl font-bold hover:text-white transition duration-200">×</button>
+			<h2 class="text-cyan-300 text-2xl font-bold mb-6">사용자를 입력해주세요.</h2>
+			
+			<input type="text" id="userName" class="w-full px-4 py-3 mb-6 border border-gray-300 rounded-md text-black text-lg focus:outline-none focus:ring-2 focus:ring-cyan-400" onkeypress="enterKey()">
+			
+			<button type="button" id="start-yes" class="px-6 py-2 bg-black border-2 border-pink-500 text-pink-400 font-bold rounded-lg hover:bg-pink-500 hover:text-white transition duration-200">
+				등록
+			</button>
 		</div>
 	</div>
+	<!-- 모달 HTML -->
+	<div id="change-modal" style="display: none;">
+		<div class="modal-content relative p-8 rounded-xl bg-black border-2 border-cyan-400 shadow-xl text-center">
+			<!-- 닫기 버튼 -->
+			<button type="button" id="close-modal2" class="absolute top-4 right-4 text-pink-400 text-xl font-bold hover:text-white transition duration-200">×</button>
+			<h2 class="text-cyan-300 text-2xl font-bold mb-6">사용자를 입력해주세요.</h2>
+			
+			<input type="text" id="userName2" class="w-full px-4 py-3 mb-6 border border-gray-300 rounded-md text-black text-lg focus:outline-none focus:ring-2 focus:ring-cyan-400" onkeypress="enterKey2()">
+			
+			<button type="button" id="change-yes" class="px-6 py-2 bg-black border-2 border-pink-500 text-pink-400 font-bold rounded-lg hover:bg-pink-500 hover:text-white transition duration-200">
+				전환
+			</button>
+		</div>
+	</div>
+
 	<script>
 		document.getElementById('idInsert').addEventListener('click', () => {
 			$("#userName").val("");
 			$("#start-modal").show();
+			$("#userName").focus();
+		});
+		document.getElementById('idChagne').addEventListener('click', () => {
+			$("#userName2").val("");
+			$("#change-modal").show();
+			$("#userName2").focus();
 		});
 		const btnYes = document.getElementById('start-yes');
+		const btnChange = document.getElementById('change-yes');
 		
 		btnYes.addEventListener('click', () => {
 			saveStartTimeToServer();
 		});
+		btnChange.addEventListener('click', () => {
+			changeUser();
+		});
+		
+		// 사용자 전환
+		function changeUser() {
+			let userName = $("#userName2").val();
+			if(userName == ""){
+				alert("사용자를 입력해 주세요.");
+				return;
+			}
+			$.ajax({
+				url: '/change',
+				type: 'POST',
+				data: {
+					userName	: userName
+				},
+				dataType: 'json',
+				success: function (res) {
+					if(res.data.RET_CODE == "NOT"){
+						alert("등록된 사용자가 없습니다.");
+						return;
+					} else {
+						location.href="/";
+					}
+				},
+				error: function () {
+				}
+			});
+		}
+		
 		// 시작 시간 서버 저장 (POST)
 		function saveStartTimeToServer() {
 			let userName = $("#userName").val();
@@ -94,8 +162,7 @@
 						alert("이미 등록된 사용자입니다.");
 						return;
 					} else {
-						$("#start-modal").hide();
-						alert("등록 되었습니다.");
+						location.reload();
 					}
 				},
 				error: function () {
@@ -118,7 +185,6 @@
 					}
 				},
 				error: function () {
-					console.error('타이머 시작 시간 불러오기 실패');
 					callback(null);
 				}
 			});
@@ -128,6 +194,19 @@
 				$('#start-yes').trigger("click");
 			}
 		}
+		enterKey2 = function(type){
+			if (window.event.keyCode == 13) {
+				$('#change-yes').trigger("click");
+			}
+		}
+		// 모달 닫기
+		$('#close-modal').on('click', function () {
+			$('#start-modal').hide();
+		});
+		// 모달 닫기
+		$('#close-modal2').on('click', function () {
+			$('#change-modal').hide();
+		});
 	</script>
 </body>
 </html>

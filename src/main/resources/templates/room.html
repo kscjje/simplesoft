@@ -1,327 +1,222 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<link rel="stylesheet" href="/css/tailwind.min.css">
-		<link rel="stylesheet" href="/css/all.min.css">
-		<style>
-			body {
-					background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-					font-family: 'Arial', sans-serif;
-				}
-			.timer-circle {
-				width: 200px;
-				height: 200px;
-				border: 4px solid #4a4a4a;
-				border-radius: 50%;
-				position: relative;
-				background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
-				box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-			}
-			
-			.timer-progress {
-				position: absolute;
-				top: -4px;
-				left: -4px;
-				width: 200px;
-				height: 200px;
-				border-radius: 50%;
-				background: conic-gradient(from 0deg, #ff6b6b 0deg, #ff6b6b 90deg, transparent 90deg);
-				animation: rotate 60s linear infinite;
-			}
-			
-			@keyframes rotate {
-				from { transform: rotate(0deg); }
-				to { transform: rotate(360deg); }
-			}
-			
-			.hint-input {
-				width: 50px;
-				height: 50px;
-				border: 2px solid #4a4a4a;
-				border-radius: 8px;
-				background: #2a2a2a;
-				color: #fff;
-				text-align: center;
-				font-size: 1.5rem;
-				font-weight: bold;
-				transition: all 0.3s ease;
-			}
-			
-			.hint-input:focus {
-				outline: none;
-				border-color: #ff6b6b;
-				box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
-			}
-			
-			.hint-input.filled {
-				border-color: #4ade80;
-				background: #1a2e1a;
-			}
-			
-			.glass-effect {
-				background: rgba(255, 255, 255, 0.1);
-				backdrop-filter: blur(10px);
-				border: 1px solid rgba(255, 255, 255, 0.2);
-			}
-			
-			.btn-primary {
-				background: linear-gradient(145deg, #ff6b6b, #ff5252);
-				transition: all 0.3s ease;
-			}
-			
-			.btn-primary:hover {
-				transform: translateY(-2px);
-				box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
-			}
-			
-			.btn-secondary {
-				background: linear-gradient(145deg, #4a4a4a, #3a3a3a);
-				transition: all 0.3s ease;
-			}
-			
-			.btn-secondary:hover {
-				transform: translateY(-2px);
-				box-shadow: 0 8px 25px rgba(74, 74, 74, 0.3);
-			}
-			
-			.pulse-animation {
-				animation: pulse 2s infinite;
-			}
-			
-			@keyframes pulse {
-				0% { transform: scale(1); }
-				50% { transform: scale(1.05); }
-				100% { transform: scale(1); }
-			}
-		</style>
-	</head>
-	<body class="min-h-screen flex items-center justify-center p-4">
-		<div class="w-full max-w-md mx-auto">
-			<!-- 메인 컨테이너 -->
-			<div class="glass-effect rounded-3xl p-8 shadow-2xl">
-				<!-- 타이머 섹션 -->
-				<div class="text-center mb-8">
-					<div class="timer-circle mx-auto flex items-center justify-center mb-4">
-						<div class="timer-progress"></div>
-						<div class="text-center z-10">
-							<div id="timer-display" class="text-white text-2xl font-mono font-bold">00:42:16</div>
-							<div class="text-gray-400 text-sm mt-1">남은 시간</div>
-						</div>
-					</div>
-					
-					<!-- 힌트 카운터 -->
-					<div class="text-center mb-4">
-						<div class="text-white text-lg font-semibold mb-1">Hint</div>
-						<div class="text-gray-400 text-sm">
-							<span id="hint-count">0</span>/4
-						</div>
-					</div>
-					
-					<!-- 타이머 컨트롤 버튼 -->
-					<div class="flex justify-center space-x-4 mb-6">
-						<button type="button" id="start-btn" class="btn-primary text-white px-6 py-2 rounded-lg font-semibold">
-							<i class="fas fa-play mr-2"></i>Start
-						</button>
-						<button type="button" id="stop-btn" class="hidden btn-secondary text-white px-6 py-2 rounded-lg font-semibold">
-							<i class="fas fa-stop mr-2"></i>Stop
-						</button>
-					</div>
-				</div>
-				
-				<!-- 힌트 코드 입력 섹션 -->
-				<div class="text-center">
-					<div class="text-white text-lg font-semibold mb-4">Hint Code</div>
-					<div class="flex justify-center space-x-3 mb-6">
-						<input type="text" class="hint-input" maxlength="1" id="code-1">
-						<input type="text" class="hint-input" maxlength="1" id="code-2">
-						<input type="text" class="hint-input" maxlength="1" id="code-3">
-						<input type="text" class="hint-input" maxlength="1" id="code-4">
-					</div>
-					
-					<!-- 힌트 버튼 -->
-					<button type="button" id="hint-btn" class="btn-primary text-white px-8 py-3 rounded-lg font-semibold w-full mb-4">
-						<i class="fas fa-lightbulb mr-2"></i>힌트 요청
-					</button>
-					
-					<!-- 힌트 표시 영역 -->
-					<div id="hint-display" class="glass-effect rounded-lg p-4 text-white text-center min-h-16 hidden">
-						<div class="text-gray-400 text-sm mb-2">힌트</div>
-						<div id="hint-content" class="text-lg"></div>
-					</div>
-				</div>
-			</div>
-			
-			<!-- 상태 표시 -->
-			<div class="text-center mt-4">
-				<div id="status" class="text-gray-400 text-sm"></div>
-			</div>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8" />
+	<title>이김청년부 방탈출</title>
+	<link rel="stylesheet" href="/css/tailwind.min.css">
+	<link rel="stylesheet" href="/css/all.min.css">
+	<link rel="stylesheet" href="/css/room.css">
+	<script src="/js/common/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+	<h1>🔐 Escape Room Timer</h1>
+
+	<div class="timer" id="timer">20:00</div>
+	
+	<!-- 힌트 코드 입력 -->
+	<div class="hint-inputs" aria-label="힌트 코드 입력">
+		<input type="text" maxlength="1" class="hint-input" id="code1" autocomplete="off" />
+		<input type="text" maxlength="1" class="hint-input" id="code2" autocomplete="off" />
+		<input type="text" maxlength="1" class="hint-input" id="code3" autocomplete="off" />
+		<input type="text" maxlength="1" class="hint-input" id="code4" autocomplete="off" />
+	</div>
+	
+	<div class="mt-5">힌트 사용 : <span id="hindCnt">0</span> / 4</div>
+	<div class="flex items-center space-x-2 mt-5">
+		<button type="button" class="btn" id="check-hint-btn">힌트 확인</button>
+		<button type="button" id="clear-inputs-btn" style="width:3.5rem;height: 3.3rem" class="btn flex items-center justify-center text-gray-600 hover:text-red-500">
+			<i class="fas fa-eraser"></i>
+		</button>
+	</div>
+	<div class="hint-box" id="hint-box">힌트를 입력하고 '힌트 확인' 버튼을 눌러주세요.</div>
+
+	<!-- 시작 모달 -->
+	<div id="start-modal">
+		<div class="modal-content">
+			<h2>게임을 시작하시겠습니까?</h2>
+			<button id="start-yes">네, 시작합니다</button>
 		</div>
-	</body>
+	</div>
+	
 	<script>
-		class EscapeRoomHintPhone {
-			constructor() {
-				this.timer = null;
-//				this.timeLeft = 42 * 60 + 16; // 42분 16초
-				this.timeLeft = 5; // 42분 16초
-				this.isRunning = false;
-				this.hintCount = 0;
-				this.hintCodes = {
-					'1234': '첫 번째 퍼즐의 답은 시계를 확인하세요.',
-					'5678': '두 번째 힌트: 책장의 빨간 책을 찾아보세요.',
-					'9012': '세 번째 힌트: 금고 번호는 생일과 관련이 있습니다.',
-					'3456': '네 번째 힌트: 거울 뒤편을 확인해보세요.'
-				};
-				
-				this.initializeElements();
-				this.setupEventListeners();
-				this.updateDisplay();
-			}
-			
-			initializeElements() {
-				this.timerDisplay = document.getElementById('timer-display');
-				this.hintCountDisplay = document.getElementById('hint-count');
-				this.startBtn = document.getElementById('start-btn');
-				this.stopBtn = document.getElementById('stop-btn');
-				this.hintBtn = document.getElementById('hint-btn');
-				this.hintDisplay = document.getElementById('hint-display');
-				this.hintContent = document.getElementById('hint-content');
-				this.status = document.getElementById('status');
-				
-				this.codeInputs = [
-					document.getElementById('code-1'),
-					document.getElementById('code-2'),
-					document.getElementById('code-3'),
-					document.getElementById('code-4')
-				];
-			}
-			
-			setupEventListeners() {
-				this.startBtn.addEventListener('click', () => this.startTimer());
-				this.stopBtn.addEventListener('click', () => this.stopTimer());
-				this.hintBtn.addEventListener('click', () => this.requestHint());
-				
-				// 힌트 코드 입력 이벤트
-				this.codeInputs.forEach((input, index) => {
-					input.addEventListener('input', (e) => this.handleCodeInput(e, index));
-					input.addEventListener('keydown', (e) => this.handleKeydown(e, index));
-				});
-			}
-			
-			startTimer() {
-				if (this.isRunning) return;
-				
-				this.isRunning = true;
-				this.startBtn.classList.add('pulse-animation');
-				
-				this.timer = setInterval(() => {
-					this.timeLeft--;
-					this.updateDisplay();
-					
-					if (this.timeLeft <= 0) {
-						this.stopTimer();
-						this.showAlert('시간이 종료되었습니다!', 'error');
-					}
-				}, 1000);
-			}
-			
-			stopTimer() {
-				if (!this.isRunning) return;
-				
-				this.isRunning = false;
-				clearInterval(this.timer);
-				this.startBtn.classList.remove('pulse-animation');
-			}
-			
-			updateDisplay() {
-				const minutes = Math.floor(this.timeLeft / 60);
-				const seconds = this.timeLeft % 60;
-				this.timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-				this.hintCountDisplay.textContent = this.hintCount;
-			}
-			
-			handleCodeInput(e, index) {
-				const value = e.target.value.toUpperCase();
-				e.target.value = value;
-				
-				if (value) {
-					e.target.classList.add('filled');
-					if (index < 3) {
-						this.codeInputs[index + 1].focus();
-					}
-				} else {
-					e.target.classList.remove('filled');
-				}
-			}
-			
-			handleKeydown(e, index) {
-				if (e.key === 'Backspace' && !e.target.value && index > 0) {
-					this.codeInputs[index - 1].focus();
-				}
-			}
-			
-			requestHint() {
-				const code = this.codeInputs.map(input => input.value).join('');
-				
-				if (code.length !== 4) {
-					this.showAlert('4자리 힌트 코드를 입력해주세요.', 'warning');
+		const TIMER_DURATION = 1200; // 20분
+		let seconds = TIMER_DURATION;
+		let interval;
+
+		// 힌트 코드 사전
+		const HINT_CODES = {
+			'1234': '첫 번째 퍼즐의 답은 시계를 확인하세요.',
+			'5678': '두 번째 힌트: 책장의 빨간 책을 찾아보세요.',
+			'9012': '세 번째 힌트: 금고 번호는 생일과 관련이 있습니다.',
+			'3456': '네 번째 힌트: 거울 뒤편을 확인해보세요.'
+		};
+
+		// 타이머 표시
+		function startTimer() {
+			if (interval) return;
+
+			interval = setInterval(() => {
+				if (seconds <= 0) {
+					clearInterval(interval);
+					document.getElementById('timer').innerText = '00:00';
 					return;
 				}
-				
-				if (this.hintCodes[code]) {
-					this.hintCount++;
-					this.showHint(this.hintCodes[code]);
-					this.clearCodeInputs();
-					this.updateDisplay();
-				} else {
-					this.showAlert('올바르지 않은 힌트 코드입니다.', 'error');
-				}
-			}
-			
-			showHint(hint) {
-				this.hintContent.textContent = hint;
-				this.hintDisplay.classList.remove('hidden');
-				this.hintDisplay.classList.add('pulse-animation');
-				
-				setTimeout(() => {
-					this.hintDisplay.classList.remove('pulse-animation');
-				}, 2000);
-			}
-			
-			clearCodeInputs() {
-				this.codeInputs.forEach(input => {
-					input.value = '';
-					input.classList.remove('filled');
-				});
-				this.codeInputs[0].focus();
-			}
-			
-			showAlert(message, type) {
-				const alertDiv = document.createElement('div');
-				alertDiv.className = `fixed top-4 right-4 p-4 rounded-lg text-white z-50 ${
-					type === 'error' ? 'bg-red-500' : 
-					type === 'warning' ? 'bg-yellow-500' : 'bg-green-500'
-				}`;
-				alertDiv.textContent = message;
-				
-				document.body.appendChild(alertDiv);
-				
-				setTimeout(() => {
-					alertDiv.remove();
-				}, 3000);
-			}
-			reset() {
-				this.stopTimer();              // 타이머 중지
-				this.timeLeft = 5;            // 초기 시간 설정
-				this.hintCount = 0;           // 힌트 카운트 초기화
-				this.clearCodeInputs();       // 코드 입력 필드 초기화
-				this.hintDisplay.classList.add('hidden');  // 힌트 숨김
-				this.updateDisplay();         // 화면 갱신
-			}
+				const min = String(Math.floor(seconds / 60)).padStart(2, '0');
+				const sec = String(seconds % 60).padStart(2, '0');
+				document.getElementById('timer').innerText = `${min}:${sec}`;
+				seconds--;
+			}, 1000);
 		}
+
+		const modal = document.getElementById('start-modal');
+		const btnYes = document.getElementById('start-yes');
 		
-		// 앱 초기화
-		document.addEventListener('DOMContentLoaded', () => {
-			new EscapeRoomHintPhone();
+		btnYes.addEventListener('click', () => {
+			saveStartTimeToServer();
+		});
+			
+		// 시작 시간 서버 저장 (POST)
+		function saveStartTimeToServer() {
+			$.ajax({
+				url: '/start',
+				type: 'POST',
+				dataType: 'json',
+				success: function (res) {
+					if(res.data.RET_CODE == "FAIL"){
+						alert("사용자를 등록해 주세요.");
+						return;
+					}
+					startTimer();
+					modal.style.display = 'none';
+				},
+				error: function () {
+					console.error('시작 시간 저장 실패');
+				}
+			});
+		}
+
+		// 시작 시간 서버에서 불러오기 (GET)
+		function loadStartTimeFromServer(callback) {
+			$.ajax({
+				url: '/load',
+				type: 'GET',
+				dataType: 'json',
+				success: function (res) {
+					if (res && res.data) {
+						callback(res.data);
+					} else {
+						callback(null);
+					}
+				},
+				error: function () {
+					callback(null);
+				}
+			});
+		}
+
+		// 힌트 사용
+		function useHint(index) {
+			$.ajax({
+				url: '/useHint',
+				type: 'GET',
+				dataType: 'json',
+				data : {
+					index : index
+				},
+				success: function (res) {
+					let data = res.data;
+					let hintCount = 0;
+					let hint1 = data.hint1 == "Y" ? 1 : 0;
+					let hint2 = data.hint2 == "Y" ? 1 : 0;
+					let hint3 = data.hint3 == "Y" ? 1 : 0;
+					let hint4 = data.hint4 == "Y" ? 1 : 0;
+					let hint5 = data.hint5 == "Y" ? 1 : 0;
+					hintCount = hint1 + hint2 + hint3 + hint4 + hint5;
+					const hindCnt = document.getElementById('hindCnt'); 
+					hindCnt.textContent = hintCount
+				},
+				error: function () {
+				}
+			});
+		}
+		// 입력창 자동 포커싱 및 유효성
+		const hintInputs = [
+			document.getElementById('code1'),
+			document.getElementById('code2'),
+			document.getElementById('code3'),
+			document.getElementById('code4')
+		];
+
+		function clearInputs() {
+			hintInputs.forEach(input => input.value = '');
+			hintInputs[0].focus();
+		}
+
+		document.getElementById('clear-inputs-btn').addEventListener('click', () => {
+			$(".hint-input").val("");
+		});
+		document.getElementById('check-hint-btn').addEventListener('click', () => {
+			const code = hintInputs.map(i => i.value.trim()).join('');
+			const hintBox = document.getElementById('hint-box');
+			const hindCnt = document.getElementById('hindCnt');
+
+			if (code.length !== 4) {
+				hintBox.textContent = '4자리 힌트 코드를 모두 입력해주세요.';
+				hintBox.style.color = '#ff00ff';
+				return;
+			}
+
+			if (HINT_CODES[code]) {
+				hintBox.textContent = HINT_CODES[code];
+				hintBox.style.color = '#00ffff';
+				clearInputs();
+				
+				const keys = Object.keys(HINT_CODES); // ['1234', '5678', '9012', '3456']
+				const index = keys.indexOf(code);     // code가 '5678'이면 index는 1
+				useHint(index);
+			} else {
+				hintBox.textContent = '올바르지 않은 힌트 코드입니다.';
+				hintBox.style.color = '#ff0044';
+			}
+		});
+
+		hintInputs.forEach((input, idx) => {
+			input.addEventListener('input', e => {
+				e.target.value = e.target.value.toUpperCase().slice(0, 1);
+				if (e.target.value && idx < hintInputs.length - 1) {
+					hintInputs[idx + 1].focus();
+				}
+			});
+			input.addEventListener('keydown', e => {
+				if (e.key === 'Backspace' && !e.target.value && idx > 0) {
+					hintInputs[idx - 1].focus();
+				}
+			});
+		});
+
+		// 페이지 로드시 서버에서 시작시간 불러와서 타이머 계산
+		window.addEventListener('DOMContentLoaded', () => {
+			loadStartTimeFromServer(function (data) {
+				if (data.regDt) {
+					modal.style.display = 'none';
+					const now = new Date();
+					const start = new Date(data.regDt);
+					const elapsed = Math.floor((now - start) / 1000);
+					seconds = Math.max(TIMER_DURATION - elapsed, 0);
+					
+					let hintCount = 0;
+					let hint1 = data.hint1 == "Y" ? 1 : 0;
+					let hint2 = data.hint2 == "Y" ? 1 : 0;
+					let hint3 = data.hint3 == "Y" ? 1 : 0;
+					let hint4 = data.hint4 == "Y" ? 1 : 0;
+					let hint5 = data.hint5 == "Y" ? 1 : 0;
+					hintCount = hint1 + hint2 + hint3 + hint4 + hint5;
+					const hindCnt = document.getElementById('hindCnt'); 
+					hindCnt.textContent = hintCount
+					startTimer();
+				}
+			});
 		});
 	</script>
+</body>
 </html>

@@ -1,321 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.simplesoft.mapper.order.OrderMapper">
-
-	<!-- 주문내역 정보 -->	
-	<resultMap id="orderShopApplyResult" type="com.simplesoft.order.service.OrderVO">
-		<id property="orderNo" column="ORDER_NO"/>
-	  	<collection property="productList" column="ORDER_NO" javaType="java.util.ArrayList" ofType="com.simplesoft.order.service.OrderProductVO" select="getOrderProductInfo"/>
-	</resultMap>
-	
-	<!-- 주문번호 생성 -->
-	<insert id="insertOrderMst" parameterType="com.simplesoft.order.service.OrderVO">
-		/* OrderMapper.insertOrderMst */
-		<selectKey keyProperty="orderNo" resultType="String" order="BEFORE"> 
-			SELECT FN_CREATE_ORDER_NO_V1() AS ORDER_NO
-		</selectKey>
-		INSERT INTO ORDER_MST
-			(
-					ORDER_NO
-				,	USER_NO
-				,	ORDER_STATUS
-				,	USER_SESSION
-				,	ORDER_PAY_TYPE
-				,	TOTAL_PRODUCT_AMT
-				,	TOTAL_DIS_AMT
-				,	TOTAL_DELY_AMT
-				,	MARKETING_AGREE_FG
-				,	REG_USER
-				,	REG_DT
-			)
-		VALUES(
-					#{orderNo}
-				,	#{userNo}
-				,	'1000'
-				,	#{userSession}
-				,	'1'
-				,	#{totalProductAmt}
-				,	#{totalDisAmt}
-				,	#{totalDelyAmt}
-				,	'Y'
-				,	#{userNo}
-				,	NOW()
-		)
-	</insert>
-	
-	<!--주문 상품 정보 등록-->
-	<insert id="insertOrderProduct" parameterType="com.simplesoft.order.service.OrderProductVO">
-		/* OrderMapper.insertOrderProduct */
-		INSERT INTO ORDER_PRODUCT(ORDER_NO, ORDER_QTY, MENU_BOARD_SEQ, ORDER_SET, MENU_DAY, MENU_MSG, MENU_MSG_DETAIL,PAY_AMT, DELIVERY_TYPE, DELIV_TIME, USED_POINT, REG_USER, REG_DT)
-		
-		SELECT	  #{orderNo}
-				, #{orderQty}
-				, A.MENU_BOARD_SEQ
-				, #{orderSet}
-				, A.MENU_DAY
-				, A.MENU_MSG
-				, #{menuMsgDetail}
-				, IFNULL(#{payAmt}, 0)
-				, 'Y'
-				, #{delivTime}
-				, IFNULL(#{usedPoint}, 0)
-				, #{regUser}
-				, NOW()
-		FROM MENU_BOARD A
-		WHERE A.MENU_BOARD_SEQ = #{menuBoardSeq}
-		<selectKey keyProperty="orderProductNo" resultType="int" order="AFTER"> 
-			SELECT LAST_INSERT_ID()
-		</selectKey>
-	</insert>
-	
-	<!-- 주문 신청 정보 -->	
-	<select id="selectOrderApplyInfo" parameterType="com.simplesoft.order.service.OrderVO" resultMap="orderShopApplyResult">
-		/* OrderMapper.selectOrderApplyInfo */
-		SELECT
-			  ORDER_NO
-			, USER_NO
-			, ORDER_STATUS
-			, USER_SESSION
-			, ORDER_PAY_TYPE
-			, TOTAL_PRODUCT_AMT
-			, TOTAL_DIS_AMT
-			, TOTAL_DELY_AMT
-			, MARKETING_AGREE_FG
-			, ORDER_NAME
-			, ORDER_PWD
-			, ORDER_TEL
-			, ORDER_PHONE
-			, ORDER_POST_NUM
-			, ORDER_ADDR
-			, ORDER_ADDR_DETAIL
-			, ORDER_EMAIL
-			, RECEIVE_NAME
-			, RECEIVE_TEL
-			, RECEIVE_PHONE
-			, RECEIVE_POST_NUM
-			, RECEIVE_ADDR
-			, RECEIVE_ADDR_DETAIL
-			, DELIV_TIME
-			, DELIV_KIND
-			, PACKAGING
-			, COMMON_PWD
-			, BIGO
-			, ORDER_PAY_DT
-			, REG_USER
-			, REG_DT
-			,TOTAL_PRODUCT_AMT AS TOTAL_AMOUNT
-			,TOTAL_DELY_AMT
-			, (SELECT PAYMENT_KEY FROM PAYMENTS A WHERE A.ORDER_ID = ORDER_NO LIMIT 1) AS PAYMENT_KEY
-		FROM ORDER_MST
-		WHERE ORDER_NO = #{orderNo}
-		<if test="userNo neq null and userNo neq ''">
-			AND	USER_NO = #{userNo}
-		</if> 
-		<if test="orderStatus neq null and orderStatus neq ''">
-			AND	ORDER_STATUS = #{orderStatus}
-		</if>
-		<if test="userNo == '0'">
-			AND USER_SESSION = #{userSession}
-		</if>
-	</select>
-	
-	<!-- 주문 상품 정보 -->	
-	<select id="getOrderProductInfo" parameterType="com.simplesoft.order.service.OrderProductVO" resultType="com.simplesoft.order.service.OrderProductVO">
-		/* OrderMapper.getOrderProductInfo */
-		SELECT
-			  ORDER_PRODUCT_NO
-			, ORDER_NO
-			, ORDER_QTY
-			, MENU_BOARD_SEQ
-			, MENU_DAY
-			, ORDER_SET
-			, MENU_MSG
-			, MENU_MSG_DETAIL
-			, PAY_AMT
-			, DELIVERY_TYPE
-			, DELIV_TIME
-			, USED_POINT
-			, CONFIRM_DT
-			, REG_USER
-			, REG_DT
-			, (SELECT STATUS FROM DELIVERY_MST B WHERE A.ORDER_PRODUCT_NO = B.ORDER_PRODUCT_NO ) AS DELIVERY_STATUS
-			, (SELECT SUM(ORDER_QTY) FROM ORDER_PRODUCT WHERE ORDER_NO = #{orderNo} AND ORDER_SET IN ('1000', '3000')) AS TOTAL_QTY
-		FROM ORDER_PRODUCT A
-		WHERE ORDER_NO = #{orderNo}
-		ORDER BY MENU_DAY
-	</select>
-	
-	<!-- 주문 배송 정보 -->	
-	<select id="getOrderInfoDelivery" parameterType="com.simplesoft.order.service.OrderProductVO" resultType="com.simplesoft.order.service.DeliveryVO">
-		/* OrderMapper.getOrderInfoDelivery */
-		SELECT
-			  A.ORDER_PRODUCT_NO
-			, A.ORDER_NO
-			, A.ORDER_SET
-			, A.MENU_DAY
-			, B.RECEIVE_NAME
-			, B.RECEIVE_TEL
-			, B.RECEIVE_PHONE
-			, B.RECEIVE_POST_NUM
-			, B.RECEIVE_ADDR
-			, B.RECEIVE_ADDR_DETAIL
-		FROM ORDER_PRODUCT A
-		JOIN ORDER_MST B ON A.ORDER_NO = B.ORDER_NO
-		WHERE A.ORDER_NO = #{orderNo}
-	</select>
-	
-	<!-- 주문 정보 업데이트 -->
-	<update id="updateOrderApplyInfo" parameterType="com.simplesoft.order.service.OrderVO">
-		/* OrderMapper.updateOrderApplyInfo */
-		UPDATE ORDER_MST SET
-			  ORDER_NAME		= #{orderName}
-			, ORDER_PWD			= #{orderPwd}	
-			, ORDER_TEL			= #{orderTel}
-			, ORDER_PHONE		= #{orderPhone}
-			, ORDER_POST_NUM	= #{orderPostNum}
-			, ORDER_ADDR		= #{orderAddr}
-			, ORDER_ADDR_DETAIL	= #{orderAddrDetail}
-			, ORDER_EMAIL		= #{orderEmail}
-			, RECEIVE_NAME		= #{receiveName}
-			, RECEIVE_TEL		= #{receiveTel}
-			, RECEIVE_PHONE		= #{receivePhone}
-			, RECEIVE_POST_NUM	= #{receivePostNum}
-			, RECEIVE_ADDR		= #{receiveAddr}
-			, RECEIVE_ADDR_DETAIL = #{receiveAddrDetail}
-			, DELIV_TIME 		= #{delivTime}
-			, DELIV_KIND 		= #{delivKind}
-			, PACKAGING 		= #{packaging}
-			, COMMON_PWD		= #{commonPwd}
-			, BIGO				= #{bigo}
-			, UPT_USER			= #{userNo}
-			, UPT_DT			= NOW()
-		WHERE USER_NO = #{userNo}
-		AND ORDER_NO = #{orderNo}
-		AND ORDER_STATUS = #{orderStatus}
-		<if test="userNo == '0'">
-			AND USER_SESSION = #{userSession}
-		</if>
-	</update>
-	
-	<!-- 주문정보 주문완료 업데이트  -->
-	<update id="updateOrderStatusComplete" parameterType="com.simplesoft.order.service.OrderVO">
-		/* OrderMapper.updateOrderStatusComplete */
-		UPDATE ORDER_MST SET
-			ORDER_STATUS = '0000'
-			, UPT_USER			= #{userNo}
-			, UPT_DT			= NOW()
-			, ORDER_PAY_DT		= NOW()
-		WHERE ORDER_NO = #{orderNo}
-		AND ORDER_STATUS = #{orderStatus}
-	</update>
-	
-	<!-- 결제 전 금액 확인-->	
-	<select id="selectOrderPayConfirm" parameterType="String" resultType="Integer">
-		/* OrderMapper.selectOrderPayConfirm */
-		SELECT
-			  TOTAL_PRODUCT_AMT
-			+ (CASE WHEN DELIV_KIND = 2000 THEN 4000 ELSE TOTAL_DELY_AMT END)
-			+ (CASE WHEN PACKAGING = 1000 THEN 5000 ELSE 0 END) AS totalMoney
-		FROM ORDER_MST
-		WHERE ORDER_NO = #{orderId}
-	</select>
-	
-	<!--배송 정보 등록-->
-	<insert id="insertDelivery" parameterType="com.simplesoft.order.service.OrderProductVO">
-		/* OrderMapper.insertDelivery */
-		INSERT INTO DELIVERY_MST(
-			  ORDER_NO, ORDER_PRODUCT_NO, MENU_DAY, STATUS
-			, DELIVERY_DT, REG_USER, REG_DT, RECEIVE_NAME ,RECEIVE_TEL 
-			, RECEIVE_PHONE ,RECEIVE_POST_NUM ,RECEIVE_ADDR ,RECEIVE_ADDR_DETAIL
-		)
-		VALUES(
-			  #{orderNo}
-			, #{orderProductNo}
-			, #{menuDay}
-			, '1000'
-			, null
-			, #{receiveName}
-			, NOW()
-			, #{receiveName}
-			, #{receiveTel}
-			, #{receivePhone}
-			, #{receivePostNum}
-			, #{receiveAddr}
-			, #{receiveAddrDetail}
-		)
-	</insert>
-	
-	<!-- 비회원 주문조회 -->	
-	<select id="selectOrderCheck" parameterType="com.simplesoft.order.service.OrderVO" resultMap="orderShopApplyResult">
+	<select id="selectOrderCheck" parameterType="com.simplesoft.order.service.RefundVO" resultType="com.simplesoft.order.service.RefundVO">
 		/* OrderMapper.selectOrderCheck */
 		SELECT
-			  ORDER_NO
-			, USER_NO
-			, ORDER_STATUS
-			, TOTAL_PRODUCT_AMT
-			, TOTAL_DIS_AMT
-			, TOTAL_DELY_AMT
-			, ORDER_NAME
-			, ORDER_TEL
-			, ORDER_PHONE
-			, ORDER_POST_NUM
-			, ORDER_ADDR
-			, ORDER_ADDR_DETAIL
-			, ORDER_EMAIL
-			, ORDER_STATUS
-			, RECEIVE_NAME
-			, RECEIVE_TEL
-			, RECEIVE_PHONE
-			, RECEIVE_POST_NUM
-			, RECEIVE_ADDR
-			, RECEIVE_ADDR_DETAIL
-			, DELIV_TIME
-			, DELIV_KIND
-			, PACKAGING
-			, COMMON_PWD
-			, BIGO
-			, ORDER_PAY_DT
-			,TOTAL_PRODUCT_AMT
-    + (CASE WHEN DELIV_KIND = 2000 THEN 4000 ELSE TOTAL_DELY_AMT END)
-    + (CASE WHEN PACKAGING = 1000 THEN 5000 ELSE 0 END) AS TOTAL_AMOUNT
-		FROM ORDER_MST
-		WHERE ORDER_NO = #{orderNo}
-		AND ORDER_PWD = #{orderPwd}
-		AND USER_NO = '0'
+			 *
+		FROM ROOM
+		WHERE USER_NAME = #{userName}
 	</select>
 	
-	<!-- 주문번호 생성 -->
-	<insert id="insertRefund" parameterType="com.simplesoft.order.service.RefundVO">
-		/* OrderMapper.insertRefund */
-		INSERT INTO REFUND
+	<insert id="insertUser" parameterType="com.simplesoft.order.service.RefundVO">
+		/* OrderMapper.insertUser */
+		INSERT INTO ROOM
 			(
-					ORDER_NO
-				,	REFUND_MSG
-				,	STATUS
-				,	REG_DT
+					USER_NAME
 			)
 		VALUES(
-					#{orderNo}
-				,	#{refundMsg}
-				,	'0000'
-				,	NOW()
+					#{userName}
 		)
 	</insert>
+	<update id="updateTime" parameterType="com.simplesoft.order.service.RefundVO">
+		/* OrderMapper.updateTime */
+		UPDATE ROOM SET REG_DT = SYSDATE() WHERE USER_NAME = #{userName}
+	</update>
+	<update id="updateHint" parameterType="com.simplesoft.order.service.RefundVO">
+		/* OrderMapper.updateHint */
+		UPDATE ROOM SET 
+			UPD_DATE = SYSDATE()
+			<choose>
+				<when test="hint1 eq 1">
+					, HINT1 = 'Y'
+					, HINT1_DATE = SYSDATE()
+				</when> 
+				<when test="hint2 eq 1">
+					, HINT2 = 'Y'
+					, HINT2_DATE = SYSDATE()
+				</when> 
+				<when test="hint3 eq 1">
+					, HINT3 = 'Y'
+					, HINT3_DATE = SYSDATE()
+				</when> 
+				<when test="hint4 eq 1">
+					, HINT4 = 'Y'
+					, HINT4_DATE = SYSDATE()
+				</when> 
+				<when test="hint5 eq 1">
+					, HINT5 = 'Y'
+					, HINT5_DATE = SYSDATE()
+				</when> 
+				<when test="hint6 eq 1">
+					, HINT6 = 'Y'
+					, HINT6_DATE = SYSDATE()
+				</when>
+			</choose>
+		WHERE USER_NAME = #{userName}
+	</update>
 	
-	<!-- 환불 정보 조회 -->	
-	<select id="getRefundDetail" parameterType="com.simplesoft.order.service.OrderVO" resultType="com.simplesoft.order.service.RefundVO">
-		/* OrderMapper.getRefundDetail */
+	<select id="selectAll" parameterType="com.simplesoft.order.service.RefundVO" resultType="CamelHashMap">
+		/* OrderMapper.selectAll */
 		SELECT
-			  REFUND_MSG
-			, STATUS
-			, REFUND_ANSWER
-			, DATE_FORMAT(REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
-		FROM REFUND WHERE ORDER_NO = #{orderNo}
-	</select>
-	
-	<!-- 환불 정보 중복체크 -->	
-	<select id="getRefundCheck" parameterType="com.simplesoft.order.service.RefundVO" resultType="Integer">
-		/* OrderMapper.getRefundCheck */
-		SELECT COUNT(*) FROM REFUND WHERE ORDER_NO = #{orderNo}
+			   USER_NAME
+			 , HINT1
+			 , HINT2
+			 , HINT3
+			 , HINT4
+			 , HINT5
+			 , HINT6
+			 , DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT
+			 , DATE_FORMAT(HINT1_DATE, '%Y-%m-%d %H:%i:%s') AS HINT1_DATE
+			 , DATE_FORMAT(HINT2_DATE, '%Y-%m-%d %H:%i:%s') AS HINT2_DATE
+			 , DATE_FORMAT(HINT3_DATE, '%Y-%m-%d %H:%i:%s') AS HINT3_DATE
+			 , DATE_FORMAT(HINT4_DATE, '%Y-%m-%d %H:%i:%s') AS HINT4_DATE
+			 , DATE_FORMAT(HINT5_DATE, '%Y-%m-%d %H:%i:%s') AS HINT5_DATE
+			 , DATE_FORMAT(HINT6_DATE, '%Y-%m-%d %H:%i:%s') AS HINT6_DATE
+			 , DATE_FORMAT(SUC_DT, '%Y-%m-%d %H:%i:%s') AS SUC_DT
+			 , TIMEDIFF(SUC_DT, REG_DT) AS TIME_TO_SUCCESS 
+		FROM ROOM
+		WHERE 1=1
 	</select>
 </mapper>

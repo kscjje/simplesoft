@@ -26,6 +26,7 @@ public class OrderVO extends CommonVO{
 	private int userNo;					//회원번호
 	private String orderStatus;			//주문상태
 	private String userSession;			//비회원세션정보
+	private String userName;
 	private String orderPayType;		//주문결제방법
 	private int totalProductAmt;		//총상품금액
 	private int totalDisAmt;			//총상품할인금액
@@ -54,7 +55,7 @@ public class OrderVO extends CommonVO{
 	private String orderPayDt;			//주문일시
 	private String bigo;				//전하실말씀
 	private String regUser;				//등록자
-	private Date regDt;					//등록일시
+	private String regDt;					//등록일시
 	
 	private List<OrderProductVO> productList;	//주문상품목록
 	

@@ -10,12 +10,19 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RefundVO {
-	private String orderNo;				//주문번호
-	private String refundMsg;			//환불내용
-	private String status;				//환불상태(0000:신청,1001:반려,2001:환불)
-	private String refundAnswer;		//환불반려내용
-	private String regUser;
+	private String userName;
+	private String hint1;
+	private String hint2;
+	private String hint3;
+	private String hint4;
+	private String hint5;
+	private String hint6;
+	private String hint1Date;
+	private String hint2Date;
+	private String hint3Date;
+	private String hint4Date;
+	private String hint5Date;
+	private String hint6Date;
 	private String regDt;
-	private String uptUser;
-	private String uptDt;
+	private String sucDt;
 }

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8" />
+	<title>이김청년부 방탈출</title>
+	<link rel="stylesheet" href="/css/tailwind.min.css">
+	<link rel="stylesheet" href="/css/all.min.css">
+	<link rel="stylesheet" href="/css/room.css">
+	<script src="/js/common/jquery-3.6.0.min.js"></script>
+	<style>
+		body{
+			font-family: 'Nanum Gothic', sans-serif;
+		}
+	</style>
+</head>
+<body>
+	<h1>🔐 Escape Room Timer</h1>
+	
+	<button type="button" class="btn mt-5" id="idInsert">사용자 등록</button>
+	
+	<!-- 등록된 사용자 리스트 -->
+	<div class="mt-12">
+		<h2 class="text-xl font-bold mb-4 text-cyan-300">🧑 사용자 목록</h2>
+		<div class="overflow-x-auto">
+			<table class="min-w-full bg-gray-800 border border-cyan-500">
+				<thead class="bg-gray-700 ">
+					<tr>
+						<th class="px-4 py-2 border border-cyan-500">번호</th>
+						<th class="px-4 py-2 border border-cyan-500">사용자명</th>
+						<th class="px-4 py-2 border border-cyan-500">시작시간</th>
+						<th class="px-4 py-2 border border-cyan-500">성공시간</th>
+						<th class="px-4 py-2 border border-cyan-500">걸린시간</th>
+						<th class="px-4 py-2 border border-cyan-500">힌트 1</th>
+						<th class="px-4 py-2 border border-cyan-500">힌트 2</th>
+						<th class="px-4 py-2 border border-cyan-500">힌트 3</th>
+						<th class="px-4 py-2 border border-cyan-500">힌트 4</th>
+						<th class="px-4 py-2 border border-cyan-500">힌트 5</th>
+						<th class="px-4 py-2 border border-cyan-500">힌트 6</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="item, stat : ${list}" class="hover:bg-gray-700">
+						<td class="px-4 py-2 border border-cyan-500 text-center" th:text="${stat.count}">1</td>
+						<td class="px-4 py-2 border border-cyan-500 text-center" th:text="${item.userName}"></td>
+						<td class="px-4 py-2 border border-cyan-500 text-center" th:text="${item.regDt}"></td>
+						<td class="px-4 py-2 border border-cyan-500 text-center" th:text="${item.sucDt}"></td>
+						<td class="px-4 py-2 border border-cyan-500 text-center" th:text="${item.timeToSuccess}"></td>
+						<td class="px-4 py-2 border border-cyan-500 text-center" th:text="${item.hint1}">Y</td>
+						<td class="px-4 py-2 border border-cyan-500 text-center" th:text="${item.hint2}">N</td>
+						<td class="px-4 py-2 border border-cyan-500 text-center" th:text="${item.hint3}">Y</td>
+						<td class="px-4 py-2 border border-cyan-500 text-center" th:text="${item.hint4}">N</td>
+						<td class="px-4 py-2 border border-cyan-500 text-center" th:text="${item.hint5}">Y</td>
+						<td class="px-4 py-2 border border-cyan-500 text-center" th:text="${item.hint6}">N</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+	<!-- 시작 모달 -->
+	<div id="start-modal" style="display:none;">
+		<div class="modal-content">
+			<h2>사용자를 입력해주세요.</h2>
+			<input type="text" id="userName" class="px-3 py-2 border border-gray-300 rounded-md input-focus" onkeypress="enterKey()">
+			<button id="start-yes">등록</button>
+		</div>
+	</div>
+	<script>
+		document.getElementById('idInsert').addEventListener('click', () => {
+			$("#userName").val("");
+			$("#start-modal").show();
+		});
+		const btnYes = document.getElementById('start-yes');
+		
+		btnYes.addEventListener('click', () => {
+			saveStartTimeToServer();
+		});
+		// 시작 시간 서버 저장 (POST)
+		function saveStartTimeToServer() {
+			let userName = $("#userName").val();
+			if(userName == ""){
+				alert("사용자를 입력해 주세요.");
+				return;
+			}
+			$.ajax({
+				url: '/insert',
+				type: 'POST',
+				data: {
+					userName	: userName
+				},
+				dataType: 'json',
+				success: function (res) {
+					if(res.data.RET_CODE == "DUPLE"){
+						alert("이미 등록된 사용자입니다.");
+						return;
+					} else {
+						$("#start-modal").hide();
+						alert("등록 되었습니다.");
+					}
+				},
+				error: function () {
+					console.error('시작 시간 저장 실패');
+				}
+			});
+		}
+
+		// 시작 시간 서버에서 불러오기 (GET)
+		function loadStartTimeFromServer(callback) {
+			$.ajax({
+				url: '/load',
+				type: 'GET',
+				dataType: 'json',
+				success: function (res) {
+					if (res && res.data && res.data.regDt) {
+						callback(res.data.regDt);
+					} else {
+						callback(null);
+					}
+				},
+				error: function () {
+					console.error('타이머 시작 시간 불러오기 실패');
+					callback(null);
+				}
+			});
+		}
+		enterKey = function(type){
+			if (window.event.keyCode == 13) {
+				$('#start-yes').trigger("click");
+			}
+		}
+	</script>
+</body>
+</html>

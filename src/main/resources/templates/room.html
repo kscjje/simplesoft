@@ -28,13 +28,42 @@
 			<i class="fas fa-eraser"></i>
 		</button>
 	</div>
-	<div class="hint-box" id="hint-box">힌트를 입력하고 '힌트 확인' 버튼을 눌러주세요.</div>
+	<div class="hint-box" id="hint-box">힌트코드를 입력하고 '힌트 확인' 버튼을 눌러주세요.</div>
 
 	<!-- 시작 모달 -->
 	<div id="start-modal">
 		<div class="modal-content">
 			<h2>게임을 시작하시겠습니까?</h2>
-			<button id="start-yes">네, 시작합니다</button>
+			<button type="button" id="start-yes">네, 시작합니다</button>
+		</div>
+	</div>
+	
+	<!-- 힌트 모달 -->
+	<div id="hint1-modal" class="hint-modal"style="display:none;">
+		<div class="modal-content">
+			<img src="image/foodtable.jpg" alt="식단표" class="mb-5">
+			<button type="button" id="hint1-yes">확인</button>
+		</div>
+	</div>
+	
+	<div id="hint2-modal" class="hint-modal"style="display:none;">
+		<div class="modal-content">
+			<img src="image/foodtable.jpg" alt="식단표" class="mb-5">
+			<button type="button" id="hint2-yes">확인</button>
+		</div>
+	</div>
+	
+	<div id="hint3-modal" class="hint-modal"style="display:none;">
+		<div class="modal-content">
+			<img src="image/foodtable.jpg" alt="식단표" class="mb-5">
+			<button type="button" id="hint3-yes">확인</button>
+		</div>
+	</div>
+	
+	<div id="hint4-modal" class="hint-modal"style="display:none;">
+		<div class="modal-content">
+			<img src="image/foodtable.jpg" alt="식단표" class="mb-5">
+			<button type="button" id="hint4-yes">확인</button>
 		</div>
 	</div>
 	
@@ -45,10 +74,10 @@
 
 		// 힌트 코드 사전
 		const HINT_CODES = {
-			'1234': '첫 번째 퍼즐의 답은 시계를 확인하세요.',
-			'5678': '두 번째 힌트: 책장의 빨간 책을 찾아보세요.',
-			'9012': '세 번째 힌트: 금고 번호는 생일과 관련이 있습니다.',
-			'3456': '네 번째 힌트: 거울 뒤편을 확인해보세요.'
+			'1234': `첫 번째 퍼즐의 답은 시계를 확인하세요. <br><button class="btn btn-hint mt-2" onclick="$('#hint1-modal').show();">정답 확인</button>`,
+			'5678': `두 번째 힌트: 책장의 빨간 책을 찾아보세요. <br><button class="btn btn-hint mt-2" onclick="$('#hint2-modal').show();">정답 확인</button>`,
+			'9012': `세 번째 힌트: 금고 번호는 생일과 관련이 있습니다. <br><button class="btn btn-hint mt-2" onclick="$('#hint3-modal').show();">정답 확인</button>`,
+			'3456': `네 번째 힌트: 거울 뒤편을 확인해보세요. <br><button class="btn btn-hint mt-2" onclick="$('#hint4-modal').show();">정답 확인</button>`,
 		};
 
 		// 타이머 표시
@@ -71,8 +100,25 @@
 		const modal = document.getElementById('start-modal');
 		const btnYes = document.getElementById('start-yes');
 		
+		const hint1Modal = document.getElementById('hint1-modal');
+		const hint2Modal = document.getElementById('hint2-modal');
+		const hint3Modal = document.getElementById('hint3-modal');
+		const hint4Modal = document.getElementById('hint4-modal');
+		
 		btnYes.addEventListener('click', () => {
 			saveStartTimeToServer();
+		});
+		hint1Modal.addEventListener('click', () => {
+			$('#hint1-modal').hide();
+		});
+		hint2Modal.addEventListener('click', () => {
+			$('#hint2-modal').hide();
+		});
+		hint3Modal.addEventListener('click', () => {
+			$('#hint3-modal').hide();
+		});
+		hint4Modal.addEventListener('click', () => {
+			$('#hint4-modal').hide();
 		});
 			
 		// 시작 시간 서버 저장 (POST)
@@ -173,7 +219,7 @@
 				const timerText = document.getElementById('timer').innerText;
 				const [min, sec] = timerText.split(':').map(Number);
 				const totalSeconds = min * 60 + sec;
-				const timeLimit = [5,6,7,8];
+				const timeLimit = [19,6,7,8];
 				
 				if (totalSeconds >= timeLimit[index]*60) { // 15분 이상
 					hintBox.textContent = `이 힌트는 ${timeLimit[index]}분 이하일 때만 사용할 수 있습니다.`;
@@ -182,7 +228,7 @@
 					return; // 함수 탈출하여 더 이상 진행 안 함
 				}
 				
-				hintBox.textContent = HINT_CODES[code];
+				hintBox.innerHTML = HINT_CODES[code];
 				hintBox.style.color = '#00ffff';
 				clearInputs();
 				

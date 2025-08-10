@@ -23,6 +23,7 @@
 	
 	<div class="mt-5">힌트 사용 : <span id="hindCnt">0</span> / 4</div>
 	<div class="flex items-center space-x-2 mt-5">
+		<button type="button" class="btn" onclick="resultBtn()">최종 정답 입력</button>
 		<button type="button" class="btn" id="check-hint-btn">힌트 확인</button>
 		<button type="button" id="clear-inputs-btn" style="width:3.5rem;height: 3.3rem" class="btn flex items-center justify-center text-gray-600 hover:text-red-500">
 			<i class="fas fa-eraser"></i>
@@ -67,6 +68,13 @@
 		</div>
 	</div>
 	
+	<div id="result-modal" class="hint-modal"style="display:none;">
+		<div class="modal-content">
+			<input type="text" id="result" class="w-full px-4 py-3 mb-6 border border-gray-300 rounded-md text-black text-lg focus:outline-none focus:ring-2 focus:ring-cyan-400" onkeydown="enterKey()">
+			<button type="button" id="result-yes">확인</button>
+		</div>
+	</div>
+	
 	<script>
 		const TIMER_DURATION = 1200; // 20분
 		let seconds = TIMER_DURATION;
@@ -74,10 +82,14 @@
 
 		// 힌트 코드 사전
 		const HINT_CODES = {
-			'1234': `첫 번째 퍼즐의 답은 시계를 확인하세요. <br><button class="btn btn-hint mt-2" onclick="$('#hint1-modal').show();">정답 확인</button>`,
-			'5678': `두 번째 힌트: 책장의 빨간 책을 찾아보세요. <br><button class="btn btn-hint mt-2" onclick="$('#hint2-modal').show();">정답 확인</button>`,
-			'9012': `세 번째 힌트: 금고 번호는 생일과 관련이 있습니다. <br><button class="btn btn-hint mt-2" onclick="$('#hint3-modal').show();">정답 확인</button>`,
-			'3456': `네 번째 힌트: 거울 뒤편을 확인해보세요. <br><button class="btn btn-hint mt-2" onclick="$('#hint4-modal').show();">정답 확인</button>`,
+// 			'1111': `첫 번째 힌트: 셀로판지를 영어표에 대입하여 올바른 단어를 찾아보세요.<br><button class="btn btn-hint mt-2" onclick="$('#hint1-modal').show();">정답 확인</button>`,
+// 			'2222': `두 번째 힌트: 게시판과 말씀카드를 대조해 보세요.<br><button class="btn btn-hint mt-2" onclick="$('#hint2-modal').show();">정답 확인</button>`,
+// 			'3333': `세 번째 힌트: ㄱ = 1, ㄴ = 2로 답을 찾은 후 방향키 상자를 확인하세요.<br><button class="btn btn-hint mt-2" onclick="$('#hint3-modal').show();">정답 확인</button>`,
+// 			'4444': `네 번째 힌트: 이번 수련회 본문 말씀 글자에 대한 좌표값입니다. <br><button class="btn btn-hint mt-2" onclick="$('#hint4-modal').show();">정답 확인</button>`,
+			'1111': `첫 번째 힌트: 셀로판지를 영어표에 대입하여 올바른 단어를 찾아보세요.`,
+			'2222': `두 번째 힌트: 게시판과 말씀카드를 대조해 보세요.`,
+			'3333': `세 번째 힌트: ㄱ = 1, ㄴ = 2로 답을 찾은 후 방향키 상자를 확인하세요.`,
+			'4444': `네 번째 힌트: 이번 수련회 본문 말씀 글자에 대한 좌표값입니다.`,
 		};
 
 		// 타이머 표시
@@ -96,7 +108,10 @@
 				seconds--;
 			}, 1000);
 		}
-
+		
+		function stopTimer(){
+			clearInterval(interval);
+		}
 		const modal = document.getElementById('start-modal');
 		const btnYes = document.getElementById('start-yes');
 		
@@ -219,7 +234,7 @@
 				const timerText = document.getElementById('timer').innerText;
 				const [min, sec] = timerText.split(':').map(Number);
 				const totalSeconds = min * 60 + sec;
-				const timeLimit = [19,6,7,8];
+				const timeLimit = [20,20,20,20];
 				
 				if (totalSeconds >= timeLimit[index]*60) { // 15분 이상
 					hintBox.textContent = `이 힌트는 ${timeLimit[index]}분 이하일 때만 사용할 수 있습니다.`;
@@ -282,6 +297,36 @@
 				$('#check-hint-btn').trigger("click");
 			}
 		}
+		function resultBtn(){
+			// 예: 사용자 입력 받기
+			let userInput = prompt("정답을 입력해 주세요.");
+			let answer = "여호와는 나의 불꽃이니 그가 나의 안에서 사라지지 아니하는지라";
+			
+			if (userInput === null) {
+		        // 취소 눌렀을 때 아무 동작도 안함
+		        return;
+		    } 
+			if (!userInput) {
+		        alert("값을 입력해 주세요.");
+		        return;
+		    }
+
+			// 공백 제거 후 비교
+		    let userInputNoSpace = userInput.replace(/\s+/g, '');
+		    let answerNoSpace = answer.replace(/\s+/g, '');
+		    const hintBox = document.getElementById('hint-box');
+		    
+		    if (userInputNoSpace === answerNoSpace) {
+		        alert("정답입니다.");
+		        hintBox.textContent = `정답 입니다.`;
+		        stopTimer();
+		    } else {
+		    	hintBox.textContent = `오답 :${userInput}`;
+				hintBox.style.color = '#ff0044';
+		    }
+		}
+		
+
 	</script>
 </body>
 </html>

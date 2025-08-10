@@ -35,6 +35,10 @@ public class OrderServiceImpl implements OrderService{
 		return orderMapper.updateHint(vo); 
 	}
 	@Override
+	public int success(RefundVO vo) {
+		return orderMapper.success(vo); 
+	}
+	@Override
 	public List<Map<String,Object>> selectAll(RefundVO vo) {
 		return orderMapper.selectAll(vo); 
 	}

@@ -7,6 +7,14 @@
 	<link rel="stylesheet" href="/css/all.min.css">
 	<link rel="stylesheet" href="/css/room.css">
 	<script src="/js/common/jquery-3.6.0.min.js"></script>
+	<style>
+		body{
+			font-family: 'Nanum Gothic', sans-serif;
+		}
+		#result-modal .modal-content {
+			padding : 45px 115px;
+		}
+	</style>
 </head>
 <body>
 	<h1>🔐 Escape Room Timer</h1>
@@ -20,7 +28,6 @@
 		<input type="text" maxlength="1" class="hint-input" id="code3" autocomplete="off" onkeydown="enterKey()"/>
 		<input type="text" maxlength="1" class="hint-input" id="code4" autocomplete="off" onkeydown="enterKey()"/>
 	</div>
-	
 	<div class="mt-5">힌트 사용 : <span id="hindCnt">0</span> / 4</div>
 	<div class="flex items-center space-x-2 mt-5">
 		<button type="button" class="btn" onclick="resultBtn()">최종 정답 입력</button>
@@ -30,7 +37,15 @@
 		</button>
 	</div>
 	<div class="hint-box" id="hint-box">힌트코드를 입력하고 '힌트 확인' 버튼을 눌러주세요.</div>
-
+	<div id="result-modal" style="display:none;">
+		<div class="modal-content relative p-8 rounded-xl bg-black border-2 border-cyan-400 shadow-xl text-center">
+		<button type="button" id="close-modal2" class="absolute top-4 right-4 text-pink-400 font-bold hover:text-white transition duration-200" style="padding: 5px 10px;">×</button>
+			<input type="text" id="result" class="w-full px-4 py-3 mb-6 border border-gray-300 rounded-md text-black text-lg focus:outline-none focus:ring-2 focus:ring-cyan-400" onkeydown="enterKey()">
+			<button type="button" id="result-yes" class="px-6 py-2 bg-black border-2 border-pink-500 text-pink-400 font-bold rounded-lg hover:bg-pink-500 hover:text-white transition duration-200">
+			확인
+		</button>
+		</div>
+	</div>
 	<!-- 시작 모달 -->
 	<div id="start-modal">
 		<div class="modal-content">
@@ -40,7 +55,7 @@
 	</div>
 	
 	<!-- 힌트 모달 -->
-	<div id="hint1-modal" class="hint-modal"style="display:none;">
+	<!--<div id="hint1-modal" class="hint-modal"style="display:none;">
 		<div class="modal-content">
 			<img src="image/foodtable.jpg" alt="식단표" class="mb-5">
 			<button type="button" id="hint1-yes">확인</button>
@@ -66,14 +81,7 @@
 			<img src="image/foodtable.jpg" alt="식단표" class="mb-5">
 			<button type="button" id="hint4-yes">확인</button>
 		</div>
-	</div>
-	
-	<div id="result-modal" class="hint-modal"style="display:none;">
-		<div class="modal-content">
-			<input type="text" id="result" class="w-full px-4 py-3 mb-6 border border-gray-300 rounded-md text-black text-lg focus:outline-none focus:ring-2 focus:ring-cyan-400" onkeydown="enterKey()">
-			<button type="button" id="result-yes">확인</button>
-		</div>
-	</div>
+	</div>-->
 	
 	<script>
 		const TIMER_DURATION = 1200; // 20분
@@ -82,10 +90,6 @@
 
 		// 힌트 코드 사전
 		const HINT_CODES = {
-// 			'1111': `첫 번째 힌트: 셀로판지를 영어표에 대입하여 올바른 단어를 찾아보세요.<br><button class="btn btn-hint mt-2" onclick="$('#hint1-modal').show();">정답 확인</button>`,
-// 			'2222': `두 번째 힌트: 게시판과 말씀카드를 대조해 보세요.<br><button class="btn btn-hint mt-2" onclick="$('#hint2-modal').show();">정답 확인</button>`,
-// 			'3333': `세 번째 힌트: ㄱ = 1, ㄴ = 2로 답을 찾은 후 방향키 상자를 확인하세요.<br><button class="btn btn-hint mt-2" onclick="$('#hint3-modal').show();">정답 확인</button>`,
-// 			'4444': `네 번째 힌트: 이번 수련회 본문 말씀 글자에 대한 좌표값입니다. <br><button class="btn btn-hint mt-2" onclick="$('#hint4-modal').show();">정답 확인</button>`,
 			'1111': `첫 번째 힌트: 셀로판지를 영어표에 대입하여 올바른 단어를 찾아보세요.`,
 			'2222': `두 번째 힌트: 게시판과 말씀카드를 대조해 보세요.`,
 			'3333': `세 번째 힌트: ㄱ = 1, ㄴ = 2로 답을 찾은 후 방향키 상자를 확인하세요.`,
@@ -123,7 +127,7 @@
 		btnYes.addEventListener('click', () => {
 			saveStartTimeToServer();
 		});
-		hint1Modal.addEventListener('click', () => {
+		/*hint1Modal.addEventListener('click', () => {
 			$('#hint1-modal').hide();
 		});
 		hint2Modal.addEventListener('click', () => {
@@ -135,7 +139,7 @@
 		hint4Modal.addEventListener('click', () => {
 			$('#hint4-modal').hide();
 		});
-			
+			*/
 		// 시작 시간 서버 저장 (POST)
 		function saveStartTimeToServer() {
 			$.ajax({
@@ -272,7 +276,30 @@
 		// 페이지 로드시 서버에서 시작시간 불러와서 타이머 계산
 		window.addEventListener('DOMContentLoaded', () => {
 			loadStartTimeFromServer(function (data) {
-				if (data.regDt) {
+				if(data.sucDt){
+					modal.style.display = 'none';
+					// 시:분:초 형식이라면 분과 초를 분리
+					const timeStr = data.timeToSuccess; // "00:00:12" 같은 문자열
+					const parts = timeStr.split(':'); // ["00", "00", "12"]
+					
+					// 배열 길이 체크 후 분, 초 가져오기
+					let minute = "00", second = "00";
+					if(parts.length === 3) {
+					  minute = parts[1];
+					  second = parts[2];
+					} else if(parts.length === 2) {
+					  // 시가 없으면 분, 초만 있는 경우
+					  minute = parts[0];
+					  second = parts[1];
+					}
+					
+					// 앞에 0 붙이기 (만약 한 자리 숫자면)
+					minute = minute.padStart(2, '0');
+					second = second.padStart(2, '0');
+					
+					const formatted = `${minute}:${second}`;
+					document.getElementById('timer').innerText = formatted;
+				} else if (data.regDt) {
 					modal.style.display = 'none';
 					const now = new Date();
 					const start = new Date(data.regDt);
@@ -297,36 +324,64 @@
 				$('#check-hint-btn').trigger("click");
 			}
 		}
-		function resultBtn(){
-			// 예: 사용자 입력 받기
-			let userInput = prompt("정답을 입력해 주세요.");
-			let answer = "여호와는 나의 불꽃이니 그가 나의 안에서 사라지지 아니하는지라";
-			
-			if (userInput === null) {
-		        // 취소 눌렀을 때 아무 동작도 안함
-		        return;
-		    } 
-			if (!userInput) {
-		        alert("값을 입력해 주세요.");
-		        return;
+		function resultBtn() {
+		    // 모달 열기
+		    document.getElementById('result').value = ''; // 입력값 초기화
+		    $("#result-modal").show();
+		    document.getElementById('result').focus(); // 커서 자동 포커스
+		}
+		// 모달에서 "확인" 버튼 클릭 시
+		document.getElementById('result-yes').addEventListener('click', () => {
+		    let userInput = document.getElementById('result').value;
+		    checkAnswer(userInput);
+		});
+		// 엔터키로 제출 가능하게
+		document.getElementById('result').addEventListener('keydown', e => {
+		    if (e.key === 'Enter') {
+		        let userInput = document.getElementById('result').value;
+		        checkAnswer(userInput);
 		    }
-
-			// 공백 제거 후 비교
+		});
+		
+		function checkAnswer(userInput) {
+		    let answer = "여호와는 나의 불꽃이니 그가 나의 안에서 사라지지 아니하는지라";
+		
+		    // 공백 제거 후 비교
 		    let userInputNoSpace = userInput.replace(/\s+/g, '');
 		    let answerNoSpace = answer.replace(/\s+/g, '');
 		    const hintBox = document.getElementById('hint-box');
-		    
-		    if (userInputNoSpace === answerNoSpace) {
-		        alert("정답입니다.");
-		        hintBox.textContent = `정답 입니다.`;
-		        stopTimer();
-		    } else {
-		    	hintBox.textContent = `오답 :${userInput}`;
-				hintBox.style.color = '#ff0044';
-		    }
-		}
 		
-
+		    if (userInputNoSpace === answerNoSpace) {
+		        hintBox.textContent = `정답 입니다.`;
+		        hintBox.style.color = '#00ffff';
+		        stopTimer(); // 정답 맞추면 타이머 멈춤
+		        success();
+		    } else {
+		        hintBox.textContent = `오답 : ${userInput}`;
+		        hintBox.style.color = '#ff0044';
+		    }
+		
+		    // 모달 닫기
+		    document.getElementById('result-modal').style.display = 'none';
+		}
+		// 모달 닫기
+		$('#close-modal2').on('click', function () {
+			$('#result-modal').hide();
+		});
+		
+		
+		// 정답
+		function success() {
+			$.ajax({
+				url: '/success',
+				type: 'GET',
+				dataType: 'json',
+				success: function (res) {
+				},
+				error: function () {
+				}
+			});
+		}
 	</script>
 </body>
 </html>

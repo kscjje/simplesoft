@@ -4,7 +4,22 @@
 	<select id="selectOrderCheck" parameterType="com.simplesoft.order.service.RefundVO" resultType="com.simplesoft.order.service.RefundVO">
 		/* OrderMapper.selectOrderCheck */
 		SELECT
-			 *
+			 USER_NAME
+			 , HINT1
+			 , HINT2
+			 , HINT3
+			 , HINT4
+			 , HINT5
+			 , HINT6
+			 , DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT
+			 , DATE_FORMAT(HINT1_DATE, '%Y-%m-%d %H:%i:%s') AS HINT1_DATE
+			 , DATE_FORMAT(HINT2_DATE, '%Y-%m-%d %H:%i:%s') AS HINT2_DATE
+			 , DATE_FORMAT(HINT3_DATE, '%Y-%m-%d %H:%i:%s') AS HINT3_DATE
+			 , DATE_FORMAT(HINT4_DATE, '%Y-%m-%d %H:%i:%s') AS HINT4_DATE
+			 , DATE_FORMAT(HINT5_DATE, '%Y-%m-%d %H:%i:%s') AS HINT5_DATE
+			 , DATE_FORMAT(HINT6_DATE, '%Y-%m-%d %H:%i:%s') AS HINT6_DATE
+			 , DATE_FORMAT(SUC_DT, '%Y-%m-%d %H:%i:%s') AS SUC_DT
+			 , TIMEDIFF(SUC_DT, REG_DT) AS TIME_TO_SUCCESS 
 		FROM ROOM
 		WHERE USER_NAME = #{userName}
 	</select>
@@ -22,6 +37,10 @@
 	<update id="updateTime" parameterType="com.simplesoft.order.service.RefundVO">
 		/* OrderMapper.updateTime */
 		UPDATE ROOM SET REG_DT = SYSDATE() WHERE USER_NAME = #{userName}
+	</update>
+	<update id="success" parameterType="com.simplesoft.order.service.RefundVO">
+		/* OrderMapper.updateTime */
+		UPDATE ROOM SET SUC_DT = SYSDATE() WHERE USER_NAME = #{userName}
 	</update>
 	<update id="updateHint" parameterType="com.simplesoft.order.service.RefundVO">
 		/* OrderMapper.updateHint */
@@ -54,6 +73,26 @@
 				</when>
 			</choose>
 		WHERE USER_NAME = #{userName}
+		<choose>
+			<when test="hint1 eq 1">
+				AND HINT1_DATE IS NULL
+			</when> 
+			<when test="hint2 eq 1">
+				AND HINT2_DATE IS NULL
+			</when> 
+			<when test="hint3 eq 1">
+				AND HINT3_DATE IS NULL
+			</when> 
+			<when test="hint4 eq 1">
+				AND HINT4_DATE IS NULL
+			</when> 
+			<when test="hint5 eq 1">
+				AND HINT5_DATE IS NULL
+			</when> 
+			<when test="hint6 eq 1">
+				AND HINT6_DATE IS NULL
+			</when>
+		</choose>
 	</update>
 	
 	<select id="selectAll" parameterType="com.simplesoft.order.service.RefundVO" resultType="CamelHashMap">

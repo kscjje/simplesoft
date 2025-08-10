@@ -25,4 +25,5 @@ public class RefundVO {
 	private String hint6Date;
 	private String regDt;
 	private String sucDt;
+	private String timeToSuccess;
 }

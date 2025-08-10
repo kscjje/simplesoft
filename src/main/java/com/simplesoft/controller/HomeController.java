@@ -114,6 +114,8 @@ public class HomeController {
 				returnData.put("hint3", check.getHint3());
 				returnData.put("hint4", check.getHint4());
 				returnData.put("hint5", check.getHint5());
+				returnData.put("sucDt", check.getSucDt());
+				returnData.put("timeToSuccess", check.getTimeToSuccess());
 			}
 		}
 		return new CommonResponse<Map<String, Object>>(returnData);
@@ -149,6 +151,16 @@ public class HomeController {
 			returnData.put("hint4", check.getHint4());
 			returnData.put("hint5", check.getHint5());
 		}
+		return new CommonResponse<Map<String, Object>>(returnData);
+	}
+	@ResponseBody
+	@GetMapping("/success")
+	public BasicResponse success(Model model, HttpSession session) throws Exception {
+		Map<String, Object> returnData = new HashMap<String, Object>();
+		RefundVO vo = new RefundVO();
+		String userName = (String)session.getAttribute("userName");
+		vo.setUserName(userName);
+		orderService.success(vo);
 		return new CommonResponse<Map<String, Object>>(returnData);
 	}
 	@GetMapping("/logout")

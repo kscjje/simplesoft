@@ -90,8 +90,8 @@
 
 		// 힌트 코드 사전
 		const HINT_CODES = {
-			'1111': `첫 번째 힌트: 셀로판지를 영어표에 대입하여 올바른 단어를 찾아보세요.`,
-			'2222': `두 번째 힌트: 게시판과 말씀카드를 대조해 보세요.`,
+			'1111': `첫 번째 힌트: 셀로판지를 영어 표에 대입하여 올바른 단어를 찾아보세요.`,
+			'2222': `두 번째 힌트: 게시판과 말씀 카드를 대조해 보세요.`,
 			'3333': `세 번째 힌트: ㄱ = 1, ㄴ = 2로 답을 찾은 후 방향키 상자를 확인하세요.`,
 			'4444': `네 번째 힌트: 이번 수련회 본문 말씀 글자에 대한 좌표값입니다.`,
 		};
@@ -238,7 +238,7 @@
 				const timerText = document.getElementById('timer').innerText;
 				const [min, sec] = timerText.split(':').map(Number);
 				const totalSeconds = min * 60 + sec;
-				const timeLimit = [20,20,20,20];
+				const timeLimit = [15,10,5,5];
 				
 				if (totalSeconds >= timeLimit[index]*60) { // 15분 이상
 					hintBox.textContent = `이 힌트는 ${timeLimit[index]}분 이하일 때만 사용할 수 있습니다.`;

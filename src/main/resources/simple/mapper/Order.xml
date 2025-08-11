@@ -19,14 +19,20 @@
 			 , DATE_FORMAT(HINT5_DATE, '%Y-%m-%d %H:%i:%s') AS HINT5_DATE
 			 , DATE_FORMAT(HINT6_DATE, '%Y-%m-%d %H:%i:%s') AS HINT6_DATE
 			 , DATE_FORMAT(SUC_DT, '%Y-%m-%d %H:%i:%s') AS SUC_DT
-			 , TIMEDIFF(SUC_DT, REG_DT) AS TIME_TO_SUCCESS 
-		FROM ROOM
+			 ,DATE_FORMAT(
+				SEC_TO_TIME(
+					GREATEST(
+						TIME_TO_SEC(TIMEDIFF(DATE_ADD(REG_DT, INTERVAL 20 MINUTE), SUC_DT)),0
+					)
+				),'%i:%s'
+			) AS TIME_TO_SUCCESS
+		FROM room
 		WHERE USER_NAME = #{userName}
 	</select>
 	
 	<insert id="insertUser" parameterType="com.simplesoft.order.service.RefundVO">
 		/* OrderMapper.insertUser */
-		INSERT INTO ROOM
+		INSERT INTO room
 			(
 					USER_NAME
 			)
@@ -36,15 +42,15 @@
 	</insert>
 	<update id="updateTime" parameterType="com.simplesoft.order.service.RefundVO">
 		/* OrderMapper.updateTime */
-		UPDATE ROOM SET REG_DT = SYSDATE() WHERE USER_NAME = #{userName}
+		UPDATE room SET REG_DT = SYSDATE() WHERE USER_NAME = #{userName} AND REG_DT IS NULL
 	</update>
 	<update id="success" parameterType="com.simplesoft.order.service.RefundVO">
-		/* OrderMapper.updateTime */
-		UPDATE ROOM SET SUC_DT = SYSDATE() WHERE USER_NAME = #{userName}
+		/* OrderMapper.updateSucTime */
+		UPDATE room SET SUC_DT = SYSDATE() WHERE USER_NAME = #{userName} AND SUC_DT IS NULL
 	</update>
 	<update id="updateHint" parameterType="com.simplesoft.order.service.RefundVO">
 		/* OrderMapper.updateHint */
-		UPDATE ROOM SET 
+		UPDATE room SET 
 			UPD_DATE = SYSDATE()
 			<choose>
 				<when test="hint1 eq 1">
@@ -98,23 +104,43 @@
 	<select id="selectAll" parameterType="com.simplesoft.order.service.RefundVO" resultType="CamelHashMap">
 		/* OrderMapper.selectAll */
 		SELECT
-			   USER_NAME
-			 , HINT1
-			 , HINT2
-			 , HINT3
-			 , HINT4
-			 , HINT5
-			 , HINT6
-			 , DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT
-			 , DATE_FORMAT(HINT1_DATE, '%Y-%m-%d %H:%i:%s') AS HINT1_DATE
-			 , DATE_FORMAT(HINT2_DATE, '%Y-%m-%d %H:%i:%s') AS HINT2_DATE
-			 , DATE_FORMAT(HINT3_DATE, '%Y-%m-%d %H:%i:%s') AS HINT3_DATE
-			 , DATE_FORMAT(HINT4_DATE, '%Y-%m-%d %H:%i:%s') AS HINT4_DATE
-			 , DATE_FORMAT(HINT5_DATE, '%Y-%m-%d %H:%i:%s') AS HINT5_DATE
-			 , DATE_FORMAT(HINT6_DATE, '%Y-%m-%d %H:%i:%s') AS HINT6_DATE
-			 , DATE_FORMAT(SUC_DT, '%Y-%m-%d %H:%i:%s') AS SUC_DT
-			 , TIMEDIFF(SUC_DT, REG_DT) AS TIME_TO_SUCCESS 
-		FROM ROOM
+	       USER_NAME
+	     , HINT1
+	     , HINT2
+	     , HINT3
+	     , HINT4
+	     , HINT5
+	     , HINT6
+	     , DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT
+	     , DATE_FORMAT(HINT1_DATE, '%Y-%m-%d %H:%i:%s') AS HINT1_DATE
+	     , DATE_FORMAT(HINT2_DATE, '%Y-%m-%d %H:%i:%s') AS HINT2_DATE
+	     , DATE_FORMAT(HINT3_DATE, '%Y-%m-%d %H:%i:%s') AS HINT3_DATE
+	     , DATE_FORMAT(HINT4_DATE, '%Y-%m-%d %H:%i:%s') AS HINT4_DATE
+	     , DATE_FORMAT(HINT5_DATE, '%Y-%m-%d %H:%i:%s') AS HINT5_DATE
+	     , DATE_FORMAT(HINT6_DATE, '%Y-%m-%d %H:%i:%s') AS HINT6_DATE
+	     , DATE_FORMAT(SUC_DT, '%Y-%m-%d %H:%i:%s') AS SUC_DT
+	     , DATE_FORMAT(
+	            SEC_TO_TIME(
+	                GREATEST(
+	                    TIME_TO_SEC(
+	                        TIMEDIFF(
+	                            DATE_ADD(REG_DT, INTERVAL 20 MINUTE), 
+	                            SUC_DT
+	                        )
+	                    ),
+	                    0
+	                )
+	            ),
+	            '%i:%s'
+	       ) AS TIME_TO_SUCCESS
+		FROM room
 		WHERE 1=1
+		ORDER BY 
+		    TIME_TO_SEC(
+		        TIMEDIFF(
+		            DATE_ADD(REG_DT, INTERVAL 20 MINUTE), 
+		            SUC_DT
+		        )
+		    ) DESC
 	</select>
 </mapper>

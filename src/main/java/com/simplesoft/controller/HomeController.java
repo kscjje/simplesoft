@@ -2,11 +2,16 @@ package com.simplesoft.controller;
 
 
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +20,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
 import com.simplesoft.order.service.OrderService;
 import com.simplesoft.order.service.RefundVO;
 import com.simplesoft.reponse.BasicResponse;
@@ -36,8 +45,16 @@ public class HomeController {
 	OrderService orderService;
 	
 	@GetMapping({ "/" , "index" })
-	public String home() {
-		return "room";
+	public String home(Model model,RefundVO vo) {
+		List<Map<String,Object>> list = orderService.selectAllGames(vo); 
+		model.addAttribute("list", list);
+		return "game";
+	}
+	@GetMapping({ "game" })
+	public String game(Model model,RefundVO vo) {
+		List<Map<String,Object>> list = orderService.selectAllGames(vo); 
+		model.addAttribute("list", list);
+		return "game";
 	}
 	@GetMapping("room")
 	public String room() {
@@ -153,6 +170,7 @@ public class HomeController {
 		}
 		return new CommonResponse<Map<String, Object>>(returnData);
 	}
+	
 	@ResponseBody
 	@GetMapping("/success")
 	public BasicResponse success(Model model, HttpSession session) throws Exception {
@@ -176,5 +194,54 @@ public class HomeController {
 		List<Map<String,Object>> list  = orderService.selectAll(vo);
 		model.addAttribute("list",list);
 		return "admin";
+	}
+	@GetMapping("/quiz")
+	public String quiz(Model model, HttpSession session) throws Exception {
+		return "quiz";
+	}
+	
+	/**
+	 * QR생성
+	 * @param orderNo
+	 * @return
+	 * @throws Exception 
+	 */
+	public byte[] qrToTistory() throws Exception {
+		//QR 정보
+		int width = 100;
+		int height = 100;
+		String url = "http://kscjjeo.cafe24.com/quiz";
+		//QR Code - BitMatrix: qr code 정보 생성
+		BitMatrix encode = new MultiFormatWriter().encode(url, BarcodeFormat.QR_CODE, width, height);
+		//QR Code - Image 생성. : 1회성으로 생성해야 하기 때문에
+		//stream으로 Generate(1회성이 아니면 File로 작성 가능.)
+		try {
+			//output Stream
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			//Bitmatrix, file.format, outputStream
+			MatrixToImageWriter.writeToStream(encode, "PNG", out);
+			return out.toByteArray();
+		}catch (Exception e){
+			log.warn("QR Code OutputStream 도중 Excpetion 발생, {}", e.getMessage());
+		}
+		return null;
+	}
+	@GetMapping("/qr")
+	public ResponseEntity<byte[]> getQrCode() throws Exception {
+	    byte[] qrImage = qrToTistory(); // deliverySeq 예시값
+	    if (qrImage == null) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	    }
+	    HttpHeaders headers = new HttpHeaders();
+	    headers.setContentType(MediaType.IMAGE_PNG);
+	    return new ResponseEntity<>(qrImage, headers, HttpStatus.OK);
+	}
+	
+	@ResponseBody
+	@PostMapping("/gameUpdate")
+	public BasicResponse gameUpdate(Model model, HttpSession session,@RequestParam Map<String, Object> paramMap) throws Exception {
+		Map<String, Object> returnData = new HashMap<String, Object>();
+		orderService.gameUpdate(paramMap);
+		return new CommonResponse<Map<String, Object>>(returnData);
 	}
 }

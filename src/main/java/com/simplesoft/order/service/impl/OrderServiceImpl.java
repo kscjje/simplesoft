@@ -42,4 +42,12 @@ public class OrderServiceImpl implements OrderService{
 	public List<Map<String,Object>> selectAll(RefundVO vo) {
 		return orderMapper.selectAll(vo); 
 	}
+	@Override
+	public List<Map<String,Object>> selectAllGames(RefundVO vo) {
+		return orderMapper.selectAllGames(vo); 
+	}
+	@Override
+	public int gameUpdate(Map<String, Object> param) {
+		return orderMapper.gameUpdate(param); 
+	}
 }

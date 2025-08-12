@@ -143,4 +143,19 @@
 		        )
 		    ) DESC
 	</select>
+	
+	<update id="gameUpdate" parameterType="map">
+		/* OrderMapper.gameUpdate */
+		UPDATE game SET ON_OFF = #{onOff}, UPD_DATE = SYSDATE() WHERE SEQ = #{id}
+	</update>
+	
+	<select id="selectAllGames" parameterType="com.simplesoft.order.service.RefundVO" resultType="CamelHashMap">
+        SELECT 
+        	  SEQ
+        	, USER_NAME
+        	, ON_OFF
+        	, DATE_FORMAT(UPD_DATE, '%Y-%m-%d %H:%i:%s') AS UPD_DATE
+        FROM game
+        ORDER BY SEQ
+    </select>
 </mapper>

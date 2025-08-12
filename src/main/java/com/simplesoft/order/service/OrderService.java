@@ -10,4 +10,6 @@ public interface OrderService {
 	public int updateHint(RefundVO vo);
 	public int success(RefundVO vo);
 	public List<Map<String,Object>> selectAll(RefundVO vo);
+	public List<Map<String,Object>> selectAllGames(RefundVO vo);
+	public int gameUpdate(Map<String, Object> param);
 }

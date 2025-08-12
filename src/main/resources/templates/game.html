@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>이김청년부 레크 진행상황</title>
+	<title>이김청년부 레크 현황판</title>
 	<link rel="stylesheet" href="/css/tailwind.min.css">
 	<link rel="stylesheet" href="/css/all.min.css">
 	<script src="/js/common/jquery-3.6.0.min.js"></script>
@@ -106,6 +106,7 @@
                                 <i class="${statusIcon} mr-2 text-xl"></i>
                                 <span class="text-lg font-medium">${statusText}</span>
                             </div>
+                            <div class="text-sm text-gray-200 mt-3">최근 수정: ${game.updDate || '-'}</div>
                         </div>
                         <div class="ml-4">
                             <i class="fas fa-chevron-right text-2xl opacity-70"></i>

@@ -29,8 +29,8 @@
 		<logger name="jdbc.audit" level="OFF"  />
 		<logger name="jdbc.resultset" level="OFF"  />
 		<logger name="jdbc.connection" level="ERROR"  />
-	    <logger name="jdbc.sqltiming" level="INFO"  />
-	    <logger name="jdbc.resultsettable" level="INFO"  />
+	    <logger name="jdbc.sqltiming" level="OFF"  />
+	    <logger name="jdbc.resultsettable" level="OFF"  />
 	    		
 	    <logger name="org.hibernate" level="ERROR"  />
 	    <logger name="org.thymeleaf" level="ERROR"  />

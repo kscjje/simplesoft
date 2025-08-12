@@ -196,7 +196,26 @@ public class HomeController {
 		return "admin";
 	}
 	@GetMapping("/quiz")
-	public String quiz(Model model, HttpSession session) throws Exception {
+	public String quiz(Model model, HttpSession session,String option) throws Exception {
+		if("AD10".equals(option)) {
+			model.addAttribute("check", "Y");
+			return "quiz";
+		}else if("BF15".equals(option)) {
+			model.addAttribute("check", "Y");
+			return "quiz2";
+		}else if("CZ20".equals(option)) {
+			model.addAttribute("check", "Y");
+			return "quiz3";
+		}else if("MG25".equals(option)) {
+			model.addAttribute("check", "Y");
+			return "quiz4";
+		}else if("JQ30".equals(option)) {
+			model.addAttribute("check", "Y");
+			return "quiz5";
+		}else if("NJ35".equals(option)) {
+			model.addAttribute("check", "Y");
+			return "quiz6";
+		}
 		return "quiz";
 	}
 	
@@ -206,11 +225,11 @@ public class HomeController {
 	 * @return
 	 * @throws Exception 
 	 */
-	public byte[] qrToTistory() throws Exception {
+	public byte[] qrToTistory(String val) throws Exception {
 		//QR 정보
-		int width = 100;
-		int height = 100;
-		String url = "http://kscjjeo.cafe24.com/quiz";
+		int width = 200;
+		int height = 200;
+		String url = "http://kscjjeo.cafe24.com/quiz?option="+val;
 		//QR Code - BitMatrix: qr code 정보 생성
 		BitMatrix encode = new MultiFormatWriter().encode(url, BarcodeFormat.QR_CODE, width, height);
 		//QR Code - Image 생성. : 1회성으로 생성해야 하기 때문에
@@ -228,13 +247,69 @@ public class HomeController {
 	}
 	@GetMapping("/qr")
 	public ResponseEntity<byte[]> getQrCode() throws Exception {
-	    byte[] qrImage = qrToTistory(); // deliverySeq 예시값
+		String val = "AD10";
+	    byte[] qrImage = qrToTistory(val); // deliverySeq 예시값
 	    if (qrImage == null) {
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 	    }
 	    HttpHeaders headers = new HttpHeaders();
 	    headers.setContentType(MediaType.IMAGE_PNG);
 	    return new ResponseEntity<>(qrImage, headers, HttpStatus.OK);
+	}
+	@GetMapping("/qr2")
+	public ResponseEntity<byte[]> getQrCode2() throws Exception {
+		String val = "BF15";
+		byte[] qrImage = qrToTistory(val); // deliverySeq 예시값
+		if (qrImage == null) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.IMAGE_PNG);
+		return new ResponseEntity<>(qrImage, headers, HttpStatus.OK);
+	}
+	@GetMapping("/qr3")
+	public ResponseEntity<byte[]> getQrCode3() throws Exception {
+		String val = "CZ20";
+		byte[] qrImage = qrToTistory(val); // deliverySeq 예시값
+		if (qrImage == null) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.IMAGE_PNG);
+		return new ResponseEntity<>(qrImage, headers, HttpStatus.OK);
+	}
+	@GetMapping("/qr4")
+	public ResponseEntity<byte[]> getQrCode4() throws Exception {
+		String val = "MG25";
+		byte[] qrImage = qrToTistory(val); // deliverySeq 예시값
+		if (qrImage == null) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.IMAGE_PNG);
+		return new ResponseEntity<>(qrImage, headers, HttpStatus.OK);
+	}
+	@GetMapping("/qr5")
+	public ResponseEntity<byte[]> getQrCode5() throws Exception {
+		String val = "JQ30";
+		byte[] qrImage = qrToTistory(val); // deliverySeq 예시값
+		if (qrImage == null) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.IMAGE_PNG);
+		return new ResponseEntity<>(qrImage, headers, HttpStatus.OK);
+	}
+	@GetMapping("/qr6")
+	public ResponseEntity<byte[]> getQrCode6() throws Exception {
+		String val = "NJ35";
+		byte[] qrImage = qrToTistory(val); // deliverySeq 예시값
+		if (qrImage == null) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.IMAGE_PNG);
+		return new ResponseEntity<>(qrImage, headers, HttpStatus.OK);
 	}
 	
 	@ResponseBody

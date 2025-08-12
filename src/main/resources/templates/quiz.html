@@ -202,7 +202,7 @@
 	</div>
 
 	<script src="/js/common/jquery-3.6.0.min.js"></script>
-	<script>
+	<script th:inline="javascript">
 		document.getElementById('idInsert').addEventListener('click', () => {
 			$("#userName").val("");
 			$("#start-modal").show();
@@ -296,7 +296,15 @@
 			if(currentQuizIndex >= quizQuestions.length) currentQuizIndex = 0;
 			quizQuestionElem.textContent = quizQuestions[currentQuizIndex];
 		}
-		setInterval(showNextQuiz, 10000);
+		 /*<![CDATA[*/
+	    const check = /*[[${check}]]*/ [];
+	    /*]]>*/
+		if(check === "Y"){
+			setInterval(showNextQuiz, 10000);
+		} else {
+			alert("잘못된 접근입니다.");
+			location.href="https://www.naver.com";
+		}
 	</script>
 </body>
 </html>

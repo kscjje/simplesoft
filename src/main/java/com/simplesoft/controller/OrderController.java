@@ -101,7 +101,7 @@ public class OrderController {
 		}
 		cartList = cartService.selectCartList(paramMap);
 		model.addAttribute("cartList", cartList);
-		return "/order/cart";
+		return "/order/cartTest";
 	}
 	/**
 	 * 장바구니

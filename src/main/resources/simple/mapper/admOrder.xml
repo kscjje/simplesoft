@@ -370,6 +370,9 @@
 		<if test="delivStatus neq null and delivStatus neq ''">
 			AND C.STATUS = ${delivStatus}
 		</if>
+		<if test="delivTime neq null and delivTime neq ''">
+			AND B.DELIV_TIME = ${delivTime}
+		</if>
 		<if test="managerNo neq null and managerNo neq ''">
 			AND C.MANAGER_NO = ${managerNo}
 		</if>
@@ -471,6 +474,9 @@
 		<if test="delivStatus neq null and delivStatus neq ''">
 			AND C.STATUS = ${delivStatus}
 		</if>
+		<if test="delivTime neq null and delivTime neq ''">
+			AND B.DELIV_TIME = ${delivTime}
+		</if>
 		<if test="managerNo neq null and managerNo neq ''">
 			AND C.MANAGER_NO = ${managerNo}
 		</if>
@@ -523,6 +529,9 @@
 		</if>
 		<if test="delivStatus neq null and delivStatus neq ''">
 			AND C.STATUS = ${delivStatus}
+		</if>
+		<if test="delivTime neq null and delivTime neq ''">
+			AND B.DELIV_TIME = ${delivTime}
 		</if>
 		<if test="managerNo neq null and managerNo neq ''">
 			AND C.MANAGER_NO = ${managerNo}

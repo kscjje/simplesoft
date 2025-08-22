@@ -171,6 +171,16 @@
 						</span>
 					</div>
 					<div class="mb-2">
+						<span class="mb-1 spanTitle"><i class="bi bi-dot me-1"></i>배송시간</span>
+						<span class="ms-4">
+							<select id="delivTime" class="inputSelect" title="배송시간">
+								<option value="">선택</option>
+								<option value="1000">오전배달</option>
+								<option value="2000">오후배달</option>
+							</select>
+						</span>
+					</div>
+					<div class="mb-2">
 						<span class="mb-1 spanTitle"><i class="bi bi-dot me-1"></i>검색</span>
 						<span class="ms-4">
 							<select id="searchOption" class="inputSelect" title="검색조건">
@@ -198,6 +208,7 @@
 						<input type="hidden" name="startDate" id="hiddenStartDate">
 						<input type="hidden" name="endDate" id="hiddenEndDate">
 						<input type="hidden" name="delivStatus" id="hiddenDelivStatus">
+						<input type="hidden" name="delivTime" id="hiddenDelivTime">
 						<input type="hidden" name="searchOption" id="hiddenSearchOption">
 						<input type="hidden" name="searchText" id="hiddenSearchText">
 						<input type="hidden" name="searchOrder" id="hiddenSearchOrder">
@@ -407,6 +418,7 @@
 					let startDate	= $("#startDate").val().replaceAll("-","");
 					let endDate		= $("#endDate").val().replaceAll("-","");
 					let delivStatus = $("#delivStatus").val();
+					let delivTime	= $("#delivTime").val();
 					let searchOption= $("#searchOption").val();
 					let searchText	= $("#searchText").val();
 					let searchOrder	= $("#searchOrder").val();
@@ -426,6 +438,7 @@
 					$("#hiddenStartDate").val(startDate);
 					$("#hiddenEndDate").val(endDate);
 					$("#hiddenDelivStatus").val(delivStatus);
+					$("#hiddenDelivTime").val(delivTime);
 					$("#hiddenSearchOption").val(searchOption);
 					$("#hiddenSearchText").val(searchText);
 					$("#hiddenSearchOrder").val(searchOrder);
@@ -438,6 +451,7 @@
 						startPage	: startPage,
 						endPage		: endPage,
 						delivStatus : delivStatus,
+						delivTime	: delivTime,
 						searchOption: searchOption,
 						searchText	: searchText,
 						searchOrder	: searchOrder,
@@ -564,6 +578,7 @@
 					let startDate = $("#hiddenStartDate").val();
 					let endDate = $("#hiddenEndDate").val();
 					let delivStatus = $("#hiddenDelivStatus").val();
+					let delivTime = $("#hiddenDelivTime").val();
 					let searchOption = $("#hiddenSearchOption").val();
 					let searchText = $("#hiddenSearchText").val();
 					let searchOrder	= $("#searchOrder").val();
@@ -581,6 +596,7 @@
 						startPage	: startPage,
 						endPage		: endPage,
 						delivStatus : delivStatus,
+						delivTime	: delivTime,
 						searchOption: searchOption,
 						searchText	: searchText,
 						searchOrder	: searchOrder,

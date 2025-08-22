@@ -362,6 +362,7 @@ public class AdminController {
 			titleRow.getCell(i).setCellStyle(titleStyleStringCenter);
 		}
 		XSSFCellStyle styleDate = workbook.getCellStyleAt(3);
+		styleDate.setWrapText(true); // 셀 안에서 줄바꿈 허용
 		DeliveryVO deliveryVO = admOrderService.getDeliveryExcel(paramVO);
 		if( deliveryVO.getDeliveryCount() > 0 ) {
 			int index = 1;

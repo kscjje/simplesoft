@@ -1,91 +1,238 @@
 <!DOCTYPE html>
 <html xmlns:th="http//www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{layouts/mypage_layout}">
+	  layout:decorate="~{layouts/default_layout}">
 	<main class="content-wrapper" layout:fragment="content">
-		<div class="max-w-4xl mx-auto p-6 min-h-screen">
-			<div class="flex flex-col mb-4 space-y-3">
-				<div class="flex items-center space-x-3">
-					<i class="fas fa-shopping-cart text-blue-600 text-2xl"></i>
-					<h1 class="text-2xl font-bold text-gray-800">장바구니</h1>
-				</div>
-				<label for="f-chk-all" style="cursor:pointer;" class="flex items-center space-x-2 space-x-2 mt-4 cursor-pointer">
-					<input type="checkbox" id="f-chk-all" style="cursor:pointer;" checked class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
-					<span class="text-sm text-gray-600">전체선택</span>
-				</label>
-				<div class="flex items-center justify-between">
-					<div class="flex items-center space-x-4">
-						<select id="orderSet" title="세트선택" onchange="fnSelectChange(this)" class="px-3 py-1 border border-gray-300 rounded text-sm">
-							<option value="">세트일괄변경</option>
-							<option value="3000">일반세트</option>
-							<option value="2000">1인분세트</option>
-							<option value="1000">일반세트(추가)</option>
-						</select>
-					</div>
-					<button type="button" onclick="cartDelete()" class="text-decoration-none fs-3">
-						<i class="bi bi-trash"></i>
-					</button>
-				</div>
-			</div>
-			<!-- Cart Items -->
-			<div id="thHead"></div>
+		<style>
+			/* 데스크탑 (해상도 1280px 이상) */
+			@media all and (min-width: 1280px) {
+			  /* 데스크탑 전용 스타일 */
+			  	#thHead {
+					font-size:14px !important;
+				}
+				tr td {
+					font-size:15px !important;
+				}
+				.btnOrder {
+					font-size: 26px; width:400px;padding:15px 15px;
+				}
+				.divClass i{
+					font-size: 100px !important;
+				}
+				.divClass .mainBtn {
+					font-size:20px !important;padding:15px 90px;
+				}
+				.divClass .orderBtn {
+					font-size:20px !important;padding:15px 70px;
+				}
+				.divClass span {
+					font-size: 25px !important;
+				}
+				.inputSelect {
+					border: 1px solid #c5c5c5;
+					background: #fff;
+					color: #444;
+					border-radius: 0;
+					height: 32px;
+					padding-left: 5px;
+					width:160px;
+				}
+			}
 			
-			<!-- Notice Sections -->
-			<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-				<div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
-					<div class="flex items-center space-x-2 mb-3">
-						<i class="fas fa-info-circle text-blue-600"></i>
-						<h3 class="font-semibold text-blue-800">배송 안내</h3>
-					</div>
-					<ul class="text-xs text-blue-700 space-y-1 leading-relaxed">
-						<li>• 세트메뉴 3회 이상 주문 시, 배송비는 무료입니다.</li>
-						<li>• 주문 후 익일 배송을 원칙으로 하고 있습니다.<span class="whitespace-nowrap">오후 4시 이후 변경은 익일 배송 스케줄 변경으로 이어져</span><span class="whitespace-nowrap">다른 고객님께도 피해가 갈 수 있으므로 시간 준수 부탁드립니다.</span></li>
-					</ul>
-				</div>
-	
-				<div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-					<div class="flex items-center space-x-2 mb-3">
-						<i class="fas fa-exclamation-triangle text-yellow-600"></i>
-						<h3 class="font-semibold text-yellow-800">주문 안내</h3>
-					</div>
-					<ul class="text-xs sm:text-sm text-yellow-700 space-y-1 leading-relaxed">
-						<li>• 일반세트의 경우, 성인 기준 2.5~3인분 분량입니다.</li>
-						<li>• 일반세트 15회 이상 주문 시, 세트메뉴 가격이 할인됩니다.<span class="whitespace-nowrap">(18,000원 -> 17,000원 / 단, 1인분세트는 제외)</span></li>
-						<li>• 주문은 전날 오후 4시까지 가능합니다. (조기마감 할 수 있음)</li>
-						<li>• 배달시간 선택도 전날 오후 4시까지 가능합니다.</li>
-					</ul>
-				</div>
+			/* 노트북 & 테블릿 가로 (해상도 1024px ~ 1279px) */
+			@media all and (min-width: 1024px) and (max-width: 1279px) {
+				/* 노트북 및 가로 방향 태블릿 스타일 */
+				#thHead {
+					font-size:14px !important;
+				}
+			}
+			
+			/* 테블릿 가로 (해상도 768px ~ 1023px) */
+			@media all and (min-width: 768px) and (max-width: 1023px) {
+				/* 태블릿 가로 스타일 */
+				#thHead {
+					font-size:9px !important;
+				}
+				tr td {
+					font-size:11px !important;
+				}
+				.btnOrder {
+					font-size: 12px; width:100px;padding:10px 10px;
+				}
+				.divClass i{
+					font-size: 40px !important;
+				}
+				.divClass .mainBtn {
+					font-size:12px !important;padding:8px 40px;
+				}
+				.divClass .orderBtn {
+					font-size:12px !important;padding:8px 20px;
+				}
+				.divClass span {
+					font-size: 12px !important;
+				}
+				.inputSelect {
+					height: 25px;
+					padding-left: 5px;
+					font-size: 7px;
+					width: 50px;
+				}
+				.list-check{
+					font-size: 12px;
+				}
+				.fs-6{
+					font-size: 10px !important;
+				}
+			}
+			
+			/* 모바일 가로 & 테블릿 세로 (해상도 480px ~ 767px) */
+			@media all and (min-width: 480px) and (max-width: 767px) {
+				/* 모바일 가로 또는 태블릿 세로 스타일 */
+				#thHead {
+					font-size:7px !important;
+				}
+				tr td {
+					font-size:8px !important;
+				}
+				.btnOrder {
+					font-size: 12px; width:100px;padding:10px 10px;
+				}
+				.divClass i{
+					font-size: 40px !important;
+				}
+				.divClass .mainBtn {
+					font-size:10px !important;padding:8px 40px;
+				}
+				.divClass .orderBtn {
+					font-size:10px !important;padding:8px 20px;
+				}
+				.divClass span {
+					font-size: 10px !important;
+				}
+				.inputSelect {
+					height: 25px;
+					padding-left: 5px;
+					font-size: 7px;
+					width: 50px;
+				}
+				.list-check{
+					font-size: 10px;
+				}
+				.fs-6{
+					font-size: 9px !important;
+				}
+			}
+			/* 모바일 세로 (해상도 ~ 479px) */
+			@media all and (max-width: 479px) {
+				#thHead {
+					font-size:6px !important;
+				}
+				tr td {
+					font-size:7px !important;
+				}
+				.btnOrder {
+					font-size: 12px; width:100px;padding:10px 10px;
+				}
+				.divClass i{
+					font-size: 40px !important;
+				}
+				.divClass .mainBtn {
+					font-size:10px !important;padding:8px 40px;
+				}
+				.divClass .orderBtn {
+					font-size:10px !important;padding:8px 20px;
+				}
+				.divClass span {
+					font-size: 10px !important;
+				}
+				.inputSelect {
+					height: 25px;
+					padding-left: 5px;
+					font-size: 7px;
+					width: 50px;
+				}
+				.list-check{
+					font-size: 10px;
+				}
+				.fs-6{
+					font-size: 8px !important;
+				}
+				.divClass{
+					margin-top:5px !important;
+					margin-bottom:5px;
+				}
+			}
+			.inputSelect {
+				border: 1px solid #c5c5c5;
+				background: #fff;
+				color: #444;
+				border-radius: 0;
+			}
+		</style>
+		<div>
+			<h2 class="mb-3">장바구니</h2>
+			<div class="list-check">
+				<input class="form-check-input" type="checkbox" id="f-chk-all" checked style="cursor: pointer;">
+				<label class="form-check-label" for="f-chk-all" style="cursor: pointer;">
+					전체선택
+				</label>
+				<div style='margin: 5px 5px;'class="align-middle"></div>
+				<span class="float-end" style="cursor: pointer;">
+					<a href="javascript:cartDelete()" class="text-decoration-none fs-3" style="color: #212529"><i class="bi bi-trash"></i></a>
+				</span>
+				<span>
+					<select id="orderSet" class="inputSelect" title="세트선택" onchange="fnSelectChange(this)">
+						<option value="">세트일괄변경</option>
+						<option value="3000">일반세트</option>
+						<option value="2000">1인분세트</option>
+						<option value="1000">일반세트(추가)</option>
+					</select>
+				</span>
 			</div>
-	
-			<!-- Order Summary -->
-			<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-				<h3 class="text-lg font-semibold text-gray-800 mb-4">주문 요약</h3>
-				<div class="space-y-3">
-					<div class="flex justify-between items-center">
-						<span class="text-gray-600">상품금액</span>
-						<span class="font-semibold" id="r_productMoney"></span>
-					</div>
-					<div class="flex justify-between items-center">
-						<span class="text-gray-600">배송비</span>
-						<span class="font-semibold" id="r_deliv"></span>
-					</div>
-					<div class="border-t pt-3">
-						<div class="flex justify-between items-center">
-							<span class="text-lg font-bold text-gray-800">합계금액</span>
-							<span class="text-2xl font-bold text-blue-600" id="r_totalMoney"></span>
-						</div>
-					</div>
+			<hr class="border-2 opacity-50" style="color:#000">
+			<div>
+				<table class="table table-striped text-center">
+					<tbody>
+						<tr id="thHead" style="height: 60px;vertical-align: middle;">
+							<th scope="col" width="8%">선택</th>
+							<th scope="col" width="40%">식단정보</th>
+							<th scope="col" width="14%">배달선택</th>
+							<th scope="col" width="14%">세트선택</th>
+							<th scope="col" width="20%">수량</th>
+							<th scope="col" width="12%">판매가</th>
+							<th scope="col" width="12%">소계</th>
+						</tr>
+					</tbody>
+				</table>
+				<div class="container text-center divClass" th:if="${cartList.size eq 0}">
+					<span style="color: gray;">장바구니가 비었습니다.</span>
 				</div>
+				<div class="mt-5">
+					<span class="fs-6">※ 일반세트의 경우, 성인 기준 2.5~3인분 분량입니다.</span></br>
+					<span class="fs-6">※ 세트메뉴 3회 이상 주문 시, 배송비는 무료입니다.</span></br>
+					<span class="fs-6">※ 일반세트 15회 이상 주문 시, 세트메뉴 가격이 할인됩니다.(18,000원 -> 17,000원 / 단, 1인분세트는 제외)</br></span>
+					<span class="fs-6">※ 주문은 전날 오후 4시까지 가능합니다. (조기마감 할 수 있음)</br></span>
+					<span class="fs-6">※ 배달시간 선택도 전날 오후 4시까지 가능합니다.</br></span>
+					<span class="fs-6">(주문 후 익일 배송을 원칙으로 하고 있습니다. 오후 4시 이후 변경은 익일 배송 스케줄 변경으로 이어져 다른 고객님께도 피해가 갈 수 있으므로 시간 준수 부탁드립니다.)</span>
+					
+					<table class="table table-borderless mt-2 table-white text-center" border="1" style="height: 100px;font-size: 18px;";>
+						<tr style="vertical-align: middle;">
+							<td>상품금액<br><span id="r_productMoney">0</span>원</td>
+							<td><i class="bi bi-plus-circle"></i></td>
+							<td>배송비<br><span id="r_deliv"></span></td>
+							<td>=</td>
+							<td>합계금액<br><span id="r_totalMoney">0</span>원</td>
+						</tr>
+					</table>
+				</div>
+				<div class="text-center cartBtn mb-3" th:if="${cartList.size gt 0}">
+					<button type="button" onclick="cartOrder()" class="btn btn-outline-success btnOrder">주문하기</button>
+				</div>
+				<form id="hiddenForm" style="display: none;" method="post" action="/payReg">
+					<input type="text" id="cartArray" name="cartArray">
+					<input type="text" id="setArray" name="setArray">
+				</form>
 			</div>
-	
-			<!-- Order Button -->
-			<button type="button" onclick="cartOrder()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-lg transition-colors text-lg">
-				주문하기
-			</button>
-			<form id="hiddenForm" style="display: none;" method="post" action="/payReg">
-				<input type="text" id="cartArray" name="cartArray">
-				<input type="text" id="setArray" name="setArray">
-			</form>
 		</div>
 		<script th:inline="javascript">
 			
@@ -118,147 +265,95 @@
 				});
 			});
 			
-			fnInit = function(list, checkArray) {
-				
-				// 현재 스크롤 위치 저장
-			    const currentScrollTop = $(window).scrollTop();
+			fnInit = function(list,checkArray) {
+				if(list == null){
+					cartList = /*[[${cartList}]]*/"";
+				} else {
+					cartList = list;
+				}
+				let addHtml = "";
+				for(let i = 0; i < cartList.length; i++){
+					addHtml +=	"<tr class='cartList'>";
+					addHtml +=		"<td>";
+					addHtml += 			`<input class='form-check-input' id='${cartList[i].cartNo}' type='checkbox' name='cartCheck' data='${cartList[i].qty}' value='${cartList[i].cartNo}' ${checkArray == null || checkArray.indexOf(cartList[i].cartNo) > -1 ? "checked" : ""} />`;
+					addHtml +=			"<label class='form-check-label' for='"+ cartList[i].cartNo +"'></label>";
+					addHtml +=		"</td>";
+					addHtml +=		"<td class='text-start'>";
+					addHtml +=			"<div style='margin-bottom:10px;'>"+cartList[i].menuDay+"</div>";
+if(cartList[i].orderSet == 1000){
+	let menuMsg = cartList[i].menuMsg.split("|");
+	let menuMsg2 = cartList[i].menuMsgDetail.split("|");
+	
+	menuMsg.forEach((msg, index) => {
+		if (index !== 0) addHtml += "<br>";
+	
+		const isHighlighted = msg.startsWith("!");
+		const message = isHighlighted ? msg.substring(1) : msg;
+		const colorStyle = isHighlighted ? "color:red;" : "";
+	
+		addHtml += `<span style='${colorStyle}margin-right:7px;'>${message}</span>`;
+		
+		// menuMsg2 값 추가
+		const menuMsg2Value = menuMsg2[index] ? menuMsg2[index] : "";
+	
+		addHtml += "<span class='float-end'>";
+		addHtml += `<i style='cursor:pointer' class='bi bi-dash-circle' onclick='cartMsgDetailUpdate(ui_set_${cartList[i].cartNo}_${index},"minus")'></i> `;
+		addHtml += `<span id='ui_set_${cartList[i].cartNo}_${index}'>${menuMsg2Value}</span> `;
+		addHtml += `<i style='cursor:pointer' class='bi bi-plus-circle' onclick='cartMsgDetailUpdate(ui_set_${cartList[i].cartNo}_${index},"plus")'></i>`;
+		addHtml += "</span>";
+	});
+} else {
+										let menuMsg = cartList[i].menuMsg.split("|");
+										menuMsg.forEach((msg, index) => {
+											if(index % 3 == 0 && index != 0) addHtml +="<br>";
+											const isHighlighted = msg.startsWith("!");
+											const message = isHighlighted ? msg.substring(1) : msg;
+											const colorStyle = isHighlighted ? "color:red;" : "";
+											addHtml += `<span style='${colorStyle}margin-right:7px;'>${message}</span>`;
+										});
+}
+					addHtml +=		"</td>";
+					addHtml +=		"<td style='vertical-align:middle;'>";
+					addHtml +=			"<select id='time_"+cartList[i].cartNo+"' class='inputSelect' onchange='fnSelectOption2(this)'>";
+					if(cartList[i].delivOption === '0000'){
+						addHtml +=				"<option value='1000'" + (cartList[i].delivTime == 1000 ? " selected" : "") + ">오전배달(8~10시)</option>";	
+					} else if (cartList[i].delivOption === '0001'){
+						addHtml +=				"<option value='2000'" + (cartList[i].delivTime == 2000 ? " selected" : "") + ">오후배달(1~4시)</option>";
+					} else {
+						addHtml +=				"<option value='1000'" + (cartList[i].delivTime == 1000 ? " selected" : "") + ">오전배달(8~10시)</option>";
+						addHtml +=				"<option value='2000'" + (cartList[i].delivTime == 2000 ? " selected" : "") + ">오후배달(1~4시)</option>";
+					}
+					addHtml +=			"</select>";
+					addHtml +=		"</td>";
 					
-			    // cartList 초기화 - 더 안전한 방식
-			    if(list == null || list === undefined){
-			        cartList = /*[[${cartList}]]*/"";
-			        if(!cartList || cartList === "") {
-			            return; // 빈 cartList인 경우 함수 종료
-			        }
-			    } else {
-			        cartList = list;
-			    }
-			    
-			    let addHtml = "";
-			    
-			    for(let i = 0; i < cartList.length; i++){
-			        addHtml += `<div class="space-y-4 mb-4 cartList">`;
-			        addHtml += `    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">`;
-			        addHtml += `        <div class="flex items-start justify-between">`;
-			        addHtml += `            <div class="flex items-center space-x-4">`;
-			        addHtml += `                <input type="checkbox" id="${cartList[i].cartNo}" name="cartCheck" data="${cartList[i].qty}" value="${cartList[i].cartNo}" class="item-checkbox w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" ${checkArray == null || checkArray.indexOf(cartList[i].cartNo) > -1 ? "checked" : ""}>`;
-			        addHtml += `                <div class="flex items-center space-x-2 text-sm text-gray-500">`;
-			        addHtml += `                    <i class="fas fa-calendar-alt"></i>`;
-			        addHtml += `                    <span>${cartList[i].menuDay}</span>`;
-			        addHtml += `                </div>`;
-			        addHtml += `            </div>`;
-			        addHtml += `        </div>`;
-			        
-			        addHtml += `        <div class="mt-4">`;
-			        addHtml += `            <h3 class="text-lg font-semibold text-gray-800 mb-4">`;
-			        
-			        // orderSet이 1000인 경우
-			        if(cartList[i].orderSet == 1000){
-			            let menuMsg = cartList[i].menuMsg.split("|");
-			            let menuMsg2 = cartList[i].menuMsgDetail.split("|");
-			            
-			            menuMsg.forEach((msg, index) => {
-			                if (index !== 0) addHtml += "<br>";
-			                
-			                const isHighlighted = msg.startsWith("!");
-			                const message = isHighlighted ? msg.substring(1) : msg;
-			                const colorStyle = isHighlighted ? "color:red;margin-right:7px;" : "margin-right:7px;";
-			                
-			                addHtml += `<span style="${colorStyle}">${message}</span>`;
-			                
-			                // menuMsg2 값 추가
-			                const menuMsg2Value = menuMsg2[index] ? menuMsg2[index] : "";
-			                
-			                addHtml += `<span class="float-end">`;
-			                addHtml += `    <i style="cursor:pointer" class="bi bi-dash-circle" onclick='cartMsgDetailUpdate("ui_set_${cartList[i].cartNo}_${index}","minus")'></i>`;
-			                addHtml += `    <span id="ui_set_${cartList[i].cartNo}_${index}">${menuMsg2Value}</span>`;
-			                addHtml += `    <i style="cursor:pointer" class="bi bi-plus-circle" onclick='cartMsgDetailUpdate("ui_set_${cartList[i].cartNo}_${index}","plus")'></i>`;
-			                addHtml += `</span>`;
-			            });
-			        } else {
-			            // orderSet이 1000이 아닌 경우
-			            let menuMsg = cartList[i].menuMsg.split("|");
-			            menuMsg.forEach((msg, index) => {
-			                const isHighlighted = msg.startsWith("!");
-			                const message = isHighlighted ? msg.substring(1) : msg;
-			                const colorStyle = isHighlighted ? "color:red;" : "";
-			                
-			                addHtml += `<span style="${colorStyle}">${message}</span>`;
-			                addHtml += `<span> </span>`; // 메시지 사이에 띄어쓰기
-			            });
-			        }
-			        addHtml += `            </h3>`;
-			        addHtml += `            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">`;
-			        // 배송시간 선택
-			        addHtml += `                <div>`;
-			        addHtml += `                    <label for="time_${cartList[i].cartNo}" class="block text-sm text-gray-600 mb-1">배송시간</label>`;
-			        addHtml += `                    <select id="time_${cartList[i].cartNo}" class="w-full px-3 py-1 h-10 border border-gray-300 rounded text-sm" onchange="fnSelectOption2(this)">`;
-			        
-			        // delivOption에 따른 옵션 표시 로직 - Thymeleaf 템플릿과 동일하게 수정
-			        if(cartList[i].delivOption == '0000'){
-			            addHtml += `                        <option value="1000" ${cartList[i].delivTime == '1000' ? 'selected' : ''}>오전배달(8~10시)</option>`;
-			        } else if(cartList[i].delivOption == '0001'){
-			            addHtml += `                        <option value="2000" ${cartList[i].delivTime == '2000' ? 'selected' : ''}>오후배달(1~4시)</option>`;
-			        } else {
-			            // delivOption이 '0000'도 '0001'도 아닌 경우 둘 다 표시
-			            addHtml += `                        <option value="1000" ${cartList[i].delivTime == '1000' ? 'selected' : ''}>오전배달(8~10시)</option>`;
-			            addHtml += `                        <option value="2000" ${cartList[i].delivTime == '2000' ? 'selected' : ''}>오후배달(1~4시)</option>`;
-			        }
-			        
-			        addHtml += `                    </select>`;
-			        addHtml += `                </div>`;
-			        
-			        // 세트선택
-			        addHtml += `                <div>`;
-			        addHtml += `                    <label for="set_${cartList[i].cartNo}" class="block text-sm text-gray-600 mb-1">세트선택</label>`;
-			        addHtml += `                    <select id="set_${cartList[i].cartNo}" onchange="fnSelectOption(this)" class="selectOption inputSet w-full px-3 py-1 h-10 border border-gray-300 rounded text-sm">`;
-			        addHtml += `                        <option value="3000" ${cartList[i].orderSet == '3000' ? 'selected' : ''}>일반세트</option>`;
-			        addHtml += `                        <option value="2000" ${cartList[i].orderSet == '2000' ? 'selected' : ''}>1인분세트</option>`;
-			        addHtml += `                        <option value="1000" ${cartList[i].orderSet == '1000' ? 'selected' : ''}>일반세트(반찬추가)</option>`;
-			        addHtml += `                    </select>`;
-			        addHtml += `                </div>`;
-			        
-			        // 수량 및 가격
-			        addHtml += `                <div class="flex items-center justify-between">`;
-			        addHtml += `                    <div class="flex items-end h-full">`;
-			        addHtml += `                        <div class="flex items-center space-x-2 w-full">`;
-			        addHtml += `                            <label class="block text-sm text-gray-600 mb-1">수량</label>`;
-			        addHtml += `                            <div class="flex items-center border border-gray-300 rounded h-10">`;
-			        addHtml += `                                <button type="button" onclick="cartQtyUpdate(${cartList[i].cartNo}, 'minus')" class="px-2 h-10 hover:bg-gray-100 transition-colors quantity-btn" data-action="minus">`;
-			        addHtml += `                                    <i class="fas fa-minus text-xs"></i>`;
-			        addHtml += `                                </button>`;
-			        addHtml += `                                <span id="ui_cart_${cartList[i].cartNo}" class="px-4 border-x border-gray-300 quantity-display h-10 flex items-center justify-center">${cartList[i].qty}</span>`;
-			        addHtml += `                                <button type="button" onclick="cartQtyUpdate(${cartList[i].cartNo}, 'plus')" class="px-2 h-10 hover:bg-gray-100 transition-colors quantity-btn" data-action="plus">`;
-			        addHtml += `                                    <i class="fas fa-plus text-xs"></i>`;
-			        addHtml += `                                </button>`;
-			        addHtml += `                            </div>`;
-			        addHtml += `                        </div>`;
-			        addHtml += `                    </div>`;
-			        addHtml += `                    <div class="text-right">`;
-			        
-			        // 단가 표시 - 기존 로직과 동일하게 수정
-			        const unitPrice = cartList[i].orderSet == 2000 ? Number(9000).toLocaleString('ko-KR') : Number(18000).toLocaleString('ko-KR');
-			        const totalPrice = cartList[i].orderSet == 2000 ? (Number(9000) * cartList[i].qty).toLocaleString('ko-KR') : (Number(18000) * cartList[i].qty).toLocaleString('ko-KR');
-			        
-			        addHtml += `                        <p class="text-sm text-gray-600">단가: <span class="unit-price" id="ui_price_${cartList[i].cartNo}">${unitPrice}</span>원</p>`;
-			        addHtml += `                        <p class="text-lg font-bold text-blue-600"><span class="item-total" id="ui_total_${cartList[i].cartNo}">${totalPrice}</span>원</p>`;
-			        addHtml += `                    </div>`;
-			        addHtml += `                </div>`;
-			        addHtml += `            </div>`;
-			        addHtml += `        </div>`;
-			        addHtml += `    </div>`;
-			        addHtml += `</div>`;
-			    }
-			    // 기존 cartList 요소들 제거
-			    $(".cartList").remove();
-			    
-			    // 새로운 HTML 추가
-			    $("#thHead").after(addHtml);
-			    priceCalculate();
-				
-				// 스크롤 위치 복원
-				setTimeout(() => {
-					$(window).scrollTop(currentScrollTop);
-				}, 0);
+					addHtml +=		"<td style='vertical-align:middle;'>";
+					addHtml +=			"<select id='set_"+cartList[i].cartNo+"' class='inputSelect inputSet selectOption' onchange='fnSelectOption(this)'>";
+					addHtml +=				"<option value='3000'" + (cartList[i].orderSet == 3000 ? " selected" : "") + ">일반세트</option>";
+					addHtml +=				"<option value='2000'" + (cartList[i].orderSet == 2000 ? " selected" : "") + ">1인분세트</option>";
+					addHtml +=				"<option value='1000'" + (cartList[i].orderSet == 1000 ? " selected" : "") + ">일반세트(반찬추가)</option>";
+					addHtml +=			"</select>";
+					addHtml +=		"</td>";
+					
+					addHtml +=		"<td style='vertical-align:middle;'>";
+					addHtml +=			"<i style='cursor:pointer'class='bi bi-dash-circle' onclick='cartQtyUpdate("+cartList[i].cartNo+",\"minus\")'></i> ";
+					addHtml +=				"<span id='ui_cart_" + cartList[i].cartNo + "'>"+ cartList[i].qty +"</span> ";
+					addHtml +=			"<i style='cursor:pointer'class='bi bi-plus-circle'onclick='cartQtyUpdate("+cartList[i].cartNo+",\"plus\")'></i>";
+					addHtml +=		"</td>";
+						
+					addHtml +=		"<td style='vertical-align:middle;'>";
+					addHtml +=			"<span id='ui_price_"+cartList[i].cartNo+"'>";
+					addHtml +=				cartList[i].orderSet == 2000 ? Number(9000).toLocaleString('ko-KR') : Number(18000).toLocaleString('ko-KR') 
+					addHtml +=			"</span>";
+					addHtml +=		"</td>";
+					addHtml +=		"<td style='vertical-align:middle;'>";
+					addHtml +=			"<span id='ui_total_"+cartList[i].cartNo+"'>";
+					addHtml +=				cartList[i].orderSet == 2000 ? (Number(9000) * cartList[i].qty).toLocaleString('ko-KR') : (Number(18000) * cartList[i].qty).toLocaleString('ko-KR')
+					addHtml +=			"</span>";
+					addHtml +=		"</td>";
+					addHtml +=	"</tr>";
+				}
+				$("#thHead").after(addHtml);
+				priceCalculate();
 			}
 			//수량 변경
 			cartQtyUpdate = function(index,gubun){
@@ -289,7 +384,9 @@
 						if(result.responseCode == "SUCCESS"){
 							if(result.data.resultCode == "SUCCESS"){
 								let checkArray = fnCheckCartArray();
+								$('.cartList').remove();
 								fnInit(result.data.cartList, checkArray);
+								
 							} else if(result.data.resultCode == "NoData"){
 								alert("수량을 변경할 리스트가 없습니다.");
 								location.reload();
@@ -306,7 +403,8 @@
 			}
 			//상품명 각각 수량 변경
 			cartMsgDetailUpdate = function(v_id,gubun){
-				let parts		= v_id.split("_");	//id값을 _로 배열 저장
+
+				let parts		= $(v_id).attr("id").split("_");	//id값을 _로 배열 저장
 				let cartNo 		= parts[2];							//장바구니 시퀀스
 				let menuIndex	= parts[3];							//식단정보 데이터 시퀀스
 				let value 		= [];
@@ -316,7 +414,7 @@
 //				console.log("장바구니번호: ",cartNo);
 //				console.log("식단정보 데이터 시퀀스: ",menuIndex);
 				
-				let cnt = Number($("#"+v_id).text());
+				let cnt = Number($(v_id).text());
 				let count = 0;
 				
 				if(gubun == "plus"){
@@ -354,6 +452,7 @@
 								//여기서부터
 								$(v_id).text(count);
 								let checkArray = fnCheckCartArray();
+								$('.cartList').remove();
 								fnInit(result.data.cartList, checkArray);
 							} else if(result.data.resultCode == "NoData"){
 								alert("수량을 변경할 리스트가 없습니다.");
@@ -466,21 +565,21 @@
 						//총 증가 금액
 						let positiveSum = 0;
 			
-						for (let i = 0; i <= 4; i++) {
+			            for (let i = 0; i <= 4; i++) {
 							//반찬 수량 
-							const spanValue = parseInt($("#ui_set_"+id+"_"+i).text(), 10);
+			                const spanValue = parseInt($("#ui_set_"+id+"_"+i).text(), 10);
 							//순번에 대한 가격
-							const mappedValue = valueMap[i];
+			                const mappedValue = valueMap[i];
 							//수량과 반찬수량의 차이를 구함
-							const difference = spanValue - total;
+			                const difference = spanValue - total;
 							//반찬수량이 더 많다면 그 만큼 가격을 합함
-							const calculatedValue = difference * mappedValue;
+			                const calculatedValue = difference * mappedValue;
 			
-								positiveSum += calculatedValue;
-						}
-						const minimumThreshold = productMoney * total;
+			                    positiveSum += calculatedValue;
+			            }
+			            const minimumThreshold = productMoney * total;
 			
-						finalResult = minimumThreshold + positiveSum;
+			            finalResult = minimumThreshold + positiveSum;
 					}
 					
 					$("#ui_total_" + id).text(finalResult.toLocaleString('ko-KR'));
@@ -493,7 +592,7 @@
 					totalQty += Number($(this).attr("data"));
 					totalMoney += Number($("#ui_total_" + this.id).text().replace(/,/g, ""));
 				});
-				$("#r_productMoney").text(totalMoney.toLocaleString('ko-KR')+"원");
+				$("#r_productMoney").text(totalMoney.toLocaleString('ko-KR'));
 				
 				// 배송비 계산
 				const deliveryPrice = totalQty > 2 ? 0 : 2000;
@@ -503,7 +602,7 @@
 				if (totalQty === 0) totalMoney = 0;
 				
 				// 최종 금액 업데이트
-				$("#r_totalMoney").text(totalMoney.toLocaleString('ko-KR')+"원");
+				$("#r_totalMoney").text(totalMoney.toLocaleString('ko-KR'));
 			}
 			
 			//세트일괄변경
@@ -541,6 +640,7 @@
 						if(result.responseCode == "SUCCESS"){
 							if(result.data.resultCode == "SUCCESS"){
 								let checkArray = fnCheckCartArray();
+								$('.cartList').remove();
 								fnInit(result.data.cartList, checkArray);
 							} else if(result.data.resultCode == "NoData"){
 								alert("세트를 변경할 리스트가 없습니다.");
@@ -570,6 +670,7 @@
 						if(result.responseCode == "SUCCESS"){
 							if(result.data.resultCode == "SUCCESS"){
 								let checkArray = fnCheckCartArray();
+								$('.cartList').remove();
 								fnInit(result.data.cartList, checkArray);
 							} else if(result.data.resultCode == "NoData"){
 								alert("배달시간을 변경할 리스트가 없습니다.");

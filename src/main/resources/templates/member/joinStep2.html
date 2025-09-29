@@ -1,447 +1,377 @@
 <!DOCTYPE html>
-<html xmlns:th="http//www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org"
 		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 		layout:decorate="~{layouts/mypage_layout}">
 		<main class="content-wrapper flex items-center justify-center p-6" layout:fragment="content" style="padding: 10px;">
 			<style>
-			       .brand-orange { color: #ff6b35; }
-			       .bg-brand-orange { background-color: #ff6b35; }
-			       .border-brand-orange { border-color: #ff6b35; }
-			       .hover-brand-orange:hover { background-color: #e55a2b; }
-			       .gradient-bg {
-			           background: linear-gradient(135deg, #fff5f0 0%, #ffeee6 50%, #fff9f5 100%);
-			       }
-			       .form-input {
-			           transition: all 0.3s ease;
-			       }
-			       .form-input:focus {
-			           border-color: #ff6b35;
-			           box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
-			       }
-			       .password-strength {
-			           height: 4px;
-			           border-radius: 2px;
-			           transition: all 0.3s ease;
-			       }
-			       .strength-weak { background-color: #ef4444; width: 33%; }
-			       .strength-medium { background-color: #f59e0b; width: 66%; }
-			       .strength-strong { background-color: #10b981; width: 100%; }
+				   .gradient-bg {
+					   background: linear-gradient(135deg, #fff5f0 0%, #ffeee6 50%, #fff9f5 100%);
+				   }
+				   .form-input {
+					   transition: all 0.3s ease;
+				   }
+				   .form-input:focus {
+					   border-color: #ff6b35;
+					   box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+				   }
+				   .password-strength {
+					   height: 4px;
+					   border-radius: 2px;
+					   transition: all 0.3s ease;
+				   }
+				   .strength-weak { background-color: #ef4444; width: 33%; }
+				   .strength-medium { background-color: #f59e0b; width: 66%; }
+				   .strength-strong { background-color: #10b981; width: 100%; }
 			</style>
 			<!-- Main Content -->
-			    <!--<main class="max-w-2xl mx-auto py-8 px-4 sm:px-6 lg:px-8">-->
-	        <div class="bg-white rounded-lg shadow-lg p-8">
-	            <div class="text-center mb-8">
-	                <h2 class="text-3xl font-bold text-gray-900 mb-2">회원가입</h2>
-	                <p class="text-gray-600">밥수니 반찬과 함께 행복한 식사</p>
-	            </div>
+				<!--<main class="max-w-2xl mx-auto py-8 px-4 sm:px-6 lg:px-8">-->
+			<div class="bg-white rounded-lg shadow-lg p-8">
+				<div class="text-center mb-8">
+					<h2 class="text-3xl font-bold text-gray-900 mb-2">회원가입</h2>
+					<p class="text-gray-600">밥수니 반찬과 함께 행복한 식사</p>
+				</div>
 	
-	            <form id="signupForm" class="space-y-6">
-	                <!-- 아이디 -->
-	                <div>
-	                    <label for="userId" class="block text-sm font-medium text-gray-700 mb-2">
-	                        <i class="fas fa-user mr-2 brand-orange"></i>아이디 <font color="red">* </font>
-	                    </label>
-	                    <div class="flex space-x-2">
-	                        <input type="text" id="userId" name="userId" required
-	                               class="flex-1 form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
-	                               placeholder="영문, 숫자 조합 6-20자">
-	                        <button type="button" id="checkId" 
-	                                class="px-4 py-2 bg-brand-orange text-white rounded-md hover-brand-orange transition-colors">
-	                            중복확인
-	                        </button>
-	                    </div>
-	                    <p id="userIdMessage" class="text-sm mt-1"></p>
-	                </div>
+				<form id="signupForm" class="space-y-6">
+					<!-- 아이디 -->
+					<div>
+						<label for="userId" class="block text-sm font-medium text-gray-700 mb-2">
+							<i class="fas fa-user mr-2 text-blue-500"></i>아이디 <font color="red">* </font>
+						</label>
+						<div class="flex space-x-2">
+							<input type="text" id="userId" name="userId" required 
+								   class="w-44 form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
+								   maxlength="20"
+								   placeholder="영문, 숫자 조합 6-20자">
+							<button type="button" id="checkId" class="text-sm px-4 py-2 bg-gray-700 text-white rounded-md transition-colors">
+								중복확인
+							</button>
+						</div>
+						<p id="userIdMessage" class="text-sm mt-1"></p>
+					</div>
 	
-	                <!-- 비밀번호 -->
-	                <div>
-	                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
-	                        <i class="fas fa-lock mr-2 brand-orange"></i>비밀번호 *
-	                    </label>
-	                    <input type="password" id="password" name="password" required
-	                           class="w-full form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
-	                           placeholder="영문, 숫자, 특수문자 조합 8-20자">
-	                    <div class="mt-2">
-	                        <div class="flex justify-between text-xs text-gray-500 mb-1">
-	                            <span>비밀번호 강도</span>
-	                            <span id="passwordStrengthText">-</span>
-	                        </div>
-	                        <div class="w-full bg-gray-200 rounded-full h-1">
-	                            <div id="passwordStrengthBar" class="password-strength bg-gray-200"></div>
-	                        </div>
-	                    </div>
-	                </div>
+					<!-- 비밀번호 -->
+					<div>
+						<label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+							<i class="fas fa-lock mr-2 text-blue-500"></i>비밀번호 *
+						</label>
+						<input type="password" id="password" name="password" required
+							   class="w-full form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
+							   maxlength="20"
+							   placeholder="영문, 숫자, 특수문자 조합 8-20자">
+						<div class="mt-2">
+							<div class="flex justify-between text-xs text-gray-500 mb-1">
+								<span>비밀번호 강도</span>
+								<span id="passwordStrengthText">-</span>
+							</div>
+							<div class="w-full bg-gray-200 rounded-full h-1">
+								<div id="passwordStrengthBar" class="password-strength bg-gray-200"></div>
+							</div>
+						</div>
+					</div>
 	
-	                <!-- 비밀번호 확인 -->
-	                <div>
-	                    <label for="passwordConfirm" class="block text-sm font-medium text-gray-700 mb-2">
-	                        <i class="fas fa-lock mr-2 brand-orange"></i>비밀번호 확인 *
-	                    </label>
-	                    <input type="password" id="passwordConfirm" name="passwordConfirm" required
-	                           class="w-full form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
-	                           placeholder="비밀번호를 다시 입력해주세요">
-	                    <p id="passwordConfirmMessage" class="text-sm mt-1"></p>
-	                </div>
+					<!-- 비밀번호 확인 -->
+					<div>
+						<label for="passwordConfirm" class="block text-sm font-medium text-gray-700 mb-2">
+							<i class="fas fa-lock mr-2 text-blue-500"></i>비밀번호 확인 *
+						</label>
+						<input type="password" id="passwordConfirm" name="passwordConfirm" required
+								maxlength="20"
+							   class="w-full form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
+							   placeholder="비밀번호를 다시 입력해주세요">
+						<p id="passwordConfirmMessage" class="text-sm mt-1"></p>
+					</div>
 	
-	                <!-- 이름 -->
-	                <div>
-	                    <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
-	                        <i class="fas fa-signature mr-2 brand-orange"></i>이름 *
-	                    </label>
-	                    <input type="text" id="name" name="name" required
-	                           class="w-full form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
-	                           placeholder="실명을 입력해주세요">
-	                </div>
+					<!-- 이름 -->
+					<div>
+						<label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+							<i class="fas fa-signature mr-2 text-blue-500"></i>이름 *
+						</label>
+						<input type="text" id="name" name="name" required
+							   class="w-full form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
+							   maxlength="20"
+							   placeholder="실명을 입력해주세요">
+					</div>
 	
-	                <!-- 휴대폰 번호 -->
-	                <div>
-	                    <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
-	                        <i class="fas fa-mobile-alt mr-2 brand-orange"></i>휴대폰 번호 *
-	                    </label>
-	                    <div class="flex space-x-2">
-	                        <input type="tel" id="phone" name="phone" required
-	                               class="flex-1 form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
-	                               placeholder="010-1234-5678">
-	                        <button type="button" id="sendSms"
-	                                class="px-4 py-2 bg-brand-orange text-white rounded-md hover-brand-orange transition-colors">
-	                            인증번호 발송
-	                        </button>
-	                    </div>
-	                </div>
+					<!-- 휴대폰 번호 -->
+					<div>
+						<label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
+							<i class="fas fa-mobile-alt mr-2 text-blue-500"></i>핸드폰 *
+						</label>
+						<div class="flex space-x-2">
+							<input type="tel" id="phone" name="phone" required class="phoneNumber flex-1 form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none" placeholder="010-1234-5678" maxlength="20">
+						</div>
+					</div>
 	
-	                <!-- 휴대폰 인증번호 -->
-	                <div id="phoneVerificationDiv" class="hidden">
-	                    <label for="phoneCode" class="block text-sm font-medium text-gray-700 mb-2">
-	                        <i class="fas fa-key mr-2 brand-orange"></i>인증번호
-	                    </label>
-	                    <div class="flex space-x-2">
-	                        <input type="text" id="phoneCode" name="phoneCode"
-	                               class="flex-1 form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
-	                               placeholder="인증번호 6자리">
-	                        <button type="button" id="verifyPhone"
-	                                class="px-4 py-2 bg-brand-orange text-white rounded-md hover-brand-orange transition-colors">
-	                            확인
-	                        </button>
-	                    </div>
-	                    <p class="text-sm text-gray-500 mt-1">
-	                        <span id="phoneTimer">03:00</span> 남음
-	                    </p>
-	                </div>
+					<!-- 주소 -->
+					<div>
+						<label class="block text-sm font-medium text-gray-700 mb-2">
+							<i class="fas fa-map-marker-alt mr-2 text-blue-500"></i>주소 *
+						</label>
+						<div class="flex gap-2 mb-2">
+						<input type="text" id="o_postNum" name="orderPostNum" required readonly
+								   class="w-32 form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none bg-gray-50"
+								   placeholder="우편번호">
+							<button type="button" id="searchAddress"
+									class="px-4 py-2 bg-gray-700 text-white rounded-md transition-colors"
+									onclick="execDaumPostcode()"> 
+								주소 검색
+							</button>
+						</div>
+						<!-- 주소 검색 결과 iframe -->
+						<div id="wrap1" class="w-full border border-gray-300 rounded-md mb-2" style="display: none; height: 300px; position: relative;">
+							<img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" alt="접기 버튼" class="absolute top-0 right-0 cursor-pointer z-10" onclick="foldDaumPostcode()">
+						</div>
+						<input type="text" id="o_addr" name="orderAddr" required readonly
+							   class="w-full form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none bg-gray-50"
+							   placeholder="기본주소">
+						<input type="text" id="o_addrDetail" name="orderAddrDetail"
+							   class="w-full form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
+							   placeholder="상세주소를 입력하세요">
+					</div>
 	
-	                <!-- 이메일 -->
-	                <div>
-	                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-	                        <i class="fas fa-envelope mr-2 brand-orange"></i>이메일 *
-	                    </label>
-	                    <div class="flex space-x-2">
-	                        <input type="email" id="email" name="email" required
-	                               class="flex-1 form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
-	                               placeholder="example@email.com">
-	                        <button type="button" id="sendEmail"
-	                                class="px-4 py-2 bg-brand-orange text-white rounded-md hover-brand-orange transition-colors">
-	                            인증번호 발송
-	                        </button>
-	                    </div>
-	                </div>
+					<!-- 이메일 -->
+					<div>
+						<label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+							<i class="fas fa-envelope mr-2 text-blue-500"></i>이메일 *
+						</label>
+						<div class="flex flex-wrap items-center gap-2">
+							<input type="text" name="copyEmail" id="o_email" maxlength="30" class="flex-1 form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none" placeholder="example@email.com">
+							<span class="mt-1">@</span>
+							<input type="text" name="copyEmail" id="o_email2" maxlength="30" class="flex-1 form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none" placeholder="이메일 도메인">
+							<select name="emailSelect" class="border border-gray-300 rounded px-3 py-2 w-full bg-white" onchange="res(this.value)">
+								<option value="">직접입력</option>
+								<option value="naver.com">naver.com</option>
+								<option value="daum.net">daum.net</option>
+								<option value="hanmail.net">hanmail.net</option>
+								<option value="nate.com">nate.com</option>
+								<option value="gmail.com">gmail.com</option>
+							</select>
+							<input type="text" id="od_email" name="orderEmail" maxlength="20" class="hidden">
+						</div>
+					</div>
 	
-	                <!-- 이메일 인증번호 -->
-	                <div id="emailVerificationDiv" class="hidden">
-	                    <label for="emailCode" class="block text-sm font-medium text-gray-700 mb-2">
-	                        <i class="fas fa-key mr-2 brand-orange"></i>인증번호
-	                    </label>
-	                    <div class="flex space-x-2">
-	                        <input type="text" id="emailCode" name="emailCode"
-	                               class="flex-1 form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
-	                               placeholder="인증번호 6자리">
-	                        <button type="button" id="verifyEmail"
-	                                class="px-4 py-2 bg-brand-orange text-white rounded-md hover-brand-orange transition-colors">
-	                            확인
-	                        </button>
-	                    </div>
-	                    <p class="text-sm text-gray-500 mt-1">
-	                        <span id="emailTimer">05:00</span> 남음
-	                    </p>
-	                </div>
+					<!-- 제출 버튼 -->
+					<div class="pt-6">
+						<button type="submit" id="submitBtn"
+								class="w-full py-3 px-4 bg-gray-700 text-white font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">
+							<i class="fas fa-user-plus mr-2"></i>회원가입 완료
+						</button>
+					</div>
+				</form>
 	
-	                <!-- 주소 -->
-	                <div>
-	                    <label class="block text-sm font-medium text-gray-700 mb-2">
-	                        <i class="fas fa-map-marker-alt mr-2 brand-orange"></i>주소 *
-	                    </label>
-	                    <div class="space-y-2">
-	                        <div class="flex space-x-2">
-	                            <input type="text" id="zipcode" name="zipcode" required readonly
-	                                   class="w-32 form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none bg-gray-50"
-	                                   placeholder="우편번호">
-	                            <button type="button" id="searchAddress"
-	                                    class="px-4 py-2 bg-brand-orange text-white rounded-md hover-brand-orange transition-colors">
-	                                우편번호 검색
-	                            </button>
-	                        </div>
-	                        <input type="text" id="address" name="address" required readonly
-	                               class="w-full form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none bg-gray-50"
-	                               placeholder="기본주소">
-	                        <input type="text" id="detailAddress" name="detailAddress"
-	                               class="w-full form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
-	                               placeholder="상세주소">
-	                    </div>
-	                </div>
-	
-	                <!-- 제출 버튼 -->
-	                <div class="pt-6">
-	                    <button type="submit" id="submitBtn"
-	                            class="w-full py-3 px-4 bg-brand-orange text-white font-medium rounded-md hover-brand-orange transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">
-	                        <i class="fas fa-user-plus mr-2"></i>회원가입 완료
-	                    </button>
-	                </div>
-	            </form>
-	
-	            <div class="text-center mt-6">
-	                <p class="text-sm text-gray-600">
-	                    이미 계정이 있으신가요? 
-	                    <a href="#" class="brand-orange hover:underline font-medium">로그인</a>
-	                </p>
-	            </div>
-	        </div>
+				<div class="text-center mt-6">
+					<p class="text-sm text-gray-600">
+						이미 계정이 있으신가요? 
+						<a href="#" class="hover:underline font-medium">로그인</a>
+					</p>
+				</div>
+			</div>
+			<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 			<script>
-			        // 전역 변수
-			        let phoneTimer, emailTimer;
-			        let phoneVerified = false, emailVerified = false, idChecked = false;
-			
-			        // 아이디 중복확인
-			        document.getElementById('checkId').addEventListener('click', function() {
-			            const userId = document.getElementById('userId').value;
-			            const messageEl = document.getElementById('userIdMessage');
-			            
-			            if (!userId) {
-			                messageEl.textContent = '아이디를 입력해주세요.';
-			                messageEl.className = 'text-sm mt-1 text-red-500';
-			                return;
-			            }
-			
-			            if (!/^[a-zA-Z0-9]{6,20}$/.test(userId)) {
-			                messageEl.textContent = '영문, 숫자 조합 6-20자로 입력해주세요.';
-			                messageEl.className = 'text-sm mt-1 text-red-500';
-			                return;
-			            }
-			
-			            // 실제로는 서버 API 호출
-			            setTimeout(() => {
-			                const isAvailable = Math.random() > 0.3; // 70% 확률로 사용 가능
-			                if (isAvailable) {
-			                    messageEl.textContent = '사용 가능한 아이디입니다.';
-			                    messageEl.className = 'text-sm mt-1 text-green-500';
-			                    idChecked = true;
-			                } else {
-			                    messageEl.textContent = '이미 사용중인 아이디입니다.';
-			                    messageEl.className = 'text-sm mt-1 text-red-500';
-			                    idChecked = false;
-			                }
-			            }, 500);
-			        });
-			
-			        // 비밀번호 강도 체크
-			        document.getElementById('password').addEventListener('input', function() {
-			            const password = this.value;
-			            const strengthBar = document.getElementById('passwordStrengthBar');
-			            const strengthText = document.getElementById('passwordStrengthText');
-			
-			            let strength = 0;
-			            if (password.length >= 8) strength++;
-			            if (/[a-zA-Z]/.test(password)) strength++;
-			            if (/[0-9]/.test(password)) strength++;
-			            if (/[^a-zA-Z0-9]/.test(password)) strength++;
-			
-			            strengthBar.className = 'password-strength';
-			            
-			            if (strength <= 1) {
-			                strengthBar.classList.add('strength-weak');
-			                strengthText.textContent = '약함';
-			            } else if (strength <= 3) {
-			                strengthBar.classList.add('strength-medium');
-			                strengthText.textContent = '보통';
-			            } else {
-			                strengthBar.classList.add('strength-strong');
-			                strengthText.textContent = '강함';
-			            }
-			        });
-			
-			        // 비밀번호 확인
-			        document.getElementById('passwordConfirm').addEventListener('input', function() {
-			            const password = document.getElementById('password').value;
-			            const confirmPassword = this.value;
-			            const messageEl = document.getElementById('passwordConfirmMessage');
-			
-			            if (confirmPassword && password !== confirmPassword) {
-			                messageEl.textContent = '비밀번호가 일치하지 않습니다.';
-			                messageEl.className = 'text-sm mt-1 text-red-500';
-			            } else if (confirmPassword && password === confirmPassword) {
-			                messageEl.textContent = '비밀번호가 일치합니다.';
-			                messageEl.className = 'text-sm mt-1 text-green-500';
-			            } else {
-			                messageEl.textContent = '';
-			            }
-			        });
-			
-			        // 휴대폰 인증번호 발송
-			        document.getElementById('sendSms').addEventListener('click', function() {
-			            const phone = document.getElementById('phone').value;
-			            
-			            if (!phone || !/^010-\d{4}-\d{4}$/.test(phone)) {
-			                alert('올바른 휴대폰 번호를 입력해주세요. (예: 010-1234-5678)');
-			                return;
-			            }
-			
-			            document.getElementById('phoneVerificationDiv').classList.remove('hidden');
-			            startPhoneTimer();
-			            alert('인증번호가 발송되었습니다.');
-			        });
-			
-			        // 휴대폰 타이머
-			        function startPhoneTimer() {
-			            let time = 180; // 3분
-			            const timerEl = document.getElementById('phoneTimer');
-			            
-			            phoneTimer = setInterval(() => {
-			                const minutes = Math.floor(time / 60);
-			                const seconds = time % 60;
-			                timerEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-			                
-			                if (time <= 0) {
-			                    clearInterval(phoneTimer);
-			                    timerEl.textContent = '시간 만료';
-			                    document.getElementById('phoneCode').disabled = true;
-			                    document.getElementById('verifyPhone').disabled = true;
-			                }
-			                time--;
-			            }, 1000);
-			        }
-			
-			        // 휴대폰 인증확인
-			        document.getElementById('verifyPhone').addEventListener('click', function() {
-			            const code = document.getElementById('phoneCode').value;
-			            
-			            if (code === '123456') { // 데모용
-			                phoneVerified = true;
-			                clearInterval(phoneTimer);
-			                document.getElementById('phoneTimer').textContent = '인증완료';
-			                document.getElementById('phoneCode').disabled = true;
-			                this.disabled = true;
-			                alert('휴대폰 인증이 완료되었습니다.');
-			            } else {
-			                alert('인증번호가 올바르지 않습니다.');
-			            }
-			        });
-			
-			        // 이메일 인증번호 발송
-			        document.getElementById('sendEmail').addEventListener('click', function() {
-			            const email = document.getElementById('email').value;
-			            
-			            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-			                alert('올바른 이메일 주소를 입력해주세요.');
-			                return;
-			            }
-			
-			            document.getElementById('emailVerificationDiv').classList.remove('hidden');
-			            startEmailTimer();
-			            alert('이메일로 인증번호가 발송되었습니다.');
-			        });
-			
-			        // 이메일 타이머
-			        function startEmailTimer() {
-			            let time = 300; // 5분
-			            const timerEl = document.getElementById('emailTimer');
-			            
-			            emailTimer = setInterval(() => {
-			                const minutes = Math.floor(time / 60);
-			                const seconds = time % 60;
-			                timerEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-			                
-			                if (time <= 0) {
-			                    clearInterval(emailTimer);
-			                    timerEl.textContent = '시간 만료';
-			                    document.getElementById('emailCode').disabled = true;
-			                    document.getElementById('verifyEmail').disabled = true;
-			                }
-			                time--;
-			            }, 1000);
-			        }
-			
-			        // 이메일 인증확인
-			        document.getElementById('verifyEmail').addEventListener('click', function() {
-			            const code = document.getElementById('emailCode').value;
-			            
-			            if (code === '123456') { // 데모용
-			                emailVerified = true;
-			                clearInterval(emailTimer);
-			                document.getElementById('emailTimer').textContent = '인증완료';
-			                document.getElementById('emailCode').disabled = true;
-			                this.disabled = true;
-			                alert('이메일 인증이 완료되었습니다.');
-			            } else {
-			                alert('인증번호가 올바르지 않습니다.');
-			            }
-			        });
-			
-			        // 우편번호 검색
-			        document.getElementById('searchAddress').addEventListener('click', function() {
-			            // 실제로는 다음 우편번호 API 등을 사용
-			            const sample = {
-			                zipcode: '06292',
-			                address: '서울특별시 강남구 강남대로 364'
-			            };
-			            
-			            document.getElementById('zipcode').value = sample.zipcode;
-			            document.getElementById('address').value = sample.address;
-			            document.getElementById('detailAddress').focus();
-			        });
-			
-			        // 휴대폰 번호 자동 하이픈
-			        document.getElementById('phone').addEventListener('input', function() {
-			            let value = this.value.replace(/[^0-9]/g, '');
-			            if (value.length >= 3 && value.length <= 7) {
-			                value = value.replace(/(\d{3})(\d{1,4})/, '$1-$2');
-			            } else if (value.length > 7) {
-			                value = value.replace(/(\d{3})(\d{4})(\d{1,4})/, '$1-$2-$3');
-			            }
-			            this.value = value;
-			        });
-			
-			        // 폼 제출
-			        document.getElementById('signupForm').addEventListener('submit', function(e) {
-			            e.preventDefault();
-			            
-			            // 필수 검증
-			            if (!idChecked) {
-			                alert('아이디 중복확인을 해주세요.');
-			                return;
-			            }
-			            
-			            if (!phoneVerified) {
-			                alert('휴대폰 인증을 완료해주세요.');
-			                return;
-			            }
-			            
-			            if (!emailVerified) {
-			                alert('이메일 인증을 완료해주세요.');
-			                return;
-			            }
-			
-			            const password = document.getElementById('password').value;
-			            const confirmPassword = document.getElementById('passwordConfirm').value;
-			            
-			            if (password !== confirmPassword) {
-			                alert('비밀번호가 일치하지 않습니다.');
-			                return;
-			            }
-			
-			            // 폼 데이터 수집
-			            const formData = new FormData(this);
-			            const data = Object.fromEntries(formData.entries());
-			            
-			            console.log('회원가입 데이터:', data);
-			            alert('회원가입이 완료되었습니다! 로그인 페이지로 이동합니다.');
-			        });
-			    </script>
+				
+				// 우편번호 찾기 찾기 화면을 넣을 element
+				var element_wrap = document.getElementById('wrap1');
+				
+				function foldDaumPostcode() {
+					// iframe을 넣은 element를 안보이게 한다.
+					element_wrap.style.display = 'none';
+				}
+				function foldDaumPostcode2() {
+					// iframe을 넣은 element를 안보이게 한다.
+					element_wrap.style.display = 'none';
+				}
+				
+			 	// 우편번호 찾기
+				function execDaumPostcode(){
+					if(typeof daum === 'undefined'){
+						alert("다음 우편번호 postcode.v2.js 파일이 로드되지 않았습니다.");
+						return false;
+					}
+					// 현재 scroll 위치를 저장해놓는다.
+					var currentScroll = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
+					new daum.Postcode({
+						oncomplete: function(data) {
+							// 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+	
+							// 각 주소의 노출 규칙에 따라 주소를 조합한다.
+							// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+							var addr = ''; // 주소 변수
+							var extraAddr = ''; // 참고항목 변수
+	
+							//사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+							if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+								addr = data.roadAddress;
+							} else { // 사용자가 지번 주소를 선택했을 경우(J)
+								addr = data.jibunAddress;
+							}
+	
+							// 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+							if(data.userSelectedType === 'R'){
+								// 법정동명이 있을 경우 추가한다. (법정리는 제외)
+								// 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+								if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+									extraAddr += data.bname;
+								}
+								// 건물명이 있고, 공동주택일 경우 추가한다.
+								if(data.buildingName !== '' && data.apartment === 'Y'){
+									extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+								}
+								// 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+								if(extraAddr !== ''){
+									extraAddr = ' (' + extraAddr + ')';
+								}
+								// 조합된 참고항목을 해당 필드에 넣는다.
+								// document.getElementById("sample3_extraAddress").value = extraAddr;
+							
+							} else {
+								// document.getElementById("sample3_extraAddress").value = '';
+							}
+	
+							// 우편번호와 주소 정보를 해당 필드에 넣는다.
+							document.getElementById("o_postNum").value = data.zonecode;
+							document.getElementById("o_addr").value = addr;
+	
+							// iframe을 넣은 element를 안보이게 한다.
+							// (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않는다.)
+							element_wrap.style.display = 'none';
+	
+							// 우편번호 찾기 화면이 보이기 이전으로 scroll 위치를 되돌린다.
+							document.body.scrollTop = currentScroll;
+						},
+						// 우편번호 찾기 화면 크기가 조정되었을때 실행할 코드를 작성하는 부분. iframe을 넣은 element의 높이값을 조정한다.
+						onresize : function(size) {
+							element_wrap.style.height = size.height+'px';
+						},
+						width : '100%',
+						height : '100%'
+					}).embed(element_wrap);
+	
+					// iframe을 넣은 element를 보이게 한다.
+					element_wrap.style.display = 'block';				
+				}
+				
+				// 전역 변수
+				let idChecked = false;
+		
+				// 아이디 중복확인
+				document.getElementById('checkId').addEventListener('click', function() {
+					const userId = document.getElementById('userId').value;
+					const messageEl = document.getElementById('userIdMessage');
+					
+					if (!userId) {
+						messageEl.textContent = '아이디를 입력해주세요.';
+						messageEl.className = 'text-sm mt-1 text-red-500';
+						return;
+					}
+		
+					if (!/^[a-zA-Z0-9]{6,20}$/.test(userId)) {
+						messageEl.textContent = '영문, 숫자 조합 6-20자로 입력해주세요.';
+						messageEl.className = 'text-sm mt-1 text-red-500';
+						return;
+					}
+		
+					// 실제로는 서버 API 호출
+					setTimeout(() => {
+						const isAvailable = Math.random() > 0.3; // 70% 확률로 사용 가능
+						if (isAvailable) {
+							messageEl.textContent = '사용 가능한 아이디입니다.';
+							messageEl.className = 'text-sm mt-1 text-green-500';
+							idChecked = true;
+						} else {
+							messageEl.textContent = '이미 사용중인 아이디입니다.';
+							messageEl.className = 'text-sm mt-1 text-red-500';
+							idChecked = false;
+						}
+					}, 500);
+				});
+		
+				//이메일 직접입력 셀렉트박스
+				function res(r){
+					if(r ==""){
+						$("#o_email2").attr("readonly",false);
+					} else {
+						$("#o_email2").attr("readonly",true);
+					}
+					document.getElementById("o_email2").value=r;
+				
+					var email1=document.getElementById("o_email").value;
+					var email2=document.getElementById("o_email2").value;
+					
+					document.getElementById("od_email").value=email1+"@"+email2;
+				}
+		
+				// 비밀번호 강도 체크
+				document.getElementById('password').addEventListener('input', function() {
+					const password = this.value;
+					const strengthBar = document.getElementById('passwordStrengthBar');
+					const strengthText = document.getElementById('passwordStrengthText');
+		
+					let strength = 0;
+					if (password.length >= 8) strength++;
+					if (/[a-zA-Z]/.test(password)) strength++;
+					if (/[0-9]/.test(password)) strength++;
+					if (/[^a-zA-Z0-9]/.test(password)) strength++;
+		
+					strengthBar.className = 'password-strength';
+					
+					if (strength <= 1) {
+						strengthBar.classList.add('strength-weak');
+						strengthText.textContent = '약함';
+					} else if (strength <= 3) {
+						strengthBar.classList.add('strength-medium');
+						strengthText.textContent = '보통';
+					} else {
+						strengthBar.classList.add('strength-strong');
+						strengthText.textContent = '강함';
+					}
+				});
+		
+				// 비밀번호 확인
+				document.getElementById('passwordConfirm').addEventListener('input', function() {
+					const password = document.getElementById('password').value;
+					const confirmPassword = this.value;
+					const messageEl = document.getElementById('passwordConfirmMessage');
+		
+					if (confirmPassword && password !== confirmPassword) {
+						messageEl.textContent = '비밀번호가 일치하지 않습니다.';
+						messageEl.className = 'text-sm mt-1 text-red-500';
+					} else if (confirmPassword && password === confirmPassword) {
+						messageEl.textContent = '비밀번호가 일치합니다.';
+						messageEl.className = 'text-sm mt-1 text-green-500';
+					} else {
+						messageEl.textContent = '';
+					}
+				});
+		
+				// 폼 제출
+				document.getElementById('signupForm').addEventListener('submit', function(e) {
+					e.preventDefault();
+					
+					// 필수 검증
+					if (!idChecked) {
+						alert('아이디 중복확인을 해주세요.');
+						return;
+					}
+					
+					const password = document.getElementById('password').value;
+					const confirmPassword = document.getElementById('passwordConfirm').value;
+					
+					if (password !== confirmPassword) {
+						alert('비밀번호가 일치하지 않습니다.');
+						return;
+					}
+		
+					// 폼 데이터 수집
+					const formData = new FormData(this);
+					const data = Object.fromEntries(formData.entries());
+					
+					console.log('회원가입 데이터:', data);
+					alert('회원가입이 완료되었습니다! 로그인 페이지로 이동합니다.');
+				});
+				
+				$(document).on("keyup", ".phoneNumber", function() { 
+					$(this).val( $(this).val().replace(/[^0-9]/g, "").replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/,"$1-$2-$3").replace("--", "-") ); 
+				});
+			</script>
 		</main>
 </html>

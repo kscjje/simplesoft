@@ -1,150 +1,105 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{layouts/default_layout}">
-	<main class="content-wrapper" layout:fragment="content" style="min-height: 55vh;">
+	  layout:decorate="~{layouts/mypage_layout}">
+	  <main class="content-wrapper" layout:fragment="content">
 		<style>
-			/* 데스크탑 (해상도 1280px 이상) */
-			@media all and (min-width: 1280px) {
-			  /* 데스크탑 전용 스타일 */
-			}
-			
-			/* 노트북 & 테블릿 가로 (해상도 1024px ~ 1279px) */
-			@media all and (min-width: 1024px) and (max-width: 1279px) {
-			  /* 노트북 및 가로 방향 태블릿 스타일 */
-			}
-			
-			/* 테블릿 가로 (해상도 768px ~ 1023px) */
-			@media all and (min-width: 768px) and (max-width: 1023px) {
-				/* 태블릿 가로 스타일 */
-				.image{
-					width:100%;
-				}
-				.b_image{
-					width:180px;
-				}
-				.contents {
-					height: 170px;
-				}
-				.fullscreen-js {
-					height: 10vh; /* 기본값 */
-				}
-			}
-			
-			/* 모바일 가로 & 테블릿 세로 (해상도 480px ~ 767px) */
-			@media all and (min-width: 480px) and (max-width: 767px) {
-				/* 모바일 가로 또는 태블릿 세로 스타일 */
-				.image{
-					width:100%;
-				}
-				.b_image{
-					width:140px;
-				}
-				.contents {
-					height: 120px;
-				}
-				.fullscreen-js {
-					height: 10vh; /* 기본값 */
-				}
-			}
-			
-			/* 모바일 세로 (해상도 ~ 479px) */
-			@media all and (max-width: 479px) {
-				/* 모바일 세로 스타일 */
-				.image{
-					width:100%;
-				}
-				.b_image{
-					width:100px;
-				}
-				.contents {
-					height: 100px;
-				}
-				.fullscreen-js {
-					height: 10vh; /* 기본값 */
-				}
+			.content-container {
+				max-width: 1200px;
+				margin: 0 auto;
 			}
 		</style>
-		<script>
-			$(document).ready(function () {
-				$('.slider').slick({
-			      slide: 'div',        //슬라이드될 태그
-			      infinite : true,     //무한 반복 옵션     
-			      slidesToShow : 1,        // 한 화면에 보여질 컨텐츠 개수
-			      slidesToScroll : 1,        //스크롤 한번에 움직일 컨텐츠 개수
-			      speed : 500,     // 다음 버튼 누르고 다음 화면 뜨는데까지 걸리는 시간(ms)
-			      arrows : false,         // 옆으로 이동하는 화살표 표시 여부
-			      dots : true,         // 스크롤바 아래 점으로 페이지네이션 여부
-			      autoplay : true,            // 자동 스크롤 사용 여부
-			      autoplaySpeed : 2000,         // 자동 스크롤 시 다음으로 넘어가는데 걸리는 시간 (ms)
-			      pauseOnHover : true,        // 슬라이드 이동   시 마우스 호버하면 슬라이더 정지
-			      vertical : false,        // 세로 방향 슬라이드 옵션
-			      prevArrow: '<button type="button" data-role="none" class="slick-prev" aria-label="Previous" tabindex="0" role="button">Previous</button>',
-			      nextArrow: '<button type="button" data-role="none" class="slick-next" aria-label="Next" tabindex="0" role="button">Next</button>',
-			      draggable : true,     //드래그 가능 여부 
-			      responsive: [
-			        {
-			            breakpoint: 1920, // Screen size <= 1920px
-			            settings: {
-			                slidesToShow: 1, // Show 3 slides
-			            },
-			        },
-			        {
-			            breakpoint: 1080, // Screen size <= 1080px
-			            settings: {
-			                slidesToShow: 1, // Show 2 slides
-			            },
-			        },
-			        {
-			            breakpoint: 768, // Screen size <= 768px
-			            settings: {
-			                slidesToShow: 1, // Show 1 slide
-			            },
-			        },
-			    ],
-			
-			    });
-			})
-		</script>
-		<div class="slider">
-			<div>
-				<div class="image">
-					<img src="image/image1.png"	class="image"/>
-				</div>
-			</div>
-			<div>
-				<div class="image">
-					<img src="image/image2.png"	class="image">
-				</div>
-			</div>
-			<div>
-				<div class="image">
-					<img src="image/image3.png" class="image">
-				</div>
-			</div>
-			<div>
-				<div class="image">
-					<img src="image/image4.png"	class="image">
-				</div>
-			</div>
-			<div>
-				<div class="image">
-					<img src="image/image5.png" class="image">
-				</div>
-			</div>
-		</div>
-		<div class="contents" style="margin-top: 5vh;">
-			<div><a href="/foodtable"><img src="image/con1.jpg" class="b_image" alt="이달의 식단"></a></div>
-			<div><a href="/order"><img src="image/con2.jpg" class="b_image" alt="주문하기"></a></div>
-			<div><a href="/notice"><img src="image/con3.jpg" class="b_image" alt="공지사항"></a></div>
-		</div>
-		<div class="fullscreen-js"></div>
-		<script>
-			function setFullHeight() {
-				document.querySelector('.fullscreen-js').style.height = window.innerHeight*0.1 + 'px';
-			}
-			window.addEventListener('resize', setFullHeight);
-			window.addEventListener('load', setFullHeight);
-		</script>
-	</main>
+	  	<script>
+	  		$(document).ready(function () {
+	  			$('.slider').slick({
+	  				slide: 'div',
+	  				infinite: true,
+	  				slidesToShow: 1,
+	  				slidesToScroll: 1,
+	  				speed: 500,
+	  				arrows: false,
+	  				dots: true,
+	  				autoplay: true,
+	  				autoplaySpeed: 2000,
+	  				pauseOnHover: true,
+	  				vertical: false,
+	  				prevArrow: '<button type="button" data-role="none" class="slick-prev" aria-label="Previous" tabindex="0" role="button">Previous</button>',
+	  				nextArrow: '<button type="button" data-role="none" class="slick-next" aria-label="Next" tabindex="0" role="button">Next</button>',
+	  				draggable: true,
+	  				responsive: [
+	  					{
+	  						breakpoint: 1920,
+	  						settings: {
+	  							slidesToShow: 1,
+	  						},
+	  					},
+	  					{
+	  						breakpoint: 1080,
+	  						settings: {
+	  							slidesToShow: 1,
+	  						},
+	  					},
+	  					{
+	  						breakpoint: 768,
+	  						settings: {
+	  							slidesToShow: 1,
+	  						},
+	  					},
+	  				],
+	  			});
+	  		})
+	  	</script>
+	  	<div class="slider content-container">
+	  		<div>
+	  			<div class="image">
+	  				<img src="image/image1.png" class="image" alt="슬라이드 이미지 1"/>
+	  			</div>
+	  		</div>
+	  		<div>
+	  			<div class="image">
+	  				<img src="image/image2.png" class="image" alt="슬라이드 이미지 2">
+	  			</div>
+	  		</div>
+	  		<div>
+	  			<div class="image">
+	  				<img src="image/image3.png" class="image" alt="슬라이드 이미지 3">
+	  			</div>
+	  		</div>
+	  		<div>
+	  			<div class="image">
+	  				<img src="image/image4.png" class="image" alt="슬라이드 이미지 4">
+	  			</div>
+	  		</div>
+	  		<div>
+	  			<div class="image">
+	  				<img src="image/image5.png" class="image" alt="슬라이드 이미지 5">
+	  			</div>
+	  		</div>
+	  	</div>
+	  	<div class="contents content-container" style="display:block;">
+	  		<div>
+	  			<a href="/foodtable">
+	  				<img src="image/con1.jpg" class="b_image" alt="이달의 식단">
+	  			</a>
+	  		</div>
+	  		<div>
+	  			<a href="/order">
+	  				<img src="image/con2.jpg" class="b_image" alt="주문하기">
+	  			</a>
+	  		</div>
+	  		<div>
+	  			<a href="/notice">
+	  				<img src="image/con3.jpg" class="b_image" alt="공지사항">
+	  			</a>
+	  		</div>
+	  	</div>
+	  	<div class="fullscreen-js"></div>
+	  	<script>
+	  		function setFullHeight() {
+	  			document.querySelector('.fullscreen-js').style.height = window.innerHeight * 0.1 + 'px';
+	  		}
+	  		window.addEventListener('resize', setFullHeight);
+	  		window.addEventListener('load', setFullHeight);
+	  	</script>
+	  </main>
 </html>

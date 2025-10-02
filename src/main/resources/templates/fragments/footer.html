@@ -1,114 +1,73 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 	<th:block th:fragment="footer" >
-		<style>
-			.footerInfo {
-				display:flex;
-				font-size: 0.7em;
-			}
-			.footerTitle {
-				padding:29px 0 0;
-				border-bottom: 1px solid #999;
-				height:80px;
-			}
-			.no-underline {
-				text-decoration: none !important;
-			}
-			.f_info_div{
-				width:-webkit-fill-available;
-			}
-			.f_addr{
-				padding:29px 0 30px;
-			}
-			.top_footer{
-				background-color:#464646;	
-			}
-			/* 데스크탑 (해상도 1280px 이상) */
-			@media all and (min-width: 1280px) {
-			  /* 데스크탑 전용 스타일 */
-			}
-			
-			/* 노트북 & 테블릿 가로 (해상도 1024px ~ 1279px) */
-			@media all and (min-width: 1024px) and (max-width: 1279px) {
-			  /* 노트북 및 가로 방향 태블릿 스타일 */
-			}
-			
-			/* 테블릿 가로 (해상도 768px ~ 1023px) */
-			@media all and (min-width: 768px) and (max-width: 1023px) {
-			  /* 태블릿 가로 스타일 */
-			}
-			
-			/* 모바일 가로 & 테블릿 세로 (해상도 480px ~ 767px) */
-			@media all and (min-width: 480px) and (max-width: 767px) {
-				/* 모바일 가로 또는 태블릿 세로 스타일 */
-				.footerTitle {
-					padding:22px 0 10px;
-					border-bottom: 1px solid #999;
-					height:60px;
-				}
-				.f_logo{
-					display: none;
-				}
-				.me-5{
-					margin-right: 1.2rem !important;
-				}
-				.f_addr{
-					padding:22px 0 22px;
-				}
-				.top_footer{
-					position: relative;
-					width: 100%;
-					height: 100%;
-				}
-			}
-			
-			/* 모바일 세로 (해상도 ~ 479px) */
-			@media all and (max-width: 479px) {
-				.footerTitle {
-					padding:22px 0 10px;
-					border-bottom: 1px solid #999;
-					height:60px;
-				}
-				.f_logo{
-					display: none;
-				}
-				.me-5{
-					margin-right: 1.2rem !important;
-				}
-				.f_addr{
-					padding:22px 0 22px;
-				}
-				.top_footer{
-					position: relative;
-					width: 100%;
-					height: 100%;
-				}
-			}
-		</style>
-		<div class="top_footer">
-			<div class="footerInfo fw-semibold container">
-				<div class="mt-1 me-1 f_logo">
-					<a href="#">
-						<img src="/image/footerLogo2.jpg" width="200px" alt="밥수니반찬헤더로고">
-					</a>
-				</div>
-				<div class="f_info_div">
-					<div class="footerTitle">
-						<ul class="nav justify-content-start">
-							<li class="nav-item2 me-5"><a href="/introduce">회사소개</a></li>
-							<li class="nav-item2 me-5"><a href="/terms">이용약관</a></li>
-							<li class="nav-item2 me-5"><a href="/privacy">개인정보처리방침</a></li>
-							<!--<li class="nav-item2 me-5"><a href="#">고객센터</a></li>-->
-						</ul>
+		<div class="py-6 pb-20 md:pb-2" style="background-color:#464646;">
+			<div class="container mx-auto px-8 font-semibold md:max-w-4xl">
+				<div class="flex items-start">
+					<div class="flex-shrink-0 hidden md:block">
+						<a href="#">
+							<img src="/image/footerLogo2.jpg" style="width:200px;"alt="밥수니반찬헤더로고">
+						</a>
 					</div>
-					<div class="text-light f_addr">
-						<span style="display:block;">대표자 : 박갑순, 사업자등록번호 : 399-19-01352</span>
-						<span style="display:block;">대표번호 : 0507-1316-5536</span>
-						<span style="display:block;">주소 : 경기도 안산시 단원구 신촌5길 28, 1층일부(102호)(초지동)</span>
-						<address style="color:#999;">Copyright 2025 밥수니반찬 all rights reserved.</address>
+					
+					<div class="flex-1" style="font-size:10px;">
+						<style>
+							@media (min-width: 768px) {
+								.footer-content {
+									font-size: 12px;
+								}
+							}
+						</style>
+						<div class="footer-content">
+							<div class="mb-4">
+								<ul class="flex flex-wrap gap-x-10">
+									<li><a href="/introduce" class="text-gray-300 transition-colors">회사소개</a></li>
+									<li><a href="/terms" class="text-gray-300 transition-colors">이용약관</a></li>
+									<li><a href="/privacy" class="text-gray-300 transition-colors">개인정보처리방침</a></li>
+									<!--<li><a href="#">고객센터</a></li>-->
+								</ul>
+							</div>
+							<div class="border-t border-gray-400"></div>
+							<div class="text-gray-300 leading-relaxed mt-4">
+								<span class="block">대표자 : 박갑순, 사업자등록번호 : 399-19-01352</span>
+								<span class="block">대표번호 : 0507-1316-5536</span>
+								<span class="block">주소 : 경기도 안산시 단원구 신촌5길 28, 1층일부(102호)(초지동)</span>
+								<address class="text-gray-500 not-italic mt-2">Copyright 2025 밥수니반찬 all rights reserved.</address>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		
+		<!-- Mobile Bottom Navigation - 모바일에서만 표시 -->
+	    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40">
+	        <div class="flex justify-around items-center py-2">
+	            <button class="flex flex-col items-center py-2 px-3 text-gray-600 hover:text-orange-500 transition-colors duration-200">
+	                <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+	                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+	                </svg>
+	                <span class="text-xs">카테고리</span>
+	            </button>
+
+	            <button class="flex flex-col items-center py-2 px-3 text-orange-500 transition-colors duration-200">
+	                <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 24 24">
+	                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+	                </svg>
+	                <span class="text-xs font-medium">홈</span>
+	            </button>
+
+	            <button class="flex flex-col items-center py-2 px-3 text-gray-600 hover:text-orange-500 transition-colors duration-200" onclick="setActiveTab(this); openModal('login-modal')">
+	                <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+	                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+	                </svg>
+	                <span class="text-xs">MY</span>
+	            </button>
+	        </div>
+	    </div>
+
+		<script>
+			
+		</script>
 	</th:block>
 </html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-		layout:decorate="~{layouts/default_layout}">
+		layout:decorate="~{layouts/mypage_layout}">
 		<main class="content-wrapper" layout:fragment="content">
 			<style>
 				.policy-section {
@@ -23,87 +23,14 @@
 				.policy-table th {
 					background-color: #f4f6f9;
 				}
-				
-				/* 데스크탑 (해상도 1280px 이상) */
-				@media all and (min-width: 1280px) {
-					.container {
-						max-width: 1000px;
-					}
-					.policy-section {
-						padding: 40px;
-					}
-				}
-				
-				/* 노트북 & 테블릿 가로 (1024px ~ 1279px) */
-				@media all and (min-width: 1024px) and (max-width: 1279px) {
-					.container {
-						max-width: 900px;
-					}
-					.policy-section {
-						padding: 30px;
-					}
-				}
-				
-				/* 테블릿 가로 (768px ~ 1023px) */
-				@media all and (min-width: 768px) and (max-width: 1023px) {
-					.container {
-						max-width: 720px;
-					}
-					.policy-section {
-						padding: 25px;
-					}
-					.policy-section h4 {
-						font-size: 1.2rem;
-					}
-				}
-				
-				/* 모바일 가로 & 테블릿 세로 (480px ~ 767px) */
-				@media all and (min-width: 480px) and (max-width: 767px) {
-					.container {
-						max-width: 95%;
-					}
-					.policy-section {
-						padding: 20px;
-					}
-					.policy-section h4 {
-						font-size: 1.1rem;
-					}
-					.policy-table th, .policy-table td {
-						font-size: 0.9rem;
-						padding: 8px;
-					}
-				}
-				
-				/* 모바일 세로 (~479px) */
-				@media all and (max-width: 479px) {
-					.container {
-						max-width: 95%;
-						padding: 0 10px;
-					}
-					.policy-section {
-						padding: 15px;
-					}
-					.policy-section h4 {
-						font-size: 1rem;
-					}
-					.policy-table th, .policy-table td {
-						font-size: 0.85rem;
-						padding: 6px;
-					}
-					h1 {
-						font-size: 1.3rem;
-					}
-					.text-muted {
-						font-size: 0.9rem;
-					}
-					.policy-section ul li {
-						font-size: 0.9rem;
-					}
+				.content-container {
+					max-width: 1000px;
+					margin: 0 auto;
 				}
 			</style>
-			<div class="row justify-content-center text-start">
+			<div class="slider content-container">
 				<div class="container py-3">
-						<h1 class="mb-4 text-center fw-bold">📜 이용약관</h1>
+						<h1 class="mb-4 text-3xl text-center fw-bold">📜 이용약관</h1>
 				
 						<div class="policy-section">
 							<p class="text-muted">본 약관은 [밥수니반찬]이(가) 비회원 고객에게 제공하는 서비스 이용과 관련하여 필요한 권리, 의무, 책임사항을 규정합니다.</p>

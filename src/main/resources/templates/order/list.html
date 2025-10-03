@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{layouts/default_layout}">
+	  layout:decorate="~{layouts/mypage_layout}">
 	  <main class="content-wrapper" layout:fragment="content">
 		  <style>
 			
@@ -44,7 +44,7 @@
 				.help{
 					font-size: 13px;
 				}
-				.fixed {
+				.fixe {
 					left: 45%;
 				}
 			}
@@ -87,7 +87,7 @@
 				.help{
 					font-size: 13px;
 				}
-				.fixed {
+				.fixe {
 					left: 45%;
 				}
 			}
@@ -129,7 +129,7 @@
 				.help{
 					font-size: 13px;
 				}
-				.fixed {
+				.fixe {
 					left: 40%;
 				}
 			}
@@ -171,7 +171,7 @@
 				.help{
 					font-size: 13px;
 				}
-				.fixed {
+				.fixe {
 					left: 40%;
 				}
 			}
@@ -194,10 +194,10 @@
 				.tableWidth tr td{
 					height:184px;
 				}
-				.fixed {
+				.fixe {
 					left:40%;
 				}
-				.fixed .addToCartButton {
+				.fixe .addToCartButton {
 					padding: 8px 10px;
 					font-size: 10px;
 					width:100px;
@@ -254,7 +254,7 @@
 				border-radius: 5px;
 				transition: background-color 0.3s ease;
 			}
-			.fixed {
+			.fixe {
 				position: sticky;
 				width: 0;
 				bottom: 2%;
@@ -286,7 +286,7 @@
 			<p class="mb-1">- 식단은 시장 사정에 따라 변경될 수 있습니다.</p>
 			<p class="mb-1">- 붉은색 메뉴는 고춧가루가 포함돼 있습니다.</p>
 		</div>
-		<div class="fixed mt-4"></div>
+		<div class="fixe mt-4"></div>
 		<script th:inline="javascript">
 			
 			$(function(){
@@ -388,7 +388,7 @@
 				}
 				addHtml += 	"</tr>";
 				$("#thHead").after(addHtml);
-				$(".fixed").html('<button type="button" class="addToCartButton" onclick="fnCartSave()">장바구니담기</button>');
+				$(".fixe").html('<button type="button" class="addToCartButton" onclick="fnCartSave()">장바구니담기</button>');
 			});
 			
 			//장바구니 담기

@@ -1,68 +1,48 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-		layout:decorate="~{layouts/default_layout}">
-		<main class="content-wrapper" layout:fragment="content" style="padding: 10px;">
-			<div class="row justify-content-center text-center">
-				<div class="col-lg-4">
-					<!--<div class="login-container">
-						<h2 class="mb-4">로그인</h2>
+		layout:decorate="~{layouts/mypage_layout}">
+		<main class="content-wrapper" layout:fragment="content">
+			<style>
+				.content-container {
+					max-width: 600px;
+					margin: 0 auto;
+				}
+			</style>
+			<div class="content-container justify-content-center text-center">
+				<th:block th:if="${type eq 'noneMember'}">
+					<h2 class="text-lg font-semibold text-gray-800 mb-2">비회원 구매</h2>
+					<section>
 						<form method="post" id="loginForm">
-							<div class="form-group" style="margin-bottom: 12px;">
-								<input type="text" class="form-control" style="background-color: #f6f6f6; height: 60px;" name="userId" id="userId" placeholder="아이디를 입력하세요" required onkeypress="enterKey()">
+							<div class="border rounded-lg p-4 h-90 overflow-y-auto text-sm text-gray-700 leading-relaxed bg-gray-50">
+								<div class="text-start">
+									<p class="text-sm font-semibold">1. 개인정보의 수집∙이용 목적</p>
+									<p class="text-sm">- 구매한 물품의 배송/설치 등 고객과 체결한 계약의 이행</p>
+									<p class="text-sm">- 상품 구매 관련 문의사항과 반품·환불 등 민원사항의 상담 및 처리</p>
+									<p class="text-sm">- 상품 구매 관련 고지사항, 주문/배송정보 안내</p><br/>
+									<p class="text-sm font-semibold">2. 수집하는 개인정보의 항목</p>
+									<p class="text-sm">(필수) 주문 고객명, 받는 고객명, 이메일, 배송주소, 배송연락처, 결제수단 정보 (신용카드, 계좌번호 등 결제수단에 따름)</p>
+									<p class="text-sm">(선택) 추가 연락처</p><br/>
+									<p class="text-sm font-semibold">3. 개인정보 보유 이용 기간</p>
+									<p class="text-sm">- 상품 주문 및 배송 완료 후 5년간 보유합니다.</p>
+									<p class="text-sm">- 법령에 따라 보유하여야 하는 기간은 홈페이지 하단의 ‘개인정보 처리방침’을 참고하시기 바랍니다.</p>
+									<p class="text-sm">고객님께서는 위와 같은 개인정보 수집에 동의를 거부하실 수 있습니다. 다만, 필수항목 동의 거부시 서비스 이용이 제한됩니다.</p>
+								</div>
 							</div>
-							<div class="form-group" style="margin-bottom: 18px;">
-								<input type="password" class="form-control" style="background-color: #f6f6f6; height: 60px;" name="userPw" id="userPw" placeholder="비밀번호를 입력하세요" required onkeypress="enterKey()">
-							</div>
-							<div class="form-group" style="margin-bottom: 18px;">
-								<button type="button" class="btn btn-dark btn-block" style="width:100%;height: 60px;font-weight: bold;font-size: 20px;" onclick="fnLogin()">로그인</button>
-							</div>
-							<div class="form-group d-flex justify-content-between align-items-center">
+							<div class="d-flex justify-content-between align-items-center" style="margin-bottom: 18px;">
 								<div class="form-check">
-									<input class="form-check-input" type="checkbox" name="flexCheckChecked" id="flexCheckChecked1">
-									<label class="form-check-label" for="flexCheckChecked1" style="font-size: 14px;cursor: pointer;">아이디 저장</label>
+									<label class="flex items-center mt-3 cursor-pointer text-sm text-gray-700" for="agree1" style="cursor: pointer;">
+										<input id="agree1" type="checkbox" class="agree w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-300">
+										<span class="ml-2">[필수] 비회원 개인정보 수집 · 이용 동의</span>
+									</label>
 								</div>
-								<div class="text-right">
-									<a href="" class="mr-2" style="text-decoration: none;color: #191919;font-size: 14px;">아이디찾기</a><span style="font-size: 13px;"> |</span>
-									<a href="" class="mr-2" style="text-decoration: none;color: #212529;font-size: 14px;">비밀번호 찾기</a><span style="font-size: 13px;"> |</span>
-									<a href="" style="text-decoration: none;color: #212529;font-size: 14px;">회원가입</a>
-								</div>
+							</div>
+							<div style="margin-bottom: 18px;">
+								<button type="button" class="btn btn-outline-dark"style="width:100%;height: 60px;font-weight: bold;font-size: 20px;"onclick="noneOrder()">비회원 주문</button>
 							</div>
 						</form>
-					</div>-->
-					<th:block th:if="${type eq 'noneMember'}">
-						<div class="login-container" style="margin-top:30px">
-							<h2 class="mb-1">비회원 구매</h2>
-							<form method="post" id="loginForm">
-								<div class="input-group">
-									<div class="form-control text-start">
-										<p class="small lh-1">1. 개인정보의 수집∙이용 목적</p>
-										<p class="small lh-1">- 구매한 물품의 배송/설치 등 고객과 체결한 계약의 이행</p>
-										<p class="small lh-1">- 상품 구매 관련 문의사항과 반품·환불 등 민원사항의 상담 및 처리</p>
-										<p class="small lh-1">- 상품 구매 관련 고지사항, 주문/배송정보 안내</p>
-										<p class="small lh-1">2. 수집하는 개인정보의 항목</p>
-										<p class="small lh-base">(필수) 주문 고객명, 받는 고객명, 이메일, 배송주소, 배송연락처, 결제수단 정보 (신용카드, 계좌번호 등 결제수단에 따름)</p>
-										<p class="small lh-1">(선택) 추가 연락처</p>
-										<p class="small lh-1">3. 개인정보 보유 이용 기간</p>
-										<p class="small lh-1">- 상품 주문 및 배송 완료 후 5년간 보유합니다.</p>
-										<p class="small lh-base">- 법령에 따라 보유하여야 하는 기간은 홈페이지 하단의 ‘개인정보 처리방침’을 참고하시기 바랍니다.</p>
-										<p class="small lh-base">고객님께서는 위와 같은 개인정보 수집에 동의를 거부하실 수 있습니다. 다만, 필수항목 동의 거부시 서비스 이용이 제한됩니다.</p>
-									</div>
-								</div>
-								<div class="form-group d-flex justify-content-between align-items-center" style="margin-bottom: 18px;">
-									<div class="form-check">
-										<input class="form-check-input" type="checkbox" id="agree1">
-										<label class="form-check-label" for="agree1" style="font-size: 14px;cursor: pointer;">[필수] 비회원 개인정보 수집 · 이용 동의</label>
-									</div>
-								</div>
-								<div class="form-group" style="margin-bottom: 18px;">
-<!--									<button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal" style="width:100%;height: 60px;font-weight: bold;font-size: 20px;">비회원 주문</button>-->
-									<button type="button" class="btn btn-outline-dark"style="width:100%;height: 60px;font-weight: bold;font-size: 20px;"onclick="noneOrder()">비회원 주문</button>
-								</div>
-							</form>
-						</div>
-					</th:block>
-				</div>
+					</section>
+				</th:block>
 			</div>
 		
 			<script th:inline="javascript">

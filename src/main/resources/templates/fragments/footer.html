@@ -3,8 +3,8 @@
 	<th:block th:fragment="footer" >
 		<div class="py-6 pb-20 md:pb-2" style="background-color:#464646;">
 			<div class="container mx-auto px-8 font-semibold md:max-w-4xl">
-				<div class="flex items-start">
-					<div class="flex-shrink-0 hidden md:block">
+				<div class="flex items-start gap-x-16">
+					<div class="flex-shrink-0 hidden md:block ">
 						<a href="#">
 							<img src="/image/footerLogo2.jpg" style="width:200px;"alt="밥수니반찬헤더로고">
 						</a>
@@ -43,21 +43,21 @@
 		<!-- Mobile Bottom Navigation - 모바일에서만 표시 -->
 	    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40">
 	        <div class="flex justify-around items-center py-2">
-	            <button class="flex flex-col items-center py-2 px-3 text-gray-600 hover:text-orange-500 transition-colors duration-200">
+	            <button type="button" class="flex flex-col items-center py-2 px-3 text-gray-600 hover:text-orange-500 transition-colors duration-200">
 	                <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 	                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
 	                </svg>
 	                <span class="text-xs">카테고리</span>
 	            </button>
 
-	            <button class="flex flex-col items-center py-2 px-3 text-orange-500 transition-colors duration-200">
+	            <button type="button" class="flex flex-col items-center py-2 px-3 text-orange-500 transition-colors duration-200">
 	                <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 24 24">
 	                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
 	                </svg>
 	                <span class="text-xs font-medium">홈</span>
 	            </button>
 
-	            <button class="flex flex-col items-center py-2 px-3 text-gray-600 hover:text-orange-500 transition-colors duration-200" onclick="setActiveTab(this); openModal('login-modal')">
+	            <button type="button" class="flex flex-col items-center py-2 px-3 text-gray-600 hover:text-orange-500 transition-colors duration-200" onclick="setActiveTab(this); openModal('login-modal')">
 	                <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 	                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
 	                </svg>

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{layouts/mypage_layout}">
-	  <main class="content-wrapper" layout:fragment="content">
-		  <style>
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/mypage_layout}">
+	<main class="content-wrapper" layout:fragment="content">
+		<style>
 			.content-container {
 				max-width: 1200px;
 				margin: 0 auto;
@@ -358,13 +358,13 @@
 											}
 											//선택버튼 생성 로직
 											if (currentYear == result[k].menuDay.substring(0, 4) &&
-											    result[k].useYn === "Y" &&
+												result[k].useYn === "Y" &&
 												isLastItem &&
-											    (currentMMDD < (month + day) || (currentMMDD === (month + day) && currentHour < 16))) {
-											    addHtml += `
-											        <div style="padding-top:10px;">
-											            <input type="button" onclick="toggleButtonClick(this)" id="${result[k].menuBoardSeq}" value="선택" class="menuboard_btn">
-											        </div>`;
+												(currentMMDD < (month + day) || (currentMMDD === (month + day) && currentHour < 16))) {
+												addHtml += `
+													<div style="padding-top:10px;">
+														<input type="button" onclick="toggleButtonClick(this)" id="${result[k].menuBoardSeq}" value="선택" class="menuboard_btn">
+													</div>`;
 											}
 										}
 									}
@@ -408,26 +408,26 @@
 					checkArray += checkList[i].id;
 					if( i+1 != checkList.length)checkArray += ",";
 				}
-		   		$.ajax({
-			        url: "/rest/cart/save",
-			        type: "POST",
-			        cache: false,
-			        dataType: "json",
-			        data: {
-			        	menuBoardSeq : checkArray
-			        },
-			        success: function (result) {
-			        	if(result.responseCode == "SUCCESS"){
+				$.ajax({
+					url: "/rest/cart/save",
+					type: "POST",
+					cache: false,
+					dataType: "json",
+					data: {
+						menuBoardSeq : checkArray
+					},
+					success: function (result) {
+						if(result.responseCode == "SUCCESS"){
 							if(result.data.resultCode == "SUCCESS"){
 								location.href="cart";
 							}
 						}
-			        },
-			        error: function (e) {
-			            console.log("ERROR : ", e);
-			            alert("장바구니 담기에 실패했습니다.");
-			        }
-			    });
+					},
+					error: function (e) {
+						console.log("ERROR : ", e);
+						alert("장바구니 담기에 실패했습니다.");
+					}
+				});
 			}
 			
 			//식단 선택

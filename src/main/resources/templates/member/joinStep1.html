@@ -1,37 +1,37 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-		layout:decorate="~{layouts/mypage_layout}">
-		<main class="content-wrapper flex items-center justify-center p-6" layout:fragment="content" style="padding: 10px;">
-			<div class="w-full max-w-3xl bg-white rounded-2xl shadow-lg p-8">
-				<!-- 제목 -->
-				<h1 class="text-2xl font-bold text-gray-800 text-center mb-8">회원가입 약관 동의</h1>
-				<form id="signupTermsForm" class="space-y-8">
-					<!-- ✅ 전체 동의 -->
-					<div class="pb-4 mb-6">
-						<label class="flex items-center cursor-pointer text-base font-semibold text-gray-800">
-							<input id="agreeAll" type="checkbox" class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-300">
-							<span class="ml-2">약관 전체 동의</span>
-						</label>
-						<p class="text-sm text-gray-500 mt-1 ml-7">※ 필수 약관 미동의 시 회원가입이 제한됩니다.</p>
-					</div>
-					<!-- 서비스 이용약관 -->
-					<section>
-					    <h2 class="text-lg font-semibold text-gray-800 mb-2">서비스 이용약관</h2>
-					    <div class="border rounded-lg p-4 h-40 overflow-y-auto text-sm text-gray-700 leading-relaxed bg-gray-50">
-					        <p class="mb-2">본 약관은 회원이 서비스를 이용함에 있어 지켜야 할 조건, 절차 및 권리·의무를 규정합니다.</p>
-					        <p class="font-semibold mt-4">주요 약관 내용</p>
-					        <ul class="list-disc list-inside pl-2 space-y-1">
-					            <li>회원 가입 및 탈퇴에 관한 규정</li>
-					            <li>상품 구매 및 결제 방법에 관한 규정</li>
-					            <li>청약철회(취소) 및 환불 조건</li>
-					            <li>이용자의 개인정보보호 및 의무</li>
-					        </ul>
-					        <hr class="my-4">
-					        <h3 class="font-semibold text-base mb-2">서비스 이용약관 전문</h3>
-					        <p class="mb-2">아래 전문을 꼼꼼히 확인해 주세요.</p>
-					        <pre class="whitespace-pre-wrap text-xs leading-snug">
-					            <div id="full-terms-and-conditions">제1조(목적) 이 약관은 밥수니반찬이 운영하는 밥수니반찬(이하 “몰”이라 한다)에서 제공하는 인터넷 관련 서비스(이하 “서비스”라 한다)를 이용함에 있어 사이버 몰과 이용자의 권리․의무 및 책임사항을 규정함을 목적으로 합니다.
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/mypage_layout}">
+	<main class="content-wrapper flex items-center justify-center p-6" layout:fragment="content" style="padding: 10px;">
+		<div class="w-full max-w-3xl bg-white rounded-2xl shadow-lg p-8">
+			<!-- 제목 -->
+			<h1 class="text-2xl font-bold text-gray-800 text-center mb-8">회원가입 약관 동의</h1>
+			<form id="signupTermsForm" class="space-y-8">
+				<!-- ✅ 전체 동의 -->
+				<div class="pb-4 mb-6">
+					<label class="flex items-center cursor-pointer text-base font-semibold text-gray-800">
+						<input id="agreeAll" type="checkbox" class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-300">
+						<span class="ml-2">약관 전체 동의</span>
+					</label>
+					<p class="text-sm text-gray-500 mt-1 ml-7">※ 필수 약관 미동의 시 회원가입이 제한됩니다.</p>
+				</div>
+				<!-- 서비스 이용약관 -->
+				<section>
+					<h2 class="text-lg font-semibold text-gray-800 mb-2">서비스 이용약관</h2>
+					<div class="border rounded-lg p-4 h-40 overflow-y-auto text-sm text-gray-700 leading-relaxed bg-gray-50">
+						<p class="mb-2">본 약관은 회원이 서비스를 이용함에 있어 지켜야 할 조건, 절차 및 권리·의무를 규정합니다.</p>
+						<p class="font-semibold mt-4">주요 약관 내용</p>
+						<ul class="list-disc list-inside pl-2 space-y-1">
+							<li>회원 가입 및 탈퇴에 관한 규정</li>
+							<li>상품 구매 및 결제 방법에 관한 규정</li>
+							<li>청약철회(취소) 및 환불 조건</li>
+							<li>이용자의 개인정보보호 및 의무</li>
+						</ul>
+						<hr class="my-4">
+						<h3 class="font-semibold text-base mb-2">서비스 이용약관 전문</h3>
+						<p class="mb-2">아래 전문을 꼼꼼히 확인해 주세요.</p>
+						<pre class="whitespace-pre-wrap text-xs leading-snug">
+							<div id="full-terms-and-conditions">제1조(목적) 이 약관은 밥수니반찬이 운영하는 밥수니반찬(이하 “몰”이라 한다)에서 제공하는 인터넷 관련 서비스(이하 “서비스”라 한다)를 이용함에 있어 사이버 몰과 이용자의 권리․의무 및 책임사항을 규정함을 목적으로 합니다.
 ※「PC통신, 무선 등을 이용하는 전자상거래에 대해서도 그 성질에 반하지 않는 한 이 약관을 준용합니다.」
 									
 제2조(정의)
@@ -270,33 +270,32 @@
   ① “몰”과 이용자 간에 발생한 전자상거래 분쟁에 관한 소송은 제소 당시의 이용자의 주소에 의하고, 주소가 없는 경우에는 거소를 관할하는 지방법원의 전속관할로 합니다. 다만, 제소 당시 이용자의 주소 또는 거소가 분명하지 않거나 외국 거주자의 경우에는 민사소송법상의 관할법원에 제기합니다.
 
   ② “몰”과 이용자 간에 제기된 전자상거래 소송에는 한국법을 적용합니다.
-					            </div>
-					        </pre>
-					    </div>
-					    <label class="flex items-center mt-3 cursor-pointer text-sm text-gray-700">
-					        <input id="agreeService" type="checkbox" class="agree w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-300">
-					        <span class="ml-2">[필수] 서비스 이용약관에 동의합니다.</span>
-					    </label>
-					</section>
-			
-					<!-- 개인정보 수집 및 이용 -->
-					<section>
-						<h2 class="text-lg font-semibold text-gray-800 mb-2">개인정보 수집 및 이용 동의</h2>
-						<div class="border rounded-lg p-4 h-40 overflow-y-auto text-sm text-gray-700 leading-relaxed bg-gray-50">
-							<p class="font-semibold">1. 수집 목적</p>
-							<p>- 회원가입, 서비스 제공, 고객 상담 및 공지 전달</p>
-							
-							<p class="mt-2 font-semibold">2. 수집 항목</p>
-							<p>(필수) 이름, 이메일, 비밀번호, 휴대전화번호, 주소</p>
-							<p>(선택) 전화번호</p>
-							
-							<p class="mt-2 font-semibold">3. 보유 기간</p>
-							<p>회원 탈퇴 시 즉시 삭제. 단, 관련 법령에 의한 경우 예외.</p>
-							
-							<p class="mt-3 text-gray-600 text-xs">
-								※ 필수항목 미동의 시 회원가입이 제한됩니다.
-							</p>
-						</div>
+							</div>
+						</pre>
+					</div>
+					<label class="flex items-center mt-3 cursor-pointer text-sm text-gray-700">
+						<input id="agreeService" type="checkbox" class="agree w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-300">
+						<span class="ml-2">[필수] 서비스 이용약관에 동의합니다.</span>
+					</label>
+				</section>
+				<!-- 개인정보 수집 및 이용 -->
+				<section>
+					<h2 class="text-lg font-semibold text-gray-800 mb-2">개인정보 수집 및 이용 동의</h2>
+					<div class="border rounded-lg p-4 h-40 overflow-y-auto text-sm text-gray-700 leading-relaxed bg-gray-50">
+						<p class="font-semibold">1. 수집 목적</p>
+						<p>- 회원가입, 서비스 제공, 고객 상담 및 공지 전달</p>
+						
+						<p class="mt-2 font-semibold">2. 수집 항목</p>
+						<p>(필수) 이름, 이메일, 비밀번호, 휴대전화번호, 주소</p>
+						<p>(선택) 전화번호</p>
+					
+						<p class="mt-2 font-semibold">3. 보유 기간</p>
+						<p>회원 탈퇴 시 즉시 삭제. 단, 관련 법령에 의한 경우 예외.</p>
+					
+						<p class="mt-3 text-gray-600 text-xs">
+							※ 필수항목 미동의 시 회원가입이 제한됩니다.
+						</p>
+					</div>
 						<label class="flex items-center mt-3 cursor-pointer text-sm text-gray-700">
 							<input id="agreePrivacy" type="checkbox" class="agree w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-300">
 							<span class="ml-2">[필수] 개인정보 수집 및 이용에 동의합니다.</span>

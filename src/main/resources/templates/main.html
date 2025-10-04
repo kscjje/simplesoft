@@ -1,98 +1,98 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{layouts/mypage_layout}">
-	  <main class="content-wrapper" layout:fragment="content">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/mypage_layout}">
+	<main class="content-wrapper" layout:fragment="content">
 		<style>
 			.content-container {
 				max-width: 1200px;
 				margin: 0 auto;
 			}
 		</style>
-	  	<script>
-	  		$(document).ready(function () {
-	  			$('.slider').slick({
-	  				slide: 'div',
-	  				infinite: true,
-	  				slidesToShow: 1,
-	  				slidesToScroll: 1,
-	  				speed: 500,
-	  				arrows: false,
-	  				dots: true,
-	  				autoplay: true,
-	  				autoplaySpeed: 2000,
-	  				pauseOnHover: true,
-	  				vertical: false,
-	  				prevArrow: '<button type="button" data-role="none" class="slick-prev" aria-label="Previous" tabindex="0" role="button">Previous</button>',
-	  				nextArrow: '<button type="button" data-role="none" class="slick-next" aria-label="Next" tabindex="0" role="button">Next</button>',
-	  				draggable: true,
-	  				responsive: [
-	  					{
-	  						breakpoint: 1920,
-	  						settings: {
-	  							slidesToShow: 1,
-	  						},
-	  					},
-	  					{
-	  						breakpoint: 1080,
-	  						settings: {
-	  							slidesToShow: 1,
-	  						},
-	  					},
-	  					{
-	  						breakpoint: 768,
-	  						settings: {
-	  							slidesToShow: 1,
-	  						},
-	  					},
-	  				],
-	  			});
-	  		})
-	  	</script>
-	  	<div class="slider content-container">
-	  		<div>
-	  			<div class="image">
-	  				<img src="image/image1.png" class="image" alt="슬라이드 이미지 1"/>
-	  			</div>
-	  		</div>
-	  		<div>
-	  			<div class="image">
-	  				<img src="image/image2.png" class="image" alt="슬라이드 이미지 2">
-	  			</div>
-	  		</div>
-	  		<div>
-	  			<div class="image">
-	  				<img src="image/image3.png" class="image" alt="슬라이드 이미지 3">
-	  			</div>
-	  		</div>
-	  		<div>
-	  			<div class="image">
-	  				<img src="image/image4.png" class="image" alt="슬라이드 이미지 4">
-	  			</div>
-	  		</div>
-	  		<div>
-	  			<div class="image">
-	  				<img src="image/image5.png" class="image" alt="슬라이드 이미지 5">
-	  			</div>
-	  		</div>
-	  	</div>
-	  	<div class="contents content-container mt-5" style="display:block;">
-	  		<div>
-	  			<a href="/foodtable">
-	  				<img src="image/con1.jpg" class="b_image" alt="이달의 식단">
-	  			</a>
-	  		</div>
-	  		<div>
-	  			<a href="/order">
-	  				<img src="image/con2.jpg" class="b_image" alt="주문하기">
-	  			</a>
-	  		</div>
-	  		<div>
-	  			<a href="/notice">
-	  				<img src="image/con3.jpg" class="b_image" alt="공지사항">
-	  			</a>
-	  		</div>
-	  	</div>
-	  	<div class="fullscreen-js"></div>
-	  </main>
+		<script>
+			$(document).ready(function () {
+				$('.slider').slick({
+					slide: 'div',
+					infinite: true,
+					slidesToShow: 1,
+					slidesToScroll: 1,
+					speed: 500,
+					arrows: false,
+					dots: true,
+					autoplay: true,
+					autoplaySpeed: 2000,
+					pauseOnHover: true,
+					vertical: false,
+					prevArrow: '<button type="button" data-role="none" class="slick-prev" aria-label="Previous" tabindex="0" role="button">Previous</button>',
+					nextArrow: '<button type="button" data-role="none" class="slick-next" aria-label="Next" tabindex="0" role="button">Next</button>',
+					draggable: true,
+					responsive: [
+						{
+							breakpoint: 1920,
+							settings: {
+								slidesToShow: 1,
+							},
+						},
+						{
+							breakpoint: 1080,
+							settings: {
+								slidesToShow: 1,
+							},
+						},
+						{
+							breakpoint: 768,
+							settings: {
+								slidesToShow: 1,
+							},
+						},
+					],
+				});
+			})
+		</script>
+		<div class="slider content-container">
+			<div>
+				<div class="image">
+					<img src="image/image1.png" class="image" alt="슬라이드 이미지 1"/>
+				</div>
+			</div>
+			<div>
+				<div class="image">
+					<img src="image/image2.png" class="image" alt="슬라이드 이미지 2">
+				</div>
+			</div>
+			<div>
+				<div class="image">
+					<img src="image/image3.png" class="image" alt="슬라이드 이미지 3">
+				</div>
+			</div>
+			<div>
+				<div class="image">
+					<img src="image/image4.png" class="image" alt="슬라이드 이미지 4">
+				</div>
+			</div>
+			<div>
+				<div class="image">
+					<img src="image/image5.png" class="image" alt="슬라이드 이미지 5">
+				</div>
+			</div>
+		</div>
+		<div class="contents content-container mt-5" style="display:block;">
+			<div>
+				<a href="/foodtable">
+					<img src="image/con1.jpg" class="b_image" alt="이달의 식단">
+				</a>
+			</div>
+			<div>
+				<a href="/order">
+					<img src="image/con2.jpg" class="b_image" alt="주문하기">
+				</a>
+			</div>
+			<div>
+				<a href="/notice">
+					<img src="image/con3.jpg" class="b_image" alt="공지사항">
+				</a>
+			</div>
+		</div>
+		<div class="fullscreen-js"></div>
+	</main>
 </html>

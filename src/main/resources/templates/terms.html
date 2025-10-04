@@ -1,89 +1,89 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-		layout:decorate="~{layouts/mypage_layout}">
-		<main class="content-wrapper" layout:fragment="content">
-			<style>
-				.policy-section {
-					background: white;
-					border-left: 5px solid #0d6efd;
-					box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
-					padding: 30px;
-					margin-bottom: 30px;
-					border-radius: 10px;
-				}
-				.policy-section h4 {
-					color: #0d6efd;
-					margin-bottom: 20px;
-					font-weight: 600;
-				}
-				.policy-section ul {
-					padding-left: 20px;
-				}
-				.policy-table th {
-					background-color: #f4f6f9;
-				}
-				.content-container {
-					max-width: 1000px;
-					margin: 0 auto;
-				}
-			</style>
-			<div class="slider content-container">
-				<div class="container py-3">
-						<h1 class="mb-4 text-3xl text-center fw-bold">📜 이용약관</h1>
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/mypage_layout}">
+	<main class="content-wrapper" layout:fragment="content">
+		<style>
+			.policy-section {
+				background: white;
+				border-left: 5px solid #0d6efd;
+				box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+				padding: 30px;
+				margin-bottom: 30px;
+				border-radius: 10px;
+			}
+			.policy-section h4 {
+				color: #0d6efd;
+				margin-bottom: 20px;
+				font-weight: 600;
+			}
+			.policy-section ul {
+				padding-left: 20px;
+			}
+			.policy-table th {
+				background-color: #f4f6f9;
+			}
+			.content-container {
+				max-width: 1000px;
+				margin: 0 auto;
+			}
+		</style>
+		<div class="slider content-container">
+			<div class="container py-3">
+				<h1 class="mb-4 text-3xl text-center fw-bold">📜 이용약관</h1>
+		
+				<div class="policy-section">
+					<p class="text-muted">본 약관은 [밥수니반찬]이(가) 비회원 고객에게 제공하는 서비스 이용과 관련하여 필요한 권리, 의무, 책임사항을 규정합니다.</p>
+				</div>
+		
+				<div class="policy-section">
+					<h4>1. 서비스 이용</h4>
+					<ul>
+						<!--<li class="text-muted">회원가입 시: 이름, 이메일, 연락처, 비밀번호</li>-->
+						<li class="text-muted">회원가입 없이 주문이 가능합니다.</li>
+						<li class="text-muted">비회원 주문 시 이름, 연락처, 주소 등의 정보를 제공합니다.</li>
+					</ul>
+				</div>
+		
+				<div class="policy-section">
+					<h4>2. 결제 수단</h4>
+					<ul>
+						<li class="text-muted">신용카드만 지원됩니다.</li>
+						<li class="text-muted">결제 후 변경/취소는 고객센터를 통해 요청 가능합니다.</li>
+					</ul>
+				</div>
+		
+				<div class="policy-section">
+					<h4>3. 알림톡 안내</h4>
+					<ul>
+						<li class="text-muted">주문 확인 및 배송 안내는 카카오 알림톡으로 발송됩니다.</li>
+						<li class="text-muted">알림 수신을 원하지 않으실 경우 고객센터에 요청해주세요.</li>
+					</ul>
+				</div>
+		
+				<div class="policy-section">
+					<h4>4. 배송 및 환불</h4>
+					<ul>
+						<li class="text-muted">배송은 주문일 기준으로 순차적으로 발송됩니다.</li>
+						<li class="text-muted">제품 하자 외 단순 변심에 의한 환불은 불가합니다.</li>
+					</ul>
+				</div>
+								
+				<div class="policy-section">
+					<h4>5. 개인정보 보호</h4>
+					<p class="text-muted">고객님의 개인정보는 최소한으로 수집되며, 관련 법령에 따라 안전하게 보호됩니다. 자세한 사항은 개인정보처리방침을 참조하시기 바랍니다.</p>
+				</div>
+		
+				<div class="policy-section">
+					<h4>6. 기타</h4>
+					<ul>
+						<li class="text-muted">본 약관은 필요한 경우 변경될 수 있으며, 변경 시 사전 고지됩니다.</li>
+					</ul>
+				</div>
 				
-						<div class="policy-section">
-							<p class="text-muted">본 약관은 [밥수니반찬]이(가) 비회원 고객에게 제공하는 서비스 이용과 관련하여 필요한 권리, 의무, 책임사항을 규정합니다.</p>
-						</div>
-				
-						<div class="policy-section">
-							<h4>1. 서비스 이용</h4>
-							<ul>
-								<!--<li class="text-muted">회원가입 시: 이름, 이메일, 연락처, 비밀번호</li>-->
-								<li class="text-muted">회원가입 없이 주문이 가능합니다.</li>
-								<li class="text-muted">비회원 주문 시 이름, 연락처, 주소 등의 정보를 제공합니다.</li>
-							</ul>
-						</div>
-				
-						<div class="policy-section">
-							<h4>2. 결제 수단</h4>
-							<ul>
-								<li class="text-muted">신용카드만 지원됩니다.</li>
-								<li class="text-muted">결제 후 변경/취소는 고객센터를 통해 요청 가능합니다.</li>
-							</ul>
-						</div>
-				
-						<div class="policy-section">
-							<h4>3. 알림톡 안내</h4>
-							<ul>
-								<li class="text-muted">주문 확인 및 배송 안내는 카카오 알림톡으로 발송됩니다.</li>
-								<li class="text-muted">알림 수신을 원하지 않으실 경우 고객센터에 요청해주세요.</li>
-							</ul>
-						</div>
-				
-						<div class="policy-section">
-							<h4>4. 배송 및 환불</h4>
-							<ul>
-								<li class="text-muted">배송은 주문일 기준으로 순차적으로 발송됩니다.</li>
-								<li class="text-muted">제품 하자 외 단순 변심에 의한 환불은 불가합니다.</li>
-							</ul>
-						</div>
-										
-						<div class="policy-section">
-							<h4>5. 개인정보 보호</h4>
-							<p class="text-muted">고객님의 개인정보는 최소한으로 수집되며, 관련 법령에 따라 안전하게 보호됩니다. 자세한 사항은 개인정보처리방침을 참조하시기 바랍니다.</p>
-						</div>
-				
-						<div class="policy-section">
-							<h4>6. 기타</h4>
-							<ul>
-								<li class="text-muted">본 약관은 필요한 경우 변경될 수 있으며, 변경 시 사전 고지됩니다.</li>
-							</ul>
-						</div>
-						
-						<h4 class="mt-4">부칙</h4>
-						<p>본 약관은 2025년 07월 07일부터 적용됩니다.</p>
-					</div>
+				<h4 class="mt-4">부칙</h4>
+				<p>본 약관은 2025년 07월 07일부터 적용됩니다.</p>
 			</div>
-		</main>
+		</div>
+	</main>
 </html>

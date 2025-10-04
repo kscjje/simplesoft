@@ -3,6 +3,44 @@
 	<th:block th:fragment="header">
 		<!-- Header (s) -->
 		<style>
+			.hamburger-btn {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 30px;
+        height: 25px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+    }
+    
+    .hamburger-btn span {
+        width: 100%;
+        height: 3px;
+        background-color: rgb(0, 0, 64);
+        transition: all 0.3s;
+    }
+    
+    .mobile-menu {
+        transition: right 0.3s ease;
+    }
+    
+    .mobile-menu.active {
+        right: 0;
+    }
+    
+    .mobile-menu-overlay.active {
+        display: block;
+    }
+    
+    .nav-item>a {
+        list-style: none; 
+        text-decoration: none; 
+        color: rgb(0, 0, 64);
+        font-family:'NotoSans';
+        font-weight:600;
+    }
 			/* 데스크탑 (해상도 1280px 이상) */
 			@media all and (min-width: 1280px) {
 				/* 데스크탑 전용 스타일 */								
@@ -151,22 +189,67 @@
 			<div class="header text-center" style="background-color: #FBF3DD;" >
 				<img src="/image/banner.png" class="topbanner mx-auto">
 			</div>
-			<div id="submenu" class="submenu">
-				<div class="header_logo"><a href="/main"><img src="/image/logo.jpg" alt="밥수니반찬헤더로고"></a></div>
-				<ul class="nav container" style="max-width: 1000px;">
-					<li class="nav-item">
-						<a href="/order" class="nav-link">주문하기</a>
-					</li>
-					<li class="nav-item">
-						<a href="/foodtable" class="nav-link">이달의식단</a>
-					<li class="nav-item">
-						<a href="/cart" class="nav-link">장바구니</a>
-					</li>
-					<li class="nav-item">
-						<a href="/mypage/noneOrderCheck" class="nav-link">비회원주문조회</a>
-					</li>
-				</ul>
-			</div>
-		</div>
+			<div id="submenu" class="border-t border-b border-gray-200 flex items-center justify-between px-4 md:px-8 lg:px-20">
+				<div class="flex-shrink-0">
+		            <a href="/main">
+		                <img src="/image/logo.jpg" alt="밥수니반찬헤더로고" class="h-4 md:h-8 lg:h-12">
+		            </a>
+		        </div>
+				<!-- 데스크탑 메뉴 (768px 이상에서만 표시) -->
+		        <ul class="hidden md:flex nav container space-x-8 lg:space-x-20">
+		            <li class="nav-item">
+		                <a href="/order" class="nav-link text-sm md:text-base lg:text-lg">주문하기</a>
+		            </li>
+		            <li class="nav-item">
+		                <a href="/foodtable" class="nav-link text-sm md:text-base lg:text-lg">이달의식단</a>
+		            </li>
+		            <li class="nav-item">
+		                <a href="/cart" class="nav-link text-sm md:text-base lg:text-lg">장바구니</a>
+		            </li>
+		            <li class="nav-item">
+		                <a href="/mypage/noneOrderCheck" class="nav-link text-sm md:text-base lg:text-lg">비회원주문조회</a>
+		            </li>
+		        </ul>
+				<div class="md:hidden">
+                    <button type="button" class="text-gray-700 hover:text-orange-500 focus:outline-none focus:text-orange-500 mt-1" onclick="toggleMobileMenu()">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+		    </div>
+		    
+		    <!-- Mobile Navigation Menu -->
+            <div id="mobile-menu" class="md:hidden hidden border-t border-gray-200">
+                <div class="px-2 pt-2 pb-3 space-y-1">
+                    <a href="/order" class="block px-3 py-2 text-gray-700 rounded-md font-medium transition-colors duration-200">
+                        주문하기
+                    </a>
+                    <a href="/foodtable" class="block px-3 py-2 text-gray-700 rounded-md font-medium transition-colors duration-200">
+                        이달의식단
+                    </a>
+                    <a href="/cart" class="block px-3 py-2 text-gray-700 rounded-md font-medium transition-colors duration-200">
+                        장바구니
+                    </a>
+                    <a href="/mypage/noneOrderCheck" class="block px-3 py-2 text-gray-700 rounded-md font-medium transition-colors duration-200">
+                        비회원주문조회
+                    </a>
+                    <div class="border-t border-gray-200 pt-2 mt-2">
+                        <a href="#" class="block px-3 py-2 rounded-md font-medium transition-colors duration-200">
+                            로그인
+                        </a>
+                        <a href="/joinStep1" class="block px-3 py-2 rounded-md font-medium transition-colors duration-200">
+                            회원가입
+                        </a>
+                    </div>
+                </div>
+            </div>
+		 </div>
+		<script>
+			function toggleMobileMenu() {
+				const mobileMenu = document.getElementById('mobile-menu');
+				mobileMenu.classList.toggle('hidden');
+			}
+		</script>
 	</th:block>
 </html>

@@ -4,7 +4,10 @@
 	  layout:decorate="~{layouts/mypage_layout}">
 	  <main class="content-wrapper" layout:fragment="content">
 		  <style>
-			
+			.content-container {
+				max-width: 1200px;
+				margin: 0 auto;
+			}			
 			/* prefers-color-scheme 다크모드*/
 			
 			/* 데스크탑 (해상도 1280px 이상) */
@@ -268,25 +271,27 @@
 				background: #f9f9f9;
 			}
 		</style>
-		<div class="tableWidth">
-			<table>
-				<tbody>
-					<tr id="thHead">
-						<th>월요일</th>
-						<th>화요일</th>
-						<th>수요일</th>
-						<th>목요일</th>
-						<th>금요일</th>
-					</tr>
-				</tbody>
-			</table>
+		<div class="slider content-container">
+			<div class="tableWidth">
+				<table>
+					<tbody>
+						<tr id="thHead">
+							<th>월요일</th>
+							<th>화요일</th>
+							<th>수요일</th>
+							<th>목요일</th>
+							<th>금요일</th>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="help">
+				<p class="mb-1">- 주문은 전날 오후 4시까지 가능합니다. (조기마감 할 수 있음)</p>
+				<p class="mb-1">- 식단은 시장 사정에 따라 변경될 수 있습니다.</p>
+				<p class="mb-1">- 붉은색 메뉴는 고춧가루가 포함돼 있습니다.</p>
+			</div>
+			<div class="fixe mt-4"></div>
 		</div>
-		<div class="help">
-			<p class="mb-1">- 주문은 전날 오후 4시까지 가능합니다. (조기마감 할 수 있음)</p>
-			<p class="mb-1">- 식단은 시장 사정에 따라 변경될 수 있습니다.</p>
-			<p class="mb-1">- 붉은색 메뉴는 고춧가루가 포함돼 있습니다.</p>
-		</div>
-		<div class="fixe mt-4"></div>
 		<script th:inline="javascript">
 			
 			$(function(){

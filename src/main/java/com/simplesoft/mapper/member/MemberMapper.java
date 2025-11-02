@@ -12,4 +12,5 @@ public interface MemberMapper {
 	
 	public List<Map<String, Object>> selectMemberList(Map<String, Object> paramMap);
 	public MemberVO selectMemberDetail(MemberVO vo);
+	public Map<?,?> selectIdCheck(MemberVO vo);
 }

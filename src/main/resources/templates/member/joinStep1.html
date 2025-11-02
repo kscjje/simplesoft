@@ -6,7 +6,9 @@
 		<div class="w-full max-w-3xl bg-white rounded-2xl shadow-lg p-8">
 			<!-- 제목 -->
 			<h1 class="text-2xl font-bold text-gray-800 text-center mb-8">회원가입 약관 동의</h1>
-			<form id="signupTermsForm" class="space-y-8">
+			<form id="signupTermsForm" class="space-y-8" action="/joinStep2" method="post">
+				<input type="hidden" name="serviceYn" value="Y">
+				<input type="hidden" name="marketYn" id="marketYn" value="N">
 				<!-- ✅ 전체 동의 -->
 				<div class="pb-4 mb-6">
 					<label class="flex items-center cursor-pointer text-base font-semibold text-gray-800">
@@ -302,7 +304,7 @@
 						</label>
 					</section>
 					
-					<!-- 마케팅 정보 수신 -->
+					<!-- 마케팅 정보 수신 
 					<section>
 						<h2 class="text-lg font-semibold text-gray-800 mb-2">마케팅 정보 수신 동의</h2>
 						<div class="border rounded-lg p-4 h-32 overflow-y-auto text-sm text-gray-700 leading-relaxed bg-gray-50">
@@ -315,7 +317,7 @@
 							<span class="ml-2">[선택] 마케팅 정보 수신에 동의합니다.</span>
 						</label>
 					</section>
-					
+					-->
 					<div class="flex space-x-4">
 						<button type="button" onclick="goPrev()" class="w-1/2 py-3 text-lg font-bold text-gray-700 bg-gray-200 rounded-xl hover:bg-gray-300 transition">
 							이전
@@ -336,8 +338,11 @@
 						alert("[개인정보 수집 및 이용 동의]에 동의해주세요.");
 						return;
 					}
+					if(document.getElementById("marketYn").checked){
+						$("#marketYn").val("Y");
+					}
 					// 동의 완료 → 회원가입 입력 페이지로 이동
-					location.href = "/joinStep2"; 
+					$("#signupTermsForm").submit();
 				}
 				function goPrev(){
 					location.href = "/main";

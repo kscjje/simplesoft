@@ -67,7 +67,7 @@
 						userPw : userPw
 					}
 					let returnUrl = /*[[${returnUrl}]]*/ "";
-					
+					return;
 					$.ajax({
 						url : "/login/loginAjax",
 						type : "POST",
@@ -91,7 +91,7 @@
 						return;
 					}
 					let returnUrl = /*[[${returnUrl}]]*/ "";
-					location.href = returnUrl + "&noneMember=Y";
+					location.href = returnUrl == null ? "/main" : returnUrl + "&noneMember=Y";
 				}
 				enterKey = function(type){
 					if (window.event.keyCode == 13) {

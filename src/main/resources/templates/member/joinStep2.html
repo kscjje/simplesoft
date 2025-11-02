@@ -24,25 +24,26 @@
 				.strength-strong { background-color: #10b981; width: 100%; }
 			</style>
 			<!-- Main Content -->
-				<!--<main class="max-w-2xl mx-auto py-8 px-4 sm:px-6 lg:px-8">-->
 			<div class="bg-white rounded-lg shadow-lg p-8">
 				<div class="text-center mb-8">
 					<h2 class="text-3xl font-bold text-gray-900 mb-2">회원가입</h2>
 					<p class="text-gray-600">밥수니 반찬과 함께 행복한 식사</p>
 				</div>
 	
-				<form id="signupForm" class="space-y-6">
+				<form id="memberForm" class="space-y-6" onsubmit="memberSave(); return false;">
 					<!-- 아이디 -->
 					<div>
 						<label for="userId" class="block text-sm font-medium text-gray-700 mb-2">
 							<i class="fas fa-user mr-2 text-blue-500"></i>아이디 <font color="red">* </font>
 						</label>
 						<div class="flex space-x-2">
-							<input type="text" id="userId" name="userId" required 
-								   class="w-44 form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
+							<input type="text" id="userId" name="userId" 
+								   class="w-46 form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
+								   onkeypress="enterKey()"
+								   oninput="resetIdCheck()"
 								   maxlength="20"
 								   placeholder="영문, 숫자 조합 6-20자">
-							<button type="button" id="checkId" class="text-sm px-4 py-2 bg-gray-700 text-white rounded-md transition-colors">
+							<button type="button" onclick="idCheck()" class="text-sm px-4 py-2 bg-gray-700 text-white rounded-md transition-colors">
 								중복확인
 							</button>
 						</div>
@@ -51,13 +52,15 @@
 	
 					<!-- 비밀번호 -->
 					<div>
-						<label for="password" class="block text-sm font-medium text-gray-700 mb-2">
-							<i class="fas fa-lock mr-2 text-blue-500"></i>비밀번호 *
+						<label for="userPw" class="block text-sm font-medium text-gray-700 mb-2">
+							<i class="fas fa-lock mr-2 text-blue-500"></i>비밀번호 <font color="red">* </font>
 						</label>
-						<input type="password" id="password" name="password" required
-							   class="w-full form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
-							   maxlength="20"
-							   placeholder="영문, 숫자, 특수문자 조합 8-20자">
+						<input type="password" id="userPw" name="userPw"
+								class="w-full form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
+								maxlength="20"
+								oninput="checkPasswordStrength()"
+								placeholder="영문, 숫자, 특수문자 조합 8-20자">
+						<p id="passwordMessage" class="text-sm mt-1"></p>
 						<div class="mt-2">
 							<div class="flex justify-between text-xs text-gray-500 mb-1">
 								<span>비밀번호 강도</span>
@@ -72,45 +75,45 @@
 					<!-- 비밀번호 확인 -->
 					<div>
 						<label for="passwordConfirm" class="block text-sm font-medium text-gray-700 mb-2">
-							<i class="fas fa-lock mr-2 text-blue-500"></i>비밀번호 확인 *
+							<i class="fas fa-lock mr-2 text-blue-500"></i>비밀번호 확인 <font color="red">* </font>
 						</label>
-						<input type="password" id="passwordConfirm" name="passwordConfirm" required
+						<input type="password" id="passwordConfirm" name="passwordConfirm"
 								maxlength="20"
-							   class="w-full form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
-							   placeholder="비밀번호를 다시 입력해주세요">
+								class="w-full form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
+								oninput="passConfirmInput()"
+								placeholder="비밀번호를 다시 입력해주세요">
 						<p id="passwordConfirmMessage" class="text-sm mt-1"></p>
 					</div>
 	
 					<!-- 이름 -->
 					<div>
-						<label for="name" class="block text-sm font-medium text-gray-700 mb-2">
-							<i class="fas fa-signature mr-2 text-blue-500"></i>이름 *
+						<label for="userNm" class="block text-sm font-medium text-gray-700 mb-2">
+							<i class="fas fa-signature mr-2 text-blue-500"></i>이름 <font color="red">* </font>
 						</label>
-						<input type="text" id="name" name="name" required
-							   class="w-full form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
-							   maxlength="20"
-							   placeholder="실명을 입력해주세요">
+						<input type="text" id="userNm" name="userNm"
+								class="w-full form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
+								maxlength="20"
+								placeholder="실명을 입력해주세요">
 					</div>
-	
 					<!-- 휴대폰 번호 -->
 					<div>
-						<label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
-							<i class="fas fa-mobile-alt mr-2 text-blue-500"></i>핸드폰 *
+						<label for="userMobile" class="block text-sm font-medium text-gray-700 mb-2">
+							<i class="fas fa-mobile-alt mr-2 text-blue-500"></i>핸드폰 <font color="red">* </font>
 						</label>
 						<div class="flex space-x-2">
-							<input type="tel" id="phone" name="phone" required class="phoneNumber flex-1 form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none" placeholder="010-1234-5678" maxlength="20">
+							<input type="text" id="userMobile" name="userMobile" class="phoneNumber flex-1 form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none" placeholder="010-1234-5678" maxlength="20">
 						</div>
 					</div>
 	
 					<!-- 주소 -->
 					<div>
 						<label class="block text-sm font-medium text-gray-700 mb-2">
-							<i class="fas fa-map-marker-alt mr-2 text-blue-500"></i>주소 *
+							<i class="fas fa-map-marker-alt mr-2 text-blue-500"></i>주소 <font color="red">* </font>
 						</label>
 						<div class="flex gap-2 mb-2">
-						<input type="text" id="o_postNum" name="orderPostNum" required readonly
-								   class="w-32 form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none bg-gray-50"
-								   placeholder="우편번호">
+						<input type="text" id="o_postNum" name="zipcode" readonly
+								class="w-32 form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none bg-gray-50"
+								placeholder="우편번호">
 							<button type="button" id="searchAddress"
 									class="px-4 py-2 bg-gray-700 text-white rounded-md transition-colors"
 									onclick="execDaumPostcode()"> 
@@ -121,10 +124,10 @@
 						<div id="wrap1" class="w-full border border-gray-300 rounded-md mb-2" style="display: none; height: 300px; position: relative;">
 							<img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" alt="접기 버튼" class="absolute top-0 right-0 cursor-pointer z-10" onclick="foldDaumPostcode()">
 						</div>
-						<input type="text" id="o_addr" name="orderAddr" required readonly
+						<input type="text" id="o_addr" name="address" readonly
 							   class="w-full form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none bg-gray-50"
 							   placeholder="기본주소">
-						<input type="text" id="o_addrDetail" name="orderAddrDetail"
+						<input type="text" id="o_addrDetail" name="addressDetail"
 							   class="w-full form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
 							   placeholder="상세주소를 입력하세요">
 					</div>
@@ -132,12 +135,12 @@
 					<!-- 이메일 -->
 					<div>
 						<label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-							<i class="fas fa-envelope mr-2 text-blue-500"></i>이메일 *
+							<i class="fas fa-envelope mr-2 text-blue-500"></i>이메일 <font color="red">* </font>
 						</label>
 						<div class="flex flex-wrap items-center gap-2">
-							<input type="text" name="copyEmail" id="o_email" maxlength="30" class="flex-1 form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none" placeholder="example@email.com">
+							<input type="text" id="o_email" maxlength="30" class="flex-1 form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none" placeholder="example@email.com">
 							<span class="mt-1">@</span>
-							<input type="text" name="copyEmail" id="o_email2" maxlength="30" class="flex-1 form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none" placeholder="이메일 도메인">
+							<input type="text" id="o_email2" maxlength="30" class="flex-1 form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none" placeholder="이메일 도메인" onkeypress="enterKey2()">
 							<select name="emailSelect" class="border border-gray-300 rounded px-3 py-2 w-full bg-white" onchange="res(this.value)">
 								<option value="">직접입력</option>
 								<option value="naver.com">naver.com</option>
@@ -146,14 +149,15 @@
 								<option value="nate.com">nate.com</option>
 								<option value="gmail.com">gmail.com</option>
 							</select>
-							<input type="text" id="od_email" name="orderEmail" maxlength="20" class="hidden">
+							<input type="text" id="od_email" name="userEmail" maxlength="20" class="hidden">
 						</div>
 					</div>
 	
 					<!-- 제출 버튼 -->
 					<div class="pt-6">
-						<button type="submit" id="submitBtn"
-								class="w-full py-3 px-4 bg-gray-700 text-white font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">
+						<button type="button" id="submitBtn"
+								class="w-full py-3 px-4 bg-gray-700 text-white font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+								onclick="memberSave()">
 							<i class="fas fa-user-plus mr-2"></i>회원가입 완료
 						</button>
 					</div>
@@ -162,7 +166,7 @@
 				<div class="text-center mt-6">
 					<p class="text-sm text-gray-600">
 						이미 계정이 있으신가요? 
-						<a href="#" class="hover:underline font-medium">로그인</a>
+						<a href="/login" class="hover:underline font-medium">로그인</a>
 					</p>
 				</div>
 			</div>
@@ -252,11 +256,25 @@
 				
 				// 전역 변수
 				let idChecked = false;
-		
+				let lastCheckedId = ''; // 마지막으로 체크한 아이디 저장
+				
+				// 아이디 입력값 변경 시 호출
+				function resetIdCheck() {
+				    const currentId = document.getElementById('userId').value;
+				    const messageEl = document.getElementById('userIdMessage');
+				    
+				    // 마지막으로 체크한 아이디와 다르면 초기화
+				    if (currentId !== lastCheckedId) {
+				        idChecked = false;
+				        messageEl.textContent = '';
+				        messageEl.className = 'text-sm mt-1';
+				    }
+				}
 				// 아이디 중복확인
-				document.getElementById('checkId').addEventListener('click', function() {
-					const userId = document.getElementById('userId').value;
+				function idCheck(){
+					const userIdEl = document.getElementById('userId');
 					const messageEl = document.getElementById('userIdMessage');
+					const userId = userIdEl.value.trim();
 					
 					if (!userId) {
 						messageEl.textContent = '아이디를 입력해주세요.';
@@ -264,27 +282,53 @@
 						return;
 					}
 		
-					if (!/^[a-zA-Z0-9]{6,20}$/.test(userId)) {
+					const idPattern = /^[a-zA-Z0-9]{6,20}$/;
+   					if (!idPattern.test(userId)) {
 						messageEl.textContent = '영문, 숫자 조합 6-20자로 입력해주세요.';
 						messageEl.className = 'text-sm mt-1 text-red-500';
 						return;
 					}
-		
-					// 실제로는 서버 API 호출
-					setTimeout(() => {
-						const isAvailable = Math.random() > 0.3; // 70% 확률로 사용 가능
-						if (isAvailable) {
-							messageEl.textContent = '사용 가능한 아이디입니다.';
-							messageEl.className = 'text-sm mt-1 text-green-500';
-							idChecked = true;
-						} else {
-							messageEl.textContent = '이미 사용중인 아이디입니다.';
-							messageEl.className = 'text-sm mt-1 text-red-500';
-							idChecked = false;
-						}
-					}, 500);
-				});
-		
+					
+					$.ajax({
+					    url: "/rest/member/idCheck",
+					    type: "POST",
+					    dataType: "json",
+					    data: {
+					        userId: userId
+					    },
+					    success: function(result) {
+					        if (result.responseCode === "SUCCESS") {
+					            const totCnt = result.data?.id?.totCnt ?? -1;
+					            if (totCnt === 0) {
+					                messageEl.textContent = '사용 가능한 아이디입니다.';
+					                messageEl.className = 'text-sm mt-1 text-green-500';
+					                idChecked = true;
+					            } else if (totCnt > 0) {
+					                messageEl.textContent = '이미 사용중인 아이디입니다.';
+					                messageEl.className = 'text-sm mt-1 text-red-500';
+					                idChecked = false;
+					                lastCheckedId = '';
+					            } else {
+					                messageEl.textContent = '아이디 확인 중 오류가 발생했습니다.';
+					                messageEl.className = 'text-sm mt-1 text-red-500';
+					                idChecked = false;
+					                lastCheckedId = '';
+					            }
+					        } else {
+					            messageEl.textContent = '서버 오류가 발생했습니다. 관리자에게 문의해주세요.';
+					            messageEl.className = 'text-sm mt-1 text-red-500';
+					            idChecked = false;
+					            lastCheckedId = '';
+					        }
+					    },
+					    error: function(xhr, status, error) {
+					        messageEl.textContent = '아이디 중복 확인에 실패했습니다. 다시 시도해주세요.';
+					        messageEl.className = 'text-sm mt-1 text-red-500';
+					        idChecked = false;
+					        lastCheckedId = '';
+					    }
+					});
+				}
 				//이메일 직접입력 셀렉트박스
 				function res(r){
 					if(r ==""){
@@ -293,15 +337,10 @@
 						$("#o_email2").attr("readonly",true);
 					}
 					document.getElementById("o_email2").value=r;
-				
-					var email1=document.getElementById("o_email").value;
-					var email2=document.getElementById("o_email2").value;
-					
-					document.getElementById("od_email").value=email1+"@"+email2;
 				}
 		
 				// 비밀번호 강도 체크
-				document.getElementById('password').addEventListener('input', function() {
+				document.getElementById('userPw').addEventListener('input', function() {
 					const password = this.value;
 					const strengthBar = document.getElementById('passwordStrengthBar');
 					const strengthText = document.getElementById('passwordStrengthText');
@@ -325,11 +364,31 @@
 						strengthText.textContent = '강함';
 					}
 				});
-		
+				// 실시간 비밀번호 검증
+				function checkPasswordStrength() {
+				    const password = document.getElementById('userPw').value;
+				    const messageEl = document.getElementById('passwordMessage');
+				    
+				    if (!password) {
+				        messageEl.textContent = '';
+				        return;
+				    }
+				    
+				    const validation = validatePassword(password);
+				    
+				    if (validation.isValid) {
+				        messageEl.textContent = '✓ 사용 가능한 비밀번호입니다.';
+				        messageEl.className = 'text-sm mt-1 text-green-500';
+				    } else {
+				        messageEl.textContent = validation.messages.join(' ');
+				        messageEl.className = 'text-sm mt-1 text-red-500';
+				    }
+				    passConfirmInput();
+				}
 				// 비밀번호 확인
-				document.getElementById('passwordConfirm').addEventListener('input', function() {
-					const password = document.getElementById('password').value;
-					const confirmPassword = this.value;
+				function passConfirmInput(){
+					const password = document.getElementById('userPw').value;
+					const confirmPassword = document.getElementById('passwordConfirm').value;
 					const messageEl = document.getElementById('passwordConfirmMessage');
 		
 					if (confirmPassword && password !== confirmPassword) {
@@ -338,40 +397,147 @@
 					} else if (confirmPassword && password === confirmPassword) {
 						messageEl.textContent = '비밀번호가 일치합니다.';
 						messageEl.className = 'text-sm mt-1 text-green-500';
+						
 					} else {
 						messageEl.textContent = '';
 					}
-				});
+				}
 		
 				// 폼 제출
-				document.getElementById('signupForm').addEventListener('submit', function(e) {
-					e.preventDefault();
-					
+				function memberSave(){
 					// 필수 검증
 					if (!idChecked) {
-						alert('아이디 중복확인을 해주세요.');
+				        alert('아이디 중복 확인을 해주세요.');
+				        document.getElementById('userId').focus();
+				        return false;
+				    }
+					
+					const password = document.getElementById('userPw').value;
+					const confirmPassword = document.getElementById('passwordConfirm').value;
+					if(!password){
+						$("#userPw").focus();
+						alert('비밀번호를 입력해 주세요.');
 						return;
 					}
 					
-					const password = document.getElementById('password').value;
-					const confirmPassword = document.getElementById('passwordConfirm').value;
-					
 					if (password !== confirmPassword) {
+						$("#userPw").focus();
 						alert('비밀번호가 일치하지 않습니다.');
 						return;
 					}
 		
-					// 폼 데이터 수집
-					const formData = new FormData(this);
-					const data = Object.fromEntries(formData.entries());
+					const userNm = document.getElementById('userNm').value;
+					if(!userNm){
+						$("#userNm").focus();
+						alert('이름을 입력해 주세요.');
+						return;
+					}
 					
-					console.log('회원가입 데이터:', data);
-					alert('회원가입이 완료되었습니다! 로그인 페이지로 이동합니다.');
-				});
+					const userMobile = document.getElementById('userMobile').value;
+					if(!userMobile){
+						$("#userMobile").focus();
+						alert('핸드폰번호를 입력해 주세요.');
+						return;
+					}
+					const zipcode = document.getElementById('o_postNum').value;
+					if(!zipcode){
+						$("#o_postNum").focus();
+						alert('주소를 검색해 주세요.');
+						return;
+					}
+					
+					const addr = document.getElementById('o_addr').value;
+					if(!addr){
+						$("#o_addr").focus();
+						alert('주소를 검색해 주세요.');
+						return;
+					}
+					
+					const addrDetail = document.getElementById('o_addrDetail').value;
+					if(!addrDetail){
+						$("#o_addrDetail").focus();
+						alert('상세주소를 입력해 주세요.');
+						return;
+					}
+					
+					const email = document.getElementById('o_email').value;
+					if(!email){
+						$("#o_email").focus();
+						alert('이메일을 입력해 주세요.');
+						return;
+					}
+					
+					const email2 = document.getElementById('o_email2').value;
+					if(!email2){
+						$("#o_email2").focus();
+						alert('이메일을 입력해 주세요.');
+						return;
+					}
+					document.getElementById("od_email").value=email+"@"+email2;
+					// 폼 데이터 수집 - form 요소를 직접 가져와야 함
+					let memberVO = $("#memberForm").serializeObject();
+					
+					// AJAX로 서버에 전송
+				    $.ajax({
+				        url: "/rest/member/save", // 실제 API 엔드포인트로 수정
+				        type: "POST",
+				        data: memberVO,
+				        dataType: "json",
+				        success: function(result) {
+				            console.log('회원가입 결과:', result);
+				            if (result.responseCode === "SUCCESS") {
+								alert(result.data.message);
+								if(result.data.RESULT === "0000") window.location.href = '/login'; // 로그인 페이지 경로로 수정
+				            } else {
+				                alert(result.message || '회원가입에 실패했습니다.');
+				            }
+				        },
+				        error: function(xhr, status, error) {
+				            alert('회원가입 처리 중 오류가 발생했습니다. \n고객센터에 문의해 주세요.');
+				        }
+				    });
+				}
 				
 				$(document).on("keyup", ".phoneNumber", function() { 
 					$(this).val( $(this).val().replace(/[^0-9]/g, "").replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/,"$1-$2-$3").replace("--", "-") ); 
 				});
+				enterKey = function(type){
+					if (window.event.keyCode == 13) {
+						idCheck();
+					}
+				}
+				enterKey2 = function(type){
+					if (window.event.keyCode == 13) {
+						memberSave();
+					}
+				}
+				// 비밀번호 유효성 검사 함수
+				function validatePassword(password) {
+				    const result = {
+				        isValid: true,
+				        messages: []
+				    };
+				    
+				    // 길이 체크
+				    if (password.length < 8 || password.length > 20) {
+				        result.isValid = false;
+				        result.messages.push('8-20자로 입력해주세요.');
+				    }
+				    
+				    // 영문 포함 체크
+				    if (!/[a-zA-Z]/.test(password)) {
+				        result.isValid = false;
+				        result.messages.push('영문자를 포함해야 합니다.');
+				    }
+				    
+				    // 허용되지 않는 문자 체크
+				    if (/[^a-zA-Z0-9!@#$%^&*()_+]/.test(password)) {
+				        result.isValid = false;
+				        result.messages.push('허용되지 않는 문자가 포함되어 있습니다.');
+				    }
+				    
+				    return result;
+				}
 			</script>
 		</main>
 </html>

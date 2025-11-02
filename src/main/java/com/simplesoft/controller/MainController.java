@@ -39,6 +39,9 @@ public class MainController {
 	}
 	@GetMapping("/login")
 	public String login(@RequestParam Map<String, Object> paramMap, Model model ) {
+		if(paramMap.get("type") == null || !"noneMember".equals((String)paramMap.get("type"))) {
+			return "/main";
+		}
 		model.addAttribute("returnUrl", paramMap.get("returnUrl"));
 		model.addAttribute("type", paramMap.get("type"));
 		return "/login";

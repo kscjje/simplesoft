@@ -52,7 +52,6 @@ public class MemberRestController {
 	 */
 	@PostMapping("/save")
 	public BasicResponse memberInsert(Model model, HttpSession session, @ModelAttribute("memberVO") MemberVO vo) throws Exception {
-		System.out.println(vo.toString());
 		Map<?,?> returnData = memberService.memberSave(vo);
 		if("0000".equals(String.valueOf(returnData.get("RESULT")))){
 			session.setAttribute("serviceYn", "");

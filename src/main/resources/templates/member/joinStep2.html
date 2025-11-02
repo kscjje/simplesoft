@@ -484,7 +484,6 @@
 				        data: memberVO,
 				        dataType: "json",
 				        success: function(result) {
-				            console.log('회원가입 결과:', result);
 				            if (result.responseCode === "SUCCESS") {
 								alert(result.data.message);
 								if(result.data.RESULT === "0000") window.location.href = '/login'; // 로그인 페이지 경로로 수정

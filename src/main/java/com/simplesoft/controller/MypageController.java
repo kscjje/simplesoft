@@ -8,10 +8,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.simplesoft.mapper.admOrder.service.AdmOrderService;
+import com.simplesoft.member.service.MemberVO;
 import com.simplesoft.order.service.OrderService;
 import com.simplesoft.order.service.OrderVO;
 import com.simplesoft.util.EncryptUtils;
+import com.simplesoft.util.GlobalVariable;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -61,5 +64,23 @@ public class MypageController {
 			return "/mypage/orderCheck";
 		}
 		return "/mypage/orderDetail";
+	}
+	
+	/**
+	 * 주문조회
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/orderInfo")
+	public String noneOrderCheck(Model model, HttpSession session) {
+		MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
+		OrderVO vo = new OrderVO();
+		
+		if(loginInfo == null) {
+			model.addAttribute("returnUrl", "/mypage/orderInfo");
+			return GlobalVariable.REDIRECT_LOGIN;
+		}
+		return "/mypage/orderInfo";
 	}
 }

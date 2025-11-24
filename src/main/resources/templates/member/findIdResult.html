@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorate="~{layouts/mypage_layout}">
+		<main class="content-wrapper" layout:fragment="content">
+			<style>
+				.content-container {
+					max-width: 600px;
+					margin: 0 auto;
+				}
+			</style>
+			<div class="content-container justify-content-center text-center">
+				<div class="rounded-lg p-4 h-90 overflow-y-auto text-sm text-gray-700 leading-relaxed mb-5">
+					<h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+						아이디 찾기가 완료되었습니다.
+					</h1>
+					<!-- 이름 -->
+					<div class="mb-4">
+						<label for="userNm" class="block mb-2 text-lg font-semibold text-gray-700 text-start">이름</label>
+						<input type="text" name="userNm" id="userNm" placeholder="이름을 입력해 주세요." maxlength="10" onkeypress="enterKey()"
+							class="w-full px-4 py-3 border border-gray-300 text-lg rounded focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent">
+					</div>
+			
+					<!-- 핸드폰번호 -->
+					<div class="mb-4">
+						<label for="userMobile" class="block mb-2 text-lg font-semibold text-gray-700 text-start">핸드폰번호</label>
+						<input type="text" name="userMobile" id="userMobile" placeholder="예)01012345678" maxlength="20" onkeypress="enterKey()"
+							class="w-full px-4 py-3 border border-gray-300 text-lg rounded focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent">
+					</div>
+			
+					<div class="flex space-x-4">
+						<button type="button" onclick="location.href='/login'" class="w-1/2 py-3 text-lg font-bold text-gray-700 bg-gray-200 rounded-xl hover:bg-gray-300 transition">
+							이전
+						</button>
+						<button type="button" onclick="fnFindId()" class="w-1/2 py-3 text-lg font-bold text-white bg-black rounded-xl hover:bg-blue-700 transition">
+							확인
+						</button>
+					</div>
+				</div>
+			</div>
+		
+			<script th:inline="javascript">
+				
+				//아이디찾기
+				fnFindId = function(){
+					let userNm = $('#userNm').val();
+					let userMobile = $('#userMobile').val();
+					
+					if(userNm == ""){
+						alert("이름 입력해 주세요.");
+						$('#userNm').focus();
+						return;
+					} else if(userMobile == ""){
+						alert("핸드폰번호를 입력해 주세요.")
+						$('#userMobile').focus();
+						return;
+					}
+					let loginInfo = {
+						userNm : userNm,
+						userMobile : userMobile
+					}
+					$.ajax({
+						url : "/rest/member/findIdAjax",
+						type : "POST",
+						dataType : "json",
+						data : loginInfo,
+						success : function(data) {
+							if(data.data?.userId != null){
+								alert(data.data.userId);
+							} else{
+								alert("등록된 회원이 없습니다.");
+							}
+						}, error : function(request, status, error) {
+							alert("관리자에게 문의해 주세요.");
+						}
+					});
+				}
+				enterKey = function(type){
+					if (window.event.keyCode == 13) {
+						fnFindId();
+					}
+				}
+			</script>
+		</main>
+</html>

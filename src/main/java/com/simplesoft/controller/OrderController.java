@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.simplesoft.cart.service.CartService;
+import com.simplesoft.member.service.MemberService;
 import com.simplesoft.member.service.MemberVO;
 import com.simplesoft.menuboard.service.MenuBoardService;
 import com.simplesoft.order.service.OrderProductVO;
@@ -44,6 +45,9 @@ public class OrderController {
 	
 	@Autowired
 	OrderService orderService;
+	
+	@Autowired
+	MemberService memberService;
 	
 	@Value("${clientKey}")
 	String clientKey;
@@ -85,17 +89,20 @@ public class OrderController {
 	 * @return
 	 */
 	@GetMapping("/cart")
-	public String cart(Model model, HttpSession session) {
+	public String cart(Model model, HttpSession session, HttpServletRequest request) {
 		
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		
 		List<Map<String, Object>> cartList = new ArrayList<Map<String, Object>>();
 		
 		MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
+		String noneMember = (String)request.getParameter("noneMember");
+		if(noneMember != null) session.setAttribute("noneMember", session.getId());
 		if(loginInfo != null) {
 			paramMap.put("userSession", "");
 			paramMap.put("userNo", loginInfo.getUserNo());
 		} else {
+			session.setAttribute("loginInfo", null);
 			paramMap.put("userSession", session.getId());
 			paramMap.put("userNo", 0);
 		}
@@ -144,7 +151,6 @@ public class OrderController {
 		MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
 		OrderVO orderVO = new OrderVO();
 		String userNm = "";
-		
 		if(loginInfo != null) {
 			paramMap.put("userNo", loginInfo.getUserNo());
 			userNm = loginInfo.getUserNm();
@@ -157,15 +163,12 @@ public class OrderController {
 				userNm = "비회원";
 				session.setAttribute("noneMember", session.getId());
 			} else {
-				//비회원 로그인 확인하기 
-				String returnUrl = request.getRequestURI().toString();
-				returnUrl += RequestConvertUtil.convertMapToParam(request.getParameterMap());
-				model.addAttribute("type", "noneMember");
+				//회원이면 cart로 비회원이면 request.getRequestURI().toString();로
+				String returnUrl = "/cart";
 				model.addAttribute("returnUrl", returnUrl);
 				return GlobalVariable.REDIRECT_LOGIN;
 			}
 		}
-		
 		
 		String setArray = request.getParameter("setArray");
 		String[] setList = setArray.split("\\^");
@@ -228,8 +231,6 @@ public class OrderController {
 				int qty = Integer.parseInt("null".equals(String.valueOf(map.get("qty"))) ? "0" : String.valueOf(map.get("qty")));
 				String menuMsgDetail = String.valueOf(map.get("menuMsgDetail"));	//일반세트시 상품명 각각 수량
 				String delivTime = String.valueOf(map.get("delivTime"));
-				System.out.println("여기다");
-				System.out.println(orderSet);
 				if("1000".equals(orderSet)) {
 					productAmt = baseProductAmt;
 					payAmt = productAmt * qty;
@@ -261,7 +262,6 @@ public class OrderController {
 				opVo.setOrderSet(orderSet);
 				opVo.setPayAmt(payAmt);
 				opVo.setUsedPoint(opVo.getPayAmt() / 100);
-				opVo.setOrderSet(orderSet);
 				opVo.setMenuMsgDetail(menuMsgDetail);
 				opVo.setDelivTime(delivTime);
 				productList.add(opVo);
@@ -393,8 +393,6 @@ public class OrderController {
 				int qty = Integer.parseInt("null".equals(String.valueOf(map.get("qty"))) ? "0" : String.valueOf(map.get("qty")));
 				String menuMsgDetail = String.valueOf(map.get("menuMsgDetail"));	//일반세트시 상품명 각각 수량
 				String delivTime = String.valueOf(map.get("delivTime"));
-				System.out.println("여기다");
-				System.out.println(orderSet);
 				if("1000".equals(orderSet)) {
 					productAmt = baseProductAmt;
 					payAmt = productAmt * qty;
@@ -503,6 +501,7 @@ public class OrderController {
 					return GlobalVariable.REDIRECT_SUBMIT;
 				}
 			}
+			model.addAttribute("loginInfo", loginInfo);
 			model.addAttribute("orderNo", orderNo);
 			model.addAttribute("order", order);
 			model.addAttribute("clientKey", clientKey);

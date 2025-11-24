@@ -175,6 +175,7 @@
 			, A.QTY
 			, A.REG_USER
 			, A.DELIV_TIME
+			, A.ORDER_SET
 			, DATE_FORMAT(A.REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
 			, CONCAT(DATE_FORMAT(B.MENU_DAY,'%Y-%m-%d'),' (',
 				CASE DAYOFWEEK(B.MENU_DAY) 
@@ -190,14 +191,14 @@
 		INNER JOIN MENU_BOARD B ON A.MENU_BOARD_SEQ = B.MENU_BOARD_SEQ
 		WHERE 1=1
 		<choose>
-			<when test="userNo eq 0">
+			<when test="userNo eq 0"> 
 				AND A.USER_SESSION = #{userSession}	
 			</when>
 			<otherwise>
 				AND A.USER_NO = #{userNo}
-			</otherwise>
+			</otherwise> 
 		</choose>
-		<if test="cartList neq null and cartList.length > 0">
+		<if test="cartList neq null and cartList.length > 0 and userNo eq 0">
 			AND A.CART_NO IN
 			<foreach collection="cartList" item="item" index="index" open="(" close=")" separator=",">
 				#{item}

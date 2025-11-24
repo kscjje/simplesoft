@@ -209,6 +209,19 @@
 		            <li class="nav-item">
 		                <a href="/mypage/noneOrderCheck" class="nav-link text-sm md:text-base lg:text-lg">비회원주문조회</a>
 		            </li>
+		            <th:block th:if="${session.loginInfo != null}">
+						<li class="nav-item">
+							<a href="/logout" class="nav-link text-sm md:text-base lg:text-lg">로그아웃</a>
+						</li>
+						<li class="nav-item">
+							<a href="/mypage/orderInfo" class="nav-link text-sm md:text-base lg:text-lg">마이페이지</a>
+						</li>
+					</th:block>
+		            <th:block th:if="${session.loginInfo == null}">
+			            <li class="nav-item">
+			                <a href="/login" class="nav-link text-sm md:text-base lg:text-lg">로그인</a>
+			            </li>
+		            </th:block>
 		        </ul>
 				<div class="md:hidden">
                     <button type="button" class="text-gray-700 hover:text-orange-500 focus:outline-none focus:text-orange-500 mt-1" onclick="toggleMobileMenu()">
@@ -235,12 +248,25 @@
                         비회원주문조회
                     </a>
                     <div class="border-t border-gray-200 pt-2 mt-2">
-                        <a href="#" class="block px-3 py-2 rounded-md font-medium transition-colors duration-200">
-                            로그인
-                        </a>
-                        <a href="/joinStep1" class="block px-3 py-2 rounded-md font-medium transition-colors duration-200">
-                            회원가입
-                        </a>
+						<th:block th:if="${session.loginInfo == null}">
+	                        <a href="/login" class="block px-3 py-2 rounded-md font-medium transition-colors duration-200">
+	                            로그인
+	                        </a>
+	                        <a href="/joinStep1" class="block px-3 py-2 rounded-md font-medium transition-colors duration-200">
+	                            회원가입
+	                        </a>
+	                        <a href="/findId" class="block px-3 py-2 rounded-md font-medium transition-colors duration-200">
+	                            아이디찾기
+	                        </a>
+                        </th:block>
+                        <th:block th:if="${session.loginInfo != null}">
+							<a href="/logout" class="block px-3 py-2 rounded-md font-medium transition-colors duration-200">
+	                            로그아웃
+	                        </a>
+							<a href="/mypage/orderInfo" class="block px-3 py-2 rounded-md font-medium transition-colors duration-200">
+	                            마이페이지
+	                        </a>
+						</th:block>
                     </div>
                 </div>
             </div>

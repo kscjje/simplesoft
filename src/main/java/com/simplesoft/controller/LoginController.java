@@ -44,15 +44,16 @@ public class LoginController {
 		String userPassword = paramVO.getUserPw();
 		if (memDetail == null) {
 			returnData.put("RESULT", "FAIL");
-			returnData.put("PARAM_MESSAGE", "일치하는 ID가 없습니다.");
+			returnData.put("PARAM_MESSAGE", "로그인 정보가 정확하지 않습니다.");
 		} else {
 			if (EncryptUtils.SHA512_Encrypt(userPassword).equals(memDetail.getUserPw())) {
 				returnData.put("RESULT", "SUCCESS");
 				returnData.put("mberId", memDetail.getUserId());
+				memberService.loginSucess(memDetail);
 				session.setAttribute("loginInfo",memDetail);
 			} else {
 				returnData.put("RESULT", "FAIL");
-				returnData.put("PARAM_MESSAGE", "비밀번호가 일치하지 않습니다.");
+				returnData.put("PARAM_MESSAGE", "로그인 정보가 정확하지 않습니다.");
 			}
 		}
 		return returnData;

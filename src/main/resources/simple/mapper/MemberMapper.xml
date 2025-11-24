@@ -85,4 +85,21 @@
 		WHERE USER_ID = #{userId}
 		AND USER_STATUS = '1000'	
 	</select>
+	
+	<!-- 아이디찾기 체크-->
+	<select id="selectFindIdCheck" parameterType="com.simplesoft.member.service.MemberVO" resultType="String">
+		/* MemberMapper.selectFindIdCheck */
+		SELECT
+		    USER_ID AS userId
+		FROM USER_MST
+		WHERE USER_NM = #{userNm}
+		AND REPLACE(USER_MOBILE, '-', '') = REPLACE(#{userMobile}, '-', '')
+		AND USER_STATUS = '1000'
+	</select>
+	
+	<!-- 로그인 시간 업데이트 -->
+	<update id="loginSucess" parameterType="com.simplesoft.member.service.MemberVO">
+		/* MemberMapper.loginSucess */
+		UPDATE USER_MST SET LAST_LOGIN_DT = SYSDATE() WHERE USER_NO = #{userNo}
+	</update>
 </mapper>

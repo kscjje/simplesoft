@@ -81,7 +81,7 @@
 							if(result.data.RESULT == "SUCCESS"){
 								location.href = returnUrl == null ? "/admin/main" : returnUrl;
 							} else{
-								alert("아이디와 비밀번호가 일치하지 않습니다.");
+								alert("로그인 정보가 정확하지 않습니다.");
 							}
 						}, error : function(request, status, error) {
 							alert("에러코드: " + request.status + "\n메시지: " + request.responseText);

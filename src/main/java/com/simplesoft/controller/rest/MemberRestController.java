@@ -58,4 +58,22 @@ public class MemberRestController {
 		}
 		return new CommonResponse<Map<?, ?>>(returnData);
 	}
+	
+	/**
+	 * 아이디 찾기
+	 * 
+	 * @param model
+	 * @return
+	 * @throws Exception 
+	 */
+	@PostMapping("/findIdAjax")
+	public BasicResponse findIdAjax(Model model, HttpSession session, @ModelAttribute("memberVO") MemberVO vo) throws Exception {
+		
+		Map<String, Object> returnData = new HashMap<String, Object>();
+		String userId = memberService.selectFindIdCheck(vo);
+		returnData.put("userId", userId);
+		
+		return new CommonResponse<Map<String, Object>>(returnData);
+	}
+	
 }

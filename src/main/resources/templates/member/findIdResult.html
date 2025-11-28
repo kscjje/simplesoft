@@ -10,33 +10,53 @@
 				}
 			</style>
 			<div class="content-container justify-content-center text-center">
-				<div class="rounded-lg p-4 h-90 overflow-y-auto text-sm text-gray-700 leading-relaxed mb-5">
-					<h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
-						아이디 찾기가 완료되었습니다.
-					</h1>
-					<!-- 이름 -->
-					<div class="mb-4">
-						<label for="userNm" class="block mb-2 text-lg font-semibold text-gray-700 text-start">이름</label>
-						<input type="text" name="userNm" id="userNm" placeholder="이름을 입력해 주세요." maxlength="10" onkeypress="enterKey()"
-							class="w-full px-4 py-3 border border-gray-300 text-lg rounded focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent">
-					</div>
-			
-					<!-- 핸드폰번호 -->
-					<div class="mb-4">
-						<label for="userMobile" class="block mb-2 text-lg font-semibold text-gray-700 text-start">핸드폰번호</label>
-						<input type="text" name="userMobile" id="userMobile" placeholder="예)01012345678" maxlength="20" onkeypress="enterKey()"
-							class="w-full px-4 py-3 border border-gray-300 text-lg rounded focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent">
-					</div>
-			
-					<div class="flex space-x-4">
-						<button type="button" onclick="location.href='/login'" class="w-1/2 py-3 text-lg font-bold text-gray-700 bg-gray-200 rounded-xl hover:bg-gray-300 transition">
-							이전
-						</button>
-						<button type="button" onclick="fnFindId()" class="w-1/2 py-3 text-lg font-bold text-white bg-black rounded-xl hover:bg-blue-700 transition">
-							확인
-						</button>
-					</div>
-				</div>
+			    <div class="rounded-lg p-8 overflow-y-auto leading-relaxed mb-5 bg-white shadow-lg max-w-md mx-auto">
+			        <!-- 성공 아이콘 -->
+			        <div class="mb-6">
+			            <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+			                <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+			                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+			                </svg>
+			            </div>
+			        </div>
+
+			        <!-- 제목 -->
+			        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">
+			            아이디 찾기 완료
+			        </h1>
+
+			        <!-- 안내 메시지 -->
+			        <p class="text-gray-600 mb-6">
+			            조회된 아이디는 아래와 같습니다.
+			        </p>
+
+			        <!-- 아이디 표시 영역 -->
+			        <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
+			            <p class="text-sm text-gray-500 mb-2">가입된 아이디</p>
+			            <p th:text="${userId}" class="text-2xl font-bold text-blue-600"></p>
+			            <p class="text-xs text-gray-400 mt-3" th:text="|가입일: ${regDt}|"></p>
+			        </div>
+
+			        <!-- 버튼 영역 -->
+			        <div class="flex space-x-3">
+			            <button type="button" 
+			                    onclick="location.href='/findPassword'" 
+			                    class="flex-1 py-3 text-base font-semibold text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200">
+			                비밀번호 찾기
+			            </button>
+			            <button type="button" 
+			                    onclick="location.href='/login'" 
+			                    class="flex-1 py-3 text-base font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors duration-200">
+			                로그인하기
+			            </button>
+			        </div>
+
+			        <!-- 추가 안내 -->
+			        <p class="text-xs text-gray-500 mt-6">
+			            비밀번호가 기억나지 않으시나요?<br>
+			            <a href="/findPassword" class="text-blue-600 hover:underline">비밀번호 찾기</a>를 이용해주세요.
+			        </p>
+			    </div>
 			</div>
 		
 			<script th:inline="javascript">

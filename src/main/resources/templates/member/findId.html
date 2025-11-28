@@ -2,10 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org"
 		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 		layout:decorate="~{layouts/mypage_layout}">
-		<main class="content-wrapper" layout:fragment="content">
+		<main class="content-wrapper" layout:fragment="content" >
 			<style>
 				.content-container {
 					max-width: 600px;
+					min-height: 561px;
 					margin: 0 auto;
 				}
 			</style>
@@ -37,6 +38,10 @@
 						</button>
 					</div>
 				</div>
+				<form id="formSend" action="/findIdResult" method="post">
+					<input type="hidden" name="userId" id="userId">
+					<input type="hidden" name="regDt" id="regDt">
+				</form>
 			</div>
 		
 			<script th:inline="javascript">
@@ -66,7 +71,9 @@
 						data : loginInfo,
 						success : function(data) {
 							if(data.data?.userId != null){
-								alert(data.data.userId);
+								$("#userId").val(data.data.userId);
+								$("#regDt").val(data.data.regDt);
+								$("#formSend").submit();
 							} else{
 								alert("등록된 회원이 없습니다.");
 							}

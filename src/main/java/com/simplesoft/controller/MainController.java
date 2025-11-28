@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.simplesoft.cart.service.CartService;
@@ -46,5 +47,17 @@ public class MainController {
 	@GetMapping("/findId")
 	public String findId(@RequestParam Map<String, Object> paramMap, Model model ) {
 		return "/member/findId";
+	}
+	@GetMapping("/findIdResult")
+	public String getFindIdResult(@RequestParam Map<String, Object> paramMap, Model model ) {
+		return "/member/findId";
+	}
+	@PostMapping("/findIdResult")
+	public String postFindIdResult(@RequestParam Map<String, Object> paramMap, Model model ) {
+		String userId = String.valueOf(paramMap.get("userId"));
+		String regDt = String.valueOf(paramMap.get("regDt"));
+		model.addAttribute("userId", userId);
+		model.addAttribute("regDt", regDt);
+		return "/member/findIdResult";
 	}
 }

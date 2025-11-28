@@ -70,8 +70,9 @@ public class MemberRestController {
 	public BasicResponse findIdAjax(Model model, HttpSession session, @ModelAttribute("memberVO") MemberVO vo) throws Exception {
 		
 		Map<String, Object> returnData = new HashMap<String, Object>();
-		String userId = memberService.selectFindIdCheck(vo);
-		returnData.put("userId", userId);
+		Map<?,?>  user = memberService.selectFindIdCheck(vo);
+		returnData.put("userId", user.get("userId"));
+		returnData.put("regDt", user.get("regDt"));
 		
 		return new CommonResponse<Map<String, Object>>(returnData);
 	}

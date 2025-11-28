@@ -67,7 +67,7 @@ public class MemberServiceImpl implements MemberService{
 	}
 	
 	@Override
-	public String selectFindIdCheck(MemberVO vo){
+	public Map<?,?> selectFindIdCheck(MemberVO vo){
 		return memberMapper.selectFindIdCheck(vo);
 	}
 }

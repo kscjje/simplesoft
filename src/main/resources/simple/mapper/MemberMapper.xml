@@ -87,10 +87,11 @@
 	</select>
 	
 	<!-- 아이디찾기 체크-->
-	<select id="selectFindIdCheck" parameterType="com.simplesoft.member.service.MemberVO" resultType="String">
+	<select id="selectFindIdCheck" parameterType="com.simplesoft.member.service.MemberVO" resultType="CamelHashMap">
 		/* MemberMapper.selectFindIdCheck */
 		SELECT
-		    USER_ID AS userId
+		      USER_ID
+		    , DATE_FORMAT(REG_DT,'%Y-%m-%d') AS REG_DT
 		FROM USER_MST
 		WHERE USER_NM = #{userNm}
 		AND REPLACE(USER_MOBILE, '-', '') = REPLACE(#{userMobile}, '-', '')

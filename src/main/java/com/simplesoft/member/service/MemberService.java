@@ -10,6 +10,6 @@ public interface MemberService {
 	public List<Map<String, Object>> selectMemberList(Map<String, Object> paraMap);
 	public MemberVO selectMemberDetail(MemberVO vo);
 	public Map<?,?> selectIdCheck(MemberVO vo);
-	public String selectFindIdCheck(MemberVO vo);
+	public Map<?,?> selectFindIdCheck(MemberVO vo);
 	public Map<?,?> memberSave(MemberVO vo);
 }

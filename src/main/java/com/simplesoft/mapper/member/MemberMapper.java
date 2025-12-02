@@ -15,4 +15,5 @@ public interface MemberMapper {
 	public MemberVO selectMemberDetail(MemberVO vo);
 	public Map<?,?> selectIdCheck(MemberVO vo);
 	public Map<?,?> selectFindIdCheck(MemberVO vo);
+	public Map<?,?> selectFindPasswordCheck(MemberVO vo);
 }

@@ -77,4 +77,22 @@ public class MemberRestController {
 		return new CommonResponse<Map<String, Object>>(returnData);
 	}
 	
+	/**
+	 * 비밀번호 찾기
+	 * 
+	 * @param model
+	 * @return
+	 * @throws Exception 
+	 */
+	@PostMapping("/findPasswordAjax")
+	public BasicResponse findPasswordAjax(Model model, HttpSession session, @ModelAttribute("memberVO") MemberVO vo) throws Exception {
+		
+		Map<String, Object> returnData = new HashMap<String, Object>();
+		Map<?,?>  user = memberService.selectFindPasswordCheck(vo);
+		returnData.put("userId", user.get("userId"));
+		returnData.put("regDt", user.get("regDt"));
+		
+		return new CommonResponse<Map<String, Object>>(returnData);
+	}
+	
 }

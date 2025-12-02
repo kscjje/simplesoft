@@ -70,4 +70,8 @@ public class MemberServiceImpl implements MemberService{
 	public Map<?,?> selectFindIdCheck(MemberVO vo){
 		return memberMapper.selectFindIdCheck(vo);
 	}
+	@Override
+	public Map<?,?> selectFindPasswordCheck(MemberVO vo){
+		return memberMapper.selectFindPasswordCheck(vo);
+	}
 }

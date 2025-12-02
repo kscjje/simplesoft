@@ -57,7 +57,7 @@
 					let userMobile = $('#userMobile').val();
 					
 					if(userNm == ""){
-						alert("이름 입력해 주세요.");
+						alert("이름을 입력해 주세요.");
 						$('#userNm').focus();
 						return;
 					} else if(userMobile == ""){
@@ -70,7 +70,7 @@
 						userMobile : userMobile
 					}
 					$.ajax({
-						url : "/rest/member/findIdAjax",
+						url : "/rest/member/findPasswordAjax",
 						type : "POST",
 						dataType : "json",
 						data : loginInfo,

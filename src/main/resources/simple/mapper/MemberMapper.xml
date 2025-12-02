@@ -98,6 +98,18 @@
 		AND USER_STATUS = '1000'
 	</select>
 	
+	<!-- 비밀번호찾기 체크-->
+	<select id="selectFindPasswordCheck" parameterType="com.simplesoft.member.service.MemberVO" resultType="CamelHashMap">
+		/* MemberMapper.selectFindIdCheck */
+		SELECT
+		      USER_ID
+		    , DATE_FORMAT(REG_DT,'%Y-%m-%d') AS REG_DT
+		FROM USER_MST
+		WHERE USER_NM = #{userNm}
+		AND USER_EMAIL = #{userEmail}
+		AND USER_STATUS = '1000'
+	</select>
+	
 	<!-- 로그인 시간 업데이트 -->
 	<update id="loginSucess" parameterType="com.simplesoft.member.service.MemberVO">
 		/* MemberMapper.loginSucess */

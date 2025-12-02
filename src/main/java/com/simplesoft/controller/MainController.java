@@ -48,6 +48,10 @@ public class MainController {
 	public String findId(@RequestParam Map<String, Object> paramMap, Model model ) {
 		return "/member/findId";
 	}
+	@GetMapping("/findPassword")
+	public String findPassword(@RequestParam Map<String, Object> paramMap, Model model ) {
+		return "/member/findPassword";
+	}
 	@GetMapping("/findIdResult")
 	public String getFindIdResult(@RequestParam Map<String, Object> paramMap, Model model ) {
 		return "/member/findId";

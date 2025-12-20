@@ -74,4 +74,8 @@ public class MemberServiceImpl implements MemberService{
 	public Map<?,?> selectFindPasswordCheck(MemberVO vo){
 		return memberMapper.selectFindPasswordCheck(vo);
 	}
+	@Override
+	public int updateOneTimePassword(MemberVO memberVO) {
+		return memberMapper.updateOneTimePassword(memberVO);
+	}
 }

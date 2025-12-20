@@ -42,7 +42,7 @@
 						<div class="flex justify-center mt-6 text-sm text-black font-bold space-x-4 mb-5">
 							<a href="/findId" class="hover:underline">아이디 찾기</a>
 							<span>|</span>
-							<a href="/findPassword" class="hover:underline">비밀번호 찾기</a>
+							<a href="#" class="hover:underline" id="pwdHelpLink">비밀번호 찾기</a>
 							<span>|</span>
 							<a href="/joinStep1" class="hover:underline">회원가입</a>
 							<!--<span>|</span>
@@ -149,6 +149,10 @@
 						fnLogin();
 					}
 				}
+				document.getElementById('pwdHelpLink').addEventListener('click', (e) => {
+					e.preventDefault();
+					alert('비밀번호 찾기는 고객센터로 문의해 주세요.');
+				});
 			</script>
 		</main>
 </html>

@@ -18,6 +18,7 @@ public class MemberVO {
 	private int userNo;
 	private String userId;
 	private String userPw;
+	private String onepass;
 	private String userNm;
 	private String userEmail;
 	private String userTel;

@@ -73,7 +73,7 @@ public class MypageController {
 	 * @return
 	 */
 	@GetMapping("/orderInfo")
-	public String noneOrderCheck(Model model, HttpSession session) {
+	public String orderInfo(Model model, HttpSession session) {
 		MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
 		OrderVO vo = new OrderVO();
 		
@@ -82,5 +82,22 @@ public class MypageController {
 			return GlobalVariable.REDIRECT_LOGIN;
 		}
 		return "/mypage/orderInfo";
+	}
+	
+	/**
+	 * 주문조회
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/memberInfo")
+	public String memberInfo(Model model, HttpSession session) {
+		MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
+		
+		if(loginInfo == null) {
+			model.addAttribute("returnUrl", "/mypage/memberInfo");
+			return GlobalVariable.REDIRECT_LOGIN;
+		}
+		return "/mypage/memberInfo";
 	}
 }

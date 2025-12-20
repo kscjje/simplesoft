@@ -1,5 +1,6 @@
 package com.simplesoft.controller.rest;
 
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import com.simplesoft.member.service.MemberService;
 import com.simplesoft.member.service.MemberVO;
 import com.simplesoft.reponse.BasicResponse;
 import com.simplesoft.reponse.CommonResponse;
+import com.simplesoft.util.EncryptUtils;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,9 @@ public class MemberRestController {
 
 	@Autowired
 	MemberService memberService;
+	
+	private static final String CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	private static final SecureRandom RANDOM = new SecureRandom();
 	
 	/**
 	 * 아이디 중복체크
@@ -71,9 +76,10 @@ public class MemberRestController {
 		
 		Map<String, Object> returnData = new HashMap<String, Object>();
 		Map<?,?>  user = memberService.selectFindIdCheck(vo);
-		returnData.put("userId", user.get("userId"));
-		returnData.put("regDt", user.get("regDt"));
-		
+		if(user != null) {
+			returnData.put("userId", user.get("userId"));
+			returnData.put("regDt", user.get("regDt"));
+		}
 		return new CommonResponse<Map<String, Object>>(returnData);
 	}
 	
@@ -84,15 +90,33 @@ public class MemberRestController {
 	 * @return
 	 * @throws Exception 
 	 */
-	@PostMapping("/findPasswordAjax")
+	@PostMapping("/memberInfoAjax")
 	public BasicResponse findPasswordAjax(Model model, HttpSession session, @ModelAttribute("memberVO") MemberVO vo) throws Exception {
 		
-		Map<String, Object> returnData = new HashMap<String, Object>();
-		Map<?,?>  user = memberService.selectFindPasswordCheck(vo);
-		returnData.put("userId", user.get("userId"));
-		returnData.put("regDt", user.get("regDt"));
-		
+ 		Map<String, Object> returnData = new HashMap<String, Object>();
+		MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
+		if(loginInfo == null) {
+			returnData.put("RESULT", "NONE");
+			return new CommonResponse<Map<String, Object>>(returnData);
+		} else {
+			vo.setUserId(loginInfo.getUserId());
+		}
+		String userPassword = vo.getUserPw();
+		MemberVO memDetail = memberService.selectMemberDetail(vo);
+		if (EncryptUtils.SHA512_Encrypt(userPassword).equals(memDetail.getUserPw())) {
+			returnData.put("RESULT", "SUCCESS");
+			session.setAttribute("memberInfo",memDetail);
+		} else {
+			returnData.put("RESULT", "FAIL");
+		}
 		return new CommonResponse<Map<String, Object>>(returnData);
 	}
-	
+	public static String random8() {
+		StringBuilder sb = new StringBuilder(8);
+		for (int i = 0; i < 8; i++) {
+			int idx = RANDOM.nextInt(CHARSET.length());
+			sb.append(CHARSET.charAt(idx));
+		}
+		return sb.toString();
+	}
 }

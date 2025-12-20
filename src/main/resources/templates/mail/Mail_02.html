@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<title>메일 폼</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+
+<body>
+		<table cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#ddd;">
+			<tbody>
+				<tr>
+					<td align="center" style="padding:40px;">
+						<table cellpadding="0" cellspacing="0" border="0" width="750" align="center" style="border-collapse:collapse; font-family:'맑은 고딕','Malgun Gothic', arial; margin:0 auto; background-color:#fff;" bgcolor="#fff">
+							<tbody>
+								<!-- header (s) // -->
+								<tr>
+								</tr>
+								<!-- // (e) header -->
+		
+								<!-- contents (s) // -->
+								<tr>
+									<td align="center">
+										<!-- Top Message (s) // -->
+										<table cellpadding="0" cellspacing="0" border="0" width="690" align="center" style="border-collapse:collapse; font-family:'맑은 고딕','Malgun Gothic', arial; background-color:#fff; margin:0 auto; width:690px;" bgcolor="#fff">
+											<tbody>
+												<tr>
+													<td style="padding-bottom:29px; font-size:32px; line-height:40px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#191919;">주문내역 확인 안내</td>
+												</tr>
+												<tr>
+													<td style="padding-bottom:14px; font-size:16px; line-height:24px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#191919; word-wrap:break-word; word-break:keep-all;">
+														임시 비밀번호가 발급되었습니다.<br/>
+														임시 비밀번호: [[${password}]]<br/>
+														보안을 위해 로그인 후 즉시 비밀번호를 변경하시기 바랍니다.<br/>
+														타인에게 공유하지 마세요.<br/>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+										<!-- // (e) Top Message -->
+									</td>
+								</tr>
+								<tr><td height="60" style="font-size:0;"></td></tr>
+								<!-- // (e) contents -->
+		
+								<!-- footer (s) // -->
+								<tr>
+									<td style="padding:50px 0; background-color:#191919;">
+										<table cellpadding="0" cellspacing="0" border="0" width="690" align="center" style="border-collapse:collapse; font-family:'맑은 고딕','Malgun Gothic', arial; margin:0 auto; width:690px;">
+											<tbody>
+												<tr>
+													<td style="padding:30px 0 0; font-size:12px; line-height:20px; font-family:'맑은 고딕','Malgun Gothic', arial; color:#999;">본 메일은 발신전용 메일이며 문의에 대한 회신이 되지 않습니다.</td>
+												</tr>
+											</tbody>
+										</table>
+									</td>
+								</tr>
+								<!-- // (e) footer -->
+							</tbody>
+						</table>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+</html>

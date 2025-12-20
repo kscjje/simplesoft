@@ -1,5 +1,6 @@
 package com.simplesoft.util;
 
+import java.security.SecureRandom;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,6 +49,33 @@ public class MailTemplateSender {
 
 		map.put("to", (String) resultMap.get("orderEmail"));
 		map.put("subject",  "[밥수니반찬] 주문완료 안내");
+		map.put("body", htmlTemplate);
+		
+		MailSender.send(request, map);
+	}
+	
+	/**
+	 * 임시비밀번호 메일
+	* @methodName : passwordMail
+	* @author     : KYC
+	* @date       : 2025.12.20
+	*
+	* @param request
+	* @param resultMap
+	* @throws Exception
+	 */
+	public void passwordMail(HttpServletRequest request, Map<String, Object> resultMap) throws Exception {
+		Map<String,String> map = new HashMap<String,String>();
+		Map<String,Object> mailMap = new HashMap<String,Object>();
+		Context context = new Context();
+		
+		mailMap.put("password", resultMap.get("password"));
+		context.setVariables(mailMap);
+		
+		String htmlTemplate = htmlTemplateEngine.process("mail/Mail_02.html", context);
+
+		map.put("to", (String) resultMap.get("orderEmail"));
+		map.put("subject",  "[밥수니반찬] 임시 비밀번호 발급");
 		map.put("body", htmlTemplate);
 		
 		MailSender.send(request, map);

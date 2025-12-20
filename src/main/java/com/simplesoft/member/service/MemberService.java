@@ -13,4 +13,5 @@ public interface MemberService {
 	public Map<?,?> selectFindIdCheck(MemberVO vo);
 	public Map<?,?> selectFindPasswordCheck(MemberVO vo);
 	public Map<?,?> memberSave(MemberVO vo);
+	public int updateOneTimePassword(MemberVO vo);
 }

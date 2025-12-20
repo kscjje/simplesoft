@@ -1,5 +1,7 @@
 package com.simplesoft.controller;
 
+import java.security.SecureRandom;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.simplesoft.cart.service.CartService;
 import com.simplesoft.member.service.MemberService;
+import com.simplesoft.member.service.MemberVO;
 import com.simplesoft.menuboard.service.MenuBoardService;
 import com.simplesoft.order.service.OrderService;
+import com.simplesoft.util.MailTemplateSender;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -33,9 +37,11 @@ public class MainController {
 	@Autowired
 	OrderService orderService;
 	
+	@Autowired
+    private MailTemplateSender mailTemplateSender;
+	
 	@GetMapping("/main")
 	public String main(Model model,HttpServletRequest request) {
-		
 		return "/main";
 	}
 	@GetMapping("/login")
@@ -64,4 +70,9 @@ public class MainController {
 		model.addAttribute("regDt", regDt);
 		return "/member/findIdResult";
 	}
+	@PostMapping("/findPasswordResult")
+	public String postFindPasswordResult(@RequestParam Map<String, Object> paramMap, Model model, HttpServletRequest request) {
+		return "/member/findPasswordResult";
+	}
+	
 }

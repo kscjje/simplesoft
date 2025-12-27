@@ -342,12 +342,12 @@ if(cartList[i].orderSet == 1000){
 						
 					addHtml +=		"<td style='vertical-align:middle;'>";
 					addHtml +=			"<span id='ui_price_"+cartList[i].cartNo+"'>";
-					addHtml +=				cartList[i].orderSet == 2000 ? Number(9000).toLocaleString('ko-KR') : Number(18000).toLocaleString('ko-KR') 
+					addHtml +=				cartList[i].orderSet == 2000 ? Number(10000).toLocaleString('ko-KR') : Number(19000).toLocaleString('ko-KR') 
 					addHtml +=			"</span>";
 					addHtml +=		"</td>";
 					addHtml +=		"<td style='vertical-align:middle;'>";
 					addHtml +=			"<span id='ui_total_"+cartList[i].cartNo+"'>";
-					addHtml +=				cartList[i].orderSet == 2000 ? (Number(9000) * cartList[i].qty).toLocaleString('ko-KR') : (Number(18000) * cartList[i].qty).toLocaleString('ko-KR')
+					addHtml +=				cartList[i].orderSet == 2000 ? (Number(10000) * cartList[i].qty).toLocaleString('ko-KR') : (Number(19000) * cartList[i].qty).toLocaleString('ko-KR')
 					addHtml +=			"</span>";
 					addHtml +=		"</td>";
 					addHtml +=	"</tr>";
@@ -436,7 +436,7 @@ if(cartList[i].orderSet == 1000){
 						value.push($(this).text());
 					}
 				});
-				//7000|5000|3000|2500|2500
+				//7000|5000|3500|3000|2500
 				//메인|국|기본1|서브메인|기본2
 				$.ajax({
 					url: "/rest/cart/menuMsgQty/update",
@@ -532,7 +532,7 @@ if(cartList[i].orderSet == 1000){
 					3. 체크된 수량 금액 계산 및 수량에 따른 배송비 세팅
 				*/
 				let disCnt = 0;
-				let productMoney = 18000;
+				let productMoney = 19000;
 				
 				// 할인 계산
 				$(".selectOption option:selected[value='1000'], .selectOption option:selected[value='3000']").each(function() {
@@ -542,7 +542,7 @@ if(cartList[i].orderSet == 1000){
 					}
 				});
 				
-				if (disCnt > 14) productMoney = 17000;
+				if (disCnt > 14) productMoney = 18000;
 				
 				let finalResult = 0;
 				// 상품 금액 업데이트
@@ -558,8 +558,8 @@ if(cartList[i].orderSet == 1000){
 						const valueMap = {
 							0: 7000,
 							1: 5000,
-							2: 3000,
-							3: 2500,
+							2: 3500,
+							3: 3000,
 							4: 2500
 						};
 						//총 증가 금액

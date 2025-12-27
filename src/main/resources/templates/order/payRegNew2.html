@@ -59,10 +59,10 @@
 									</td>
 									<td class="fs-5 align-middle">
 										<th:block th:if="${rs.orderSet == '1000' || rs.orderSet == '3000'}">
-											<span th:text="${rs.totalQty >= 15 ? #numbers.formatInteger(17000, 3, 'COMMA') : #numbers.formatInteger(18000, 3, 'COMMA')}"></span>
+											<span th:text="${rs.totalQty >= 15 ? #numbers.formatInteger(18000, 3, 'COMMA') : #numbers.formatInteger(19000, 3, 'COMMA')}"></span>
 										</th:block>
 										<th:block th:if="${rs.orderSet == '2000'}">
-											<span th:text="${#numbers.formatInteger(9000,3,'COMMA')}"></span>
+											<span th:text="${#numbers.formatInteger(10000,3,'COMMA')}"></span>
 										</th:block>
 									</td>
 									<td class="fs-5 align-middle">

@@ -8,13 +8,13 @@ package com.simplesoft.util;
  */
 public class GlobalVariable {
 	
-	public static final int PRODUCT_AMT_1 = 18000;				//상품금액(고정)
-	public static final int PRODUCT_AMT_2 = 9000;				//상품금액(고정)
+	public static final int PRODUCT_AMT_1 = 19000;				//상품금액(고정)
+	public static final int PRODUCT_AMT_2 = 10000;				//상품금액(고정)
 	public static final int DELY_AMT = 2000;					//배송비(고정)
 	public static final int DELY_OFFICE_AMT = 4000;				//우체국택배(고정)
 	public static final int PACKING_AMT = 5000;					//보냉가방(고정)
 	
-	public static final int[] PROUDCT_MAP = { 7000, 5000, 3000, 2500, 2500 };	//메뉴별 가격
+	public static final int[] PROUDCT_MAP = { 7000, 5000, 3500, 3000, 2500 };	//메뉴별 가격
 	public static final String REDIRECT_LOGIN 	= "/common/login";
 	public static final String REDIRECT_MESSAGE	= "/common/message";
 	public static final String REDIRECT_BACK	= "/common/back";

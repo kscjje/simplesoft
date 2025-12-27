@@ -50,7 +50,7 @@
 					</div>
 					<ul class="text-xs sm:text-sm text-yellow-700 space-y-1 leading-relaxed">
 						<li>• 일반세트의 경우, 성인 기준 2.5~3인분 분량입니다.</li>
-						<li>• 일반세트 15회 이상 주문 시, 세트메뉴 가격이 할인됩니다.<span class="whitespace-nowrap">(18,000원 -> 17,000원 / 단, 1인분세트는 제외)</span></li>
+						<li>• 일반세트 15회 이상 주문 시, 세트메뉴 가격이 할인됩니다.<span class="whitespace-nowrap">(19,000원 -> 18,000원 / 단, 1인분세트는 제외)</span></li>
 						<li>• 주문은 전날 오후 4시까지 가능합니다. (조기마감 할 수 있음)</li>
 						<li>• 배달시간 선택도 전날 오후 4시까지 가능합니다.</li>
 					</ul>
@@ -236,8 +236,8 @@
 			        addHtml += `                    <div class="text-right">`;
 			        
 			        // 단가 표시 - 기존 로직과 동일하게 수정
-			        const unitPrice = cartList[i].orderSet == 2000 ? Number(9000).toLocaleString('ko-KR') : Number(18000).toLocaleString('ko-KR');
-			        const totalPrice = cartList[i].orderSet == 2000 ? (Number(9000) * cartList[i].qty).toLocaleString('ko-KR') : (Number(18000) * cartList[i].qty).toLocaleString('ko-KR');
+			        const unitPrice = cartList[i].orderSet == 2000 ? Number(10000).toLocaleString('ko-KR') : Number(19000).toLocaleString('ko-KR');
+			        const totalPrice = cartList[i].orderSet == 2000 ? (Number(10000) * cartList[i].qty).toLocaleString('ko-KR') : (Number(19000) * cartList[i].qty).toLocaleString('ko-KR');
 			        
 			        addHtml += `                        <p class="text-sm text-gray-600">단가: <span class="unit-price" id="ui_price_${cartList[i].cartNo}">${unitPrice}</span>원</p>`;
 			        addHtml += `                        <p class="text-lg font-bold text-blue-600"><span class="item-total" id="ui_total_${cartList[i].cartNo}">${totalPrice}</span>원</p>`;
@@ -338,7 +338,7 @@
 						value.push($(this).text());
 					}
 				});
-				//7000|5000|3000|2500|2500
+				//7000|5000|3500|3000|2500
 				//메인|국|기본1|서브메인|기본2
 				$.ajax({
 					url: "/rest/cart/menuMsgQty/update",
@@ -433,7 +433,7 @@
 					3. 체크된 수량 금액 계산 및 수량에 따른 배송비 세팅
 				*/
 				let disCnt = 0;
-				let productMoney = 18000;
+				let productMoney = 19000;
 				
 				// 할인 계산
 				$(".selectOption option:selected[value='1000'], .selectOption option:selected[value='3000']").each(function() {
@@ -443,7 +443,7 @@
 					}
 				});
 				
-				if (disCnt > 14) productMoney = 17000;
+				if (disCnt > 14) productMoney = 18000;
 				
 				let finalResult = 0;
 				// 상품 금액 업데이트
@@ -459,8 +459,8 @@
 						const valueMap = {
 							0: 7000,
 							1: 5000,
-							2: 3000,
-							3: 2500,
+							2: 3500,
+							3: 3000,
 							4: 2500
 						};
 						//총 증가 금액

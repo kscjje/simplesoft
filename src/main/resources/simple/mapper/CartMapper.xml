@@ -55,6 +55,7 @@
 		FROM CART_MST A
 		INNER JOIN MENU_BOARD B ON A.MENU_BOARD_SEQ = B.MENU_BOARD_SEQ
 		WHERE 1=1
+		AND B.MENU_DAY >= DATE_FORMAT(SYSDATE(),'%Y%m%d')
 		<choose>
 			<when test="userNo eq 0">
 				AND USER_SESSION = #{userSession}	

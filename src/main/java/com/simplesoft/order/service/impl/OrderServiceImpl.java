@@ -1,6 +1,7 @@
 package com.simplesoft.order.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -84,5 +85,11 @@ public class OrderServiceImpl implements OrderService{
 	@Override
 	public RefundVO getRefundDetail(OrderVO vo) {
 		return orderMapper.getRefundDetail(vo);
+	}
+	
+	//주문조회 리스트
+	@Override
+	public List<Map<String, Object>> selectOrderList(OrderVO vo){
+		return orderMapper.selectOrderList(vo);
 	}
 }

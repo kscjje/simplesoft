@@ -1,6 +1,7 @@
 package com.simplesoft.mapper.order;
 
 import java.util.List;
+import java.util.Map;
 
 import com.simplesoft.config.MysqlConnMapper;
 import com.simplesoft.order.service.DeliveryVO;
@@ -24,4 +25,5 @@ public interface OrderMapper {
 	public int insertRefund(RefundVO vo);
 	public int getRefundCheck(RefundVO vo);
 	public RefundVO getRefundDetail(OrderVO vo);
+	public List<Map<String, Object>> selectOrderList(OrderVO vo);
 }

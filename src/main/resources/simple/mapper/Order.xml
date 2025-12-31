@@ -262,7 +262,6 @@
 			, ORDER_ADDR
 			, ORDER_ADDR_DETAIL
 			, ORDER_EMAIL
-			, ORDER_STATUS
 			, RECEIVE_NAME
 			, RECEIVE_TEL
 			, RECEIVE_PHONE
@@ -317,5 +316,42 @@
 	<select id="getRefundCheck" parameterType="com.simplesoft.order.service.RefundVO" resultType="Integer">
 		/* OrderMapper.getRefundCheck */
 		SELECT COUNT(*) FROM REFUND WHERE ORDER_NO = #{orderNo}
+	</select>
+	
+	<!-- 주문조회 리스트-->
+	<select id="selectOrderList" parameterType="com.simplesoft.order.service.OrderVO" resultMap="orderShopApplyResult">	
+		/* OrderMapper.selectOrderList */
+		SELECT
+			  ORDER_NO
+			, USER_NO
+			, ORDER_STATUS
+			, TOTAL_PRODUCT_AMT
+			, TOTAL_DIS_AMT
+			, TOTAL_DELY_AMT
+			, ORDER_NAME
+			, ORDER_TEL
+			, ORDER_PHONE
+			, ORDER_POST_NUM
+			, ORDER_ADDR
+			, ORDER_ADDR_DETAIL
+			, ORDER_EMAIL
+			, RECEIVE_NAME
+			, RECEIVE_TEL
+			, RECEIVE_PHONE
+			, RECEIVE_POST_NUM
+			, RECEIVE_ADDR
+			, RECEIVE_ADDR_DETAIL
+			, DELIV_TIME
+			, DELIV_KIND
+			, PACKAGING
+			, COMMON_PWD
+			, BIGO
+			, ORDER_PAY_DT
+			,TOTAL_PRODUCT_AMT
+    + (CASE WHEN DELIV_KIND = 2000 THEN 4000 ELSE TOTAL_DELY_AMT END)
+    + (CASE WHEN PACKAGING = 1000 THEN 5000 ELSE 0 END) AS TOTAL_AMOUNT
+		FROM ORDER_MST
+		WHERE 
+			USER_NO = #{userNo}
 	</select>
 </mapper>

@@ -1,6 +1,7 @@
 package com.simplesoft.order.service;
 
 import java.util.List;
+import java.util.Map;
 
 public interface OrderService {
 	public int insertOrderMst(OrderVO vo);
@@ -13,4 +14,5 @@ public interface OrderService {
 	
 	public int insertRefund(RefundVO vo);
 	public RefundVO getRefundDetail(OrderVO vo);
+	public List<Map<String, Object>> selectOrderList(OrderVO vo);
 }

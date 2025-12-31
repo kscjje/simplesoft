@@ -293,12 +293,16 @@
 				let result = /*[[${resultMap}]]*/"";
 				// 오늘 날짜 객체 생성
 				const currentDate = new Date();
+				
+				const nextDate = new Date(currentDate);
+				nextDate.setDate(currentDate.getDate() + 1);
 				// 오늘 날짜 년도 가져오기
-				const currentYear = currentDate.getFullYear();
-				// 오늘 날짜 월 가져오기
-				const currentMonth = (currentDate.getMonth()+1) < 10 ? "0"+(currentDate.getMonth()+1) : (currentDate.getMonth()+1)+"";
+				const currentYear = nextDate.getFullYear();
 				// 오늘 날짜 일 가져오기
-				const currentDay = 	(currentDate.getDate()+1) < 10 ? "0"+(currentDate.getDate()+1) : (currentDate.getDate()+1)+"";
+				const currentDay = 	nextDate.getDate() < 10 ? "0"+nextDate.getDate() : nextDate.getDate()+"";
+				
+				// 오늘 날짜 월 가져오기
+				const currentMonth = (nextDate.getMonth()+1) < 10 ? "0"+(nextDate.getMonth()+1) : (nextDate.getMonth()+1)+"";
 				
 				var currentHour = currentDate.getHours();
 				var currentMinute = currentDate.getMinutes();
@@ -334,6 +338,8 @@
 							if(result[k].menuDay.substring(4,8) == month+day){
 								if(result[k].menuMsg.split("|")){
 									let menuMsg = result[k].menuMsg.split("|");
+									const menuYYYYMMDD = result[k].menuDay; // 예: 20260105
+									
 									for(let index = 0; index < menuMsg.length; index++) {
 										if(menuMsg[index] == "") {
 											addHtml += "<div style='margin-bottom:10px;'>준비 중입니다.</div>";
@@ -352,10 +358,14 @@
 												}
 											}
 											//선택버튼 생성 로직
-											if (currentYear == result[k].menuDay.substring(0, 4) &&
-											    result[k].useYn === "Y" &&
+											if (
+												result[k].useYn === "Y" &&
 												isLastItem &&
-											    (currentMMDD < (month + day) || (currentMMDD === (month + day) && currentHour < 16))) {
+												(
+													currentYYYYMMDD < menuYYYYMMDD ||
+													(currentYYYYMMDD === menuYYYYMMDD && currentHour < 16)
+												)) {
+													console.log(currentYYYYMMDD);
 											    addHtml += `
 											        <div style="padding-top:10px;">
 											            <input type="button" onclick="toggleButtonClick(this)" id="${result[k].menuBoardSeq}" value="선택" class="menuboard_btn">

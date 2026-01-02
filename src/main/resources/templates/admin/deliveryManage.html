@@ -4,6 +4,7 @@
 	  xmlns:thym="http://www.thymeleaf.org/extras/java8time"
 	  layout:decorate="~{layouts/admin_layout}">
 	<main layout:fragment="content">
+		<script src="/js/common/common.js"></script>
 		<style>
 			.title {
 				padding: 30px 40px 20px 0px;
@@ -350,36 +351,44 @@
 			        }
 					
 					let rangeDate = $(this).attr("id");
-					switch(rangeDate){
+					const today = getToday();
+
+					switch (rangeDate) {
 						case "0":
-							//오늘
-							$('#startDate').datepicker('setDate','today');
-							$('#endDate').datepicker('setDate','today');
+							// 오늘
+							$('#startDate').datepicker('setDate', today);
+							$('#endDate').datepicker('setDate', today);
 							break;
+
 						case "1":
-							//7일
-							$('#startDate').datepicker('setDate','-7D');
-							$('#endDate').datepicker('setDate','today');
-							break; 
+							// 7일
+							$('#startDate').datepicker('setDate', addDays(today, -7));
+							$('#endDate').datepicker('setDate', today);
+							break;
+
 						case "2":
-							//1개월
-							$('#startDate').datepicker('setDate','-1M');
-							$('#endDate').datepicker('setDate','today');
-							break; 
+							// 1개월
+							$('#startDate').datepicker('setDate', addMonths(today, -1));
+							$('#endDate').datepicker('setDate', today);
+							break;
+
 						case "3":
-							//3개월
-							$('#startDate').datepicker('setDate','-3M');
-							$('#endDate').datepicker('setDate','today');
+							// 3개월
+							$('#startDate').datepicker('setDate', addMonths(today, -3));
+							$('#endDate').datepicker('setDate', today);
 							break;
+
 						case "5":
-							//내일
-							$('#endDate').datepicker('setDate','+1D');
-							$('#startDate').datepicker('setDate','+1D');
+							// 내일
+							const tomorrow = addDays(today, 1);
+							$('#startDate').datepicker('setDate', tomorrow);
+							$('#endDate').datepicker('setDate', tomorrow);
 							break;
-						default :
-							$('#startDate').datepicker('setDate',null);
-							$('#endDate').datepicker('setDate',null);
-							break;	
+
+						default:
+							$('#startDate').datepicker('setDate', null);
+							$('#endDate').datepicker('setDate', null);
+							break;
 					}
 			    });
 				

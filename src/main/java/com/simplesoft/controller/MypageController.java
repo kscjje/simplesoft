@@ -1,5 +1,9 @@
 package com.simplesoft.controller;
 
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -76,10 +80,16 @@ public class MypageController {
 	public String orderInfo(Model model, HttpSession session) {
 		MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
 		OrderVO vo = new OrderVO();
-		
 		if(loginInfo == null) {
 			model.addAttribute("returnUrl", "/mypage/orderInfo");
 			return GlobalVariable.REDIRECT_LOGIN;
+		}
+		BeanUtils.copyProperties(loginInfo, vo);
+		System.out.println(vo);
+		List<Map<String, Object>> list = orderService.selectOrderList(vo);
+		if(list != null) {
+			model.addAttribute("order",list);
+			System.out.println(list);
 		}
 		return "/mypage/orderInfo";
 	}

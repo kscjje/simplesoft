@@ -404,13 +404,13 @@
 							<colgroup><col><col style="width:100px;"></colgroup>
 							<thead>
 								<tr>
-									<th scope="col" style="text-align: center; background-color: #f5f5f5;"colspan="2">금일 배송 건수</th>
+									<th scope="col" style="text-align: center; background-color: #f5f5f5;"colspan="2">금일 남은 배송 건수(완료 건수)</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
 									<td>금일배송</td>
-									<td class="ar"><a href="/admin/deliveryManage?option=5" style="text-decoration: none;color: #000;" data-bs-toggle="tooltip" data-bs-placement="top" title="금일 배송건수 관련된 배송 리스트 페이지 보여줌" th:text="${resultMap.todayDelivCnt}">0</a> 건</td>
+									<td class="ar"><a href="/admin/deliveryManage?option=5" style="text-decoration: none;color: #000;" data-bs-toggle="tooltip" data-bs-placement="top" title="금일 배송건수 관련된 배송 리스트 페이지 보여줌" th:text="${resultMap.todayDelivCnt}">0</a> 건 ( <span th:text="${resultMap.todayDelivSucCnt}"></span> 건 )</td>
 								</tr>
 							</tbody>
 						</table>

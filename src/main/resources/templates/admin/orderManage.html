@@ -391,13 +391,13 @@
 									addHtml +=		`<td>${product.payAmt.toLocaleString('ko-KR')}원</td>`;
 									addHtml +=	`</tr>`;
 								}
-								if(data.totalDelyAmt > 0){
-									addHtml +=	`<tr style="text-align:right">`;
-									addHtml +=		`<td colspan="6">배송비 : ${data.totalDelyAmt.toLocaleString('ko-KR')}원</td>`;
-									addHtml +=	`</tr>`;
-								}else if(data.delivKind === '우체국 택배(안산 외)'){
+								if(data.delivKind === '우체국 택배(안산 외)'){
 									addHtml +=	`<tr style="text-align:right">`;
 									addHtml +=		`<td colspan="6">우체국 택배(안산 외) : 4,000원</td>`;
+									addHtml +=	`</tr>`;
+								}else if(data.totalDelyAmt > 0){
+									addHtml +=	`<tr style="text-align:right">`;
+									addHtml +=		`<td colspan="6">배송비 : ${data.totalDelyAmt.toLocaleString('ko-KR')}원</td>`;
 									addHtml +=	`</tr>`;
 								}
 								if(data.packaging === '보냉가방(신규)'){

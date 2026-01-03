@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
 		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 		layout:decorate="~{layouts/mypage_layout}">
-		<main class="" layout:fragment="content" style="padding: 10px;">
+		<main class="content-wrapper" layout:fragment="content" style="padding: 10px;">
 			<style>
 				body {
 					font-family: 'Noto Sans KR', sans-serif;
@@ -11,7 +11,7 @@
 					background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 				}
 				.card-shadow {
-					box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+					box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 				}
 				.status-indicator {
 					position: relative;
@@ -36,232 +36,253 @@
 				}
 				.product-item:hover {
 					transform: translateY(-2px);
-					box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+					box-shadow: 0 5px 15px rgba(0,0,0,0.5);
 				}
 			</style>
 			<!-- Main Content -->
 			<div class="container mx-auto px-4">
 				<!-- 주문 정보 카드 -->
-				<div class="bg-white rounded-2xl card-shadow p-6 mb-8">
-					<div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-						<div class="flex-1">
-							<div class="flex items-center justify-between mb-2">
-								<h2 class="text-2xl font-bold text-gray-800">주문 내역</h2>
-							</div>
-							<div class="items-center text-gray-600">
-								<span class="items-center">
-									<i class="far fa-calendar-alt mr-2"></i><span th:text="'주문일자: ' + ${order.orderPayDt.substring(0, 10)}"></span>
-								</span>
-								<br>
-								<th:block th:if="${order.orderStatus == '0001'}">
-									<span class="items-center">
-										<i class="fas fa-receipt mr-2"></i><span style="text-decoration: line-through; color:red" th:text="'주문번호: ' + ${order.orderNo}"></span><br>
-										<span style="color: red;">결제 취소된 주문입니다.</span>
-									</span>
-								</th:block>
-								<th:block th:if="${order.orderStatus == '0000'}">
-									<span class="items-center">
-										<i class="fas fa-receipt mr-2"></i><span th:text="'주문번호: ' + ${order.orderNo}"></span>
-									</span>
-								</th:block>
-								<div th:if="${refund != null && refund.status == '0000'}">
-									<span class="items-center">
-										<span style="color: red;">환불 신청된 주문입니다.</span>
-									</span>
+				<th:block th:if="${order != null and !#lists.isEmpty(order)}">
+					<div class="bg-white rounded-2xl card-shadow p-6 mb-8">
+						<div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+							<div class="flex-1">
+								<div class="flex items-center justify-between mb-2">
+									<h2 class="text-2xl font-bold text-gray-800">주문 내역</h2>
 								</div>
-							</div>
-						</div>
-					</div>
-					<th:block th:each="rs,rsStat : ${order.productList}">
-						<div class="space-y-4">
-							<div class="product-item bg-gray-50 rounded-lg p-4">
-								<div class="items-center justify-between">
-									<h4 class="font-semibold text-gray-800 mb-2 text-sm">
-										<span th:text="${rs.menuDay.substring(0,4)} + '.' + ${rs.menuDay.substring(4,6)} + '.' + ${rs.menuDay.substring(6,8)}"></span>
-										<span class="text-right inline-block float-right">
-											<th:block th:if="${rs.orderSet == '1000'}"> 일반세트(추가)</th:block>
-											<th:block th:if="${rs.orderSet == '2000'}"> 1인분세트</th:block>
-											<th:block th:if="${rs.orderSet == '3000'}"> 일반세트</th:block>
-											<th:block th:if="${rs.delivTime == '1000'}"> 오전배달</th:block>
-											<th:block th:if="${rs.delivTime == '2000'}"> 오후배달</th:block>
+								<div class="items-center text-gray-600">
+									<span class="items-center">
+										<i class="far fa-calendar-alt mr-2"></i><span th:text="'주문일자: ' + ${order.orderPayDt.substring(0, 10)}"></span>
+									</span>
+									<br>
+									<th:block th:if="${order.orderStatus == '0001'}">
+										<span class="items-center">
+											<i class="fas fa-receipt mr-2"></i><span style="text-decoration: line-through; color:red" th:text="'주문번호: ' + ${order.orderNo}"></span><br>
+											<span style="color: red;">결제 취소된 주문입니다.</span>
 										</span>
-									</h4>
-									<div th:class="${rs.orderSet == '1000'} ? 'md:grid md:grid-cols-3 md:gap-2 text-m text-gray-600' : 'grid grid-cols-2 md:grid-cols-3 gap-2 text-m text-gray-600'">
-										<th:block th:if="${rs.orderSet == '1000'}">
-											<th:block th:each="msg,msgStat : ${#strings.setSplit(rs.menuMsg,'|')}">
-												<th:block th:if="${#strings.substring(msg,0,1) == '!'}">
-													<div class="block md:inline">
-														<span class="text-red-600 text-sm" th:text="${#strings.substring(msg,1)}"></span>
-														<span class="text-red-600 text-sm" th:text="'('+${#strings.arraySplit(rs.menuMsgDetail ?: '', '|')[msgStat.index]}+'개)'"></span>
-													</div>
-												</th:block>
-												<th:block th:if="${#strings.substring(msg,0,1) != '!'}">
-													<div class="block md:inline">
-														<span class="text-sm" th:text="${msg}+'('+${#strings.arraySplit(rs.menuMsgDetail ?: '', '|')[msgStat.index]}+'개)'"></span>
-													</div>
-												</th:block>
-											</th:block>
-										</th:block>
-										<th:block th:if="${rs.orderSet == '2000' || rs.orderSet == '3000'}">
-											<th:block th:each="msg,msgStat : ${#strings.setSplit(rs.menuMsg,'|')}">
-												<th:block th:if="${#strings.substring(msg,0,1) == '!'}">
-													<span class="text-red-600 text-sm" th:text="${#strings.substring(msg,1)}"></span>
-												</th:block>
-												<th:block th:if="${#strings.substring(msg,0,1) != '!'}">
-													<span class="text-sm" th:text="${msg}"></span>
-												</th:block>
-											</th:block>
-										</th:block>
-									</div>
-									<div class="flex items-center justify-between mt-4">
-										<div th:if="${rs.deliveryStatus == '0000'}" class="status-indicator bg-green-100 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold flex items-center">
-											<i class="fas fa-clock mr-2"></i>
-											<span>배송완료</span>
-										</div>
-										<div th:if="${rs.deliveryStatus == '1000'}" class="status-indicator bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-semibold flex items-center">
-											<i class="fas fa-clock mr-2"></i>
-											<span>배송전</span>
-										</div>
-										<div class="text-right">
-											<div class="text-lg font-bold text-gray-800" th:text="${#numbers.formatInteger(rs.payAmt,3,'COMMA')} + '원'"></div>
-											<div class="text-sm text-gray-500" th:text="'수량: '+${rs.orderQty} + '개'"></div>
-										</div>
+									</th:block>
+									<th:block th:if="${order.orderStatus == '0000'}">
+										<span class="items-center">
+											<i class="fas fa-receipt mr-2"></i><span th:text="'주문번호: ' + ${order.orderNo}"></span>
+										</span>
+									</th:block>
+									<div th:if="${refund != null && refund.status == '0000'}">
+										<span class="items-center">
+											<span style="color: red;">환불 신청된 주문입니다.</span>
+										</span>
 									</div>
 								</div>
 							</div>
 						</div>
-					</th:block>
-				</div>
-		
-				<!-- 받는분 정보 카드 -->
-				<div class="bg-white rounded-2xl card-shadow p-6 mb-8">
-					<h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
-						<i class="fas fas fa-user-tag mr-3 text-blue-500"></i>
-						받는분 정보
-					</h3>
-					
-					<div class="space-y-4">
-						<div class="flex justify-between items-center py-2">
-							<span class="text-gray-600">이름</span>
-							<span class="font-semibold" th:text="${order.receiveName}"></span>
-						</div>
-						<div class="flex justify-between items-center py-2">
-							<span class="text-gray-600">핸드폰</span>
-							<span class="font-semibold" th:text="${receivePhone}"></span>
-						</div>
-						<div class="flex flex-col sm:flex-row sm:justify-between sm:items-center py-2 space-y-1 sm:space-y-0">
-							<span class="text-gray-600 flex items-center">
-								주소
-							</span>
-							<span class="font-semibold break-words whitespace-normal w-full sm:w-auto" th:text="${order.receivePostNum} + ') ' + ${order.receiveAddr} + ' ' + ${order.receiveAddrDetail}"></span>
-						</div>
-						<div class="flex justify-between items-center py-2">
-							<span class="text-gray-600 flex items-center">
-								배송 유형
-							</span>
-							<span class="font-semibold" th:if="${order.delivKind == '1000'}">당일배송(안산)</span>
-							<span class="font-semibold" th:if="${order.delivKind == '2000'}">우체국 택배(안산 외)</span>
-						</div>
-						<div class="flex flex-col sm:flex-row sm:justify-between sm:items-center py-2 space-y-1 sm:space-y-0">
-							<span class="text-gray-600 flex items-center">
-								공동현관 비밀번호
-							</span>
-							<span class="font-semibold break-words whitespace-normal w-full sm:w-auto" th:text="${order.commonPwd}"></span>
-						</div>
-						<div class="flex flex-col sm:flex-row sm:justify-between sm:items-center py-2 space-y-1 sm:space-y-0">
-							<span class="text-gray-600 flex items-center">
-								전하실말씀
-							</span>
-							<span class="font-semibold break-words whitespace-normal w-full sm:w-auto" th:text="${order.bigo}"></span>
+						<th:block th:each="rs,rsStat : ${order.productList}">
+							<div class="space-y-4">
+								<div class="product-item bg-gray-50 rounded-lg p-4 mb-4">
+									<div class="items-center justify-between">
+										<h4 class="font-semibold text-gray-800 mb-2 text-sm">
+											<span th:text="${rs.menuDay.substring(0,4)} + '.' + ${rs.menuDay.substring(4,6)} + '.' + ${rs.menuDay.substring(6,8)}"></span>
+											<span class="text-right inline-block float-right">
+												<th:block th:if="${rs.orderSet == '1000'}"> 일반세트(추가)</th:block>
+												<th:block th:if="${rs.orderSet == '2000'}"> 1인분세트</th:block>
+												<th:block th:if="${rs.orderSet == '3000'}"> 일반세트</th:block>
+												<th:block th:if="${rs.delivTime == '1000'}"> 오전배달</th:block>
+												<th:block th:if="${rs.delivTime == '2000'}"> 오후배달</th:block>
+											</span>
+										</h4>
+										<div th:class="${rs.orderSet == '1000'} ? 'md:grid md:grid-cols-3 md:gap-2 text-m text-gray-600' : 'grid grid-cols-2 md:grid-cols-3 gap-2 text-m text-gray-600'">
+											<th:block th:if="${rs.orderSet == '1000'}">
+												<th:block th:each="msg,msgStat : ${#strings.setSplit(rs.menuMsg,'|')}">
+													<th:block th:if="${#strings.substring(msg,0,1) == '!'}">
+														<div class="block md:inline">
+															<span class="text-red-600 text-sm" th:text="${#strings.substring(msg,1)}"></span>
+															<span class="text-red-600 text-sm" th:text="'('+${#strings.arraySplit(rs.menuMsgDetail ?: '', '|')[msgStat.index]}+'개)'"></span>
+														</div>
+													</th:block>
+													<th:block th:if="${#strings.substring(msg,0,1) != '!'}">
+														<div class="block md:inline">
+															<span class="text-sm" th:text="${msg}+'('+${#strings.arraySplit(rs.menuMsgDetail ?: '', '|')[msgStat.index]}+'개)'"></span>
+														</div>
+													</th:block>
+												</th:block>
+											</th:block>
+											<th:block th:if="${rs.orderSet == '2000' || rs.orderSet == '3000'}">
+												<th:block th:each="msg,msgStat : ${#strings.setSplit(rs.menuMsg,'|')}">
+													<th:block th:if="${#strings.substring(msg,0,1) == '!'}">
+														<span class="text-red-600 text-sm" th:text="${#strings.substring(msg,1)}"></span>
+													</th:block>
+													<th:block th:if="${#strings.substring(msg,0,1) != '!'}">
+														<span class="text-sm" th:text="${msg}"></span>
+													</th:block>
+												</th:block>
+											</th:block>
+										</div>
+										<div class="flex items-center justify-between mt-4">
+											<div th:if="${rs.deliveryStatus == '0000'}" class="status-indicator bg-green-100 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold flex items-center">
+												<i class="fas fa-clock mr-2"></i>
+												<span>배송완료</span>
+											</div>
+											<div th:if="${rs.deliveryStatus == '1000'}" class="status-indicator bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-semibold flex items-center">
+												<i class="fas fa-clock mr-2"></i>
+												<span>배송전</span>
+											</div>
+											<div class="text-right">
+												<div class="text-lg font-bold text-gray-800" th:text="${#numbers.formatInteger(rs.payAmt,3,'COMMA')} + '원'"></div>
+												<div class="text-sm text-gray-500" th:text="'수량: '+${rs.orderQty} + '개'"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</th:block>
+					</div>
+			
+					<!-- 받는분 정보 카드 -->
+					<div class="bg-white rounded-2xl card-shadow p-6 mb-8">
+						<h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+							<i class="fas fas fa-user-tag mr-3 text-blue-500"></i>
+							받는분 정보
+						</h3>
+						
+						<div class="space-y-4">
+							<div class="flex justify-between items-center py-2">
+								<span class="text-gray-600">이름</span>
+								<span class="font-semibold" th:text="${order.receiveName}"></span>
+							</div>
+							<div class="flex justify-between items-center py-2">
+								<span class="text-gray-600">핸드폰</span>
+								<span class="font-semibold" th:text="${receivePhone}"></span>
+							</div>
+							<div class="flex flex-col sm:flex-row sm:justify-between sm:items-center py-2 space-y-1 sm:space-y-0">
+								<span class="text-gray-600 flex items-center">
+									주소
+								</span>
+								<span class="font-semibold break-words whitespace-normal w-full sm:w-auto" th:text="${order.receivePostNum} + ') ' + ${order.receiveAddr} + ' ' + ${order.receiveAddrDetail}"></span>
+							</div>
+							<div class="flex justify-between items-center py-2">
+								<span class="text-gray-600 flex items-center">
+									배송 유형
+								</span>
+								<span class="font-semibold" th:if="${order.delivKind == '1000'}">당일배송(안산)</span>
+								<span class="font-semibold" th:if="${order.delivKind == '2000'}">우체국 택배(안산 외)</span>
+							</div>
+							<div class="flex flex-col sm:flex-row sm:justify-between sm:items-center py-2 space-y-1 sm:space-y-0">
+								<span class="text-gray-600 flex items-center">
+									공동현관 비밀번호
+								</span>
+								<span class="font-semibold break-words whitespace-normal w-full sm:w-auto" th:text="${order.commonPwd}"></span>
+							</div>
+							<div class="flex flex-col sm:flex-row sm:justify-between sm:items-center py-2 space-y-1 sm:space-y-0">
+								<span class="text-gray-600 flex items-center">
+									전하실말씀
+								</span>
+								<span class="font-semibold break-words whitespace-normal w-full sm:w-auto" th:text="${order.bigo}"></span>
+							</div>
 						</div>
 					</div>
-				</div>
-		
-				<!-- 결제 정보 카드 -->
-				<div class="bg-white rounded-2xl card-shadow p-6 mb-8">
-					<h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
-						<i class="fas fa-credit-card mr-3 text-blue-500"></i>
-						결제 정보
-					</h3>
-					
-					<div class="space-y-4">
-						<div class="flex justify-between items-center py-2">
-							<span class="text-gray-600 flex items-center">
-								<i class="fas fa-money-bill mr-2 text-green-500"></i>
-								상품금액
-							</span>
-							<span class="font-semibold" th:text="${#numbers.formatInteger(order.totalProductAmt,3,'COMMA')} +'원'"></span>
-						</div>
-						<div th:if="${order.delivKind != '2000' && order.totalDelyAmt > 0}" class="flex justify-between items-center py-2">
-							<span class="text-gray-600 flex items-center">
-								<i class="fas fa-truck mr-2 text-green-500"></i>
-								배송비
-							</span>
-							<span class="font-semibold" th:text="${#numbers.formatInteger(order.totalDelyAmt,3,'COMMA')} +'원'"></span>
-						</div>
-						<div th:if="${order.delivKind == '2000'}" class="flex justify-between items-center py-2">
-							<span class="text-gray-600 flex items-center">
-								<i class="fas fa-truck mr-2 text-green-500"></i>
-								우체국택배
-							</span>
-							<span class="font-semibold">4,000원</span>
-						</div>
-						<div th:if="${order.packaging == '1000'}" class="flex justify-between items-center py-2">
-							<span class="text-gray-600 flex items-center">
-								<i class="fas fa-snowflake mr-2 text-blue-500"></i>
-								보냉가방(신규) 보증금
-							</span>
-							<span class="font-semibold">5,000원</span>
-						</div>
-						<hr class="border-gray-200">
-						<div class="flex justify-between items-center py-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg px-4">
-							<span class="text-lg font-bold text-gray-800">총 주문 금액</span>
-							<span class="text-2xl font-bold text-blue-600" th:text="${#numbers.formatInteger(order.totalAmount,3,'COMMA')} +'원'"></span>
-						</div>
-					</div>
-				</div>
-				<!-- 환불 정보 카드 -->
-				<div th:if="${refund != null}" class="bg-white rounded-2xl card-shadow p-6 mb-8">
-					<h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
-						<i class="fas fa-undo mr-3 text-blue-500"></i>
-						환불 신청 정보
-					</h3>
-					
-					<div class="space-y-4">
-						<div class="flex justify-between items-center py-2">
-							<span class="text-gray-600">환불 사유</span>
-							<span class="font-semibold" th:text="${refund.refundMsg}"></span>
-						</div>
-						<div class="flex justify-between items-center py-2">
-							<span class="text-gray-600">환불 진행 상태</span>
-							<span class="font-semibold" th:switch="${refund.status}">
-								<span th:case="'0000'" th:text="'신청'"></span>
-								<span th:case="'1001'" th:text="'반려'"></span>
-								<span th:case="'2001'" th:text="'환불 완료'"></span>
-								<span th:case="*" th:text="${refund.status}"></span>
-							</span>
-						</div>
-						<div th:if="${refund.status == '1001' && !#strings.isEmpty(refund.refundAnswer)}" class="flex justify-between items-center py-2">
-							<span class="text-gray-600">반려 내용</span>
-							<span class="font-semibold" th:text="${refund.refundAnswer}"></span>
+			
+					<!-- 결제 정보 카드 -->
+					<div class="bg-white rounded-2xl card-shadow p-6 mb-8">
+						<h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+							<i class="fas fa-credit-card mr-3 text-blue-500"></i>
+							결제 정보
+						</h3>
+						
+						<div class="space-y-4">
+							<div class="flex justify-between items-center py-2">
+								<span class="text-gray-600 flex items-center">
+									<i class="fas fa-money-bill mr-2 text-green-500"></i>
+									상품금액
+								</span>
+								<span class="font-semibold" th:text="${#numbers.formatInteger(order.totalProductAmt,3,'COMMA')} +'원'"></span>
+							</div>
+							<div th:if="${order.delivKind != '2000' && order.totalDelyAmt > 0}" class="flex justify-between items-center py-2">
+								<span class="text-gray-600 flex items-center">
+									<i class="fas fa-truck mr-2 text-green-500"></i>
+									배송비
+								</span>
+								<span class="font-semibold" th:text="${#numbers.formatInteger(order.totalDelyAmt,3,'COMMA')} +'원'"></span>
+							</div>
+							<div th:if="${order.delivKind == '2000'}" class="flex justify-between items-center py-2">
+								<span class="text-gray-600 flex items-center">
+									<i class="fas fa-truck mr-2 text-green-500"></i>
+									우체국택배
+								</span>
+								<span class="font-semibold">4,000원</span>
+							</div>
+							<div th:if="${order.packaging == '1000'}" class="flex justify-between items-center py-2">
+								<span class="text-gray-600 flex items-center">
+									<i class="fas fa-snowflake mr-2 text-blue-500"></i>
+									보냉가방(신규) 보증금
+								</span>
+								<span class="font-semibold">5,000원</span>
+							</div>
+							<hr class="border-gray-200">
+							<div class="flex justify-between items-center py-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg px-4">
+								<span class="text-lg font-bold text-gray-800">총 주문 금액</span>
+								<span class="text-2xl font-bold text-blue-600" th:text="${#numbers.formatInteger(order.totalAmount,3,'COMMA')} +'원'"></span>
+							</div>
 						</div>
 					</div>
-				</div>
-				<!-- 주문 상태가 '0000'이고 결제일이 당일이며, 차단 조건에 해당하지 않는 경우 - 주문 취소 -->
-				<div class="flex flex-col md:flex-row gap-4 justify-center" th:if="${refund == null and order.orderStatus == '0000' and #strings.substring(order.orderPayDt, 0, 10) == #dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
-					<button type="button" onclick="fnPayCancel()" class="border-2 border-red-300 text-red-600 px-8 py-3 rounded-full font-semibold hover:border-red-400 hover:bg-red-50 transition-all duration-300 flex items-center justify-center">
-						<i class="fas fa-times mr-2"></i>
-						주문 취소
-					</button>
-				</div>
-				<!-- 주문 상태가 '0000'이고 결제일이 당일을 지났으며, 차단 조건에 해당하지 않는 경우 - 환불 신청 -->
-				<div class="flex flex-col md:flex-row gap-4 justify-center" th:if="${refund == null and order.orderStatus == '0000' and #strings.substring(order.orderPayDt, 0, 10) < #dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
-					<button type="button" onclick="fnRefundRequest()" id="refundBtn" class="border-2 border-red-300 text-red-600 px-8 py-3 rounded-full font-semibold hover:border-red-400 hover:bg-red-50 transition-all duration-300 flex items-center justify-center">
-						<i class="fas fa-times mr-2"></i>
-						환불 신청
-					</button>
-				</div>
-			</div>
+					<!-- 환불 정보 카드 -->
+					<div th:if="${refund != null}" class="bg-white rounded-2xl card-shadow p-6 mb-8">
+						<h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+							<i class="fas fa-undo mr-3 text-blue-500"></i>
+							환불 신청 정보
+						</h3>
+						
+						<div class="space-y-4">
+							<div class="flex justify-between items-center py-2">
+								<span class="text-gray-600">환불 사유</span>
+								<span class="font-semibold" th:text="${refund.refundMsg}"></span>
+							</div>
+							<div class="flex justify-between items-center py-2">
+								<span class="text-gray-600">환불 진행 상태</span>
+								<span class="font-semibold" th:switch="${refund.status}">
+									<span th:case="'0000'" th:text="'신청'"></span>
+									<span th:case="'1001'" th:text="'반려'"></span>
+									<span th:case="'2001'" th:text="'환불 완료'"></span>
+									<span th:case="*" th:text="${refund.status}"></span>
+								</span>
+							</div>
+							<div th:if="${refund.status == '1001' && !#strings.isEmpty(refund.refundAnswer)}" class="flex justify-between items-center py-2">
+								<span class="text-gray-600">반려 내용</span>
+								<span class="font-semibold" th:text="${refund.refundAnswer}"></span>
+							</div>
+						</div>
+					</div>
+					<!-- 주문 상태가 '0000'이고 결제일이 당일이며, 차단 조건에 해당하지 않는 경우 - 주문 취소 -->
+					<div class="flex flex-col md:flex-row gap-4 justify-center" th:if="${refund == null and order.orderStatus == '0000' and #strings.substring(order.orderPayDt, 0, 10) == #dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
+						<button type="button" onclick="fnPayCancel()" class="border-2 border-red-300 text-red-600 px-8 py-3 rounded-full font-semibold hover:border-red-400 hover:bg-red-50 transition-all duration-300 flex items-center justify-center">
+							<i class="fas fa-times mr-2"></i>
+							주문 취소
+						</button>
+					</div>
+					<!-- 주문 상태가 '0000'이고 결제일이 당일을 지났으며, 차단 조건에 해당하지 않는 경우 - 환불 신청 -->
+					<div class="flex flex-col md:flex-row gap-4 justify-center" th:if="${refund == null and order.orderStatus == '0000' and #strings.substring(order.orderPayDt, 0, 10) < #dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
+						<button type="button" onclick="fnRefundRequest()" id="refundBtn" class="border-2 border-red-300 text-red-600 px-8 py-3 rounded-full font-semibold hover:border-red-400 hover:bg-red-50 transition-all duration-300 flex items-center justify-center">
+							<i class="fas fa-times mr-2"></i>
+							환불 신청
+						</button>
+					</div>
+				</th:block>
+				<th:block th:if="${order == null or #lists.isEmpty(order)}">
+					<div class="bg-white rounded-2xl card-shadow p-10 text-center">
+						<div class="flex justify-center mb-4">
+							<div class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center">
+								<i class="fas fa-box-open text-2xl text-gray-400"></i>
+							</div>
+						</div>
+						<h3 class="text-lg font-semibold text-gray-700 mb-2">
+							아직 주문 내역이 없어요
+						</h3>
+						<p class="text-sm text-gray-500 mb-6">
+							반찬이 생각날 때 언제든지 주문해 주세요 😊
+						</p>
+						<a href="/order"
+						   class="inline-flex items-center px-6 py-3 bg-green-600 text-white text-sm font-semibold rounded-full hover:bg-green-700 transition">
+							메뉴 보러가기
+						</a>
+					</div>
+				</th:block>
+			</th:block>
 			<div id="modalRefund" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 opacity-0 pointer-events-none">
 				<div class="modal-content bg-white rounded-lg shadow-xl max-w-lg w-full mx-4 transform scale-90">
 					<div class="p-6">

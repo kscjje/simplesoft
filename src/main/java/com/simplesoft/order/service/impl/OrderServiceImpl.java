@@ -92,4 +92,9 @@ public class OrderServiceImpl implements OrderService{
 	public List<Map<String, Object>> selectOrderList(OrderVO vo){
 		return orderMapper.selectOrderList(vo);
 	}
+	//주문조회 상세 
+	@Override
+	public OrderVO selectOrderDetail(OrderVO vo) {
+		return orderMapper.selectOrderDetail(vo);
+	}
 }

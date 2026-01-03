@@ -26,4 +26,5 @@ public interface OrderMapper {
 	public int getRefundCheck(RefundVO vo);
 	public RefundVO getRefundDetail(OrderVO vo);
 	public List<Map<String, Object>> selectOrderList(OrderVO vo);
+	public OrderVO selectOrderDetail(OrderVO vo);
 }

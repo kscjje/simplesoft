@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.simplesoft.mapper.admOrder.service.AdmOrderService;
@@ -40,7 +41,6 @@ public class MypageController {
 	 */
 	@GetMapping("/noneOrderCheck")
 	public String noneOrderCheck(Model model) {
-		
 		return "/mypage/orderCheck";
 	}
 	
@@ -67,7 +67,7 @@ public class MypageController {
 		} else {
 			return "/mypage/orderCheck";
 		}
-		return "/mypage/orderDetail";
+		return "/mypage/noneOrderDetail";
 	}
 	
 	/**
@@ -76,26 +76,53 @@ public class MypageController {
 	 * @param model
 	 * @return
 	 */
-	@GetMapping("/orderInfo")
-	public String orderInfo(Model model, HttpSession session) {
+	@GetMapping("/orderList")
+	public String orderList(Model model, HttpSession session) {
 		MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
 		OrderVO vo = new OrderVO();
 		if(loginInfo == null) {
-			model.addAttribute("returnUrl", "/mypage/orderInfo");
+			model.addAttribute("returnUrl", "/mypage/orderList");
 			return GlobalVariable.REDIRECT_LOGIN;
 		}
 		BeanUtils.copyProperties(loginInfo, vo);
-		System.out.println(vo);
 		List<Map<String, Object>> list = orderService.selectOrderList(vo);
 		if(list != null) {
 			model.addAttribute("order",list);
-			System.out.println(list);
 		}
-		return "/mypage/orderInfo";
+		model.addAttribute("activeMenu", "order");
+		return "/mypage/orderList";
+	}
+	/**
+	 * 주문상세
+	 * 
+	 * @param model
+	 * @return
+	 * @throws Exception 
+	 */
+	@PostMapping("/orderDetail")
+	public String orderDetail(Model model, @ModelAttribute("orderVO") OrderVO vo, HttpSession session) throws Exception {
+		MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
+		if(loginInfo == null) {
+			model.addAttribute("returnUrl", "/mypage/orderList");
+			return GlobalVariable.REDIRECT_LOGIN;
+		}
+		BeanUtils.copyProperties(loginInfo, vo);
+		OrderVO order = orderService.selectOrderDetail(vo);
+		if(order != null) {
+			model.addAttribute("order",order);
+			model.addAttribute("receivePhone",EncryptUtils.AES256_Decrypt(order.getReceivePhone()));
+			model.addAttribute("refund",orderService.getRefundDetail(order));
+		} else {
+			model.addAttribute("PARAM_MESSAGE", "(ER_1)주문 내역이 없습니다.\n고객센터에 문의해 주세요.");
+			model.addAttribute("returnUrl", "/main");
+			return GlobalVariable.REDIRECT_SUBMIT;
+		}
+		model.addAttribute("activeMenu", "order");
+		return "/mypage/orderDetail";
 	}
 	
 	/**
-	 * 주문조회
+	 * 내정보 관리
 	 * 
 	 * @param model
 	 * @return
@@ -108,6 +135,7 @@ public class MypageController {
 			model.addAttribute("returnUrl", "/mypage/memberInfo");
 			return GlobalVariable.REDIRECT_LOGIN;
 		}
+		model.addAttribute("activeMenu", "memberInfo");
 		return "/mypage/memberInfo";
 	}
 }

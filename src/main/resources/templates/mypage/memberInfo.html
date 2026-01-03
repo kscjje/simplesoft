@@ -34,25 +34,44 @@
 					</div>
 				</th:block>
 				<th:block th:if="${session.memberInfo != null}">
-					<div class="container mx-auto px-4">
-						<!-- 주문 정보 카드 -->
-						<div class="bg-white rounded-2xl card-shadow p-6 mb-8">
-							<div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-								<div class="flex-1">
-									<div class="flex items-center justify-between mb-2">
-										<h2 class="text-2xl font-bold text-gray-800">주문 내역</h2>
-									</div>
-									<div class="items-center text-gray-600">
-										<span class="items-center">
-											<span style="color: red;">환불 신청된 주문입니다.</span>
-										</span>
-									</div>
-								</div>
+					<div class="bg-white rounded-2xl card-shadow p-10">
+						<div class="flex justify-center mb-6">
+							<div class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center">
+								<i class="fas fa-user text-2xl text-gray-400"></i>
 							</div>
+						</div>
+					
+						<h3 class="text-lg font-semibold text-gray-700 text-center mb-8">
+							내 정보 관리
+						</h3>
+					
+						<div class="space-y-4 text-sm">
+							<div class="flex justify-between border-b pb-3">
+								<span class="text-gray-500">고객명</span>
+								<span class="text-gray-800 font-medium" th:text="${getMember.userNm}"></span>
+							</div>
+					
+							<div class="flex justify-between border-b pb-3">
+								<span class="text-gray-500">이메일</span>
+								<span class="text-gray-800 font-medium" th:text="${getMember.userEmail}"></span>
+							</div>
+					
+							<div class="flex justify-between">
+								<span class="text-gray-500">연락처</span>
+								<span class="text-gray-800 font-medium" th:text="${getMember.userMobile}"></span>
+							</div>
+						</div>
+					
+						<div class="mt-8 text-center">
+							<a href="/member/edit"
+							   class="inline-flex items-center px-6 py-3 bg-green-600 text-white text-sm font-semibold rounded-full hover:bg-green-700 transition">
+								정보 수정
+							</a>
 						</div>
 					</div>
 				</th:block>
 			</div>
+			
 			<script th:inline="javascript">
 				home = function (){
 					location.href="/";

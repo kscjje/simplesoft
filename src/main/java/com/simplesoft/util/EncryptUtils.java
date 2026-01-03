@@ -316,4 +316,52 @@ public class EncryptUtils {
 			}
 		}
 	}
+	
+	// 고객명 가운데 마스킹
+	public static String maskUserName(String name) {
+	    if (name == null || name.length() < 2) {
+	        return name;
+	    }
+
+	    int len = name.length();
+	    return name.charAt(0)
+	            + "*".repeat(len - 2)
+	            + name.charAt(len - 1);
+	}
+
+	// 이메일 마스킹
+	public static String maskEmail(String email) {
+	    if (email == null || !email.contains("@")) {
+	        return email;
+	    }
+
+	    String[] parts = email.split("@");
+	    String id = parts[0];
+	    String domain = parts[1];
+
+	    if (id.length() <= 2) {
+	        return id.charAt(0) + "*" + "@" + domain;
+	    }
+
+	    return id.substring(0, 2)
+	            + "*".repeat(id.length() - 2)
+	            + "@" + domain;
+	}
+
+	// 휴대폰 마스킹
+	public static String maskPhone(String phone) {
+	    if (phone == null) {
+	        return phone;
+	    }
+
+	    // 숫자만 추출
+	    String digits = phone.replaceAll("\\D", "");
+
+	    if (digits.length() < 10) {
+	        return phone;
+	    }
+
+	    return digits.replaceAll("(\\d{3})(\\d{4})(\\d{4})", "$1-****-$3");
+	}
+
 }

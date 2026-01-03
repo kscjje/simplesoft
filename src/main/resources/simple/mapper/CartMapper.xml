@@ -199,7 +199,7 @@
 				AND A.USER_NO = #{userNo}
 			</otherwise> 
 		</choose>
-		<if test="cartList neq null and cartList.length > 0 and userNo eq 0">
+		<if test="cartList neq null and cartList.length > 0">
 			AND A.CART_NO IN
 			<foreach collection="cartList" item="item" index="index" open="(" close=")" separator=",">
 				#{item}

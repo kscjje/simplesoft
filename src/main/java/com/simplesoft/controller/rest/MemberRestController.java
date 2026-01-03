@@ -84,7 +84,7 @@ public class MemberRestController {
 	}
 	
 	/**
-	 * 비밀번호 찾기
+	 * 내정보 관리 비밀번호 확인
 	 * 
 	 * @param model
 	 * @return

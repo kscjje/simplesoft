@@ -93,7 +93,9 @@ public class OrderRestController {
 				if(!"".equals(vo.getReceiveTel()) && vo.getReceiveTel() != null){
 					vo.setReceiveTel(EncryptUtils.AES256_Encrypt(vo.getReceiveTel()));
 				}
-				vo.setOrderPwd(EncryptUtils.AES256_Encrypt(vo.getOrderPwd()));
+				if(!"".equals(vo.getOrderPwd()) && vo.getOrderPwd() != null){
+					vo.setOrderPwd(EncryptUtils.AES256_Encrypt(vo.getOrderPwd()));
+				}
 				vo.setOrderStatus(GlobalVariable.ORDER_STATUS_WAIT); 								//주문상태-주문대기 (조건)
 				orderService.updateOrderApplyInfo(vo);
 				result.put("resultCode", "SUCCESS");

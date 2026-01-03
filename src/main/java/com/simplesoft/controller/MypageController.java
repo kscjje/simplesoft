@@ -135,6 +135,15 @@ public class MypageController {
 			model.addAttribute("returnUrl", "/mypage/memberInfo");
 			return GlobalVariable.REDIRECT_LOGIN;
 		}
+		
+		MemberVO getMember = new MemberVO();
+		BeanUtils.copyProperties(loginInfo, getMember);
+		
+		getMember.setUserNm(EncryptUtils.maskUserName(getMember.getUserNm()));
+		getMember.setUserEmail(EncryptUtils.maskEmail(getMember.getUserEmail()));
+		getMember.setUserMobile(EncryptUtils.maskPhone(getMember.getUserMobile()));
+		
+		model.addAttribute("getMember", getMember);
 		model.addAttribute("activeMenu", "memberInfo");
 		return "/mypage/memberInfo";
 	}

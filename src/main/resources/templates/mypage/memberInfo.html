@@ -6,12 +6,18 @@
 			<style>
 				.content-container {
 					max-width: 600px;
-					min-height: 60vh;
+					min-height: 53vh;
+					margin: 0 auto;
+				}
+				.content-container-hedaer {
+					max-width: 1200px;
 					margin: 0 auto;
 				}
 			</style>
-			<div class="content-container justify-content-center text-center">
+			<div class="content-container-hedaer justify-content-center text-center">
 				<th:block th:replace="fragments/mypageTabs :: mypageTabs(${activeMenu})"></th:block>
+			</div>
+			<div class="content-container justify-content-center text-center">
 				
 				<th:block th:if="${session.memberInfo == null}">
 					<div class="rounded-lg p-4 h-90 overflow-y-auto text-sm text-gray-700 leading-relaxed mb-5">

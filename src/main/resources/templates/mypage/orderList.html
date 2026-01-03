@@ -59,7 +59,7 @@
 				<th:block th:if="${order != null and !#lists.isEmpty(order)}">
 					<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 						<th:block th:each="rs, rsStat : ${order}">
-							<div class="bg-white rounded-2xl card-shadow p-6 product-item cursor-pointer" th:data-order-no="${rs.orderNo}" onclick="fnOrderDetail(this.dataset.orderNo)">
+							<div class="bg-white rounded-2xl card-shadow p-6 product-item">
 								
 								<!-- 주문일자 -->
 								<div class="items-center text-gray-600 mb-2">
@@ -86,9 +86,15 @@
 												<span class="text-gray-600">주문번호: </span>
 												<span th:text="${rs.orderNo}"></span>
 											</h4>
-											<div class="flex justify-between items-center mt-4 pt-4 border-t">
-											    <span class="text-sm text-gray-500">결제금액</span>
-											    <span class="text-lg font-bold text-gray-900" th:text="${#numbers.formatInteger(rs.totalAmount,3,'COMMA')} +'원'"></span>
+											<div class="flex justify-between items-center mt-4 pt-2 border-t">
+												<span class="text-sm text-gray-500">결제금액</span>
+												<span class="text-lg font-bold text-gray-900" th:text="${#numbers.formatInteger(rs.totalAmount,3,'COMMA')} +'원'"></span>
+											</div>
+											
+											<div class="mt-3 flex justify-end">
+												<button type="button" class="text-sm font-bold text-green-600 hover:underline" th:data-order-no="${rs.orderNo}" onclick="fnOrderDetail(this.dataset.orderNo)">
+													주문 상세 보기 >
+												</button>
 											</div>
 										</div>
 									</th:block>
@@ -120,17 +126,17 @@
 			<script>
 				fnOrderDetail = function (orderNo){
 					const form = document.createElement('form');
-				    form.method = 'POST';
-				    form.action = '/mypage/orderDetail';
+					form.method = 'POST';
+					form.action = '/mypage/orderDetail';
 				
-				    const input = document.createElement('input');
-				    input.type = 'hidden';
-				    input.name = 'orderNo';
-				    input.value = orderNo;
+					const input = document.createElement('input');
+					input.type = 'hidden';
+					input.name = 'orderNo';
+					input.value = orderNo;
 				
-				    form.appendChild(input);
-				    document.body.appendChild(form);
-				    form.submit();
+					form.appendChild(input);
+					document.body.appendChild(form);
+					form.submit();
 				}
 			</script>
 		</main>

@@ -26,6 +26,8 @@ public class MemberVO {
 	private String zipcode;
 	private String address;
 	private String addressDetail;
+	private String commonPwd;
+	private String bigo;
 	private Date pwChangeDt;
 	private Date lasLoginDt;
 	private String regUser;

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 	<div th:fragment="mypageTabs(activeMenu)">
-	    <div class="grid grid-cols-2 gap-2 sm:gap-4 mb-8">
+	    <div class="grid grid-cols-3 gap-3 sm:gap-4 mb-8">
 	        <!-- 주문 내역 -->
 	        <a href="/mypage/orderList"
 	           class="flex items-center justify-center p-3 rounded-xl border text-sm font-semibold transition cursor-pointer"
@@ -12,6 +12,14 @@
 	            주문 내역
 	        </a>
 	        
+	        <!-- 배송지 관리 -->
+	        <a href="/mypage/address"
+	           class="flex items-center justify-center p-3 rounded-xl border text-sm font-semibold transition cursor-pointer"
+	           th:classappend="${activeMenu == 'address'}
+	               ? ' bg-green-600 text-white border-green-600'
+	               : ' bg-white text-gray-700 hover:bg-green-50'">
+	            배송지 관리
+	        </a>
 	        <!-- 내정보 관리 -->
 	        <a href="/mypage/memberInfo"
 	           class="flex items-center justify-center p-3 rounded-xl border text-sm font-semibold transition cursor-pointer"

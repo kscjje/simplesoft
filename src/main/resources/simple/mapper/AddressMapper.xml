@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.simplesoft.mapper.member.AddressMapper">
+
+	<!-- 배송지 등록 -->
+	<insert id="insertAddress" parameterType="hashMap" useGeneratedKeys="true" keyProperty="addressSeq">
+		/* AddressMapper.insertAddress */
+		INSERT INTO ADDRESS_MST
+		(USER_NO, ADDRESS_NM, ZIPCODE, ADDRESS, ADDRESS_DETAIL, COMMON_PWD, BIGO, CHOOSE_YN, REG_DT)
+		VALUES(
+			  #{userNo}
+			, #{addressNm}
+			, #{zipcode}
+			, #{address}
+			, #{addressDetail}
+			, #{commonPwd}
+			, #{bigo}
+			, 'N'
+			, SYSDATE()
+		);
+	</insert>
+	
+	<!-- 배송지 리스트 조회 -->
+	<select id="selectAddressList" parameterType="hashMap" resultType="CamelHashMap">
+		/* AddressMapper.selectAddressList */
+		SELECT 
+			  ADDRESS_SEQ
+			, ADDRESS_NM
+			, ZIPCODE
+			, ADDRESS
+			, ADDRESS_DETAIL
+			, COMMON_PWD
+			, BIGO
+			, CHOOSE_YN
+			, DATE_FORMAT(A.REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
+		FROM ADDRESS_MST A
+		WHERE USER_NO = #{userNo}
+		ORDER BY CHOOSE_YN DESC
+	</select>
+	
+	<!-- 배송지 업데이트 -->
+	<update id="updateAddress" parameterType="com.simplesoft.member.service.AddressVO">
+		/* AddressMapper.updateAddress */
+		UPDATE ADDRESS_MST 
+		SET
+			  ADDRESS_NM = #{addressNm}
+			, ZIPCODE = #{zipcode}
+			, ADDRESS = #{address}
+			, ADDRESS_DETAIL = #{addressDetail}
+			, COMMON_PWD = #{commonPwd}
+			, BIGO = #{bigo}
+			, UPT_DT = SYSDATE()
+		WHERE ADDRESS_SEQ = #{addressSeq}
+		AND USER_NO = #{userNo} 
+	</update>
+	
+	<!-- 대표배송지 수정 -->
+	<update id="updateAddressChoose" parameterType="com.simplesoft.member.service.AddressVO">
+		/* AddressMapper.updateAddressChoose */
+		UPDATE ADDRESS_MST
+		SET CHOOSE_YN = CASE
+			WHEN ADDRESS_SEQ = #{addressSeq} THEN 'Y'
+			ELSE 'N'
+		END,
+		UPT_DT = SYSDATE()
+		WHERE USER_NO = #{userNo};
+	</update>
+	
+	<!-- 배송지 삭제 -->
+	<delete id="deleteAddress" parameterType="com.simplesoft.member.service.AddressVO">
+		/* AddressMapper.deleteAddress */
+		DELETE FROM ADDRESS_MST 
+		WHERE ADDRESS_SEQ = #{addressSeq}
+		AND USER_NO = #{userNo}
+	</delete>
+	
+	<select id="selectAddressNmCheck" parameterType="com.simplesoft.member.service.AddressVO" resultType="int">
+		/* AddressMapper.selectAddressNmCheck */
+		SELECT COUNT(*) FROM ADDRESS_MST
+		WHERE USER_NO = #{userNo}
+		AND ADDRESS_NM = #{addressNm}
+		<if test="addressSeq neq null and addressSeq neq ''">
+			AND ADDRESS_SEQ != #{addressSeq}
+		</if>
+	</select>
+	
+</mapper>

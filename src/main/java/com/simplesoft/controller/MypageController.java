@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.simplesoft.mapper.admOrder.service.AdmOrderService;
+import com.simplesoft.member.service.AddressService;
 import com.simplesoft.member.service.MemberVO;
 import com.simplesoft.order.service.OrderService;
 import com.simplesoft.order.service.OrderVO;
@@ -29,10 +29,10 @@ public class MypageController {
 	
 	@Autowired
 	OrderService orderService;
-
-	@Autowired
-	AdmOrderService admOrderService;
 	
+	@Autowired
+	AddressService addressService;
+
 	/**
 	 * 비회원 주문조회
 	 * 
@@ -146,5 +146,27 @@ public class MypageController {
 		model.addAttribute("getMember", getMember);
 		model.addAttribute("activeMenu", "memberInfo");
 		return "/mypage/memberInfo";
+	}
+	
+	/**
+	 * 배송지 관리
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/address")
+	public String address(Model model, HttpSession session, Map<String,Object> paramMap) {
+		MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
+		
+		if(loginInfo == null) {
+			model.addAttribute("returnUrl", "/mypage/memberInfo");
+			return GlobalVariable.REDIRECT_LOGIN;
+		}
+		paramMap.put("userNo", loginInfo.getUserNo());
+		List<Map<String, Object>> list = addressService.selectAddressList(paramMap);
+		
+		model.addAttribute("list", list);
+		model.addAttribute("activeMenu", "address");
+		return "/mypage/address";
 	}
 }

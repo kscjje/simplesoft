@@ -105,6 +105,27 @@
 						</div>
 					</div>
 	
+					<!-- 이메일 -->
+					<div>
+						<label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+							<i class="fas fa-envelope mr-2 text-blue-500"></i>이메일 <font color="red">* </font>
+						</label>
+						<div class="flex flex-wrap items-center gap-2">
+							<input type="text" id="o_email" maxlength="30" class="flex-1 form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none" placeholder="example@email.com">
+							<span class="mt-1">@</span>
+							<input type="text" id="o_email2" maxlength="30" class="flex-1 form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none" placeholder="이메일 도메인" onkeypress="enterKey2()">
+							<select name="emailSelect" class="border border-gray-300 rounded px-3 py-2 w-full bg-white" onchange="res(this.value)">
+								<option value="">직접입력</option>
+								<option value="naver.com">naver.com</option>
+								<option value="daum.net">daum.net</option>
+								<option value="hanmail.net">hanmail.net</option>
+								<option value="nate.com">nate.com</option>
+								<option value="gmail.com">gmail.com</option>
+							</select>
+							<input type="text" id="od_email" name="userEmail" maxlength="20" class="hidden">
+						</div>
+					</div>
+	
 					<!-- 주소 -->
 					<div>
 						<label class="block text-sm font-medium text-gray-700 mb-2">
@@ -131,28 +152,15 @@
 							   class="w-full form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
 							   placeholder="상세주소를 입력하세요">
 					</div>
-	
-					<!-- 이메일 -->
+					
 					<div>
-						<label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-							<i class="fas fa-envelope mr-2 text-blue-500"></i>이메일 <font color="red">* </font>
-						</label>
-						<div class="flex flex-wrap items-center gap-2">
-							<input type="text" id="o_email" maxlength="30" class="flex-1 form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none" placeholder="example@email.com">
-							<span class="mt-1">@</span>
-							<input type="text" id="o_email2" maxlength="30" class="flex-1 form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none" placeholder="이메일 도메인" onkeypress="enterKey2()">
-							<select name="emailSelect" class="border border-gray-300 rounded px-3 py-2 w-full bg-white" onchange="res(this.value)">
-								<option value="">직접입력</option>
-								<option value="naver.com">naver.com</option>
-								<option value="daum.net">daum.net</option>
-								<option value="hanmail.net">hanmail.net</option>
-								<option value="nate.com">nate.com</option>
-								<option value="gmail.com">gmail.com</option>
-							</select>
-							<input type="text" id="od_email" name="userEmail" maxlength="20" class="hidden">
-						</div>
+						<label for="commonPwd" class="block text-sm font-medium text-gray-700 mb-2">공동현관 비밀번호</label>
+						<input type="text" id="commonPwd" name="commonPwd" class="w-full px-3 py-2 border border-gray-300 rounded-md input-focus" placeholder="비밀번호 입력 예시: 종버튼 + 1234" maxlength="50">
 					</div>
-	
+					<div>
+						<label for="bigo" class="block text-sm font-medium text-gray-700 mb-2">전하실 말씀</label>
+						<textarea id="bigo" name="bigo" class="w-full px-3 py-2 border border-gray-300 rounded-md input-focus" maxlength="300" rows="3" style="resize: none;" placeholder="배송 시에 찾기 어려운 곳이나 기타 사항이 있는 경우 원활한 배송을 위해 기입해 주시기 바랍니다 :)"></textarea>
+					</div>
 					<!-- 제출 버튼 -->
 					<div class="pt-6">
 						<button type="button" id="submitBtn"
@@ -402,9 +410,12 @@
 						messageEl.textContent = '';
 					}
 				}
-		
-				// 폼 제출
+				
+				let isSubmitting = false;
 				function memberSave(){
+					
+					 if (isSubmitting) return; // 🚫 이미 요청 중
+					 
 					// 필수 검증
 					if (!idChecked) {
 				        alert('아이디 중복 확인을 해주세요.');
@@ -477,6 +488,8 @@
 					// 폼 데이터 수집 - form 요소를 직접 가져와야 함
 					let memberVO = $("#memberForm").serializeObject();
 					
+					isSubmitting = true; // ✅ 여기서 잠금
+					
 					// AJAX로 서버에 전송
 				    $.ajax({
 				        url: "/rest/member/save", // 실제 API 엔드포인트로 수정
@@ -493,6 +506,9 @@
 				        },
 				        error: function(xhr, status, error) {
 				            alert('회원가입 처리 중 오류가 발생했습니다. \n고객센터에 문의해 주세요.');
+				        },
+				        complete: function() {
+				            isSubmitting = false; // 🔓 실패 시만 다시 열어줌
 				        }
 				    });
 				}

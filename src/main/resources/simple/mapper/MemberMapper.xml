@@ -5,6 +5,11 @@
 	<!-- 회원 등록 -->
 	<insert id="insertMember" parameterType="com.simplesoft.member.service.MemberVO">
 		/* MemberMapper.insertMember */
+		
+		<selectKey keyProperty="userNo" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		
 		INSERT INTO USER_MST
 		(USER_ID, USER_PW, USER_NM, USER_EMAIL, USER_MOBILE, ZIPCODE, ADDRESS, ADDRESS_DETAIL, LAST_LOGIN_DT, REG_USER, REG_DT)
 		VALUES(
@@ -61,9 +66,11 @@
 			, A.USER_EMAIL
 			, A.USER_TEL
 			, A.USER_MOBILE
-			, A.ZIPCODE
-			, A.ADDRESS
-			, A.ADDRESS_DETAIL
+			, IFNULL(B.ZIPCODE, A.ZIPCODE) AS ZIPCODE
+			, IFNULL(B.ADDRESS, A.ADDRESS) AS ADDRESS
+			, IFNULL(B.ADDRESS_DETAIL, A.ADDRESS_DETAIL) AS ADDRESS_DETAIL 
+			, B.COMMON_PWD
+			, B.BIGO
 			, A.PW_CHANGE_DT
 			, A.LAST_LOGIN_DT
 			, A.USER_STATUS
@@ -72,6 +79,7 @@
 			, A.UPT_USER
 			, DATE_FORMAT(A.UPT_DT,'%Y-%m-%d %H:%i:%s') AS UPT_DT
 		FROM USER_MST A
+		LEFT JOIN ADDRESS_MST B ON A.USER_NO = B.USER_NO AND B.CHOOSE_YN ='Y'
 		WHERE USER_ID = #{userId}
 		AND USER_STATUS = '1000'
 	</select>

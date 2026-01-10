@@ -501,7 +501,13 @@ public class OrderController {
 					return GlobalVariable.REDIRECT_SUBMIT;
 				}
 			}
-			model.addAttribute("loginInfo", loginInfo);
+			
+			MemberVO memDetail = memberService.selectMemberDetail(loginInfo);	//대표배송지가 변경되었으면 새로 가져오기 위함
+			if(memDetail == null) {
+				model.addAttribute("returnUrl", "/cart");
+				return GlobalVariable.REDIRECT_LOGIN;
+			}
+			model.addAttribute("loginInfo", memDetail);
 			model.addAttribute("orderNo", orderNo);
 			model.addAttribute("order", order);
 			model.addAttribute("clientKey", clientKey);

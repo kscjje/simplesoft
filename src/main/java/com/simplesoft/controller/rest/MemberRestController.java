@@ -2,6 +2,7 @@ package com.simplesoft.controller.rest;
 
 import java.security.SecureRandom;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +12,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.simplesoft.member.service.AddressService;
+import com.simplesoft.member.service.AddressVO;
 import com.simplesoft.member.service.MemberService;
 import com.simplesoft.member.service.MemberVO;
 import com.simplesoft.reponse.BasicResponse;
 import com.simplesoft.reponse.CommonResponse;
 import com.simplesoft.util.EncryptUtils;
+import com.simplesoft.util.GlobalVariable;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +31,9 @@ public class MemberRestController {
 
 	@Autowired
 	MemberService memberService;
+	
+	@Autowired
+	AddressService addressService;
 	
 	private static final String CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 	private static final SecureRandom RANDOM = new SecureRandom();
@@ -111,6 +118,73 @@ public class MemberRestController {
 		}
 		return new CommonResponse<Map<String, Object>>(returnData);
 	}
+	
+	/**
+	 * 대표 배송지 설정
+	 * 
+	 * @param model
+	 * @return
+	 * @throws Exception 
+	 */
+	@PostMapping("/addressChoose")
+	public BasicResponse addressChoose(Model model, HttpSession session, @ModelAttribute("addressVO") AddressVO vo) throws Exception {
+		
+		Map<String, Object> returnData = new HashMap<String, Object>();
+		MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
+		if(loginInfo == null) {
+			return new CommonResponse<Map<String, Object>>(returnData);
+		} else {
+			vo.setUserNo(loginInfo.getUserNo());
+		}
+		
+		addressService.updateAddressChoose(vo);
+		return new CommonResponse<Map<String, Object>>(returnData);
+	}
+	
+	/**
+	 * 배송지 삭제
+	 * 
+	 * @param model
+	 * @return
+	 * @throws Exception 
+	 */
+	@PostMapping("/addressDelete")
+	public BasicResponse addressDelete(Model model, HttpSession session, @ModelAttribute("addressVO") AddressVO vo) throws Exception {
+		
+		Map<String, Object> returnData = new HashMap<String, Object>();
+		MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
+		if(loginInfo == null) {
+			return new CommonResponse<Map<String, Object>>(returnData);
+		} else {
+			vo.setUserNo(loginInfo.getUserNo());
+		}
+		
+		addressService.deleteAddress(vo);
+		return new CommonResponse<Map<String, Object>>(returnData);
+	}
+	
+	/**
+	 * 배송지 리스트
+	 * 
+	 * @param model
+	 * @return
+	 * @throws Exception 
+	 */
+	@PostMapping("/addressList")
+	public BasicResponse addressList(Model model, HttpSession session, Map<String,Object> paramMap) throws Exception {
+		
+		Map<String, Object> returnData = new HashMap<String, Object>();
+		MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
+		if(loginInfo == null) {
+			return new CommonResponse<Map<String, Object>>(returnData);
+		}
+		
+		paramMap.put("userNo", loginInfo.getUserNo());
+		List<Map<String, Object>> list = addressService.selectAddressList(paramMap);
+		returnData.put("list", list);
+		return new CommonResponse<Map<String, Object>>(returnData);
+	}
+	
 	public static String random8() {
 		StringBuilder sb = new StringBuilder(8);
 		for (int i = 0; i < 8; i++) {
@@ -118,5 +192,63 @@ public class MemberRestController {
 			sb.append(CHARSET.charAt(idx));
 		}
 		return sb.toString();
+	}
+	
+	/**
+	 * 배송지 등록
+	 * 
+	 * @param model
+	 * @return
+	 * @throws Exception 
+	 */
+	@PostMapping("/addressInsert")
+	public BasicResponse addressInsert(Model model, HttpSession session, @ModelAttribute("addressVO") AddressVO vo) throws Exception {
+		
+		Map<String, Object> returnData = new HashMap<String, Object>();
+		MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
+		if(loginInfo == null) {
+			return new CommonResponse<Map<String, Object>>(returnData);
+		} else {
+			vo.setUserNo(loginInfo.getUserNo());
+		}
+		System.out.println(vo);
+		// 1. 배송지명 중복 체크
+		int dupCnt = addressService.selectAddressNmCheck(vo);
+		if (dupCnt > 0) {
+			//-1 이나 커스텀 예외 / 코드로 처리
+			returnData.put("ERROR","이미 등록된 배송지명입니다.");
+		} else {
+			addressService.insertAddress(vo);
+		}
+		return new CommonResponse<Map<String, Object>>(returnData);
+	}
+	
+	/**
+	 * 배송지 수정
+	 * 
+	 * @param model
+	 * @return
+	 * @throws Exception 
+	 */
+	@PostMapping("/addressUpdate")
+	public BasicResponse addressUpdate(Model model, HttpSession session, @ModelAttribute("addressVO") AddressVO vo) throws Exception {
+		
+		Map<String, Object> returnData = new HashMap<String, Object>();
+		MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
+		if(loginInfo == null) {
+			return new CommonResponse<Map<String, Object>>(returnData);
+		} else {
+			vo.setUserNo(loginInfo.getUserNo());
+		}
+		System.out.println(vo);
+		// 1. 배송지명 중복 체크
+		int dupCnt = addressService.selectAddressNmCheck(vo);
+		if (dupCnt > 0) {
+			//-1 이나 커스텀 예외 / 코드로 처리
+			returnData.put("ERROR","이미 등록된 배송지명입니다.");
+		} else {
+			addressService.updateAddress(vo);
+		}
+		return new CommonResponse<Map<String, Object>>(returnData);
 	}
 }

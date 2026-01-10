@@ -101,24 +101,14 @@
 					<div class="space-y-6">
 						<!-- Orderer Information -->
 						<div class="bg-white rounded-lg shadow-lg p-6">
-							<div class="flex items-center justify-between mb-4">
-								<h2 class="text-xl font-bold text-gray-800 flex items-center">
-									<i class="fas fa-user text-blue-500 mr-2"></i>
-									주문하시는 분
-								</h2>
-							
-								<!-- 배송지 목록 버튼 -->
-								<button type="button"
-										onclick="openAddressModal(1)"
-										class="px-3 py-2 border border-blue-500 text-blue-600 rounded-md text-sm hover:bg-blue-50">
-									배송지 목록
-								</button>
-							</div>
-
+							<h2 class="text-xl font-bold mb-4 text-gray-800">
+								<i class="fas fa-user text-blue-500 mr-2"></i>
+								주문하시는 분
+							</h2>
 							<div class="space-y-4">
 								<div>
 									<label for="o_name" class="block text-sm font-medium text-gray-700 mb-2"><font color="red">* </font>이름</label>
-									<input type="text" id="o_name" name="orderName" maxlength="10" class="w-full px-3 py-2 border border-gray-300 rounded-md input-focus" readonly placeholder="이름을 입력하세요" th:value="${loginInfo.userNm}">
+									<input type="text" id="o_name" name="orderName" maxlength="10" class="w-full px-3 py-2 border border-gray-300 rounded-md input-focus" placeholder="이름을 입력하세요" th:value="${loginInfo.userNm}">
 								</div>
 								<th:block th:if="${session.loginInfo == null}">
 								<div>
@@ -132,7 +122,7 @@
 								</div>
 								<div>
 									<label for="o_phone" class="block text-sm font-medium text-gray-700 mb-2"><font color="red">* </font>핸드폰</label>
-									<input type="text" id="o_phone" name="orderPhone" class="phoneNumber w-full px-3 py-2 border border-gray-300 rounded-md input-focus" readonly th:value="${loginInfo.userMobile}">
+									<input type="text" id="o_phone" name="orderPhone" class="phoneNumber w-full px-3 py-2 border border-gray-300 rounded-md input-focus" th:value="${loginInfo.userMobile}">
 								</div>
 								<div>
 									<label for="o_address" class="block text-sm font-medium text-gray-700 mb-2">
@@ -181,23 +171,11 @@
 								<i class="fas fa-user-friends text-blue-500 mr-2"></i>
 								받으시는 분
 							</h2>
-						
-							<div class="flex items-center gap-3">
-								<!-- 주문자와 동일 -->
-								<label for="check1" class="flex items-center space-x-2 cursor-pointer">
-									<input id="check1" type="checkbox" class="check1 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-									<span class="text-sm text-gray-700">주문자와 동일</span>
-								</label>
-								
-								<!-- 배송지 목록 버튼 -->
-								<button type="button"
-										onclick="openAddressModal(2)"
-										class="px-3 py-2 border border-blue-500 text-blue-600 rounded-md text-sm hover:bg-blue-50">
-									배송지 목록
-								</button>
-							</div>
+							<label for="check1" class="flex items-center space-x-2 cursor-pointer">
+								<input id="check1" type="checkbox" class="check1 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+								<span class="text-sm text-gray-700">주문자와 동일</span>
+							</label>
 						</div>
-
 						<div class="space-y-4">
 							<div>
 								<label for="r_name" class="block text-sm font-medium text-gray-700 mb-2"><font color="red">* </font>이름</label>
@@ -392,24 +370,14 @@
 			<form id="mo_form" method="post" onsubmit="return false;">
 				<div class="w-full mb-5">
 					<div class="bg-white rounded-lg shadow-lg p-6">
-						<div class="mb-2">
-							<h2 class="text-xl font-bold text-gray-800 flex items-center mb-2">
-								<i class="fas fa-user-friends text-blue-500 mr-2"></i>
-								주문하시는 분
-							</h2>
-							<div class="flex justify-end">
-								<button type="button"
-										onclick="openAddressModal(1)"
-										class="px-3 py-2 border border-blue-500 text-blue-600 rounded-md text-sm whitespace-nowrap hover:bg-blue-50">
-									배송지 목록
-								</button>
-							</div>
-						</div>
-
+						<h2 class="text-xl font-bold mb-4 text-gray-800">
+							<i class="fas fa-user text-blue-500 mr-2"></i>
+							주문하시는 분
+						</h2>
 						<div class="space-y-4">
 							<div>
 								<label for="o_name_mo" class="block text-sm font-medium text-gray-700 mb-2"><font color="red">* </font>이름</label>
-								<input type="text" id="o_name_mo" name="orderName" maxlength="10" class="w-full px-3 py-3 border border-gray-300 rounded-md input-focus" readonly placeholder="이름을 입력하세요" th:value="${loginInfo.userNm}">
+								<input type="text" id="o_name_mo" name="orderName" maxlength="10" class="w-full px-3 py-3 border border-gray-300 rounded-md input-focus" placeholder="이름을 입력하세요" th:value="${loginInfo.userNm}">
 							</div>
 							<th:block th:if="${session.loginInfo == null}">
 							<div>
@@ -423,7 +391,7 @@
 							</div>
 							<div>
 								<label for="o_phone_mo" class="block text-sm font-medium text-gray-700 mb-2"><font color="red">* </font>핸드폰</label>
-								<input type="text" id="o_phone_mo" name="orderPhone" class="phoneNumber w-full px-3 py-3 border border-gray-300 rounded-md input-focus" readonly th:value="${loginInfo.userMobile}">
+								<input type="text" id="o_phone_mo" name="orderPhone" class="phoneNumber w-full px-3 py-3 border border-gray-300 rounded-md input-focus" th:value="${loginInfo.userMobile}">
 							</div>
 							<div>
 								<label class="block text-sm font-medium text-gray-700 mb-2"><font color="red">* </font>주소</label>
@@ -458,29 +426,16 @@
 				<!-- Step 3: Recipient Information -->
 				<div class="w-full mb-5">
 					<div class="bg-white rounded-lg shadow-lg p-6">
+						<h2 class="text-xl font-bold mb-4 text-gray-800">
+							<i class="fas fa-user-friends text-blue-500 mr-2"></i>
+							받으시는 분
+						</h2>
 						<div class="mb-4">
-							<h2 class="text-xl font-bold text-gray-800 flex items-center mb-2">
-								<i class="fas fa-user-friends text-blue-500 mr-2"></i>
-								받으시는 분
-							</h2>
-						
-							<!-- 체크박스 + 버튼 같은 줄 -->
-							<div class="flex items-center justify-between gap-2">
-								<label for="check1"
-									   class="flex items-center space-x-2 cursor-pointer text-sm whitespace-nowrap">
-									<input id="check1" type="checkbox"
-										   class="check1 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-									<span class="text-gray-700">주문자와 동일</span>
-								</label>
-						
-								<button type="button"
-										onclick="openAddressModal(2)"
-										class="px-3 py-2 border border-blue-500 text-blue-600 rounded-md text-sm whitespace-nowrap hover:bg-blue-50">
-									배송지 목록
-								</button>
-							</div>
+							<label for="check2" class="flex items-center space-x-2 cursor-pointer p-3 bg-gray-50 rounded-lg">
+								<input id="check2" type="checkbox" class="check1 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+								<span class="text-sm text-gray-700">주문자와 동일</span>
+							</label>
 						</div>
-
 						<div class="space-y-4">
 							<div>
 								<label for="r_name_mo"class="block text-sm font-medium text-gray-700 mb-2"><font color="red">* </font>이름</label>
@@ -564,7 +519,7 @@
 							</div>
 							<div>
 								<label for="r_bigo_mo" class="block text-sm font-medium text-gray-700 mb-2">전하실 말씀</label>
-								<textarea id="r_bigo_mo" name="bigo" th:text="${loginInfo.bigo}" class="w-full px-3 py-3 border border-gray-300 rounded-md input-focus" maxlength="300" rows="3" style="resize: none;" placeholder="배송 시에 찾기 어려운 곳이나 기타 사항이 있는 경우 원활한 배송을 위해 기입해 주시기 바랍니다 :)"></textarea>
+								<textarea id="r_bigo_mo" name="bigo" th:value="${loginInfo.bigo}" class="w-full px-3 py-3 border border-gray-300 rounded-md input-focus" maxlength="300" rows="3" style="resize: none;" placeholder="배송 시에 찾기 어려운 곳이나 기타 사항이 있는 경우 원활한 배송을 위해 기입해 주시기 바랍니다 :)"></textarea>
 							</div>
 							<div class="mb-6">
 								<div class="bg-gray-50 border border-gray-200 rounded-lg p-3 text-xs text-gray-700">
@@ -613,6 +568,15 @@
 							<div id="payment-method"></div>
 							<!-- 이용약관 UI -->
 							<div id="agreement"></div>
+							<!-- 쿠폰 체크박스 -->
+							<!--<div style="padding-left: 30px">
+								<div class="checkable typography--p">
+									<label for="coupon-box" class="checkable__label typography--regular">
+										<input id="coupon-box" class="checkable__input" type="checkbox" aria-checked="true" />
+										<span class="checkable__label-text">5,000원 쿠폰 적용</span>
+									</label>
+								</div>
+							</div>-->
 							<!-- 결제하기 버튼 -->
 							<div class="flex space-x-4 mt-3">
 								<button type="button" id="payment-button" class="flex-1 btn btn-outline-primary btn-lg ms-1 py-3 px-6 rounded-lg font-medium text-sm">
@@ -625,34 +589,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
 		</div>
-		
-		<!-- 배송지 목록 모달 -->
-		<div class="modal fade" id="addressListModal" tabindex="-1" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered modal-lg">
-				<div class="modal-content rounded-lg">
-					
-					<!-- 헤더 -->
-					<div class="modal-header">
-						<h5 class="modal-title font-bold">
-							<i class="fas fa-map-marker-alt text-blue-500 mr-2"></i>
-							배송지 목록
-						</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-					</div>
-		
-					<!-- 바디 -->
-					<div class="modal-body max-h-[60vh] overflow-y-auto">
-						<div id="addressListArea">
-							<p class="text-center text-gray-500">배송지 목록을 불러오는 중입니다...</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		
 		<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 		<script th:inline="javascript">
 			
@@ -1199,116 +1136,6 @@
 						$(targetForm).find('[name="' + name + '"]').val(value);
 					}
 				});
-			}
-			
-			let addressList = [];
-			
-			function openAddressModal(gubun) {
-				const modalEl = document.getElementById('addressListModal');
-				const modal = new bootstrap.Modal(modalEl);
-				modal.show();
-		
-				loadAddressList(gubun);
-			}
-		
-			function loadAddressList(gubun) {
-				$.ajax({
-					url: "/rest/member/addressList",
-					type: "POST",
-					dataType: "json",
-					success: function (res) {
-						
-						if (!res || !res.data || !res.data.list || res.data.list.length === 0) {
-							$('#addressListArea').html(
-								'<p class="text-center text-gray-500">등록된 배송지가 없습니다.</p>'
-							);
-							return;
-						}
-						
-						addressList = res.data.list; // ⭐ 여기서 캐싱
-
-						let html = '';
-		
-						res.data.list.forEach(function (addr) {
-							html += `
-								<div class="border rounded-lg p-4 mb-3">
-									<div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
-										
-										<div class="flex-1">
-											<p class="font-bold mb-1">
-												${addr.addressNm}
-												${addr.chooseYn === 'Y'
-													? '<span class="text-blue-500 text-sm ml-1">(대표배송지)</span>'
-													: ''}
-											</p>
-											<p class="text-sm text-gray-600 break-words">
-												(${addr.zipcode}) ${addr.address} ${addr.addressDetail}
-											</p>
-											${addr.commonPwd
-												? `<p class="text-sm text-gray-500 break-words">${addr.commonPwd}</p>`
-												: ''}
-											${addr.bigo
-												? `<p class="text-sm text-gray-500 break-words">${addr.bigo}</p>`
-												: ''}
-										</div>
-								
-										<button type="button"
-											class="btn btn-outline-primary w-full sm:w-auto mt-2 sm:mt-0"
-											onclick="${gubun == 1 
-									            ? `selectAddress(${addr.addressSeq})` 
-									            : `selectAddress2(${addr.addressSeq})`}">
-											선택
-										</button>
-									</div>
-								</div>
-								`;
-
-						});
-		
-						$('#addressListArea').html(html);
-					},
-					error: function () {
-						$('#addressListArea').html(
-							'<p class="text-center text-danger">배송지 조회 중 오류가 발생했습니다.</p>'
-						);
-					}
-				});
-			}
-			//주문 자 전용
-			selectAddress = function (addrSeq){
-				const addr = addressList.find(a => a.addressSeq === addrSeq);
-		
-				if (!addr) {
-					alert('배송지 정보를 찾을 수 없습니다.');
-					return;
-				}
-			
-				$('input[name="orderPostNum"]').val(addr.zipcode);
-				$('input[name="orderAddr"]').val(addr.address);
-				$('input[name="orderAddrDetail"]').val(addr.addressDetail);
-			
-				bootstrap.Modal.getInstance(
-					document.getElementById('addressListModal')
-				).hide();
-			}
-			//받는 이 전용
-			selectAddress2 = function (addrSeq){
-				const addr = addressList.find(a => a.addressSeq === addrSeq);
-		
-				if (!addr) {
-					alert('배송지 정보를 찾을 수 없습니다.');
-					return;
-				}
-			
-				$('input[name="receivePostNum"]').val(addr.zipcode);
-				$('input[name="receiveAddr"]').val(addr.address);
-				$('input[name="receiveAddrDetail"]').val(addr.addressDetail);
-				$('input[name="commonPwd"]').val(addr.commonPwd);
-				$('textarea[name="bigo"]').val(addr.bigo);
-			
-				bootstrap.Modal.getInstance(
-					document.getElementById('addressListModal')
-				).hide();
 			}
 		</script>
 	</main>

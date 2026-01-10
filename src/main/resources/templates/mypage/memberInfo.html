@@ -62,16 +62,16 @@
 								<span class="text-gray-800 font-medium" th:text="${getMember.userEmail}"></span>
 							</div>
 					
-							<div class="flex justify-between">
+							<div class="flex justify-between border-b pb-3">
 								<span class="text-gray-500">연락처</span>
 								<span class="text-gray-800 font-medium" th:text="${getMember.userMobile}"></span>
 							</div>
 						</div>
-					
+						
 						<div class="mt-8 text-center">
-							<a href="/member/edit"
+							<a href="/mypage/address"
 							   class="inline-flex items-center px-6 py-3 bg-green-600 text-white text-sm font-semibold rounded-full hover:bg-green-700 transition">
-								정보 수정
+								회원탈퇴
 							</a>
 						</div>
 					</div>
@@ -79,9 +79,6 @@
 			</div>
 			
 			<script th:inline="javascript">
-				home = function (){
-					location.href="/";
-				}
 				fnLogin = function(){
 					let pwd = $('#pwd').val();
 					

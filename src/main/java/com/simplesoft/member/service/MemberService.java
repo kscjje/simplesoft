@@ -6,6 +6,7 @@ import java.util.Map;
 public interface MemberService {
 	
 	public int insertMember(MemberVO memberVO);
+	public int deleteMember(MemberVO memberVO);
 	public int loginSucess(MemberVO memberVO);
 	public List<Map<String, Object>> selectMemberList(Map<String, Object> paraMap);
 	public MemberVO selectMemberDetail(MemberVO vo);

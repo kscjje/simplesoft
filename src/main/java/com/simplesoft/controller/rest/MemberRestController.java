@@ -21,6 +21,7 @@ import com.simplesoft.reponse.CommonResponse;
 import com.simplesoft.util.EncryptUtils;
 import com.simplesoft.util.GlobalVariable;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
@@ -248,6 +249,31 @@ public class MemberRestController {
 			returnData.put("ERROR","이미 등록된 배송지명입니다.");
 		} else {
 			addressService.updateAddress(vo);
+		}
+		return new CommonResponse<Map<String, Object>>(returnData);
+	}
+	
+	/**
+	 * 회원탈퇴
+	 * 
+	 * @param model
+	 * @return
+	 * @throws Exception 
+	 */
+	@PostMapping("/delete")
+	public BasicResponse memberDelete(HttpServletRequest request, Model model, HttpSession session, @ModelAttribute("addressVO") AddressVO vo) throws Exception {
+		
+		Map<String, Object> returnData = new HashMap<String, Object>();
+		MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
+		if(loginInfo == null) {
+			return new CommonResponse<Map<String, Object>>(returnData);
+		} else {
+			vo.setUserNo(loginInfo.getUserNo());
+		}
+		
+		int a = memberService.deleteMember(loginInfo);
+		if(a > 0) {
+			request.getSession().invalidate();
 		}
 		return new CommonResponse<Map<String, Object>>(returnData);
 	}

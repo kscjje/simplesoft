@@ -30,6 +30,10 @@ public class MemberServiceImpl implements MemberService{
 		return memberMapper.insertMember(memberVO);
 	}
 	@Override
+	public int deleteMember(MemberVO memberVO) {
+		return memberMapper.deleteMember(memberVO);
+	}
+	@Override
 	public int loginSucess(MemberVO memberVO) {
 		return memberMapper.loginSucess(memberVO);
 	}

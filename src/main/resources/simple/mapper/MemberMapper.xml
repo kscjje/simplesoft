@@ -129,4 +129,10 @@
 		/* MemberMapper.updateOneTimePassword */
 		UPDATE USER_MST SET ONEPASS = #{onepass} WHERE USER_ID = #{userId} 
 	</update>
+	
+	<!-- 회원탈퇴 -->
+	<delete id="deleteMember" parameterType="com.simplesoft.member.service.MemberVO">
+		/* MemberMapper.deleteMember */
+		DELETE FROM USER_MST WHERE USER_NO = #{userNo}
+	</delete>
 </mapper>

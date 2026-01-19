@@ -69,10 +69,11 @@
 						</div>
 						
 						<div class="mt-8 text-center">
-							<a href="/mypage/address"
-							   class="inline-flex items-center px-6 py-3 bg-green-600 text-white text-sm font-semibold rounded-full hover:bg-green-700 transition">
-								회원탈퇴
-							</a>
+						    <button type="button"
+						            onclick="deleteMember()"
+						            class="inline-flex items-center px-6 py-3 bg-green-600 text-white text-sm font-semibold rounded-full hover:bg-green-700 transition">
+						        회원탈퇴
+						    </button>
 						</div>
 					</div>
 				</th:block>
@@ -114,6 +115,22 @@
 					if (window.event.keyCode == 13) {
 						fnLogin();
 					}
+				}
+				
+				deleteMember = function (addressSeq){
+					if (!confirm("정말 탈퇴하시겠습니까?")) {
+						return;
+					}
+					$.ajax({
+						url : "/rest/member/delete",
+						type : "POST",
+						dataType : "json",
+						success : function(data) {
+							location.href="/main"
+						}, error : function(request, status, error) {
+							alert("에러코드: " + request.status + "\n메시지: " + request.responseText);
+						}
+					});
 				}
 			</script>
 

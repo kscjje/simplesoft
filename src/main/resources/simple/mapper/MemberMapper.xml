@@ -135,4 +135,45 @@
 		/* MemberMapper.deleteMember */
 		DELETE FROM USER_MST WHERE USER_NO = #{userNo}
 	</delete>
+	
+	<!-- 회원 리스트 상세조회 -->
+	<select id="selectMemberDetailSns" parameterType="com.simplesoft.member.service.MemberVO" resultType="com.simplesoft.member.service.MemberVO">
+		/* MemberMapper.selectMemberDetailSns */
+		SELECT 
+			  MSI.USER_NO
+			, A.USER_ID
+			, A.USER_PW
+			, A.USER_NM
+			, A.USER_EMAIL
+			, A.USER_TEL
+			, A.USER_MOBILE
+			, IFNULL(B.ZIPCODE, A.ZIPCODE) AS ZIPCODE
+			, IFNULL(B.ADDRESS, A.ADDRESS) AS ADDRESS
+			, IFNULL(B.ADDRESS_DETAIL, A.ADDRESS_DETAIL) AS ADDRESS_DETAIL 
+			, B.COMMON_PWD
+			, B.BIGO
+			, A.PW_CHANGE_DT
+			, A.LAST_LOGIN_DT
+			, A.USER_STATUS
+			, A.REG_USER
+			, DATE_FORMAT(A.REG_DT,'%Y-%m-%d %H:%i:%s') AS REG_DT
+			, A.UPT_USER
+			, DATE_FORMAT(A.UPT_DT,'%Y-%m-%d %H:%i:%s') AS UPT_DT
+		FROM
+			MEMBER_SNS_INFO MSI
+			JOIN USER_MST A ON A.USER_NO = MSI.USER_NO
+			LEFT JOIN ADDRESS_MST B ON A.USER_NO = B.USER_NO AND B.CHOOSE_YN ='Y'
+		WHERE
+			MSI.SNS_KIND	= #{snsKind}
+		AND MSI.SNS_ID	= #{snsId}
+		AND MSI.SNS_STATE = 1
+	</select>
+	
+	<insert id="insertMemberSnsInfo" parameterType="com.simplesoft.member.service.MemberVO">
+		INSERT INTO MEMBER_SNS_INFO
+			(USER_NO, SNS_KIND, SNS_ID, SNS_STATE, REGDATE, REGUSER)
+			VALUES (
+				#{userNo}, #{snsKind}, #{snsId}, '1', SYSDATE(), #{userNo}
+			);
+	</insert>
 </mapper>

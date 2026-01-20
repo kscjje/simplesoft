@@ -10,6 +10,7 @@
 					margin: 0 auto;
 				}
 			</style>
+			<script src="/js/common/naveridlogin_js_sdk_2.0.2.js"></script>
 			<div class="content-container justify-content-center text-center">
 				<th:block th:if="${type ne 'noneMember'}">
 					<div class="rounded-lg p-4 h-90 overflow-y-auto text-sm text-gray-700 leading-relaxed mb-5">
@@ -49,7 +50,9 @@
 							<a href="/login?type=noneMember" class="hover:underline">비회원 주문하기</a>-->
 						</div>
 						
-					</div>
+						<div class="mb8" style="max-width:320px; margin:0 auto;">
+							<div id="naverIdLogin"></div>
+						</div>
 				</th:block>
 				<th:block th:if="${type eq 'noneMember'}">
 					<h2 class="text-lg font-semibold text-gray-800 mb-2">비회원 구매</h2>
@@ -85,7 +88,63 @@
 					</section>
 				</th:block>
 			</div>
-		
+			<script th:inline="javascript">
+				const domain = /*[[${domain}]]*/ "";
+				
+				const naverLogin = new naver.LoginWithNaverId({
+					clientId: "AT8qxy8ltmI_p6fqXbCr", // 네이버 개발자센터에서 발급받은 Client ID
+					callbackUrl: domain + "snsNaverPop", // 로그인 후 돌아올 URL
+					isPopup: true, // true: 팝업, false: 페이지 이동
+					loginButton: {color: "green", type: 3, height: 48} // 버튼 스타일
+				});
+				naverLogin.init();
+				
+				function fn_sns_join_with_naver(snsId, snsEmail, snsKind, popupWindow) {
+					//네이버 간편로그인으로 접근했을때
+					popupWindow.close();
+					fn_sns_join(snsId, snsEmail, snsKind);
+				}
+				
+				function fn_sns_join(snsId, snsEmail, snsKind) {
+					
+				    let snsNm = "";
+				    if (snsKind == "1001") {
+				      snsNm = "네이버";
+				    } else if (snsKind == "2001") {
+				      snsNm = "카카오";
+				    }
+				
+				    console.log("=========SNS :" + snsNm);
+				    console.log("=========SNS ID	:" + snsId);
+				    console.log("=========SNS EMAIL	:" + snsEmail);
+				
+				    let loginSnsInfo = {};
+				    loginSnsInfo.snsId = snsId;
+				    loginSnsInfo.snsEmail = snsEmail;
+				    loginSnsInfo.snsKind = snsKind;
+				
+					let returnUrl = /*[[${returnUrl}]]*/ "";
+				    $.ajax({
+				      type: "POST",
+				      url : "/login/snsauth",
+				      data: loginSnsInfo,
+				      dataType: "json",
+				      error: function (request) {
+				        alert("에러코드: " + request.status + "\n메시지: " + request.responseText);
+				      },
+				      success: function (result) {}
+				    }).done(function (datas) {
+						
+						if(datas.RESULT === "SUCCESS"){
+							location.href = returnUrl == null || returnUrl == "" ? "/main" : returnUrl;
+							return;
+						} else if(datas.RESULT === "NONE"){
+							alert("연결된 회원 정보가 없습니다. \n로그인하여 연결 후 이용하실 수 있습니다.");
+							return;
+						}
+				    });
+				  }
+			</script>
 			<script th:inline="javascript">
 				
 				let userId = localStorage.getItem('userId');
@@ -127,7 +186,7 @@
 								} else {
 									localStorage.removeItem('userId');
 								}
-								location.href = returnUrl == null ? "/main" : returnUrl;
+								location.href = returnUrl == null || returnUrl == "" ? "/main" : returnUrl;
 							} else{
 								alert("로그인 정보가 정확하지 않습니다.");
 								$('#userPw').val("");

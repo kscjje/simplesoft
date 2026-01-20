@@ -42,6 +42,10 @@ public class MemberServiceImpl implements MemberService{
 		return memberMapper.selectMemberDetail(vo);
 	}
 	@Override
+	public MemberVO selectMemberDetailSns(MemberVO vo){
+		return memberMapper.selectMemberDetailSns(vo);
+	}
+	@Override
 	public Map<?,?> selectIdCheck(MemberVO vo){
 		return memberMapper.selectIdCheck(vo);
 	}
@@ -86,7 +90,7 @@ public class MemberServiceImpl implements MemberService{
 		if (addrCnt <= 0) {
 			throw new RuntimeException("주소 INSERT 실패");
 		}
-
+		
 		// 4. 정상
 		returnData.put("RESULT", "0000");
 		returnData.put("message", "회원가입이 완료되었습니다. \n로그인 페이지로 이동합니다.");

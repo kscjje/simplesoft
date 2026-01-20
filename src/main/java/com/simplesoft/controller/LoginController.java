@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.simplesoft.member.service.MemberService;
 import com.simplesoft.member.service.MemberVO;
+import com.simplesoft.reponse.BasicResponse;
+import com.simplesoft.reponse.CommonResponse;
 import com.simplesoft.util.EncryptUtils;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,7 +41,6 @@ public class LoginController {
 	@PostMapping(value = "/login/loginAjax")
 	public @ResponseBody Map<String, Object> loginAjax(HttpServletRequest request,
 			@ModelAttribute(value = "paramVO") MemberVO paramVO, ModelMap model, HttpSession session) throws NoSuchAlgorithmException {
-		log.debug("로그인 시도 AJAX");
 		MemberVO memDetail = memberService.selectMemberDetail(paramVO);
 		Map<String, Object> returnData = new HashMap<String, Object>();
 		String userPassword = paramVO.getUserPw();
@@ -54,6 +56,35 @@ public class LoginController {
 			} else {
 				returnData.put("RESULT", "FAIL");
 				returnData.put("PARAM_MESSAGE", "로그인 정보가 정확하지 않습니다.");
+			}
+		}
+		return returnData;
+	}
+	
+	/**
+	 * SNS 로그인
+	 * 
+	 * @param model
+	 * @return
+	 * @throws Exception 
+	 */
+	@PostMapping("/login/snsauth")
+	public @ResponseBody Map<String, Object> snsauth(HttpServletRequest request,
+			@ModelAttribute(value = "paramVO") MemberVO paramVO, ModelMap model, HttpSession session) throws NoSuchAlgorithmException {
+		
+		Map<String, Object> returnData = new HashMap<String, Object>();
+		if(paramVO.getSnsId() == null) {
+			returnData.put("RESULT", "FAIL");
+			returnData.put("PARAM_MESSAGE", "인증 처리에 필요한 정보가 없습니다.");
+			return returnData;
+		} else {
+			MemberVO snsInfo = memberService.selectMemberDetailSns(paramVO);
+			if(snsInfo != null) {
+				memberService.loginSucess(snsInfo);
+				session.setAttribute("loginInfo",snsInfo);
+				returnData.put("RESULT", "SUCCESS");
+			} else {
+				returnData.put("RESULT", "NONE");
 			}
 		}
 		return returnData;

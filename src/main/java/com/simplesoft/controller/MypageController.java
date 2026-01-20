@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,11 +28,15 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(value="/mypage")
 public class MypageController {
 	
+	@Value("${apiClientKey}")
+	String apiClientKey;
+	
 	@Autowired
 	OrderService orderService;
 	
 	@Autowired
 	AddressService addressService;
+	
 
 	/**
 	 * 비회원 주문조회
@@ -168,5 +173,28 @@ public class MypageController {
 		model.addAttribute("list", list);
 		model.addAttribute("activeMenu", "address");
 		return "/mypage/address";
+	}
+	
+	/**
+	 * 카드 관리
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/cardInfo")
+	public String cardInfo(Model model, HttpSession session, Map<String,Object> paramMap) {
+		MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
+		
+		if(loginInfo == null) {
+			model.addAttribute("returnUrl", "/mypage/memberInfo");
+			return GlobalVariable.REDIRECT_LOGIN;
+		}
+		paramMap.put("userNo", loginInfo.getUserNo());
+		List<Map<String, Object>> list = addressService.selectAddressList(paramMap);
+		
+		model.addAttribute("apiClientKey", apiClientKey);
+		model.addAttribute("list", list);
+		model.addAttribute("activeMenu", "cardInfo");
+		return "/mypage/cardInfo";
 	}
 }

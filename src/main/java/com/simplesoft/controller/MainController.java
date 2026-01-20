@@ -1,10 +1,9 @@
 package com.simplesoft.controller;
 
-import java.security.SecureRandom;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.simplesoft.cart.service.CartService;
 import com.simplesoft.member.service.MemberService;
-import com.simplesoft.member.service.MemberVO;
 import com.simplesoft.menuboard.service.MenuBoardService;
 import com.simplesoft.order.service.OrderService;
 import com.simplesoft.util.MailTemplateSender;
@@ -24,6 +22,9 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @Slf4j
 public class MainController {
+	
+	@Value("${Globals.frnt.domain}")
+	private String domain;
 	
 	@Autowired
 	MemberService memberService;
@@ -45,9 +46,11 @@ public class MainController {
 		return "/main";
 	}
 	@GetMapping("/login")
-	public String login(@RequestParam Map<String, Object> paramMap, Model model ) {
+	public String login(@RequestParam Map<String, Object> paramMap, Model model,HttpServletRequest request) {
 		model.addAttribute("returnUrl", paramMap.get("returnUrl"));
 		model.addAttribute("type", paramMap.get("type"));
+		model.addAttribute("domain", domain);
+		request.getSession().invalidate();
 		return "/login";
 	}
 	@GetMapping("/findId")

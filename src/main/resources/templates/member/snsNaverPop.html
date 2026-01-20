@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+			<script src="/js/common/naveridlogin_js_sdk_2.0.2.js"></script>
+			<script th:inline="javascript">
+			/*<![CDATA[*/
+			    // 네이버 로그인 객체 생성
+				const naverLogin = new naver.LoginWithNaverId({
+				    clientId: /*[[${naverKey}]]*/,
+		            callbackUrl: /*[[${currentDomain}]]*/,
+		            isPopup: true // 팝업용
+				});
+				
+				naverLogin.init();
+
+		        // 로그인 성공 후 사용자 정보 가져오기
+		        naverLogin.getLoginStatus(function(status) {
+		            if (status) {
+		                const email = naverLogin.user.getEmail();
+		                const id = naverLogin.user.getId();
+		
+		                // 부모 창 함수 호출
+		                if (window.opener && window.opener.fn_sns_join_with_naver) {
+		                    window.opener.fn_sns_join_with_naver(id, email, '1001', window);
+		                }
+		
+		                // 팝업 닫기
+		                window.close();
+		            } else {
+		                console.log('네이버 로그인 실패');
+		            }
+		        });
+			/*]]>*/
+			</script>
+</html>

@@ -32,4 +32,8 @@ public class MemberVO {
 	private Date lasLoginDt;
 	private String regUser;
 	private Date regDt;
+	
+	private String snsId;
+	private String snsEmail;
+	private String snsKind;
 }

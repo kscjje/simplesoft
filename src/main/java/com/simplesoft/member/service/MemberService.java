@@ -10,6 +10,7 @@ public interface MemberService {
 	public int loginSucess(MemberVO memberVO);
 	public List<Map<String, Object>> selectMemberList(Map<String, Object> paraMap);
 	public MemberVO selectMemberDetail(MemberVO vo);
+	public MemberVO selectMemberDetailSns(MemberVO vo);
 	public Map<?,?> selectIdCheck(MemberVO vo);
 	public Map<?,?> selectFindIdCheck(MemberVO vo);
 	public Map<?,?> selectFindPasswordCheck(MemberVO vo);

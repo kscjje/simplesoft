@@ -130,6 +130,12 @@
 		UPDATE USER_MST SET ONEPASS = #{onepass} WHERE USER_ID = #{userId} 
 	</update>
 	
+	<!-- 비밀번호 변경 -->
+	<update id="updatePassword" parameterType="com.simplesoft.member.service.MemberVO">
+		/* MemberMapper.updatePassword */
+		UPDATE USER_MST SET USER_PW = #{userPw} WHERE USER_ID = #{userId} 
+	</update>
+	
 	<!-- 회원탈퇴 -->
 	<delete id="deleteMember" parameterType="com.simplesoft.member.service.MemberVO">
 		/* MemberMapper.deleteMember */
@@ -169,11 +175,35 @@
 		AND MSI.SNS_STATE = 1
 	</select>
 	
+	<!--간편 로그인 저장-->
 	<insert id="insertMemberSnsInfo" parameterType="com.simplesoft.member.service.MemberVO">
+		/*MemberMapper.insertMemberSnsInfo*/
 		INSERT INTO MEMBER_SNS_INFO
 			(USER_NO, SNS_KIND, SNS_ID, SNS_STATE, REGDATE, REGUSER)
 			VALUES (
 				#{userNo}, #{snsKind}, #{snsId}, '1', SYSDATE(), #{userNo}
 			);
 	</insert>
+	
+	<!-- 간편로그인 리스트 조회 -->
+	<select id="selectMemberSnsList" parameterType="hashMap" resultType="CamelHashMap">
+		/* MemberMapper.selectMemberSnsList */
+		SELECT 
+			  A.MEMBER_SNS_INFO_NO
+			, A.USER_NO
+			, A.SNS_KIND
+			, A.SNS_ID
+			, A.SNS_STATE
+		FROM MEMBER_SNS_INFO A
+		WHERE USER_NO = #{userNo}
+		AND SNS_STATE = '1'
+	</select>
+	
+	<!--간편 로그인 삭제-->
+	<delete id="deleteMemberSnsInfo" parameterType="com.simplesoft.member.service.MemberVO">
+		/*MemberMapper.deleteMemberSnsInfo*/
+		DELETE FROM MEMBER_SNS_INFO 
+		WHERE USER_NO = #{userNo}
+			AND SNS_KIND = #{snsKind}
+	</delete>
 </mapper>

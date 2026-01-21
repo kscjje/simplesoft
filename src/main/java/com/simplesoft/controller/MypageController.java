@@ -31,6 +31,9 @@ public class MypageController {
 	@Value("${apiClientKey}")
 	String apiClientKey;
 	
+	@Value("${Globals.frnt.domain}")
+	private String domain;
+	
 	@Autowired
 	OrderService orderService;
 	
@@ -148,6 +151,8 @@ public class MypageController {
 		getMember.setUserEmail(EncryptUtils.maskEmail(getMember.getUserEmail()));
 		getMember.setUserMobile(EncryptUtils.maskPhone(getMember.getUserMobile()));
 		
+		model.addAttribute("currentDomain", this.domain + "/snsNaverPop"); //
+	    model.addAttribute("naverKey", "AT8qxy8ltmI_p6fqXbCr");
 		model.addAttribute("getMember", getMember);
 		model.addAttribute("activeMenu", "memberInfo");
 		return "/mypage/memberInfo";

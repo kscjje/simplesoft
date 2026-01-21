@@ -20,4 +20,7 @@ public interface MemberMapper {
 	public Map<?,?> selectFindPasswordCheck(MemberVO vo);
 	public int updateOneTimePassword(MemberVO vo);
 	public int insertMemberSnsInfo(MemberVO vo);
+	public int deleteMemberSnsInfo(MemberVO vo);
+	public int updatePassword(MemberVO vo);
+	public List<Map<String, Object>> selectMemberSnsList(MemberVO vo);
 }

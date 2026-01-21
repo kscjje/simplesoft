@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <g id="kakao" transform="translate(18805 164)">
+    <rect id="사각형_341380" data-name="사각형 341380" width="48" height="48" rx="6" transform="translate(-18805 -164)" fill="#fae100"/>
+    <g id="그룹_459679" data-name="그룹 459679" transform="translate(-18795 -154)">
+      <rect id="사각형_341381" data-name="사각형 341381" width="28" height="28" fill="#e50025" opacity="0"/>
+      <path id="패스_15378" data-name="패스 15378" d="M14.441,4C8.122,4,3,8.076,3,13.106c0,3.274,2.17,6.143,5.427,7.749-.239.9-.866,3.258-.991,3.762-.156.626.227.619.478.451.2-.132,3.135-2.144,4.4-3.012a14.4,14.4,0,0,0,2.124.157c6.318,0,11.441-4.076,11.441-9.106S20.759,4,14.441,4" transform="translate(-0.425 -0.567)" fill="#291516"/>
+    </g>
+  </g>
+</svg>

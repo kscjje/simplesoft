@@ -110,4 +110,21 @@ public class MemberServiceImpl implements MemberService{
 	public int updateOneTimePassword(MemberVO memberVO) {
 		return memberMapper.updateOneTimePassword(memberVO);
 	}
+	
+	@Override
+	public int updatePassword(MemberVO memberVO) {
+		return memberMapper.updatePassword(memberVO);
+	}
+	@Override
+	public int insertMemberSnsInfo(MemberVO vo) {
+		return memberMapper.insertMemberSnsInfo(vo);
+	}
+	@Override
+	public int deleteMemberSnsInfo(MemberVO vo) {
+		return memberMapper.deleteMemberSnsInfo(vo);
+	}
+	@Override
+	public List<Map<String, Object>> selectMemberSnsList(MemberVO vo){
+		return memberMapper.selectMemberSnsList(vo);
+	}
 }

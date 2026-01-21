@@ -81,7 +81,7 @@
 								maxlength="20"
 								class="w-full form-input px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
 								oninput="passConfirmInput()"
-								placeholder="비밀번호를 다시 입력해주세요">
+								placeholder="비밀번호를 다시 입력해 주세요.">
 						<p id="passwordConfirmMessage" class="text-sm mt-1"></p>
 					</div>
 	
@@ -405,7 +405,6 @@
 					} else if (confirmPassword && password === confirmPassword) {
 						messageEl.textContent = '비밀번호가 일치합니다.';
 						messageEl.className = 'text-sm mt-1 text-green-500';
-						
 					} else {
 						messageEl.textContent = '';
 					}
@@ -430,6 +429,14 @@
 						alert('비밀번호를 입력해 주세요.');
 						return;
 					}
+					
+					// ✅ 비밀번호 유효성 검증 추가
+				    const validation = validatePassword(password);
+				    if (!validation.isValid) {
+				        alert(validation.messages.join(' '));
+				        $("#userPw").focus();
+				        return;
+				    }
 					
 					if (password !== confirmPassword) {
 						$("#userPw").focus();

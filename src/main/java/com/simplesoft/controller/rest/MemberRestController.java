@@ -1,5 +1,6 @@
 package com.simplesoft.controller.rest;
 
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.List;
@@ -7,9 +8,11 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.simplesoft.member.service.AddressService;
@@ -19,7 +22,6 @@ import com.simplesoft.member.service.MemberVO;
 import com.simplesoft.reponse.BasicResponse;
 import com.simplesoft.reponse.CommonResponse;
 import com.simplesoft.util.EncryptUtils;
-import com.simplesoft.util.GlobalVariable;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -241,7 +243,6 @@ public class MemberRestController {
 		} else {
 			vo.setUserNo(loginInfo.getUserNo());
 		}
-		System.out.println(vo);
 		// 1. 배송지명 중복 체크
 		int dupCnt = addressService.selectAddressNmCheck(vo);
 		if (dupCnt > 0) {
@@ -276,5 +277,100 @@ public class MemberRestController {
 			request.getSession().invalidate();
 		}
 		return new CommonResponse<Map<String, Object>>(returnData);
+	}
+	
+	/**
+	 * 비밀번호 변경
+	 * 
+	 * @param model
+	 * @return
+	 * @throws Exception 
+	 */
+	@PostMapping("/passwordUpdate")
+	public BasicResponse passwordUpdate(Model model, HttpSession session, @ModelAttribute("memberVO") MemberVO vo, @RequestParam Map<String, Object> param) throws Exception {
+		Map<String, Object> returnData = new HashMap<String, Object>();
+		MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
+		if(loginInfo == null) {
+			returnData.put("RESULT","NONE");
+			return new CommonResponse<Map<String, Object>>(returnData);
+		}
+		if (EncryptUtils.SHA512_Encrypt((String)param.get("current")).equals(loginInfo.getUserPw())) {
+			try {
+				vo.setUserId(loginInfo.getUserId());
+				vo.setUserPw(EncryptUtils.SHA512_Encrypt((String)param.get("newPwd")));
+			} catch (NoSuchAlgorithmException e) {
+				throw new RuntimeException("비밀번호 암호화 실패", e);
+			}
+			int i = memberService.updatePassword(vo);
+			if(i > 0) {
+				returnData.put("RESULT","SUCCESS");
+			} else {
+				returnData.put("RESULT","ERROR");
+			}
+		} else {
+			returnData.put("RESULT", "FAIL");
+			returnData.put("PARAM_MESSAGE", "비밀번호가 정확하지 않습니다.");
+		}
+		
+		return new CommonResponse<Map<?, ?>>(returnData);
+	}
+	
+	/**
+	 * SNS로그인 불러오기
+	 * 
+	 * @param model
+	 * @return
+	 * @throws Exception 
+	 */
+	@GetMapping("/simpleLoginList")
+	public BasicResponse simpleLoginList(Model model, HttpSession session, @ModelAttribute("memberVO") MemberVO vo) throws Exception {
+		Map<String, Object> returnData = new HashMap<String, Object>();
+		MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
+		if(loginInfo == null) {
+			returnData.put("RESULT","NONE");
+			return new CommonResponse<Map<String, Object>>(returnData);
+		}
+		vo.setUserNo(loginInfo.getUserNo());
+		List<Map<String, Object>> list = memberService.selectMemberSnsList(vo);
+		returnData.put("list", list);
+		return new CommonResponse<Map<?, ?>>(returnData);
+	}
+	/**
+	 * SNS로그인 저장
+	 * 
+	 * @param model
+	 * @return
+	 * @throws Exception 
+	 */
+	@PostMapping("/insertSimpleLoginId")
+	public BasicResponse insertSimpleLoginId(Model model, HttpSession session, @ModelAttribute("memberVO") MemberVO vo) throws Exception {
+		Map<String, Object> returnData = new HashMap<String, Object>();
+		MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
+		if(loginInfo == null) {
+			returnData.put("RESULT","NONE");
+			return new CommonResponse<Map<String, Object>>(returnData);
+		}
+		vo.setUserNo(loginInfo.getUserNo());
+		memberService.insertMemberSnsInfo(vo);
+		return new CommonResponse<Map<?, ?>>(returnData);
+	}
+	/**
+	 * SNS로그인 삭제
+	 * 
+	 * @param model
+	 * @return
+	 * @throws Exception 
+	 */
+	@PostMapping("/deleteSimpleLoginId")
+	public BasicResponse deleteSimpleLoginId(Model model, HttpSession session, @ModelAttribute("memberVO") MemberVO vo) throws Exception {
+		Map<String, Object> returnData = new HashMap<String, Object>();
+		MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
+		if(loginInfo == null) {
+			returnData.put("RESULT","NONE");
+			return new CommonResponse<Map<String, Object>>(returnData);
+		}
+		vo.setUserNo(loginInfo.getUserNo());
+		memberService.deleteMemberSnsInfo(vo);
+		return new CommonResponse<Map<?, ?>>(returnData);
 	}
 }

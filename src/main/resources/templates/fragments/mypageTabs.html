@@ -2,41 +2,46 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 	<div th:fragment="mypageTabs(activeMenu)">
-	    <div class="grid grid-cols-4 gap-4 sm:gap-4 mb-8">
+	    <div class="relative grid grid-cols-3 items-center h-12 sm:h-auto border-b sm:border-b-0 mb-6">
+	
 	        <!-- 주문 내역 -->
-	        <a href="/mypage/orderList"
-	           class="flex items-center justify-center p-3 rounded-xl border text-sm font-semibold transition cursor-pointer"
-	           th:classappend="${activeMenu == 'order'}
-	               ? ' bg-green-600 text-white border-green-600'
-	               : ' bg-white text-gray-700 hover:bg-green-50'">
-	            주문 내역
-	        </a>
-	        
+	        <div class="sm:px-3">
+	            <a href="/mypage/orderList"
+	               class="relative w-full h-full flex items-center justify-center max-sm:pb-2 text-sm font-semibold transition text-gray-400 hover:text-gray-700 sm:min-h-[56px] sm:py-4 sm:rounded-xl sm:border"
+	               th:classappend="${activeMenu == 'order'}
+	                   ? ' text-green-600 sm:bg-green-600 sm:text-white sm:border-green-600'
+	                   : ' sm:bg-white sm:border-gray-200 hover:sm:bg-green-50'">
+	                주문 내역
+	                <span th:if="${activeMenu == 'order'}" class="absolute left-0 right-0 bottom-0 h-0.5 bg-green-600 sm:hidden"></span>
+	            </a>
+	        </div>
+	
 	        <!-- 배송지 관리 -->
-	        <a href="/mypage/address"
-	           class="flex items-center justify-center p-3 rounded-xl border text-sm font-semibold transition cursor-pointer"
-	           th:classappend="${activeMenu == 'address'}
-	               ? ' bg-green-600 text-white border-green-600'
-	               : ' bg-white text-gray-700 hover:bg-green-50'">
-	            배송지 관리
-	        </a>
-	        <!-- 내카드 관리 -->
-	        <a href="/mypage/cardInfo"
-	           class="flex items-center justify-center p-3 rounded-xl border text-sm font-semibold transition cursor-pointer"
-	           th:classappend="${activeMenu == 'cardInfo'}
-	               ? ' bg-green-600 text-white border-green-600'
-	               : ' bg-white text-gray-700 hover:bg-green-50'">
-	            카드 관리
-	        </a>
-	        <!-- 내정보 관리 -->
-	        <a href="/mypage/memberInfo"
-	           class="flex items-center justify-center p-3 rounded-xl border text-sm font-semibold transition cursor-pointer"
-	           th:classappend="${activeMenu == 'memberInfo'}
-	               ? ' bg-green-600 text-white border-green-600'
-	               : ' bg-white text-gray-700 hover:bg-green-50'">
-	            내정보 관리
-	        </a>
+	        <div class="sm:px-3">
+	            <a href="/mypage/address"
+	               class="relative w-full h-full flex items-center justify-center max-sm:pb-2 text-sm font-semibold transition text-gray-400 hover:text-gray-700 sm:min-h-[56px] sm:py-4 sm:rounded-xl sm:border"
+	               th:classappend="${activeMenu == 'address'}
+	                   ? ' text-green-600 sm:bg-green-600 sm:text-white sm:border-green-600'
+	                   : ' sm:bg-white sm:border-gray-200 hover:sm:bg-green-50'">
+	                배송지 관리
+	                <span th:if="${activeMenu == 'address'}" class="absolute left-0 right-0 bottom-0 h-0.5 bg-green-600 sm:hidden"></span>
+	            </a>
+	        </div>
+	
+	        <!-- 내 정보 관리 -->
+	        <div class="sm:px-3">
+	            <a href="/mypage/memberInfo"
+	               class="relative w-full h-full flex items-center justify-center max-sm:pb-2 text-sm font-semibold transition text-gray-400 hover:text-gray-700 sm:min-h-[56px] sm:py-4 sm:rounded-xl sm:border"
+	               th:classappend="${activeMenu == 'memberInfo'}
+	                   ? ' text-green-600 sm:bg-green-600 sm:text-white sm:border-green-600'
+	                   : ' sm:bg-white sm:border-gray-200 hover:sm:bg-green-50'">
+	                내 정보 관리
+	                <span th:if="${activeMenu == 'memberInfo'}" class="absolute left-0 right-0 bottom-0 h-0.5 bg-green-600 sm:hidden"></span>
+	            </a>
+	        </div>
+	
 	    </div>
 	</div>
+
 </body>
 </html>

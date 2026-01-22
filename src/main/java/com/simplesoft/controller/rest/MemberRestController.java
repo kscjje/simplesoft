@@ -214,7 +214,6 @@ public class MemberRestController {
 		} else {
 			vo.setUserNo(loginInfo.getUserNo());
 		}
-		System.out.println(vo);
 		// 1. 배송지명 중복 체크
 		int dupCnt = addressService.selectAddressNmCheck(vo);
 		if (dupCnt > 0) {

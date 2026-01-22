@@ -120,7 +120,6 @@ public class AdminOrderRestController {
 	//배송 내역 조회
 	@PostMapping(value = "/deliverySearchList")
 	public BasicResponse deliverySearchListAjax(@ModelAttribute("deliveryVO") DeliveryVO paramVO) {
-		System.out.println(paramVO);
 		Map<String, Object> returnData = new HashMap<String, Object>();
 		DeliveryVO deliveryVO = admOrderService.getDeliveryList(paramVO);
 		returnData.put("deliveryList", deliveryVO.getDeliveryList());

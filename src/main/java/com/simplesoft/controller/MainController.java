@@ -49,7 +49,9 @@ public class MainController {
 	public String login(@RequestParam Map<String, Object> paramMap, Model model,HttpServletRequest request) {
 		model.addAttribute("returnUrl", paramMap.get("returnUrl"));
 		model.addAttribute("type", paramMap.get("type"));
-		model.addAttribute("domain", domain);
+		model.addAttribute("currentDomain", this.domain + "/snsNaverPop");
+		model.addAttribute("naverKey", "AT8qxy8ltmI_p6fqXbCr");
+		model.addAttribute("kakaoKey", "194cd76dd3a58aa31ea9b14709481f7a");
 		request.getSession().invalidate();
 		return "/login";
 	}

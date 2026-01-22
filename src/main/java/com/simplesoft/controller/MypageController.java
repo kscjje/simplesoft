@@ -153,6 +153,7 @@ public class MypageController {
 		
 		model.addAttribute("currentDomain", this.domain + "/snsNaverPop"); //
 	    model.addAttribute("naverKey", "AT8qxy8ltmI_p6fqXbCr");
+	    model.addAttribute("kakaoKey", "194cd76dd3a58aa31ea9b14709481f7a");
 		model.addAttribute("getMember", getMember);
 		model.addAttribute("activeMenu", "memberInfo");
 		return "/mypage/memberInfo";

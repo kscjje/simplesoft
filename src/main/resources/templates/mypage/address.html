@@ -290,7 +290,6 @@
 				        data: formData,
 				        dataType: "json",
 				        success: function(res) {
-				            console.log(res);
 				            if (res.data && res.data.ERROR) {
 				                alert(res.data.ERROR);
 				                $("#addressNm").focus();

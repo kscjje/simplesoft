@@ -15,7 +15,7 @@
 				}
 			</style>
 			<script src="/js/common/naveridlogin_js_sdk_2.0.2.js"></script>
-			<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+			<script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 			<div class="content-container-hedaer justify-content-center text-center">
 				<th:block th:replace="fragments/mypageTabs :: mypageTabs(${activeMenu})"></th:block>
 			</div>
@@ -211,7 +211,6 @@
 						dataType : "json",
 						data : loginInfo,
 						success : function(data) {
-							console.log(data)
 							if(data.data.RESULT == "SUCCESS"){
 								location.reload();
 							} else if(data.data.RESULT == "NONE"){
@@ -294,7 +293,6 @@
 						data: memberVO,
 						dataType: "json",
 						success: function(result) {
-							console.log(result);
 							if (result.responseCode === "SUCCESS") {
 								if(result.data.RESULT === "NONE"){
 									location.reload();
@@ -361,6 +359,32 @@
 					modal.classList.add('hidden');
 					modal.classList.remove('flex');
 				}
+				
+				Kakao.init(/*[[${kakaoKey}]]*/ "");
+				function fn_kakao_join() {
+					Kakao.Auth.login({
+						success: function () {
+							Kakao.API.request({
+								url: '/v2/user/me',
+								success: function (res) {
+									const memberId = res.id;
+									if (memberId === undefined || memberId == null) {
+										alert("카카오 연결이 실패하였습니다");
+										return;
+									} else {
+										fn_sns_join(memberId, '', '2001');
+									}
+								},
+								fail: function (error) {
+									alert("카카오 연결이 실패하였습니다. - " + JSON.stringify(error));
+								}
+							});
+						},
+						fail: function (err) {
+							//console.log(JSON.stringify(err.error))
+						}
+					});
+				}
 				/*<![CDATA[*/
 			    // 네이버 로그인 객체 생성
 				const naverLogin = new naver.LoginWithNaverId({
@@ -384,9 +408,6 @@
 					} else if (snsKind == '2001') {
 						snsNm = '카카오';
 					}
-					console.log("=========SNS :" + snsNm);
-				    console.log("=========SNS ID	:" + snsId);
-				    console.log("=========SNS EMAIL	:" + snsEmail);
 					$.ajax({
 						url: "/rest/member/insertSimpleLoginId",
 						type: "POST",

@@ -311,9 +311,6 @@
 					buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif", //버튼 이미지 경로
 					buttonImageOnly: true, //버튼 이미지만 깔끔하게 보이게함
 					language: 'ko', //달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
-				}).on('changeDate', function (e) {
-					var startDate = e.date;
-					$('#endDate').datepicker('setStartDate', startDate);
 				});
 				
 				$('#endDate').datepicker({
@@ -330,9 +327,6 @@
 					buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif", //버튼 이미지 경로
 					buttonImageOnly: true, //버튼 이미지만 깔끔하게 보이게함
 					language: 'ko', //달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
-				}).on('changeDate', function (e) {
-					var endDate = e.date;
-					$('#startDate').datepicker('setEndDate', endDate);
 				});
 				
 				//툴팁 이펙트 효과
@@ -362,20 +356,20 @@
 
 						case "1":
 							// 7일
-							$('#startDate').datepicker('setDate', addDays(today, -7));
-							$('#endDate').datepicker('setDate', today);
+							$('#startDate').datepicker('setDate', today);
+							$('#endDate').datepicker('setDate', addDays(today, 7));
 							break;
 
 						case "2":
 							// 1개월
-							$('#startDate').datepicker('setDate', addMonths(today, -1));
-							$('#endDate').datepicker('setDate', today);
+							$('#startDate').datepicker('setDate', today);
+							$('#endDate').datepicker('setDate', addMonths(today, 1));
 							break;
 
 						case "3":
 							// 3개월
-							$('#startDate').datepicker('setDate', addMonths(today, -3));
-							$('#endDate').datepicker('setDate', today);
+							$('#startDate').datepicker('setDate', today);
+							$('#endDate').datepicker('setDate', addMonths(today, 3));
 							break;
 
 						case "5":

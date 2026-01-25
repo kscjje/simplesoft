@@ -65,7 +65,7 @@
 		<choose>
 			<when test="customDate neq null and customDate neq ''">
 				AND A.MENU_DAY BETWEEN DATE_SUB(STR_TO_DATE(#{customDate},'%Y-%m-%d'), INTERVAL WEEKDAY(STR_TO_DATE(#{customDate},'%Y-%m-%d')) DAY) 
-				AND DATE_ADD(DATE_SUB(STR_TO_DATE(#{customDate},'%Y-%m-%d'), INTERVAL WEEKDAY(STR_TO_DATE(#{customDate},'%Y-%m-%d')) DAY), INTERVAL 4 WEEK) + INTERVAL 4 DAY
+				AND DATE_ADD(DATE_SUB(STR_TO_DATE(#{customDate},'%Y-%m-%d'), INTERVAL WEEKDAY(STR_TO_DATE(#{customDate},'%Y-%m-%d')) DAY), INTERVAL 5 WEEK) + INTERVAL 4 DAY
 			</when>
 			<otherwise>
 		AND A.MENU_DAY BETWEEN DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY) 

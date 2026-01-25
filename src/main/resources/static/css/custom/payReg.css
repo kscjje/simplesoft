@@ -177,3 +177,8 @@
     border-color: #667eea;
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
 }
+.tooltip-inner {
+  max-width: 320px;   /* 원하는 가로 길이 */
+  white-space: normal; /* 줄바꿈 허용 */
+  text-align: left;
+}

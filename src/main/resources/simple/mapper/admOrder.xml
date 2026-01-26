@@ -87,6 +87,7 @@
 				LEFT JOIN DELIVERY_MST B ON A.ORDER_NO = B.ORDER_NO
 				LEFT JOIN PAYMENTS C ON A.ORDER_NO = C.ORDER_ID AND C.STATUS = 'DONE'
 				LEFT JOIN REFUND D ON A.ORDER_NO = D.ORDER_NO
+				LEFT JOIN USER_MST E ON A.USER_NO = E.USER_NO AND A.USER_NO > 0
 				WHERE A.ORDER_STATUS != '1000'
 				<if test="startDate neq null and startDate neq '' and endDate neq null and endDate neq ''">
 					AND DATE_FORMAT(A.ORDER_PAY_DT,'%Y-%m-%d') BETWEEN #{startDate} AND #{endDate}
@@ -104,6 +105,11 @@
 					<if test="searchOption == 2">
 						<if test="searchText neq null and searchText neq ''">
 							AND A.ORDER_NO = #{searchText}
+						</if>
+					</if>
+					<if test="searchOption == 3">
+						<if test="searchText neq null and searchText neq ''">
+							AND E.USER_ID = #{searchText}
 						</if>
 					</if>
 				</if>
@@ -127,6 +133,7 @@
 				LEFT JOIN DELIVERY_MST B ON A.ORDER_NO = B.ORDER_NO
 				LEFT JOIN PAYMENTS C ON A.ORDER_NO = C.ORDER_ID AND C.STATUS = 'DONE'
 				LEFT JOIN REFUND D ON A.ORDER_NO = D.ORDER_NO
+				LEFT JOIN USER_MST E ON A.USER_NO = E.USER_NO AND A.USER_NO > 0
 				WHERE A.ORDER_STATUS != '1000'
 				<if test="startDate neq null and startDate neq '' and endDate neq null and endDate neq ''">
 					AND DATE_FORMAT(A.ORDER_PAY_DT,'%Y-%m-%d') BETWEEN #{startDate} AND #{endDate}
@@ -144,6 +151,11 @@
 					<if test="searchOption == 2">
 						<if test="searchText neq null and searchText neq ''">
 							AND A.ORDER_NO = #{searchText}
+						</if>
+					</if>
+					<if test="searchOption == 3">
+						<if test="searchText neq null and searchText neq ''">
+							AND E.USER_ID = #{searchText}
 						</if>
 					</if>
 				</if>
@@ -227,6 +239,7 @@
 				LEFT JOIN DELIVERY_MST B ON A.ORDER_NO = B.ORDER_NO
 				LEFT JOIN PAYMENTS C ON A.ORDER_NO = C.ORDER_ID AND C.STATUS = 'DONE'
 				LEFT JOIN REFUND D ON A.ORDER_NO = D.ORDER_NO
+				LEFT JOIN USER_MST E ON A.USER_NO = E.USER_NO AND A.USER_NO > 0
 				WHERE A.ORDER_STATUS != '1000'
 				<if test="startDate neq null and startDate neq '' and endDate neq null and endDate neq ''">
 					AND DATE_FORMAT(A.ORDER_PAY_DT,'%Y-%m-%d') BETWEEN #{startDate} AND #{endDate}
@@ -244,6 +257,11 @@
 					<if test="searchOption == 2">
 						<if test="searchText neq null and searchText neq ''">
 							AND A.ORDER_NO = #{searchText}
+						</if>
+					</if>
+					<if test="searchOption == 3">
+						<if test="searchText neq null and searchText neq ''">
+							AND E.USER_ID = #{searchText}
 						</if>
 					</if>
 				</if>
@@ -368,9 +386,8 @@
 		FROM ORDER_MST A
 		INNER JOIN ORDER_PRODUCT B ON A.ORDER_NO = B.ORDER_NO 
 		INNER JOIN DELIVERY_MST C ON A.ORDER_NO = C.ORDER_NO AND B.ORDER_PRODUCT_NO = C.ORDER_PRODUCT_NO
-		
-		WHERE 1=1
-		AND A.ORDER_STATUS = '0000'
+		LEFT JOIN USER_MST D ON A.USER_NO = D.USER_NO AND A.USER_NO > 0
+		WHERE A.ORDER_STATUS = '0000'
 		<if test="startDate neq null and startDate neq '' and endDate neq null and endDate neq ''">
 			AND DATE_FORMAT(C.MENU_DAY,'%Y%m%d') BETWEEN #{startDate} AND #{endDate}
 		</if>
@@ -390,6 +407,11 @@
 			<if test="searchOption == 2">
 				<if test="searchText neq null and searchText neq ''">
 					AND C.ORDER_NO = #{searchText}
+				</if>
+			</if>
+			<if test="searchOption == 3">
+				<if test="searchText neq null and searchText neq ''">
+					AND D.USER_ID = #{searchText}
 				</if>
 			</if>
 		</if>
@@ -472,9 +494,8 @@
 		FROM ORDER_MST A
 		INNER JOIN ORDER_PRODUCT B ON A.ORDER_NO = B.ORDER_NO 
 		INNER JOIN DELIVERY_MST C ON A.ORDER_NO = C.ORDER_NO AND B.ORDER_PRODUCT_NO = C.ORDER_PRODUCT_NO
-		
-		WHERE 1=1
-		AND A.ORDER_STATUS = '0000'
+		LEFT JOIN USER_MST D ON A.USER_NO = D.USER_NO AND A.USER_NO > 0
+		WHERE A.ORDER_STATUS = '0000'
 		<if test="startDate neq null and startDate neq '' and endDate neq null and endDate neq ''">
 			AND DATE_FORMAT(C.MENU_DAY,'%Y%m%d') BETWEEN #{startDate} AND #{endDate}
 		</if>
@@ -494,6 +515,11 @@
 			<if test="searchOption == 2">
 				<if test="searchText neq null and searchText neq ''">
 					AND C.ORDER_NO = #{searchText}
+				</if>
+			</if>
+			<if test="searchOption == 3">
+				<if test="searchText neq null and searchText neq ''">
+					AND D.USER_ID = #{searchText}
 				</if>
 			</if>
 		</if>
@@ -529,8 +555,8 @@
 		FROM ORDER_MST A
 		INNER JOIN ORDER_PRODUCT B ON A.ORDER_NO = B.ORDER_NO 
 		INNER JOIN DELIVERY_MST C ON A.ORDER_NO = C.ORDER_NO AND B.ORDER_PRODUCT_NO = C.ORDER_PRODUCT_NO
-		WHERE 1=1
-		AND A.ORDER_STATUS = '0000'
+		LEFT JOIN USER_MST D ON A.USER_NO = D.USER_NO AND A.USER_NO > 0
+		WHERE A.ORDER_STATUS = '0000'
 		<if test="startDate neq null and startDate neq '' and endDate neq null and endDate neq ''">
 			AND DATE_FORMAT(C.MENU_DAY,'%Y%m%d') BETWEEN #{startDate} AND #{endDate}
 		</if>
@@ -550,6 +576,11 @@
 			<if test="searchOption == 2">
 				<if test="searchText neq null and searchText neq ''">
 					AND C.ORDER_NO = #{searchText}
+				</if>
+			</if>
+			<if test="searchOption == 3">
+				<if test="searchText neq null and searchText neq ''">
+					AND D.USER_ID = #{searchText}
 				</if>
 			</if>
 		</if>

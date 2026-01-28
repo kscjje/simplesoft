@@ -346,11 +346,12 @@ public class MemberRestController {
 		Map<String, Object> returnData = new HashMap<String, Object>();
 		MemberVO loginInfo = (MemberVO)session.getAttribute("loginInfo");
 		if(loginInfo == null) {
-			returnData.put("RESULT","NONE");
+			returnData.put("code","NONE");
+			returnData.put("retMsg","회원 정보가 없습니다.");
 			return new CommonResponse<Map<String, Object>>(returnData);
 		}
 		vo.setUserNo(loginInfo.getUserNo());
-		memberService.insertMemberSnsInfo(vo);
+		returnData = memberService.insertMemberSnsInfo(vo);
 		return new CommonResponse<Map<?, ?>>(returnData);
 	}
 	/**

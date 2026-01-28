@@ -418,10 +418,15 @@
 					    },
 						dataType: "json",
 						success: function(result) {
-							if(result.data.RESULT ==="NONE"){
+							console.log(result);
+							if(result.data.code === "NONE"){
 								location.reload();
 								return;
-							} else {
+							} else if (result.data.code !== "0000"){
+								alert(result.data.retMsg);
+								return;
+							} 
+							else {
 								alert("등록 되었습니다.");
 								if (snsKind == '1001') {
 									var parent = $('#naverIdLogin_loginButton').parent();

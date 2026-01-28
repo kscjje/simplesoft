@@ -185,6 +185,29 @@
 			);
 	</insert>
 	
+	
+	<!-- 간편로그인 로그인 저장 체크-->
+	<select id="insertMemberSnsInfoCheck" parameterType="hashMap" resultType="int">
+		/* MemberMapper.insertMemberSnsInfoCheck */
+		SELECT 
+			COUNT(*) AS TOT_CNT
+		FROM MEMBER_SNS_INFO A
+		WHERE A.SNS_KIND	= #{snsKind}
+			AND A.SNS_ID	= #{snsId}
+			AND A.SNS_STATE = 1
+	</select>
+	
+	<!-- 간편로그인 로그인 저장 체크-->
+	<select id="insertMemberSnsInfoCheck2" parameterType="hashMap" resultType="int">
+		/* MemberMapper.insertMemberSnsInfoCheck2 */
+		SELECT 
+			COUNT(*) AS TOT_CNT
+		FROM MEMBER_SNS_INFO A
+		WHERE A.SNS_KIND	= #{snsKind}
+			AND A.USER_NO	= #{userNo}
+			AND A.SNS_STATE = 1
+	</select>
+	
 	<!-- 간편로그인 리스트 조회 -->
 	<select id="selectMemberSnsList" parameterType="hashMap" resultType="CamelHashMap">
 		/* MemberMapper.selectMemberSnsList */

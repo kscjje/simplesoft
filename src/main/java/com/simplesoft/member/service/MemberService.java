@@ -17,7 +17,7 @@ public interface MemberService {
 	public Map<?,?> memberSave(MemberVO vo);
 	public int updateOneTimePassword(MemberVO vo);
 	public int updatePassword(MemberVO vo);
-	public int insertMemberSnsInfo(MemberVO vo);
+	public Map<String, Object> insertMemberSnsInfo(MemberVO vo);
 	public int deleteMemberSnsInfo(MemberVO vo);
 	public List<Map<String, Object>> selectMemberSnsList(MemberVO vo);
 }

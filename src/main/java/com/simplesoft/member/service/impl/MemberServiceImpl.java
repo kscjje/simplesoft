@@ -115,9 +115,37 @@ public class MemberServiceImpl implements MemberService{
 	public int updatePassword(MemberVO memberVO) {
 		return memberMapper.updatePassword(memberVO);
 	}
+	
+	@Transactional
 	@Override
-	public int insertMemberSnsInfo(MemberVO vo) {
-		return memberMapper.insertMemberSnsInfo(vo);
+	public Map<String, Object> insertMemberSnsInfo(MemberVO vo) {
+		Map<String, Object> returnData = new HashMap<String, Object>();
+		
+		if(vo.getSnsId() == null || vo.getSnsKind() == null || vo.getUserNo() < 0) {
+			returnData.put("code","1001");
+			returnData.put("retMsg","회원SNS계정정보 등록에 필요한 필수항목이 없습니다. 다시 확인해주세요.");
+			return returnData;
+		}
+		int i = memberMapper.insertMemberSnsInfoCheck(vo);
+		if( i > 0) {
+			returnData.put("code","1002");
+			returnData.put("retMsg","해당 sns계정은 이미 사용중인 계정입니다.");
+			return returnData;
+		}
+		int j = memberMapper.insertMemberSnsInfoCheck2(vo);
+		if( j > 0 ) {
+			returnData.put("code","1002");
+			returnData.put("retMsg","이미 sns 간편연동이 되어 있는 계정이 존재합니다.");
+			return returnData;
+		}
+		if(memberMapper.insertMemberSnsInfo(vo) > 0) {
+			returnData.put("code","0000");
+			returnData.put("retMsg","등록되었습니다.");
+		} else {
+			returnData.put("code","9999");
+			returnData.put("retMsg","관리자에게 문의해주세요.");
+		}
+		return returnData;
 	}
 	@Override
 	public int deleteMemberSnsInfo(MemberVO vo) {
